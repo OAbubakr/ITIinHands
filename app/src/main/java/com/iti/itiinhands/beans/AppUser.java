@@ -15,6 +15,8 @@ public abstract class AppUser {
     private String imgUrl;
     private String token;
 
+
+
     public String getUsername() {
         return username;
     }

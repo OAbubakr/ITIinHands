@@ -15,6 +15,8 @@ public class Company {
     private String description;
     private String website;
 
+
+
     public ArrayList<String> getPhone() {
         return phone;
     }
