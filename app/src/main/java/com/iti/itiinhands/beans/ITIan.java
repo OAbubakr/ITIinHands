@@ -8,8 +8,10 @@ import java.util.HashMap;
 
 abstract class ITIan extends AppUser {
     private HashMap<String,String> professionalProfiles = new HashMap<>();
-    private int trackId;
+    private Track track;
     private int intake;
+
+
 
     public HashMap<String, String> getProfessionalProfiles() {
         return professionalProfiles;
@@ -19,12 +21,12 @@ abstract class ITIan extends AppUser {
         this.professionalProfiles = professionalProfiles;
     }
 
-    public int getTrackId() {
-        return trackId;
+    public Track getTrack() {
+        return track;
     }
 
-    public void setTrackId(int trackId) {
-        this.trackId = trackId;
+    public void setTrack(Track track) {
+        this.track = track;
     }
 
     public int getIntake() {
