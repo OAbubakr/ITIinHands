@@ -1,6 +1,5 @@
 package com.iti.itiinhands.beans;
 
-import java.util.Date;
 
 /**
  * Created by Sandra on 5/3/2017.
@@ -8,16 +7,16 @@ import java.util.Date;
 
 public class Event {
     private String eventDescription;
-    private Date startTime;
+    private long startTime;
     private String location;
     private String eventOrganizer;
     private String eventTitle;
 
-    public Date getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
