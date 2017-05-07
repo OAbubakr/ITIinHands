@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -20,10 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         InstructorEvaluation i  = new InstructorEvaluation();
 
-        //OAMR
-
-        //abbasset
-        // after wrapped
-
+        Intent intent = new Intent(this,StudentCourseList.class);
+        startActivity(intent);
     }
 }
