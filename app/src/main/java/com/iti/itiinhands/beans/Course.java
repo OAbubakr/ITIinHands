@@ -14,6 +14,37 @@ public class Course {
     private Instructor mainInstructor;
     private ArrayList<Instructor> labAssistants = new ArrayList<>();
 
+
+    private boolean courseEvaluate; // to define if course is evaluated or not yet
+    private boolean courseComplete; // to define if this course is taken or not
+    private boolean gradeOnSystem; // to define if this grade is on system or not
+
+    /*  get gradeOnSystem value */
+    public boolean isGradeOnSystem() {
+        return gradeOnSystem;
+    }
+    /*  set gradeOnSystem value */
+    public void setGradeOnSystem(boolean gradeOnSystem) {
+        this.gradeOnSystem = gradeOnSystem;
+    }
+
+    /*  get courseEvaluate value */
+    public boolean isCourseEvaluate() {
+        return courseEvaluate;
+    }
+    /*  set courseEvaluate value */
+    public void setCourseEvaluate(boolean courseEvaluate) {
+        this.courseEvaluate = courseEvaluate;
+    }
+    /*  get courseComplete value */
+    public boolean isCourseComplete() {
+        return courseComplete;
+    }
+    /*  set courseComplete value */
+    public void setCourseComplete(boolean courseComplete) {
+        this.courseComplete = courseComplete;
+    }
+
     public int getCourseId() {
         return courseId;
     }
