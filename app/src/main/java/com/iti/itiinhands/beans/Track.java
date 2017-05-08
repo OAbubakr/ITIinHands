@@ -1,12 +1,13 @@
 package com.iti.itiinhands.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Sandra on 5/3/2017.
  */
 
-public class Track {
+public class Track implements Serializable{
     private String trackId;
     private String trackName;
     private Instructor trackSupervisor;

@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -15,13 +16,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Notification n = new Notification();
-        n.setType(Notification.Type.announcement);
+//        Notification n = new Notification();
+//        n.setType(Notification.Type.announcement);
+//
+//        InstructorEvaluation i  = new InstructorEvaluation();
 
-        InstructorEvaluation i  = new InstructorEvaluation();
+        Intent branchesView = new Intent(getApplicationContext(), Branches.class);
+        startActivity(branchesView);
 
         //OAMR
-
         //abbasset
 
     }
