@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         InstructorEvaluation i  = new InstructorEvaluation();
 
-        Intent intent = new Intent(this,StudentCourseList.class);
+        Intent intent = new Intent(this,TrackDetails.class);
         startActivity(intent);
     }
 }
