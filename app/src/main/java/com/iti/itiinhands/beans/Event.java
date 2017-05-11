@@ -11,6 +11,17 @@ public class Event {
     private String location;
     private String eventOrganizer;
     private String eventTitle;
+    private String imageURL;
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+
 
     public long getStartTime() {
         return startTime;
