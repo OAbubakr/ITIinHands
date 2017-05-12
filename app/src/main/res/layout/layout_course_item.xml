@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/course_name"
+                android:id="@+id/event_time"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="8dp"
@@ -32,11 +32,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/course_grade"
+                app:layout_constraintRight_toLeftOf="@+id/event_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/course_grade"
+                android:id="@+id/event_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="8dp"

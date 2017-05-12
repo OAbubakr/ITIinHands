@@ -24,7 +24,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     private List<StudentCourse> studentCourseList = Collections.emptyList();
     private LayoutInflater inflater;
-    Context mycontext;
+    private Context mycontext;
 
     public CourseAdapter(Context context, List<StudentCourse> studentCourseList) {
         inflater = LayoutInflater.from(context);
@@ -84,8 +84,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         public CourseViewHolder(View itemView) {
             super(itemView);
-            courseName = (TextView) itemView.findViewById(R.id.course_name);
-            courseImage = (ImageView) itemView.findViewById(R.id.course_grade);
+            courseName = (TextView) itemView.findViewById(R.id.event_time);
+            courseImage = (ImageView) itemView.findViewById(R.id.event_image);
         }
     }
 
