@@ -1,12 +1,13 @@
 package com.iti.itiinhands.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Sandra on 5/3/2017.
  */
 
-public class Branch {
+public class Branch implements Serializable{
     private String location;
     private ArrayList<Track> tracks;
     private ArrayList<String> mapImgUrl = new ArrayList<>();
