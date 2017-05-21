@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
-import com.iti.itiinhands.adapters.RecyclerViewAdapter;
 import com.iti.itiinhands.beans.Branch;
 import com.iti.itiinhands.beans.Track;
 
@@ -18,11 +17,9 @@ import java.util.Arrays;
 
 public class Branches extends AppCompatActivity {
 
-//    private ArrayList<Branch> branchesList = new ArrayList<>();
-    private ArrayList<Object> branchesList = new ArrayList<>();
+    private ArrayList<Branch> branchesList = new ArrayList<>();
     private RecyclerView recyclerView;
-//    private BranchesAdapter branchesAdapter;
-    private RecyclerViewAdapter branchesAdapter;
+    private BranchesAdapter branchesAdapter;
 
     private TextView branchViewTitle;
 
@@ -36,8 +33,7 @@ public class Branches extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.branch_recycler_view);
 
-//        branchesAdapter = new BranchesAdapter(branchesList);
-        branchesAdapter = new RecyclerViewAdapter(branchesList, 0);
+        branchesAdapter = new BranchesAdapter(branchesList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

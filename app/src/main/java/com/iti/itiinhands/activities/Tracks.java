@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
-import com.iti.itiinhands.adapters.RecyclerViewAdapter;
 import com.iti.itiinhands.adapters.TracksAdapter;
 import com.iti.itiinhands.beans.Branch;
 import com.iti.itiinhands.beans.Track;
@@ -22,11 +21,9 @@ public class Tracks extends AppCompatActivity {
     Branch branch;
     TextView branchLocation;
 
-//    private ArrayList<Track> tracksList = new ArrayList<>();
-    private ArrayList<Object> tracksList = new ArrayList<>();
+    private ArrayList<Track> tracksList = new ArrayList<>();
     private RecyclerView recyclerView;
-//    private TracksAdapter tracksAdapter;
-    private RecyclerViewAdapter tracksAdapter;
+    private TracksAdapter tracksAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +36,7 @@ public class Tracks extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.track_recycler_view);
 
-//        tracksAdapter = new TracksAdapter(tracksList);
-        tracksAdapter = new RecyclerViewAdapter(tracksList, 1);
+        tracksAdapter = new TracksAdapter(tracksList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
