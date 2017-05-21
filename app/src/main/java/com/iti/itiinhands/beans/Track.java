@@ -15,6 +15,15 @@ public class Track {
     private ArrayList<Instructor> trackInstructors = new ArrayList<>();
     private ArrayList<Course> courseList = new ArrayList<>();
     private String description;
+    private Schedule schedule;
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
 
     public String getTrackId() {
         return trackId;
