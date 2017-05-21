@@ -1,29 +1,28 @@
 package com.iti.itiinhands.beans;
 
-import java.util.Date;
 
 /**
  * Created by Sandra on 5/3/2017.
  */
 
 public class Permission {
-    private Date permissionStartTime;
-    private Date getPermissionEndTime;
+    private long permissionStartTime;
+    private long getPermissionEndTime;
     private Instructor supervisor;
 
-    public Date getPermissionStartTime() {
+    public long getPermissionStartTime() {
         return permissionStartTime;
     }
 
-    public void setPermissionStartTime(Date permissionStartTime) {
+    public void setPermissionStartTime(long permissionStartTime) {
         this.permissionStartTime = permissionStartTime;
     }
 
-    public Date getGetPermissionEndTime() {
+    public long getGetPermissionEndTime() {
         return getPermissionEndTime;
     }
 
-    public void setGetPermissionEndTime(Date getPermissionEndTime) {
+    public void setGetPermissionEndTime(long getPermissionEndTime) {
         this.getPermissionEndTime = getPermissionEndTime;
     }
 
