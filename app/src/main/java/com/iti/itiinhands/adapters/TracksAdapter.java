@@ -1,5 +1,6 @@
 package com.iti.itiinhands.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,9 +22,11 @@ import java.util.ArrayList;
 public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHolder>{
 
     private ArrayList<Track> tracksList = new ArrayList<>();
+    private Context context;
 
-    public TracksAdapter(ArrayList<Track> tracksList){
+    public TracksAdapter(ArrayList<Track> tracksList, Context context){
         this.tracksList = tracksList;
+        this.context = context;
     }
 
     @Override
@@ -60,10 +63,10 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(trackName.getContext(), track.getTrackName(), Toast.LENGTH_SHORT).show();
-                    Intent trackDetailsView = new Intent(trackName.getContext(), TrackDetails.class);
+                    Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
+                    Intent trackDetailsView = new Intent(context, TrackDetails.class);
                     trackDetailsView.putExtra("trackObject", track);
-                    trackName.getContext().startActivity(trackDetailsView);
+                    context.startActivity(trackDetailsView);
                 }
             });
         }
