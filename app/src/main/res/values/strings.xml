@@ -3,4 +3,8 @@
     <string name="helloWorld">Hello bas</string>
     <string name="title_activity_event_list">EventList</string>
     <string name="login_userName">User Name</string>
+    <string name="login_password">Password</string>
+    <string name="loginView_LoginBtn">Login</string>
+    <string name="loginView_GuestLoginBtn">Login as a guest</string>
+    <string name="networkFaildTxt">No Internet Connection        Try Again</string>
 </resources>
