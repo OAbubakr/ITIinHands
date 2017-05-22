@@ -22,7 +22,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+//
+//        InstructorEvaluation i  = new InstructorEvaluation();
+//
+//        Intent intent = new Intent(this,StudentCourseList.class);
+//        startActivity(intent);
 
+        Intent intent = new Intent(this,EventList.class);
         InstructorEvaluation i  = new InstructorEvaluation();
 
         Intent intent = new Intent(this,EventList.class);
