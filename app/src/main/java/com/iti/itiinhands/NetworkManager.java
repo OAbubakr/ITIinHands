@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.networkinterfaces.NetworkApi;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
@@ -22,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    private static final String BASEURL = "http://192.168.1.3:8084/restfulSpring/";
+    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit ;
 
@@ -57,8 +58,8 @@ public class NetworkManager {
 
         NetworkApi web = retrofit.create(NetworkApi.class);
 
-        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-
+//        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
+        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId,userName,password));
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {

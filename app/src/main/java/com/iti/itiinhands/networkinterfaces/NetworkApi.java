@@ -29,7 +29,9 @@ public interface NetworkApi {
     public Call<Model>getModel(@Query("id")int id);
      */
 //    @FormUrlEncoded
-    @GET("login/onLoginAuth")
-    public Call<LoginResponse> onLoginAuth(@Query("userType") int userType,@Query("userName") String userName,
-                                           @Query("password") String password);
+//    @GET("login/onLoginAuth")
+    @POST("login/onLoginAuth")
+    public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
+//    (@Query("userType") int userType,@Query("userName") String userName,
+//                                           @Query("password") String password);
 }
