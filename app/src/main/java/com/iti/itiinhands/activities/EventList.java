@@ -42,6 +42,9 @@ public class EventList extends AppCompatActivity {
         eventTitle = (TextView) findViewById(R.id.event_title);
         calendarView = (CalendarView) findViewById(R.id.calenderView);
 
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.getTime());
+
         dayTitle.setText("MONDAY");
         dateTitle.setText("JUNE 14TH");
         eventTitle.setText("EVENTS");
