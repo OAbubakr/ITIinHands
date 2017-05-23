@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/untitled1"
+    android:orientation="vertical"
+    android:weightSum="6">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="94dp"
+            android:layout_height="187dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/logo1"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/userNameLoginViewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/gender_neutral_user"
+                android:ems="10"
+                android:hint="@string/login_userName"
+                android:inputType="textPersonName"
+                android:textColor="@android:color/black"
+                android:textColorLink="#B71C1C" />
+
+            <TextView
+                android:id="@+id/userNameCheckLoginViewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="#B71C1C" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/passwordLoginViewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/password"
+                android:ems="10"
+                android:hint="@string/login_password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textColorLink="#B71C1C" />
+
+            <TextView
+                android:id="@+id/passwordCheckLoginViewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="#B71C1C" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/loginbtnLoginViewId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_17"
+                android:gravity="center"
+                android:text="@string/loginView_LoginBtn"
+                android:textColor="@android:color/white"
+                android:textColorLink="#B71C1C" />
+
+            <Button
+                android:id="@+id/guestLoginbtnLoginViewId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_17"
+                android:text="@string/loginView_GuestLoginBtn"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/networkFaildLoginViewId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/navbar"
+            android:gravity="center"
+            android:text="@string/networkFaildTxt"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+</LinearLayout>
