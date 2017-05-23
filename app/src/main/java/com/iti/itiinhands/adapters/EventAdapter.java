@@ -76,14 +76,14 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.EventViewHo
         }
 
         public void bind(final Event event){
-            eventTitle.setText(event.getEventTitle());
-            eventLocation.setText(event.getLocation());
-            eventDate.setText(String.valueOf(event.getStartTime()));
+            eventTitle.setText(event.getTitle());
+            eventLocation.setText(event.getDescription());
+            eventDate.setText(String.valueOf(event.getEventStart()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, event.getLocation(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, event.getDescription(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

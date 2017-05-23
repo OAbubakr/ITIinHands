@@ -14,11 +14,13 @@ import com.iti.itiinhands.adapters.EventAdapter;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentCourse;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class EventList extends AppCompatActivity {
 
@@ -30,7 +32,6 @@ public class EventList extends AppCompatActivity {
     private TextView dayTitle;
     private TextView dateTitle;
     private CalendarView calendarView;
-    private TextView eventTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +40,18 @@ public class EventList extends AppCompatActivity {
 
         dayTitle = (TextView) findViewById(R.id.day_title);
         dateTitle = (TextView) findViewById(R.id.date_title);
-        eventTitle = (TextView) findViewById(R.id.event_title);
         calendarView = (CalendarView) findViewById(R.id.calenderView);
 
         Calendar calendar = Calendar.getInstance();
-        System.out.println(calendar.getTime());
+        System.out.println("------------------------------"+calendar.getTime());
 
-        dayTitle.setText("MONDAY");
-        dateTitle.setText("JUNE 14TH");
-        eventTitle.setText("EVENTS");
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        dayTitle.setText(dayFormat.format(calendar.getTime()));
+
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM d", Locale.US);
+        SimpleDateFormat dayNumFormat = new SimpleDateFormat("d", Locale.US);
+        String n = getDayOfMonthSuffix(Integer.parseInt(dayNumFormat.format(calendar.getTime())));
+        dateTitle.setText(monthFormat.format(calendar.getTime())+ n);
 
         recyclerView =(RecyclerView) findViewById(R.id.event_recycler_view);
         eventsAdapter = new EventAdapter(eventsList, getApplicationContext());
@@ -62,27 +66,39 @@ public class EventList extends AppCompatActivity {
     private void prepareEventData(){
 
         Event e1 = new Event();
-        e1.setEventTitle("Event 1");
-        e1.setLocation("Home");
-        e1.setStartTime(33334444);
+        e1.setTitle("Event 1");
+        e1.setDescription("Home");
+        e1.setEventStart(33334444);
 
         Event e2 = new Event();
-        e2.setEventTitle("Event 2");
-        e2.setLocation("School");
-        e2.setStartTime(6655);
+        e2.setTitle("Event 2");
+        e2.setDescription("School");
+        e2.setEventStart(6655);
 
         Event e3 = new Event();
-        e3.setEventTitle("Event 3");
-        e3.setLocation("Collage");
-        e3.setStartTime(433112);
+        e3.setTitle("Event 3");
+        e3.setDescription("Collage");
+        e3.setEventStart(433112);
 
         Event e4 = new Event();
-        e4.setEventTitle("Event 4");
-        e4.setLocation("Work");
-        e4.setStartTime(9909);
+        e4.setTitle("Event 4");
+        e4.setDescription("Work");
+        e4.setEventStart(9909);
 
         Event[] e = new Event[]{e1, e2, e3, e4};
         eventsList.addAll(Arrays.asList(e));
         eventsAdapter.notifyDataSetChanged();
+    }
+
+    private String getDayOfMonthSuffix(final int n) {
+        if (n >= 11 && n <= 13) {
+            return "TH";
+        }
+        switch (n % 10) {
+            case 1:  return "ST";
+            case 2:  return "ND";
+            case 3:  return "RD";
+            default: return "TH";
+        }
     }
 }
