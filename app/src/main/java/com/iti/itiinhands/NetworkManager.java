@@ -1,7 +1,17 @@
 package com.iti.itiinhands;
 
-import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 
+import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkApi;
+import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.Response;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -12,29 +22,68 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    private static final String baseUrl="";
+    private static final String baseUrl = "http://localhost:8084/restfulSpring/";
+    private static NetworkManager newInstance;
+    private static Retrofit retrofit ;
 
-    private static Retrofit retrofit = null;
-
-    private NetworkResponse network;
+//    private NetworkResponse network;
+    private Context context;
 
     //ur activity must implements NetworkResponse
 
-    public NetworkManager(NetworkResponse network){
-        this.network =network;
-
+    private NetworkManager(Context context) {
+        this.context = context;
     }
 
-    public static Retrofit getClient() {
-        if (retrofit==null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+    public static NetworkManager getInstance(Context context){
+        if(newInstance == null){
+            synchronized (NetworkManager.class){
+                if(newInstance==null){
+                    newInstance = new NetworkManager(context);
+                    retrofit = new Retrofit.Builder()
+                            .baseUrl(baseUrl)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                }
+            }
         }
-        return retrofit;
+        return newInstance;
     }
 
+
+
+    public void getLoginAuthData(NetworkResponse networkResponse,int userId,String userName,String password){
+        final NetworkResponse network=networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
+
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
+                LoginResponse loginResponse = response.body();
+                network.onResponse(loginResponse);
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFaliure();
+            }
+        });
+
+
+
+
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
     //An Example
 
@@ -85,9 +134,18 @@ public class NetworkManager {
 
 
 
-
-
-
-
+//    public  Retrofit getClient() {
+//        if (retrofit == null) {
+//            synchronized (NetworkManager.class) {
+//                if (retrofit == null) {
+//                    retrofit = new Retrofit.Builder()
+//                            .baseUrl(baseUrl)
+//                            .addConverterFactory(GsonConverterFactory.create())
+//                            .build();
+//                }
+//            }
+//        }
+//        return retrofit;
+//    }
 
 }
