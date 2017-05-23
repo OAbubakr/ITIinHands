@@ -28,8 +28,8 @@ public interface NetworkApi {
     @GET("example")
     public Call<Model>getModel(@Query("id")int id);
      */
-   // @FormUrlEncoded
-    @GET("/onLoginAuth")
-    public Call<LoginResponse> onLoginAuth(@Query("userType")int userType,@Query("userName")String userName,
-                                           @Query("password")String password);
+//    @FormUrlEncoded
+    @GET("login/onLoginAuth")
+    public Call<LoginResponse> onLoginAuth(@Query("userType") int userType,@Query("userName") String userName,
+                                           @Query("password") String password);
 }

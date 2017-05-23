@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    private static final String baseUrl = "http://localhost:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.1.3:8084/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit ;
 
@@ -41,7 +41,7 @@ public class NetworkManager {
                 if(newInstance==null){
                     newInstance = new NetworkManager(context);
                     retrofit = new Retrofit.Builder()
-                            .baseUrl(baseUrl)
+                            .baseUrl(BASEURL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                 }
@@ -54,6 +54,7 @@ public class NetworkManager {
 
     public void getLoginAuthData(NetworkResponse networkResponse,int userId,String userName,String password){
         final NetworkResponse network=networkResponse;
+
         NetworkApi web = retrofit.create(NetworkApi.class);
 
         Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);

@@ -32,6 +32,6 @@ public class MainActivity extends AppCompatActivity {
 //        InstructorEvaluation i  = new InstructorEvaluation();
 
 //        Intent intent = new Intent(this,EventList.class);
-        startActivity(intent);
+     //   startActivity(intent);
     }
 }
