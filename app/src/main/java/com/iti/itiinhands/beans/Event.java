@@ -6,60 +6,59 @@ package com.iti.itiinhands.beans;
  */
 
 public class Event {
-    private String eventDescription;
-    private long startTime;
-    private String location;
-    private String eventOrganizer;
-    private String eventTitle;
-    private String imageURL;
 
-    public String getImageURL() {
-        return imageURL;
+    private int eventId;
+    private String title;
+    private String description;
+    private long eventStart;
+    private long eventEnd;
+
+
+//    private long startTime;
+//    private String location;
+//    private String eventOrganizer;
+//    private String eventTitle;
+//    private String eventDescription;
+//    private String imageURL;
+
+
+    public int getEventId() {
+        return eventId;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 
-
-
-    public long getStartTime() {
-        return startTime;
+    public String getTitle() {
+        return title;
     }
 
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getLocation() {
-        return location;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getEventOrganizer() {
-        return eventOrganizer;
+    public long getEventStart() {
+        return eventStart;
     }
 
-    public void setEventOrganizer(String eventOrganizer) {
-        this.eventOrganizer = eventOrganizer;
+    public void setEventStart(long eventStart) {
+        this.eventStart = eventStart;
     }
 
-    public String getEventTitle() {
-        return eventTitle;
+    public long getEventEnd() {
+        return eventEnd;
     }
 
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
-    }
-
-    public String getEventDescription() {
-        return eventDescription;
-    }
-
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
+    public void setEventEnd(long eventEnd) {
+        this.eventEnd = eventEnd;
     }
 }
