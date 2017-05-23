@@ -1,4 +1,4 @@
-package com.iti.itiinhands;
+package com.iti.itiinhands.networkinterfaces;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -7,9 +7,6 @@ import android.util.Log;
 
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
-import com.iti.itiinhands.networkinterfaces.NetworkApi;
-import com.iti.itiinhands.networkinterfaces.NetworkResponse;
-import com.iti.itiinhands.networkinterfaces.Response;
 
 import retrofit2.Call;
 import retrofit2.Callback;
