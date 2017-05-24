@@ -20,7 +20,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         InstructorEvaluation i  = new InstructorEvaluation();
+
         Intent intent = new Intent(this,StudentCourseList.class);
         startActivity(intent);
     }

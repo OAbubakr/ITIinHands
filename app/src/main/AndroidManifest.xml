@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iti.itiinhands">
-
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
 
     <application
         android:allowBackup="true"
@@ -20,7 +22,7 @@
         </activity>
         <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
-        <activity android:name=".activities.TrackDetails" />
+        <activity android:name=".activities.TrackDetails"></activity>
         <activity android:name=".activities.StudentCourseList" />
         <activity
             android:name=".activities.EventList"
@@ -28,6 +30,19 @@
             android:theme="@style/AppTheme_NoActionBar" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.SideMenuActivity"></activity>
+
+
+
+
+
+        <!--<activity android:name=".activities.LoginActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
     </application>
 
 </manifest>
