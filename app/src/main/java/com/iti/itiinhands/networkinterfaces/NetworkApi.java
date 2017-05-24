@@ -1,7 +1,10 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,6 +35,9 @@ public interface NetworkApi {
 //    @GET("login/onLoginAuth")
     @POST("login/onLoginAuth")
     public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
+
+    @GET("getStudentGrades")
+    public Call<List<StudentGrade>> getGrades(@Query("id") int id);
 //    (@Query("userType") int userType,@Query("userName") String userName,
 //                                           @Query("password") String password);
 }
