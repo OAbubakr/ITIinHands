@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CourseAdapter;
@@ -22,7 +23,6 @@ public class StudentCourseList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_course_list);
-
 
 
         final RecyclerView SCourses_RV = (RecyclerView) findViewById(R.id.rvStudentCourses);
