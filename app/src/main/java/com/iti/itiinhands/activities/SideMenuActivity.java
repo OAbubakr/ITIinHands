@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.EventListFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,42 +99,84 @@ public class SideMenuActivity extends AppCompatActivity
         //set name and track or company of the user
         name.setText("dina");
         track.setText("web and mobile");
+
         // Add header view to the expandable list
-
-
 
         expListView.addHeaderView(headerView);
 
-        ////////////////////////////sert the default fragment
-//        fragment = new FragmentOne();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        ///////////////////////
+//        //////////////////////////sert the default fragment  student schedule
+        fragment = new BranchesFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//        /////////////////////
         prepareListData();
         listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild);
         // setting list adapter
         expListView.setAdapter(listAdapter);
+        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                Log.d("onGroupClick:", "worked");
+                switch (groupPosition)
+                {
+                    case 0:
+
+                        //replace with profile fragment
+                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case 4:
+                        //logout action
+                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        break;
+
+
+                    default:
+                        break;
+
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+
+                return false;
+            }
+        });
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
-                    case 0:
+                    case 1:
                         switch (childPosition) {
                             case 0:
-                                //fragment = new FragmentOne();
+                                //handle scheduale fragment
+                               //fragment=new FragmentClass();
                                 break;
                             case 1:
-                                Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
+                                //handle grades fragment
+                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
                                 break;
                             case 2:
+                                //handle permission fragment
                                 Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
+                                break;
+                            case 3:
+                                //handle evaluation fragment
+                                fragment=new BranchesFragment();
+                                break;
+                            case 4:
+                                //handle announcment fragment
+                                fragment=new BranchesFragment();
+                                break;
+                            case 5:
+                                //handle list of courses fragment
+                                fragment=new BranchesFragment();
                                 break;
                             default:
                                 break;
                         }
                         break;
 
-                    case 1:
+                    case 2:
                         switch (childPosition) {
                             case 0:
                                 Toast.makeText(getApplicationContext(), "1,0", Toast.LENGTH_LONG).show();
@@ -148,17 +192,24 @@ public class SideMenuActivity extends AppCompatActivity
                         }
                         break;
 
-                    case 2:
+                    case 3:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(getApplicationContext(), "2,0", Toast.LENGTH_LONG).show();
-                                break;
-                            case 1:
-                                Toast.makeText(getApplicationContext(), "2,1", Toast.LENGTH_LONG).show();
-                                break;
-                            case 2:
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
+                            case 1:
+                                fragment=new BranchesFragment();
+                                break;
+                            case 2:
+                               fragment=new EventListFragment();
+                                break;
+                            case 3:
+                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                break;
+                            case 4:
+                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                break;
+
                             default:
                                 break;
                         }
@@ -194,7 +245,7 @@ public class SideMenuActivity extends AppCompatActivity
         listDataHeader.add("Profile");
         listDataHeader.add("My Track");
         listDataHeader.add("Community");
-        listDataHeader.add("About ITI");
+        listDataHeader.add("ITI");
         listDataHeader.add("Logout");
 
         // Adding child data
@@ -218,6 +269,7 @@ public class SideMenuActivity extends AppCompatActivity
 
 
         List<String> aboutIti = new ArrayList<String>();
+        aboutIti.add("About ITI");
         aboutIti.add("Tracks");
         aboutIti.add("Events");
         aboutIti.add("Maps");
@@ -225,7 +277,7 @@ public class SideMenuActivity extends AppCompatActivity
 
 
         List<String> logout = new ArrayList<String>();
-        aboutIti.add("Tracks");
+
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
