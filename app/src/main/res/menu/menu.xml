@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/social"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_mytrack"
+            android:icon="@drawable/home_512"
+            android:title="My Track" />
+
+        <item
+            android:id="@+id/nav_community"
+            android:icon="@drawable/forums"
+            android:title="Community" />
+
+
+        <item
+            android:id="@+id/nav_about_iti"
+            android:icon="@drawable/info_512"
+            android:title="About ITI" />
+
+    </group>
+
+
+
+    <item
+        android:title=""/>
+
+    <item
+        android:title=""/>
+
+    <item
+        android:title=""/>
+
+    <item
+        android:title=""/>
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/outbox"
+        android:title="Logout" />
+</menu>

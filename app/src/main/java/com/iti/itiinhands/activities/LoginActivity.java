@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private TextView passwordCheckTv;
     private Handler handleLogin;
     private TextView networkErrorTv;
+    private Button continueAsGuest;
     private NetworkManager networkManager;
     private NetworkResponse myRef;
 
@@ -47,7 +49,16 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         passwordCheckTv = (TextView) findViewById(R.id.passwordCheckLoginViewId);
         networkErrorTv = (TextView) findViewById(R.id.networkFaildLoginViewId);
         networkManager = NetworkManager.getInstance(getApplicationContext());
+        continueAsGuest=(Button)findViewById(R.id.continueAsGuest);
+
         myRef = this;
+        continueAsGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),SideMenuActivity.class);
+                startActivity(intent);
+            }
+        });
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,10 +211,17 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                 SharedPreferences data = getSharedPreferences("userData", 0);
                 SharedPreferences.Editor editor = data.edit();
                 editor.putInt("userId", userId);
+                ///////////////////////////////////////
+                //get all student data
+                ///////////////////////////////////////
+
                 editor.commit();
                 //navigate using intent to next Activity
                 System.out.print("");
-                Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(getApplicationContext(),SideMenuActivity.class);
+                startActivity(intent);
+                finish();
+                //Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_LONG).show();
 //                Intent intent = new Intent();
 //
 //                startActivity(intent);

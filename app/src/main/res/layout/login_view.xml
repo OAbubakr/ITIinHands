@@ -120,7 +120,7 @@
                 android:textColorLink="#B71C1C" />
 
             <Button
-                android:id="@+id/guestLoginbtnLoginViewId"
+                android:id="@+id/continueAsGuest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

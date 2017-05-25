@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 
@@ -14,6 +15,11 @@ import java.util.ArrayList;
 
 import retrofit2.*;
 import retrofit2.Response;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -36,10 +42,10 @@ public class NetworkManager {
         this.context = context;
     }
 
-    public static NetworkManager getInstance(Context context){
-        if(newInstance == null){
-            synchronized (NetworkManager.class){
-                if(newInstance==null){
+    public static NetworkManager getInstance(Context context) {
+        if (newInstance == null) {
+            synchronized (NetworkManager.class) {
+                if (newInstance == null) {
                     newInstance = new NetworkManager(context);
                     retrofit = new Retrofit.Builder()
                             .baseUrl(BASEURL)
@@ -52,6 +58,28 @@ public class NetworkManager {
     }
 
 
+    public void getStudentsGrades(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<StudentGrade>> call = web.getGrades(id);
+        call.enqueue(new Callback<List<StudentGrade>>() {
+            @Override
+            public void onResponse(Call<List<StudentGrade>> call, retrofit2.Response<List<StudentGrade>> response) {
+                network.onResponse(response.body());  //return list of studentgrades { List<StudentGrade> }
+                System.out.println(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<StudentGrade>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFaliure();
+            }
+        });
+
+
+    }
 
     public void getLoginAuthData(NetworkResponse networkResponse,int userId,String userName,String password){
         final NetworkResponse network=networkResponse;
