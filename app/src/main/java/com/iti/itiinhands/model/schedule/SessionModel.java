@@ -1,4 +1,6 @@
-package com.iti.itiinhands.model;
+package com.iti.itiinhands.model.schedule;
+
+import com.iti.itiinhands.beans.Session;
 
 /**
  * Created by omari on 5/22/2017.
@@ -11,6 +13,15 @@ public class SessionModel {
     private String roomName;
     private String instructorName;
     private String sessionPercentage;
+    private String dayName;
+
+    public String getDayName() {
+        return dayName;
+    }
+
+    public void setDayName(String dayName) {
+        this.dayName = dayName;
+    }
 
     public String getSessionTime() {
         return sessionTime;
