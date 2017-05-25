@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
 
     @Override
-    public void onResponse(Response response) {
+    public void onResponse(Object response) {
         LoginResponse loginResponse = (LoginResponse) response;
         String status = loginResponse.getStatus();
         String error = loginResponse.getError();

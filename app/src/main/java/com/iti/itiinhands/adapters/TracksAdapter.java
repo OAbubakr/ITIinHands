@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.TrackDetails;
-import com.iti.itiinhands.beans.Track;
+import com.iti.itiinhands.model.Track;
 
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**

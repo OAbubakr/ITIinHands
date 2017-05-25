@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.Tracks;
-import com.iti.itiinhands.beans.Branch;
+import com.iti.itiinhands.model.Branch;
 
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -59,13 +61,13 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
         }
 
         public void bind(final Branch branch){
-            branchLocation.setText(branch.getLocation());
+            branchLocation.setText(branch.getBranchName());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, branch.getLocation(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, branch.getLocation(), Toast.LENGTH_SHORT).show();
                     Intent tracksView = new Intent(context, Tracks.class);
-                    tracksView.putExtra("branchObject", branch);
+                    tracksView.putExtra("branchObject",branch);
                     context.startActivity(tracksView);
                 }
             });

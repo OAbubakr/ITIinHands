@@ -10,8 +10,9 @@ import android.widget.TextView;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
 import com.iti.itiinhands.adapters.TracksAdapter;
-import com.iti.itiinhands.beans.Branch;
-import com.iti.itiinhands.beans.Track;
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Track;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +33,11 @@ public class Tracks extends AppCompatActivity {
 
         branch = (Branch) getIntent().getSerializableExtra("branchObject");
         branchLocation = (TextView) findViewById(R.id.track_branch);
-        branchLocation.setText(branch.getLocation());
+        branchLocation.setText(branch.getBranchName());
 
+        tracksList=branch.getTracks();
         recyclerView = (RecyclerView) findViewById(R.id.track_recycler_view);
+
 
         tracksAdapter = new TracksAdapter(tracksList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -42,7 +45,7 @@ public class Tracks extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(tracksAdapter);
 
-        prepareTrackData();
+
     }
 
     private void prepareTrackData(){
