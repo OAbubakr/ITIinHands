@@ -25,14 +25,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
-    int[] images={R.drawable.social,R.drawable.home_512,R.drawable.forums,R.drawable.info_512,R.drawable.outbox};
+    private int[] images;
+    //int[] images={R.drawable.social,R.drawable.home_512,R.drawable.forums,R.drawable.info_512,R.drawable.outbox};
 
 
     public CustomExpandableListAdapter(Context context, List<String> listDataHeader,
-                                       HashMap<String, List<String>> listChildData) {
+                                       HashMap<String, List<String>> listChildData, int[] images) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this.images=images;
     }
 
     @Override
@@ -68,13 +70,34 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        if(groupPosition==0 || groupPosition==4)
-        {
-            return 0;
-        }else {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                    .size();
-        }
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+                       .size();
+        //int type=1;
+        //switch (type) {
+
+           // case 0:
+                //zero for student type
+//            if (groupPosition == 0 || groupPosition == 4) {
+//                return 0;
+//            } else {
+//                return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+//                        .size();
+//            }
+//
+//            case 1:
+//                //one for staff type
+//                if (groupPosition == 3 || groupPosition == 4) {
+//                    return 0;
+//                } else {
+//                    return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+//                            .size();
+//                }
+//
+//
+//            default:
+//                return 0;
+
+        //}
     }
 
     @Override

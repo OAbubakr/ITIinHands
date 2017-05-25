@@ -1,12 +1,5 @@
 package com.iti.itiinhands.activities;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.internal.NavigationMenuView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SideMenuActivity extends AppCompatActivity {
+public class CompanySideMenu extends AppCompatActivity {
 
     static DrawerLayout mDrawerLayout;
     ImageView home;
@@ -70,7 +62,7 @@ public class SideMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_side_menu);
+        setContentView(R.layout.activity_company_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
@@ -105,7 +97,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         expListView.addHeaderView(headerView);
 
-//        //////////////////////////sert the default fragment  student schedule
+//        //////////////////////////sert the dcompany fragment  student schedule
         fragment = new BranchesFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -119,17 +111,17 @@ public class SideMenuActivity extends AppCompatActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
-                    case 0:
-
-                        //replace with profile fragment
-                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                    case 2:
+                        //replace with post job fragment
                         break;
-
-                    case 4:
-                        //logout action
+                    case 3:
+                        //announcment fragment
                         Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
                         break;
-
+                    case 4:
+                        // handle logout action
+                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        break;
 
                     default:
                         break;
@@ -145,30 +137,26 @@ public class SideMenuActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
-                    case 1:
+                    case 0:
                         switch (childPosition) {
                             case 0:
-                                //handle scheduale fragment
+                                //handle about iti fragment
                                 //fragment=new FragmentClass();
                                 break;
                             case 1:
-                                //handle grades fragment
+                                //handle tracks fragment
                                 //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
                                 break;
                             case 2:
-                                //handle permission fragment
+                                //handle events fragment
                                 Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 3:
-                                //handle evaluation fragment
+                                //handle maps fragment
                                 fragment = new BranchesFragment();
                                 break;
                             case 4:
-                                //handle announcment fragment
-                                fragment = new BranchesFragment();
-                                break;
-                            case 5:
-                                //handle list of courses fragment
+                                //handle bus services fragment
                                 fragment = new BranchesFragment();
                                 break;
                             default:
@@ -176,44 +164,22 @@ public class SideMenuActivity extends AppCompatActivity {
                         }
                         break;
 
-                    case 2:
+                    case 1:
                         switch (childPosition) {
                             case 0:
+                                //accesss students profile
                                 Toast.makeText(getApplicationContext(), "1,0", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
+                                //access graduates profile
                                 Toast.makeText(getApplicationContext(), "1,1", Toast.LENGTH_LONG).show();
                                 break;
-                            case 2:
-                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
-                                break;
                             default:
                                 break;
                         }
                         break;
 
-                    case 3:
-                        switch (childPosition) {
-                            case 0:
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
-                                break;
-                            case 1:
-                                fragment = new BranchesFragment();
-                                break;
-                            case 2:
-                                fragment = new EventListFragment();
-                                break;
-                            case 3:
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
-                                break;
-                            case 4:
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
-                                break;
 
-                            default:
-                                break;
-                        }
-                        break;
 
                     default:
                         break;
@@ -242,47 +208,35 @@ public class SideMenuActivity extends AppCompatActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add("Profile");
-        listDataHeader.add("My Track");
-        listDataHeader.add("Community");
         listDataHeader.add("ITI");
+        listDataHeader.add("Itians");
+        listDataHeader.add("post job");
+        listDataHeader.add("Announcement");
         listDataHeader.add("Logout");
 
         // Adding child data
-        List<String> profile = new ArrayList<String>();
-        profile.add("");
+        List<String> iti = new ArrayList<String>();
+        iti.add("About ITI");
+        iti.add("Tracks");
+        iti.add("Events");
+        iti.add("Maps");
+        iti.add("Bus Services");
 
 
-        List<String> myTrack = new ArrayList<String>();
-        myTrack.add("Schedule");
-        myTrack.add("Grades");
-        myTrack.add("Permission");
-        myTrack.add("Evaluation");
-        myTrack.add("Announcment");
-        myTrack.add("List of Courses");
+        List<String> itians = new ArrayList<String>();
+        itians.add("Students");
+        itians.add("Graduates");
 
 
-        List<String> community = new ArrayList<String>();
-        community.add("Students");
-        community.add("Staff");
-        community.add("Graduates");
-
-
-        List<String> aboutIti = new ArrayList<String>();
-        aboutIti.add("About ITI");
-        aboutIti.add("Tracks");
-        aboutIti.add("Events");
-        aboutIti.add("Maps");
-        aboutIti.add("Bus Services");
-
-
+        List<String> postJobs = new ArrayList<String>();
+        List<String> announcement = new ArrayList<String>();
         List<String> logout = new ArrayList<String>();
 
 
-        listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), myTrack);
-        listDataChild.put(listDataHeader.get(2), community);
-        listDataChild.put(listDataHeader.get(3), aboutIti);
+        listDataChild.put(listDataHeader.get(0), iti); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), itians);
+        listDataChild.put(listDataHeader.get(2), postJobs);
+        listDataChild.put(listDataHeader.get(3), announcement);
         listDataChild.put(listDataHeader.get(4), logout);
 
     }

@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),SideMenuActivity.class);
+                Intent intent=new Intent(getApplicationContext(),GraduateSideMenu.class);
                 startActivity(intent);
             }
         });
