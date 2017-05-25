@@ -30,6 +30,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.ScheduleFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
 //        //////////////////////////sert the default fragment  student schedule
         fragment = new BranchesFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
@@ -149,7 +150,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle scheduale fragment
-                                //fragment=new FragmentClass();
+                               //fragment=new FragmentClass();
+                                fragment= new ScheduleFragment();
                                 break;
                             case 1:
                                 //handle grades fragment
@@ -250,7 +252,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         // Adding child data
         List<String> profile = new ArrayList<String>();
-        profile.add("");
+        //profile.add("");
 
 
         List<String> myTrack = new ArrayList<String>();

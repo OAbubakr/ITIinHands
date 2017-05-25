@@ -5,12 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 
 import com.iti.itiinhands.beans.StudentCourse;
+import com.iti.itiinhands.beans.StudentGrade;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,11 +25,11 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
-    private List<StudentCourse> studentCourseList = Collections.emptyList();
+    private List<StudentGrade> studentCourseList = Collections.emptyList();
     private LayoutInflater inflater;
     private Context mycontext;
 
-    public CourseAdapter(Context context, List<StudentCourse> studentCourseList) {
+    public CourseAdapter(Context context, List<StudentGrade> studentCourseList) {
         inflater = LayoutInflater.from(context);
         this.mycontext = context;
         this.studentCourseList = studentCourseList;
@@ -40,37 +43,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
     @Override
     public void onBindViewHolder(CourseViewHolder holder, int position) {
-        StudentCourse studentCourse = studentCourseList.get(position);
-        holder.courseName.setText(studentCourse.getCourseName());
-        if (studentCourse.isCourseEvaluate() == true) {
-            if (studentCourse.isGradeOnSystem() == true) {
-                switch (studentCourse.getGrade()) {
-                    case A:
-                        holder.courseImage.setImageResource(R.drawable.amark);
-                        break;
-                    case B:
-                        holder.courseImage.setImageResource(R.drawable.calendar);
-                        break;
-                    case C:
-                        holder.courseImage.setImageResource(R.drawable.grades);
-                        break;
-                    case D:
-                        holder.courseImage.setImageResource(R.drawable.icon);
-                        break;
-                    case F:
-                        holder.courseImage.setImageResource(R.drawable.maps);
-                        break;
-                }
-            } else {
-                holder.courseImage.setImageResource(R.drawable.playbutton);
-            }
-        } else {
-            if (studentCourse.isCourseComplete() == true) {
-                holder.courseImage.setImageResource(R.drawable.stopwatch);
-            } else {
-                holder.courseImage.setImageResource(R.drawable.user);
-            }
-        }
+        StudentGrade studentGrade = studentCourseList.get(position);
+        holder.courseName.setText(studentGrade.getCourseName());
+
+
     }
 
     @Override
@@ -78,14 +54,24 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return studentCourseList.size();
     }
 
-    public class CourseViewHolder extends RecyclerView.ViewHolder {
-        TextView courseName;
-        ImageView courseImage;
+    public class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView courseName,gradeName;
+        Button evaluate_Button;
+
 
         public CourseViewHolder(View itemView) {
             super(itemView);
             courseName = (TextView) itemView.findViewById(R.id.event_time);
-            courseImage = (ImageView) itemView.findViewById(R.id.event_image);
+            gradeName = (TextView) itemView.findViewById(R.id.gradeTV);
+            evaluate_Button = (Button) itemView.findViewById(R.id.evaluateBtn);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == evaluate_Button.getId()){
+                Toast.makeText(v.getContext(), "ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
