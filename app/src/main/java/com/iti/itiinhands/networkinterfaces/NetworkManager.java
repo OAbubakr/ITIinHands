@@ -5,8 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,11 +23,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.1.3:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
-    private static Retrofit retrofit ;
+    private static Retrofit retrofit;
 
-//    private NetworkResponse network;
+    //    private NetworkResponse network;
     private Context context;
 
     //ur activity must implements NetworkResponse
@@ -33,10 +37,10 @@ public class NetworkManager {
         this.context = context;
     }
 
-    public static NetworkManager getInstance(Context context){
-        if(newInstance == null){
-            synchronized (NetworkManager.class){
-                if(newInstance==null){
+    public static NetworkManager getInstance(Context context) {
+        if (newInstance == null) {
+            synchronized (NetworkManager.class) {
+                if (newInstance == null) {
                     newInstance = new NetworkManager(context);
                     retrofit = new Retrofit.Builder()
                             .baseUrl(BASEURL)
@@ -49,14 +53,36 @@ public class NetworkManager {
     }
 
 
+    public void getStudentsGrades(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
 
-    public void getLoginAuthData(NetworkResponse networkResponse,int userId,String userName,String password){
-        final NetworkResponse network=networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<StudentGrade>> call = web.getGrades(id);
+        call.enqueue(new Callback<List<StudentGrade>>() {
+            @Override
+            public void onResponse(Call<List<StudentGrade>> call, retrofit2.Response<List<StudentGrade>> response) {
+                network.onResponse(response.body());  //return list of studentgrades { List<StudentGrade> }
+                System.out.println(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<StudentGrade>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFaliure();
+            }
+        });
+
+
+    }
+
+    public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
+        final NetworkResponse network = networkResponse;
 
         NetworkApi web = retrofit.create(NetworkApi.class);
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId,userName,password));
+        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
@@ -67,12 +93,10 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFaliure();
             }
         });
-
-
 
 
     }
@@ -130,7 +154,6 @@ public class NetworkManager {
 
 
      */
-
 
 
 //    public  Retrofit getClient() {
