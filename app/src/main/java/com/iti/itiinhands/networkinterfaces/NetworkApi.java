@@ -1,5 +1,6 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
@@ -41,4 +42,7 @@ public interface NetworkApi {
 //                                           @Query("password") String password);
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+
+    @GET("getEvents")
+    public Call<List<Event>> getEvents();
 }

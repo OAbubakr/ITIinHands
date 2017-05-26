@@ -5,10 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -101,59 +103,35 @@ public class NetworkManager {
 
     }
 
+    //------------------------------------GET EVENTS------------------------------------------------
+    public void getEvents(NetworkResponse networkResponse){
+
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Event>> call = web.getEvents();
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, retrofit2.Response<List<Event>> response) {
+                ArrayList<Event> events =(ArrayList<Event>) response.body();
+                network.onResponse(events);
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFaliure();
+            }
+        });
+    }
+
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
-    //An Example
-
-    /*
-
-
-     public void getModel(){
-
-        NetworkApi web = retrofit.create(NetworkApi.class);
-
-        Call<Model> call =web.getModel();
-
-        call.enqueue( new Callback<Model>>(){
-
-            @Override
-            public void onResponse(Call<Model>> call, retrofit2.Response<Model> response) {
-
-                Model model = response.body();
-
-             network.onSellerResponse(model);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Model> call, Throwable t) {
-
-                network.onFialure();
-
-
-            }
-
-
-
-
-        });
-
-
-
-
-
-    }
-
-
-
-
-     */
 
 
 //    public  Retrofit getClient() {
