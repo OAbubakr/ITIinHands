@@ -35,7 +35,7 @@ public class ScheduleAdapter {
 
 
     private void setGroups(List<SessionModel> list) {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd/MM");
         List<String> days = new ArrayList<>();
         Date date;
         for (SessionModel session : list) {
@@ -55,52 +55,20 @@ public class ScheduleAdapter {
 
     private void setDetails(List<SessionModel> list) {
         details = new HashMap<>();
-        List<SessionModel> sat = new ArrayList<>();
-        List<SessionModel> sun = new ArrayList<>();
-        List<SessionModel> mon = new ArrayList<>();
-        List<SessionModel> tues = new ArrayList<>();
-        List<SessionModel> wed = new ArrayList<>();
-        List<SessionModel> thu = new ArrayList<>();
-        List<SessionModel> fri = new ArrayList<>();
 
+        for (String s : groups){
+           details.put(s,new ArrayList<SessionModel>());
+        }
 
-        for (SessionModel session : list) {
+        Set<String> keys = details.keySet();
 
-            switch (session.getDayName()) {
+        for (SessionModel sessionModel : list){
 
-                case "Saturday":
-                    sat.add(session);
-                    break;
-                case "Sunday":
-                    sun.add(session);
-                    break;
-                case "Monday":
-                    mon.add(session);
-                    break;
-                case "Tuesday":
-                    tues.add(session);
-                    break;
-                case "Wednesday":
-                    wed.add(session);
-                    break;
-                case "Thursday":
-                    thu.add(session);
-                    break;
-                case "Friday":
-                    fri.add(session);
-                    break;
+            for (String s: keys){
+                if (sessionModel.getDayName().equals(s)) details.get(s).add(sessionModel);
 
             }
-
         }
-        details.put("Saturday", sat);
-        details.put("Sunday", sun);
-        details.put("Monday", mon);
-        details.put("Tuesday", tues);
-        details.put("Wednesday", wed);
-        details.put("Thursday", thu);
-        details.put("Friday", fri);
-
 
     }
 

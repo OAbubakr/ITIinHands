@@ -121,7 +121,7 @@ public class NetworkManager {
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
     }

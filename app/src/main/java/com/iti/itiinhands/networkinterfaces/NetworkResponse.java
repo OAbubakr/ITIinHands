@@ -17,9 +17,9 @@ public interface NetworkResponse {
 
 
 
-    public void onResponse(Object response);
+     void onResponse(Object response);
 
-    public void onFailure();
+     void onFailure();
 
 
 

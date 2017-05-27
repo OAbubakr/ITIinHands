@@ -155,7 +155,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle grades fragment
-                                fragment= new StudentCourseList();
+                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
                                 break;
                             case 2:
                                 //handle permission fragment

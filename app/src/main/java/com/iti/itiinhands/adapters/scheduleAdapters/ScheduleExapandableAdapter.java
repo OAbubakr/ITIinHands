@@ -76,7 +76,7 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.schedule_cell, null);
         }
 
-    TextView txt = (TextView) convertView.findViewById(R.id.allDay);
+        TextView txt = (TextView) convertView.findViewById(R.id.allDay);
         txt.setText(listDataHeader.get(i));
         return convertView;
     }
@@ -90,7 +90,13 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txt = (TextView) convertView.findViewById(R.id.dayDetails);
-        txt.setText(listChildData.get(listDataHeader.get(i)).get(i1).getCourseName());
+
+        String temp = listChildData.get(listDataHeader.get(i)).get(i1).getCourseName();
+        temp = temp + "\n" + listChildData.get(listDataHeader.get(i)).get(i1).getSessionTime();
+        temp = temp + "\n" + listChildData.get(listDataHeader.get(i)).get(i1).getSessionPercentage();
+        temp = temp + "\n" + listChildData.get(listDataHeader.get(i)).get(i1).getRoomName();
+
+        txt.setText(temp);
 
         return convertView;
     }
