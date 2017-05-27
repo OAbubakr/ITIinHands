@@ -41,7 +41,7 @@ public class StudentCourseList extends AppCompatActivity implements NetworkRespo
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
 
     }
 }

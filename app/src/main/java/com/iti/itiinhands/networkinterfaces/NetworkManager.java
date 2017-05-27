@@ -69,7 +69,7 @@ public class NetworkManager {
             public void onFailure(Call<List<StudentGrade>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
 
@@ -94,7 +94,7 @@ public class NetworkManager {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
 

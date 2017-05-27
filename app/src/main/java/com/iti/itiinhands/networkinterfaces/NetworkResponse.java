@@ -20,7 +20,7 @@ public interface NetworkResponse {
     public void onResponse(Object response);
 
 
-    public void onFaliure();
+    public void onFailure();
 
 
 
