@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/untitled1"
     android:orientation="vertical"
-    android:weightSum="6">
+    android:weightSum="7">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -20,7 +20,43 @@
             android:layout_gravity="center"
             app:srcCompat="@drawable/logo1"
             tools:ignore="ContentDescription" />
+
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/studentBtnId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/StudentBtn" />
+
+        <Button
+            android:id="@+id/graduateBtnId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/graduateBtn"/>
+
+        <Button
+            android:id="@+id/staffBtnId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/staffBtn" />
+
+        <Button
+            android:id="@+id/companyBtnId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/companyBtn"/>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -54,6 +90,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textColor="#B71C1C" />
+
         </LinearLayout>
 
     </FrameLayout>
@@ -114,6 +151,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rectangle_17"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/loginView_LoginBtn"
                 android:textColor="@android:color/white"
@@ -127,29 +165,42 @@
                 android:layout_marginBottom="10dp"
 
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@drawable/rectangle_17"
+                android:gravity="center"
                 android:text="@string/loginView_GuestLoginBtn"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/networkFaildLoginViewId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/navbar"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <TextView
-            android:id="@+id/networkFaildLoginViewId"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/navbar"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/networkFaildTxt"
             android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tryAgainTxt"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:visibility="invisible" />
-    </FrameLayout>
+            android:visibility="visible" />
+    </LinearLayout>
 
 </LinearLayout>
