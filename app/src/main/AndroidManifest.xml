@@ -23,7 +23,7 @@
         <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.TrackDetails" />
-        <activity android:name=".activities.StudentCourseList" />
+        <!--<activity android:name=".activities.StudentCourseList" />-->
         <!--<activity android:name=".activities.TrackDetails"></activity>-->
         <!--<activity android:name=".activities.StudentCourseList">-->
             <!--<intent-filter>-->
