@@ -13,9 +13,7 @@ import com.iti.itiinhands.model.LoginResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
+import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -26,7 +24,7 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://172.16.2.224:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -55,11 +53,13 @@ public class NetworkManager {
     }
 
 
+    //--------------------------------------GET STUDENTS GRADES-------------------------------------
     public void getStudentsGrades(NetworkResponse networkResponse, int id) {
-        final NetworkResponse network = networkResponse;
 
+        final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<StudentGrade>> call = web.getGrades(id);
+
         call.enqueue(new Callback<List<StudentGrade>>() {
             @Override
             public void onResponse(Call<List<StudentGrade>> call, retrofit2.Response<List<StudentGrade>> response) {
@@ -74,17 +74,15 @@ public class NetworkManager {
                 network.onFaliure();
             }
         });
-
-
     }
 
+    //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
+
         final NetworkResponse network = networkResponse;
-
         NetworkApi web = retrofit.create(NetworkApi.class);
-
-//        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
         Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
@@ -99,8 +97,6 @@ public class NetworkManager {
                 network.onFaliure();
             }
         });
-
-
     }
 
     //------------------------------------GET EVENTS------------------------------------------------
@@ -126,6 +122,32 @@ public class NetworkManager {
         });
     }
 
+    //-------------------------------------POST JOB-------------------------------------------------
+    public void postJob(NetworkResponse networkResponse, int companyId, String jobCode,
+                        String jobTitle, String jobDesc, String experience, String closingDate,
+                        String sendTo, int jobNoNeed, int subTrackId, String jobDate){
+
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Void> call = web.postJob(companyId, jobCode, jobTitle, jobDesc, experience,
+                                         closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFaliure();
+            }
+        });
+    }
+
+    //----------------------------------------CHECK NETWORK-----------------------------------------
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -20,29 +20,23 @@ import retrofit2.http.Query;
 
 public interface NetworkApi {
 
-    //An example
-    /*
-    @GET("example")
-    public Call<Model>getModel();
 
-    @GET("example/{id}")
-    public Call<Model>getModel(@Path("id")int id);
-
-    @GET("example")
-    public Call<Model>getModel(@Query("id")int id);
-     */
-//    @FormUrlEncoded
-//    @GET("login/onLoginAuth")
     @POST("login/onLoginAuth")
     public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
 
     @GET("getStudentGrades")
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);
-//    (@Query("userType") int userType,@Query("userName") String userName,
-//                                           @Query("password") String password);
+
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();
+
+    @GET("postJob")
+    public Call<Void> postJob(@Query("companyId") int companyId, @Query("jobCode") String jopCode,
+                                        @Query("jobTitle") String jopTitle, @Query("jobDesc") String jopDesc,
+                                        @Query("experience") String experience, @Query("closingDate") String closingDate,
+                                        @Query("sendTo") String sendTo, @Query("jobNoNeed") int jopNoNeed,
+                                        @Query("subTrackId") int subTrackId , @Query("jobDate") String jopDate);
 }
