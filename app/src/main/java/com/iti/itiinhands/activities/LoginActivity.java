@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.LoginResponse;
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),SideMenuActivity.class);
+                Intent intent=new Intent(getApplicationContext(),GuestSideMenu.class);
                 startActivity(intent);
             }
         });
