@@ -1,9 +1,14 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.schedule.SessionModel;
+
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -39,6 +44,22 @@ public interface NetworkApi {
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);
 //    (@Query("userType") int userType,@Query("userName") String userName,
 //                                           @Query("password") String password);
+
+    @GET("getBranches")
+    public Call<ArrayList<Branch>> getBranches();
+
+    @GET("getCourses")
+    public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+
+    @GET("getEvents")
+    public Call<List<Event>> getEvents();
+
+    @GET("postJob")
+    public Call<Void> postJob(@Query("companyId") int companyId, @Query("jobCode") String jopCode,
+                                        @Query("jobTitle") String jopTitle, @Query("jobDesc") String jopDesc,
+                                        @Query("experience") String experience, @Query("closingDate") String closingDate,
+                                        @Query("sendTo") String sendTo, @Query("jobNoNeed") int jopNoNeed,
+                                        @Query("subTrackId") int subTrackId , @Query("jobDate") String jopDate);
 }

@@ -25,6 +25,7 @@ import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.PostJobFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +116,7 @@ public class CompanySideMenu extends AppCompatActivity {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 2:
-                        //replace with post job fragment
+                        fragment= new PostJobFragment();
                         break;
                     case 3:
                         //announcment fragment
