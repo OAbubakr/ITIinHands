@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by omari on 5/9/2017.
@@ -78,7 +79,9 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.EventViewHo
         public void bind(final Event event){
             eventTitle.setText(event.getTitle());
             eventLocation.setText(event.getDescription());
-            eventDate.setText(String.valueOf(event.getEventStart()));
+
+            SimpleDateFormat dayFormat = new SimpleDateFormat("MMMM d", Locale.US);
+            eventDate.setText(dayFormat.format(event.getEventStart()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -36,8 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SideMenuActivity extends AppCompatActivity
-        {
+public class SideMenuActivity extends AppCompatActivity {
 
     static DrawerLayout mDrawerLayout;
     ImageView home;
@@ -47,6 +46,8 @@ public class SideMenuActivity extends AppCompatActivity
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
+    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+
 
     @Override
     protected void onStart() {
@@ -89,11 +90,11 @@ public class SideMenuActivity extends AppCompatActivity
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        ViewGroup headerView = (ViewGroup)getLayoutInflater().inflate(R.layout.side_menu_header,expListView,false);
+        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
-        TextView name=(TextView)headerView.findViewById(R.id.name);
-        TextView track=(TextView)headerView.findViewById(R.id.track_name);
+        TextView name = (TextView) headerView.findViewById(R.id.name);
+        TextView track = (TextView) headerView.findViewById(R.id.track_name);
 
 
         ////////////////////////////////////////////////////////
@@ -111,15 +112,14 @@ public class SideMenuActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 Log.d("onGroupClick:", "worked");
-                switch (groupPosition)
-                {
+                switch (groupPosition) {
                     case 0:
 
                         //replace with profile fragment
@@ -163,15 +163,15 @@ public class SideMenuActivity extends AppCompatActivity
                                 break;
                             case 3:
                                 //handle evaluation fragment
-                                fragment=new BranchesFragment();
+                                fragment = new BranchesFragment();
                                 break;
                             case 4:
                                 //handle announcment fragment
-                                fragment=new BranchesFragment();
+                                fragment = new BranchesFragment();
                                 break;
                             case 5:
                                 //handle list of courses fragment
-                                fragment=new BranchesFragment();
+                                fragment = new BranchesFragment();
                                 break;
                             default:
                                 break;
@@ -200,10 +200,10 @@ public class SideMenuActivity extends AppCompatActivity
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
-                                fragment=new BranchesFragment();
+                                fragment = new BranchesFragment();
                                 break;
                             case 2:
-                               fragment=new EventListFragment();
+                                fragment = new EventListFragment();
                                 break;
                             case 3:
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
@@ -252,7 +252,7 @@ public class SideMenuActivity extends AppCompatActivity
 
         // Adding child data
         List<String> profile = new ArrayList<String>();
-        profile.add("");
+        //profile.add("");
 
 
         List<String> myTrack = new ArrayList<String>();
@@ -279,7 +279,6 @@ public class SideMenuActivity extends AppCompatActivity
 
 
         List<String> logout = new ArrayList<String>();
-
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data

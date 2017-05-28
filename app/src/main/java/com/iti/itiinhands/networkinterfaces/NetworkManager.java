@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import retrofit2.*;
 import retrofit2.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,11 +31,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.1.7:8084/restfulSpring/"; // Ragab ip and url
     private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit ;
 
-//    private NetworkResponse network;
+    //    private NetworkResponse network;
     private Context context;
 
     //ur activity must implements NetworkResponse
@@ -81,13 +85,13 @@ public class NetworkManager {
 
     }
 
-    public void getLoginAuthData(NetworkResponse networkResponse,int userId,String userName,String password){
-        final NetworkResponse network=networkResponse;
+    public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
+        final NetworkResponse network = networkResponse;
 
         NetworkApi web = retrofit.create(NetworkApi.class);
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId,userName,password));
+        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
@@ -98,14 +102,35 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
-                network.onFaliure();
+                Log.e("network", t.toString());
+                network.onFailure();
             }
         });
 
 
+    }
 
+    //------------------------------------GET EVENTS------------------------------------------------
+    public void getEvents(NetworkResponse networkResponse){
 
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Event>> call = web.getEvents();
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, retrofit2.Response<List<Event>> response) {
+                ArrayList<Event> events =(ArrayList<Event>) response.body();
+                network.onResponse(events);
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFailure();
+            }
+        });
     }
 
     public boolean isOnline() {
@@ -161,7 +186,6 @@ public class NetworkManager {
 
 
      */
-
 
 
 //    public  Retrofit getClient() {

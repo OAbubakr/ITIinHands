@@ -6,43 +6,53 @@
     android:layout_height="wrap_content"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:background="@drawable/eventcellbackground"
-    android:weightSum="3">
-    
+    android:background="@drawable/eventcellbackground">
+
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/eventcelledge" />
+        android:layout_height="match_parent"
+        android:background="@drawable/eventcelledge"/>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#484848"
+                android:textSize="18dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:id="@+id/event_name"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:id="@+id/event_place"/>
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="#484848"
+            android:layout_gravity="center_vertical"
+            android:textColor="#7f0000"
             android:textSize="18dp"
-            android:paddingLeft="30dp"
-            android:id="@+id/event_name"/>
+            android:id="@+id/event_date"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="18dp"
-            android:paddingLeft="30dp"
-            android:id="@+id/event_place"/>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:textColor="#7f0000"
-        android:textSize="18dp"
-        android:id="@+id/event_date"/>
 
 </LinearLayout>

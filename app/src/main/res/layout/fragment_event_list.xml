@@ -4,93 +4,123 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="3"
-    android:background="@drawable/eventsbage"
-    tools:context="com.iti.itiinhands.activities.EventList">
+    android:weightSum="8"
+    android:background="@drawable/eventspage">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/eventsupper">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:id="@+id/day_title"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="28dp"
+                android:textStyle="bold"
+                android:id="@+id/date_title"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/eventarrow"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5">
+        android:layout_weight="3">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:background="@drawable/eventsupper">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="20dp"
-                    android:id="@+id/day_title"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="5dp"
-                        android:textColor="@android:color/white"
-                        android:textSize="28dp"
-                        android:id="@+id/date_title"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/eventarrow"/>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:background="@drawable/eventsupper"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="2" />
 
         </LinearLayout>
 
-        <CalendarView
-            android:layout_width="320dp"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom|center_horizontal"
+        <!--<CalendarView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_gravity="center_vertical|center_horizontal"-->
+        <!--android:background="@drawable/eventcal"-->
+        <!--android:id="@+id/calenderView">-->
+        <!--</CalendarView>-->
+
+        <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:compactCalendarTargetHeight="250dp"
+            app:compactCalendarTextSize="16sp"
+            app:compactCalendarTextColor="#484848"
+            app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+            app:compactCalendarCurrentDayTextColor="@android:color/white"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:background="@drawable/eventcal"
-            android:id="@+id/calenderView">
-        </CalendarView>
+            android:id="@+id/calenderView"/>
 
     </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="4"
         android:paddingTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:textColor="#484848"
+            android:textColor="@android:color/darker_gray"
             android:textSize="20dp"
+            android:textStyle="bold"
             android:text="EVENTS"/>
 
         <android.support.v7.widget.RecyclerView
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:id="@+id/event_recycler_view">

@@ -2,6 +2,7 @@ package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
@@ -51,4 +52,7 @@ public interface NetworkApi {
     public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+
+    @GET("getEvents")
+    public Call<List<Event>> getEvents();
 }
