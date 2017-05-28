@@ -32,9 +32,9 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
-    private static Retrofit retrofit ;
+    private static Retrofit retrofit;
 
     //    private NetworkResponse network;
     private Context context;
@@ -77,20 +77,20 @@ public class NetworkManager {
             public void onFailure(Call<List<StudentGrade>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFailure();
+                network.onFaliure();
             }
         });
 
 
     }
 
+    //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
+
         final NetworkResponse network = networkResponse;
-
         NetworkApi web = retrofit.create(NetworkApi.class);
-
-//        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
         Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
@@ -102,7 +102,7 @@ public class NetworkManager {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFailure();
+                network.onFaliure();
             }
         });
 
@@ -127,64 +127,43 @@ public class NetworkManager {
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFailure();
+                network.onFaliure();
             }
         });
     }
 
+    //-------------------------------------POST JOB-------------------------------------------------
+    public void postJob(NetworkResponse networkResponse, int companyId, String jobCode,
+                        String jobTitle, String jobDesc, String experience, String closingDate,
+                        String sendTo, int jobNoNeed, int subTrackId, String jobDate){
+
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Void> call = web.postJob(companyId, jobCode, jobTitle, jobDesc, experience,
+                                         closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFaliure();
+            }
+        });
+    }
+
+    //----------------------------------------CHECK NETWORK-----------------------------------------
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
-    //An Example
-
-    /*
-
-
-     public void getModel(){
-
-        NetworkApi web = retrofit.create(NetworkApi.class);
-
-        Call<Model> call =web.getModel();
-
-        call.enqueue( new Callback<Model>>(){
-
-            @Override
-            public void onResponse(Call<Model>> call, retrofit2.Response<Model> response) {
-
-                Model model = response.body();
-
-             network.onSellerResponse(model);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Model> call, Throwable t) {
-
-                network.onFialure();
-
-
-            }
-
-
-
-
-        });
-
-
-
-
-
-    }
-
-
-
-
-     */
 
 
 //    public  Retrofit getClient() {
@@ -222,7 +201,7 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFailure();
+                network.onFaliure();
             }
         });
 
@@ -245,7 +224,7 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFailure();
+                network.onFaliure();
             }
         });
     }

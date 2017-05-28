@@ -55,4 +55,11 @@ public interface NetworkApi {
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();
+
+    @GET("postJob")
+    public Call<Void> postJob(@Query("companyId") int companyId, @Query("jobCode") String jopCode,
+                                        @Query("jobTitle") String jopTitle, @Query("jobDesc") String jopDesc,
+                                        @Query("experience") String experience, @Query("closingDate") String closingDate,
+                                        @Query("sendTo") String sendTo, @Query("jobNoNeed") int jopNoNeed,
+                                        @Query("subTrackId") int subTrackId , @Query("jobDate") String jopDate);
 }
