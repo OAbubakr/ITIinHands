@@ -21,11 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        InstructorEvaluation i  = new InstructorEvaluation();
-
-        Intent intent = new Intent(this,StudentCourseList.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this,CompanyJobForm.class);
+//        startActivity(intent);
     }
 }
