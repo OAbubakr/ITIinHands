@@ -5,6 +5,7 @@ import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
 
@@ -12,8 +13,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -50,4 +49,6 @@ public interface NetworkApi {
 
     @GET("getCourses")
     public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
+    @POST("getStudentSchedule")
+    public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
 }

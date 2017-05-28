@@ -1,6 +1,7 @@
 <resources>
 
-    <style name="AppTheme" >
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -20,4 +21,5 @@
     <style name="AppTheme.AppBarOverlay" parent="AppTheme.AppBarOverlay" />
 
     <style name="AppTheme.PopupOverlay" parent="AppTheme.PopupOverlay" />
+
 </resources>
