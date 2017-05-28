@@ -8,20 +8,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.beans.Course;
+
 import com.iti.itiinhands.beans.Instructor;
+import com.iti.itiinhands.model.Course;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sandra on 5/8/2017.
  */
 
 public class TrackCoursesAdapter extends RecyclerView.Adapter<TrackCoursesAdapter.ViewHolder> {
-    private Course[] courses;
+    private ArrayList<Course> courses;
 
-    public TrackCoursesAdapter(Course[] courses){
 
+
+    public TrackCoursesAdapter(ArrayList<Course> courses) {
         this.courses = courses;
     }
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -39,12 +44,12 @@ public class TrackCoursesAdapter extends RecyclerView.Adapter<TrackCoursesAdapte
 
         // - get element from  dataset at this position
         // - replace the contents of the view with that element
-        holder.courseNameTV.setText(courses[position].getCourseName());
+        holder.courseNameTV.setText(courses.get(position).getCourseName());
     }
 
     @Override
     public int getItemCount() {
-        return courses.length;
+        return courses.size();
     }
 
 

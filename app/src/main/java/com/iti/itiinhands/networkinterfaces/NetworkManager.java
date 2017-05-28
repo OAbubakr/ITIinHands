@@ -5,15 +5,23 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.*;
+import retrofit2.Response;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -24,7 +32,7 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://172.16.2.224:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -53,13 +61,11 @@ public class NetworkManager {
     }
 
 
-    //--------------------------------------GET STUDENTS GRADES-------------------------------------
     public void getStudentsGrades(NetworkResponse networkResponse, int id) {
-
         final NetworkResponse network = networkResponse;
+
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<StudentGrade>> call = web.getGrades(id);
-
         call.enqueue(new Callback<List<StudentGrade>>() {
             @Override
             public void onResponse(Call<List<StudentGrade>> call, retrofit2.Response<List<StudentGrade>> response) {
@@ -74,6 +80,8 @@ public class NetworkManager {
                 network.onFaliure();
             }
         });
+
+
     }
 
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
@@ -97,6 +105,8 @@ public class NetworkManager {
                 network.onFaliure();
             }
         });
+
+
     }
 
     //------------------------------------GET EVENTS------------------------------------------------
@@ -170,4 +180,52 @@ public class NetworkManager {
 //        return retrofit;
 //    }
 
+    public void getBranches(NetworkResponse networkResponse){
+
+        final NetworkResponse network=networkResponse;
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<ArrayList<Branch>> call = web.getBranches();
+
+        call.enqueue(new Callback<ArrayList<Branch>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Branch>> call, retrofit2.Response<ArrayList<Branch>> response) {
+
+                ArrayList<Branch> branches = response.body();
+                network.onResponse(branches);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Branch>> call, Throwable t) {
+
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFaliure();
+            }
+        });
+
+    }
+
+    public void getCoursesByTrack(NetworkResponse networkResponse,int id){
+
+        final NetworkResponse network=networkResponse;
+        NetworkApi web =retrofit.create(NetworkApi.class);
+        Call<ArrayList<Course>> call = web.getCoursesByTrack(id);
+        call.enqueue(new Callback<ArrayList<Course>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Course>> call, Response<ArrayList<Course>> response) {
+                ArrayList<Course> courses = response.body();
+                network.onResponse(courses);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Course>> call, Throwable t) {
+
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFaliure();
+            }
+        });
+    }
 }
