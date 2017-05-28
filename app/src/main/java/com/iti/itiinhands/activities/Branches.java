@@ -25,6 +25,7 @@ public class Branches extends AppCompatActivity implements NetworkResponse{
 
     private TextView branchViewTitle;
     private NetworkManager networkManager;
+    private int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +52,12 @@ public class Branches extends AppCompatActivity implements NetworkResponse{
     @Override
     public void onResponse(Object response) {
         branchesList= (ArrayList<Branch>) response;
-        branchesAdapter = new BranchesAdapter(branchesList, getApplicationContext());
+        branchesAdapter = new BranchesAdapter(branchesList, getApplicationContext(),flag);
         recyclerView.setAdapter(branchesAdapter);
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
 
     }
 }

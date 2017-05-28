@@ -32,7 +32,6 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.7:8084/restfulSpring/"; // Ragab ip and url
     private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit ;
@@ -78,7 +77,7 @@ public class NetworkManager {
             public void onFailure(Call<List<StudentGrade>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
 
@@ -223,7 +222,7 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
 
@@ -246,7 +245,7 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
     }

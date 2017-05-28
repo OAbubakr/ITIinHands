@@ -25,10 +25,12 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
 
     private ArrayList<Track> tracksList = new ArrayList<>();
     private Context context;
+    private int flag;
 
-    public TracksAdapter(ArrayList<Track> tracksList, Context context){
+    public TracksAdapter(ArrayList<Track> tracksList, Context context,int flag){
         this.tracksList = tracksList;
         this.context = context;
+        this.flag = flag;
     }
 
     @Override
@@ -65,10 +67,16 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
+
+                 if(flag==0){   Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
                     Intent trackDetailsView = new Intent(context, TrackDetails.class);
                     trackDetailsView.putExtra("trackObject", track);
-                    context.startActivity(trackDetailsView);
+                    context.startActivity(trackDetailsView);}
+                    else{
+
+
+                     
+                 }
                 }
             });
         }

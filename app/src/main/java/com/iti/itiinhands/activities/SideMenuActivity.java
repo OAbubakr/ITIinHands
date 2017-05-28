@@ -1,12 +1,6 @@
 package com.iti.itiinhands.activities;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.internal.NavigationMenuView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActionBarDrawerToggle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +25,7 @@ import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
+import com.iti.itiinhands.fragments.StaffSchedule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,12 +78,7 @@ public class SideMenuActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
 
-
-        ////for expandale
-        /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
@@ -97,16 +87,12 @@ public class SideMenuActivity extends AppCompatActivity {
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
 
 
-        ////////////////////////////////////////////////////////
-        //set name and track or company of the user
         name.setText("dina");
         track.setText("web and mobile");
 
-        // Add header view to the expandable list
 
         expListView.addHeaderView(headerView);
 
-//        //////////////////////////sert the default fragment  student schedule
         fragment = new BranchesFragment();
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -151,7 +137,8 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 0:
                                 //handle scheduale fragment
                                //fragment=new FragmentClass();
-                                fragment= new ScheduleFragment();
+//                                fragment= new ScheduleFragment();
+                                fragment= new StaffSchedule();
                                 break;
                             case 1:
                                 //handle grades fragment

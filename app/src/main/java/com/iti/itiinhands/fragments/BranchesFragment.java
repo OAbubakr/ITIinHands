@@ -31,6 +31,16 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     private NetworkManager networkManager;
     private TextView branchViewTitle;
 
+
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    private int flag= 0;
+
+
+
     public BranchesFragment() {
         // Required empty public constructor
     }
@@ -89,12 +99,12 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Object response) {
         branchesList= (ArrayList<Branch>) response;
-        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext());
+        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(),flag);
         recyclerView.setAdapter(branchesAdapter);
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
 
     }
 
