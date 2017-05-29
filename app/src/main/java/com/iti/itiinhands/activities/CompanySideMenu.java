@@ -1,5 +1,7 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
@@ -117,11 +120,19 @@ public class CompanySideMenu extends AppCompatActivity {
                         break;
                     case 3:
                         //announcment fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        fragment=new AnnouncementFragment();
+                        mDrawerLayout.closeDrawer(expListView);
                         break;
                     case 4:
                         // handle logout action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.clear();
+                        editor.commit();
+
+                        //send user back to login activity
+                        finish();
                         break;
 
                     default:

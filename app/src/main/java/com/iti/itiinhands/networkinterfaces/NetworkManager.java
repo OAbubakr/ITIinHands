@@ -156,7 +156,7 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network", t.toString());
+                Log.e("network",t.toString());
                 network.onFailure();
             }
         });
@@ -191,6 +191,8 @@ public class NetworkManager {
             public void onFailure(Call<ArrayList<Branch>> call, Throwable t) {
 
                 t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFailure();
                 Log.e("network", t.toString());
                 network.onFailure();
             }
@@ -215,6 +217,8 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network", t.toString());
+                network.onFailure();
+                Log.e("network",t.toString());
                 network.onFailure();
             }
         });

@@ -1,5 +1,7 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -132,7 +134,15 @@ public class GuestSideMenu extends AppCompatActivity {
 
                     case 5:
                         // handle logout action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.clear();
+                        editor.commit();
+
+                        //send user back to login activity
+                        finish();
                         break;
 
                     default:

@@ -1,6 +1,14 @@
 package com.iti.itiinhands.activities;
 
-
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.internal.NavigationMenuView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +30,9 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.beans.Announcement;
+import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
@@ -114,7 +125,14 @@ public class SideMenuActivity extends AppCompatActivity {
 
                     case 4:
                         //logout action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.clear();
+                        editor.commit();
+
+                        //send user back to login activity
+                        finish();
                         break;
 
 
@@ -160,7 +178,15 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 4:
                                 //handle announcment fragment
-                                fragment = new BranchesFragment();
+
+                                Announcement announcement=new Announcement();
+                                announcement.setDate(1234);
+                                announcement.setBody("cdcnjkdnckc");
+                                announcement.setType(1);
+                                announcement.setTitle("dnwkendjkwnejdk");
+                                DataBase DB=DataBase.getInstance(getApplicationContext());
+                                DB.insertAnnouncement(announcement);
+                                fragment = new AnnouncementFragment();
                                 break;
                             case 5:
                                 //handle list of courses fragment

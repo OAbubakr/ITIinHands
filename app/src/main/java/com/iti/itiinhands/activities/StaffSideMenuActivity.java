@@ -1,5 +1,7 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 
@@ -113,12 +116,20 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                 switch (groupPosition) {
                     case 3:
                         //replace with announcment
-                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        fragment=new AnnouncementFragment();
+                        mDrawerLayout.closeDrawer(expListView);
                         break;
 
                     case 4:
                         //logout action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.clear();
+                        editor.commit();
+
+                        //send user back to login activity
+                        finish();
                         break;
 
                     default:
