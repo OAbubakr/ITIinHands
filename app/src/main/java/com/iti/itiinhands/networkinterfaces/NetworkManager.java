@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 
@@ -22,11 +23,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by admin on 5/22/2017.
  */
 
+/*home url
+private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
+*/
+
 public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.7:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -75,6 +80,25 @@ public class NetworkManager {
             }
         });
 
+
+    }
+
+
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Instructor>> call = web.getInstructorByBranch(branchId);
+        call.enqueue(new Callback<List<Instructor>>() {
+            @Override
+            public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Instructor>> call, Throwable t) {
+                t.printStackTrace();
+                networkResponse.onFailure();
+            }
+        });
 
     }
 

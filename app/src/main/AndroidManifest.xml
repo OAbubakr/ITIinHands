@@ -23,7 +23,6 @@
         <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.TrackDetails" />
-        <activity android:name=".activities.StudentCourseList" />
         <!--<activity android:name=".activities.TrackDetails"></activity>-->
         <!--<activity android:name=".activities.StudentCourseList">-->
             <!--<intent-filter>-->
@@ -50,7 +49,26 @@
         <activity android:name=".activities.StaffSideMenuActivity" />
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
-        <activity android:name=".activities.GraduateSideMenu"></activity>
+        <activity android:name=".activities.GraduateSideMenu"/>
+
+        <activity android:name=".activities.ChatRoomActivity"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="launch" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".services.FirebaseMessageReceiverService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

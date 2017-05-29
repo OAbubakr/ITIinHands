@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="appcompat-v7-25.3.1">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.android/build-cache/c751d45952210384ba849d0071d5da290ece0ed0/output/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/27f4889c8f480d23b651503c1c930d650761ec15/output/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/3d87a1a83f25286b91ed374916cb0a23a5c0ca06/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/3d87a1a83f25286b91ed374916cb0a23a5c0ca06/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/27f4889c8f480d23b651503c1c930d650761ec15/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/27f4889c8f480d23b651503c1c930d650761ec15/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://D:/Sources/androidsdk/extras/android/m2repository/com/android/support/appcompat-v7/25.3.1/appcompat-v7-25.3.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/25.3.1/appcompat-v7-25.3.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

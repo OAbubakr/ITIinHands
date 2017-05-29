@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -26,15 +27,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SideMenuActivity extends AppCompatActivity {
 
@@ -46,8 +55,23 @@ public class SideMenuActivity extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.social,
+            R.drawable.home_512,
+            R.drawable.forums,
+            R.drawable.info_512,
+            R.drawable.outbox};
+    final FragmentManager fragmentManager = getSupportFragmentManager();
 
+    /*
+    * chat part
+    * */
+    SharedPreferences sharedPreferences;
+    String myType = "student";
+    String myId = "123456";
+    String myChatId = myType + "_" + myId;
+    DatabaseReference myRoot;
+    /*
+    **/
 
     @Override
     protected void onStart() {
@@ -65,11 +89,60 @@ public class SideMenuActivity extends AppCompatActivity {
 
             }
         });
+
+        /*
+        * chat part
+        *
+        * */
+
+        //subscribe to my topic to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
+
+        this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
+        //listen for my node to save chat rooms
+        myRoot.child(myChatId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Object val = dataSnapshot.getValue();
+                if(val == null)
+                    myRoot.child(myChatId).setValue("");
+                else if (val instanceof HashMap) {
+                    HashMap<String, String> usersRoomsMap = (HashMap) val;
+                    Map<String, ?> all = sharedPreferences.getAll();
+                    //update the stored keys
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    for (String key : usersRoomsMap.keySet()) {
+                        editor.putString(usersRoomsMap.get(key), key);
+                    }
+                    editor.apply();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        /*
+        *
+        * */
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+        * chat part
+        * */
+        sharedPreferences = getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
+
+        /*
+        * */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -108,7 +181,6 @@ public class SideMenuActivity extends AppCompatActivity {
 
 //        //////////////////////////sert the default fragment  student schedule
         fragment = new BranchesFragment();
-        final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
@@ -179,15 +251,33 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                     case 2:
+                        //community part
+                        Bundle bundle;
                         switch (childPosition) {
+
                             case 0:
-                                Toast.makeText(getApplicationContext(), "1,0", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "students community", Toast.LENGTH_LONG).show();
+                                fragment = new FriendsListFragment();
+                                bundle = new Bundle();
+                                bundle.putString("receiver_type", "student");
+                                fragment.setArguments(bundle);
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 1:
-                                Toast.makeText(getApplicationContext(), "1,1", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "staff community", Toast.LENGTH_LONG).show();
+                                fragment = new FriendsListFragment();
+                                bundle = new Bundle();
+                                bundle.putString("receiver_type", "staff");
+                                fragment.setArguments(bundle);
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
-                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "graduates community", Toast.LENGTH_LONG).show();
+                                fragment = new FriendsListFragment();
+                                bundle = new Bundle();
+                                bundle.putString("receiver_type", "graduate");
+                                fragment.setArguments(bundle);
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             default:
                                 break;
