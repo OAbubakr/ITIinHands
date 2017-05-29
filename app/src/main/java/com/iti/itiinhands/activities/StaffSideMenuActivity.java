@@ -130,13 +130,12 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         editor.remove("userType");
                         editor.commit();
 
-
-
                         //send user back to login activity
-                        finish();
-
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
+                        finish();
+
+
 
                         break;
 

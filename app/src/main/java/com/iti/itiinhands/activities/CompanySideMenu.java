@@ -134,8 +134,14 @@ public class CompanySideMenu extends AppCompatActivity {
                         editor.remove("userType");
                         editor.commit();
 
+
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
+
                         //send user back to login activity
                         finish();
+
+
                         break;
 
                     default:

@@ -34,11 +34,11 @@ public class NetworkManager {
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url]
-    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Sandra ip and url]
+    private static final String BASEURL = "http://192.168.2.16:9090/restfulSpring/"; // Sandra ip and url]
 //    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url
 
 
-    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; //omar
+//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; //omar
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -234,4 +234,74 @@ public class NetworkManager {
             }
         });
     }
+
+    public void getInstructorSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+
+        Call<List<SessionModel>> call = web.getInstructorSchedule(id);
+
+        call.enqueue(new Callback<List<SessionModel>>() {
+
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+
+                network.onResponse(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getStudentSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<List<SessionModel>> call = web.getStudentSchedule(id);
+        call.enqueue(new Callback<List<SessionModel>>() {
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getTrackSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<List<SessionModel>> call = web.getTrackSchedule(id);
+        call.enqueue(new Callback<List<SessionModel>>() {
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+
 }
