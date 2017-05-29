@@ -30,21 +30,16 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     private BranchesAdapter branchesAdapter;
     private NetworkManager networkManager;
     private TextView branchViewTitle;
-
+    private int flag = 0;
 
 
     public void setFlag(int flag) {
         this.flag = flag;
     }
 
-    private int flag= 0;
-
-
-
     public BranchesFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,15 +50,12 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_branches, container, false);
+        View view = inflater.inflate(R.layout.fragment_branches, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         branchViewTitle = (TextView) view.findViewById(R.id.branch_view_title);
         branchViewTitle.setText("ITI-BRANCHES");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.branch_recycler_view);
-
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -73,11 +65,9 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         return view;
     }
 
-    private void prepareBranchData(){
-        Log.i("network","yamosahel");
+    private void prepareBranchData() {
         networkManager.getBranches(this);
     }
-
 
 
     public void onButtonPressed(Uri uri) {
@@ -98,8 +88,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Object response) {
-        branchesList= (ArrayList<Branch>) response;
-        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(),flag);
+        branchesList = (ArrayList<Branch>) response;
+        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
         recyclerView.setAdapter(branchesAdapter);
     }
 
@@ -108,7 +98,4 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
 
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
 }

@@ -11,6 +11,7 @@ import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,10 @@ public class NetworkManager {
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url]
     private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Sandra ip and url]
+//    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url
+
+
+    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; //omar
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 

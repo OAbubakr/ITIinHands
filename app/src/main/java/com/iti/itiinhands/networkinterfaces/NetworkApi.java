@@ -50,8 +50,7 @@ public interface NetworkApi {
 
     @GET("getCourses")
     public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
-    @POST("getStudentSchedule")
-    public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();
@@ -62,4 +61,14 @@ public interface NetworkApi {
                                         @Query("experience") String experience, @Query("closingDate") String closingDate,
                                         @Query("sendTo") String sendTo, @Query("jobNoNeed") int jopNoNeed,
                                         @Query("subTrackId") int subTrackId , @Query("jobDate") String jopDate);
+
+    @GET("getInstructorSchedule")
+    public  Call<List<SessionModel>> getInstructorSchedule(@Query("instructorId")int instructorId );
+
+    @GET("getStudentSchedule")
+    public  Call<List<SessionModel>> getStudentSchedule(@Query("studentId") int studentId);
+
+
+    @GET("getTrackSchedule")
+    Call<List<SessionModel>> getTrackSchedule(@Query("trackId")int trackId);
 }

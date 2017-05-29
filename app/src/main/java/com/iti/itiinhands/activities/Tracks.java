@@ -43,6 +43,7 @@ public class Tracks extends AppCompatActivity {
         setContentView(R.layout.activity_tracks);
         branch = (Branch) getIntent().getSerializableExtra("branchObject");
         flag = getIntent().getIntExtra("flag",0);
+
         branchLocation = (TextView) findViewById(R.id.track_branch);
         branchLocation.setText(branch.getBranchName());
         tracksList=branch.getTracks();

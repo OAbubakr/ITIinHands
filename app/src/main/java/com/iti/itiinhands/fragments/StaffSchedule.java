@@ -1,6 +1,7 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.Context;
+import android.net.Network;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.scheduleAdapters.staff.PagerAdapter;
+import com.iti.itiinhands.networkinterfaces.NetworkManager;
+import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 
 public class StaffSchedule extends Fragment {
@@ -25,15 +28,13 @@ public class StaffSchedule extends Fragment {
 
 
 
+
         View view = inflater.inflate(R.layout.fragment_staff_schedule, container, false);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-//       getActivity().setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("My Schedules"));
         tabLayout.addTab(tabLayout.newTab().setText("Branches"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
-//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
 
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
@@ -62,4 +63,6 @@ public class StaffSchedule extends Fragment {
 
         return view;
     }
+
+
 }

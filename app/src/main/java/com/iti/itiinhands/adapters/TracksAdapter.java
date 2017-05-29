@@ -2,6 +2,7 @@ package com.iti.itiinhands.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.Schedule;
 import com.iti.itiinhands.activities.TrackDetails;
 import com.iti.itiinhands.model.Track;
 
@@ -68,13 +70,21 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
                 @Override
                 public void onClick(View v) {
 
-                 if(flag==0){   Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
-                    Intent trackDetailsView = new Intent(context, TrackDetails.class);
-                    trackDetailsView.putExtra("trackObject", track);
-                     trackDetailsView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(trackDetailsView);}
-                    else{
+                    if (flag != 2) { // open details not from staff
+                        Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
+                        Intent trackDetailsView = new Intent(context, TrackDetails.class);
+                        trackDetailsView.putExtra("trackObject", track);
 
+                        context.startActivity(trackDetailsView);
+                    } else {// from staff open schedule
+
+                        Intent i = new Intent(context, Schedule.class);
+
+                        Bundle b = new Bundle();
+                        b.putInt("trackId", track.getPlatformIntakeId());
+                        b.putInt("flag",flag);
+                        i.putExtra("bundle", b);
+                        context.startActivity(i);
 
                      
                  }

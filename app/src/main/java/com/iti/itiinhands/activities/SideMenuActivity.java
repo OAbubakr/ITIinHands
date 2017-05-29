@@ -109,7 +109,6 @@ public class SideMenuActivity extends AppCompatActivity {
         name.setText("dina");
         track.setText("web and mobile");
 
-        // Add header view to the expandable list
 
         expListView.addHeaderView(headerView);
 
