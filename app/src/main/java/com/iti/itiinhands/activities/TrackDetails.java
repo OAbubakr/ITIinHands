@@ -88,7 +88,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
 
     }
 }
