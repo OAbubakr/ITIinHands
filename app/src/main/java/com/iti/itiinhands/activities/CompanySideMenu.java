@@ -117,6 +117,7 @@ public class CompanySideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 2:
                         fragment= new PostJobFragment();
+                        mDrawerLayout.closeDrawer(expListView);
                         break;
                     case 3:
                         //announcment fragment
@@ -128,7 +129,9 @@ public class CompanySideMenu extends AppCompatActivity {
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences("userData", 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.clear();
+                        editor.remove("loggedIn");
+                        editor.remove("userId");
+                        editor.remove("userType");
                         editor.commit();
 
                         //send user back to login activity

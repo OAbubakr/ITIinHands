@@ -41,7 +41,6 @@ public class Tracks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracks);
-        super.onCreate(savedInstanceState);
         branch = (Branch) getIntent().getSerializableExtra("branchObject");
         flag = getIntent().getIntExtra("flag",0);
         branchLocation = (TextView) findViewById(R.id.track_branch);
