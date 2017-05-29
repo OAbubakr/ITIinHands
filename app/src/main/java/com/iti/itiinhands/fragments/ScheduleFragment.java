@@ -323,7 +323,9 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         recyclerView.setAdapter(scheduleCardAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        linearLayoutManager.s
         recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setMinimumHeight(200);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
