@@ -2,6 +2,7 @@ package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
@@ -49,5 +50,9 @@ public interface NetworkApi {
 
     @GET("getInstructorByBranch")
     public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId);
+
+    @GET("getBranchesNames")
+    public Call<List<Branch>> getBranchesNames();
+
 
 }

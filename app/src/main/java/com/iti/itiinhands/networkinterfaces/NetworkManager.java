@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
@@ -31,7 +32,9 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Ragab ip and url
+//private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Ragab ip and url
+
+    private static final String BASEURL = "http://172.16.3.53:8090/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -101,6 +104,25 @@ public class NetworkManager {
         });
 
     }
+
+    public void getBranchesNames(final NetworkResponse networkResponse){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Branch>> call = web.getBranchesNames();
+        call.enqueue(new Callback<List<Branch>>() {
+            @Override
+            public void onResponse(Call<List<Branch>> call, retrofit2.Response<List<Branch>> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Branch>> call, Throwable t) {
+                t.printStackTrace();
+                networkResponse.onFailure();
+            }
+        });
+
+    }
+
 
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
         final NetworkResponse network = networkResponse;

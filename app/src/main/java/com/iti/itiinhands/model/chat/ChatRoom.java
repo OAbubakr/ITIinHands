@@ -14,6 +14,7 @@ public class ChatRoom implements Serializable{
     private String receiverName;
     private String senderName;
 
+    private String receiverImagePath;
     private String receiverType;
 
     private String roomKey;
@@ -28,6 +29,14 @@ public class ChatRoom implements Serializable{
         this.receiverId = receiverId;
         this.roomKey = roomKey;
         this.receiverName = receiverName;
+    }
+
+    public String getReceiverImagePath() {
+        return receiverImagePath;
+    }
+
+    public void setReceiverImagePath(String receiverImagePath) {
+        this.receiverImagePath = receiverImagePath;
     }
 
     public String getSenderName() {

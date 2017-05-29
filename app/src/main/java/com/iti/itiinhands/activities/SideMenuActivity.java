@@ -66,9 +66,10 @@ public class SideMenuActivity extends AppCompatActivity {
     * chat part
     * */
     SharedPreferences sharedPreferences;
-    String myType = "student";
-    String myId = "123456";
-    String myChatId = myType + "_" + myId;
+    String myType = "staff";
+    String myId;
+    String myName;
+    String myChatId;
     DatabaseReference myRoot;
     /*
     **/
@@ -140,6 +141,9 @@ public class SideMenuActivity extends AppCompatActivity {
         * chat part
         * */
         sharedPreferences = getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
+        myName = sharedPreferences.getString("myName", null);
+        myId = sharedPreferences.getString("myId", null);
+        myChatId = myType + "_" + myId;
 
         /*
         * */

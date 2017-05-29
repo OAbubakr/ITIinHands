@@ -1,15 +1,21 @@
 package com.iti.itiinhands.adapters.chatAdapters;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.firebase.ui.database.ChangeEventListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.chat.ChatMessage;
@@ -22,11 +28,22 @@ public class ChatRoomAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatRo
 
 
     private String myId;
+    ProgressDialog progressDialog;
 
     public ChatRoomAdapter(Context context, Class<ChatMessage> modelClass, int modelLayout,
                            Class<MyViewHolder> viewHolderClass, Query ref, String myId) {
         super(modelClass, modelLayout, viewHolderClass, ref);
         this.myId = myId;
+
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+    }
+    @Override
+    protected void onDataChanged() {
+        super.onDataChanged();
+        progressDialog.hide();
     }
 
 

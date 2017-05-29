@@ -69,13 +69,20 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
         builder.setContentText(message);
         builder.setAutoCancel(true);
 
+
+        //get integer equivalent
+        int id = 7;
+        for (int i = 0; i < receiverId.length(); i++) {
+            id = id*31 + receiverId.charAt(i);
+        }
+
         builder.setSmallIcon(android.R.mipmap.sym_def_app_icon);
         PendingIntent pendingIntent = PendingIntent.
-                getActivity(this, Integer.parseInt(receiverId), intent, PendingIntent.FLAG_ONE_SHOT);
+                getActivity(this, id, intent, PendingIntent.FLAG_ONE_SHOT);
         builder.setContentIntent(pendingIntent);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         builder.setDefaults(Notification.DEFAULT_SOUND);
-        manager.notify(Integer.parseInt(receiverId), builder.build());
+        manager.notify(id, builder.build());
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,7 @@ import static com.iti.itiinhands.fragments.FriendsListFragment.SP_NAME;
  */
 public class ChatRoomActivity extends AppCompatActivity {
 
-    private Button sendMessage;
+    private FloatingActionButton sendMessage;
     private EditText message;
     private RecyclerView messagesRecyclerView;
     private ChatRoomAdapter adapter;
@@ -36,6 +37,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     private String senderId;
     private String receiverId;
     private String receiverName;
+    private String myName;
 
     public RecyclerView getMessagesRecyclerView() {
         return messagesRecyclerView;
@@ -66,11 +68,14 @@ public class ChatRoomActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         sharedPreferences.edit().putString("chatRoomActive", receiverId).apply();
 
+
+        myName = sharedPreferences.getString("myName", null);
+
         setTitle(receiverName);
 
         roomNode = firebaseDatabase.getReference().getRoot().child("oneToOne").child(roomKey);
 
-        sendMessage = (Button) findViewById(R.id.chatSendButton);
+        sendMessage = (FloatingActionButton) findViewById(R.id.chatSendButton);
         message = (EditText) findViewById(R.id.messageEdit);
         messagesRecyclerView = (RecyclerView) findViewById(R.id.messagesContainer);
 
@@ -78,8 +83,10 @@ public class ChatRoomActivity extends AppCompatActivity {
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String messageData = message.getText().toString();
-                if (!messageData.isEmpty()) {
+                if ( !messageData.trim().isEmpty() ) {
+
                     //check network status
                     ConnectivityManager cm =
                             (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -90,13 +97,13 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                     if (isConnected) {
 
-                        ChatMessage chatMessage = new ChatMessage(messageData, senderId, receiverId, "sender name");
+                        ChatMessage chatMessage = new ChatMessage(messageData, senderId, receiverId, myName);
 
                         //create the message node
                         DatabaseReference messageNode = roomNode.push();
                         messageNode.setValue(chatMessage);
 
-                        message.setText("");
+                        message.getText().clear();
                     } else {
                         Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
                     }
@@ -113,10 +120,34 @@ public class ChatRoomActivity extends AppCompatActivity {
                 senderId);
 
         messagesRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
+
         messagesRecyclerView.setLayoutManager(linearLayoutManager);
         messagesRecyclerView.setAdapter(adapter);
+
+
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                int friendlyMessageCount = adapter.getItemCount();
+                int lastVisiblePosition =
+                        linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                // If the recycler view is initially being loaded or the
+                // user is at the bottom of the list, scroll to the bottom
+                // of the list to show the newly added message.
+                if (lastVisiblePosition == -1 ||
+                        (positionStart >= (friendlyMessageCount - 1) &&
+                                lastVisiblePosition == (positionStart - 1))) {
+                    messagesRecyclerView.scrollToPosition(positionStart);
+                }
+            }
+        });
+
     }
+
+
+
 
 }

@@ -47,9 +47,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     private String roomKey;
     private DatabaseReference chatRoomNode;
 
-    String myType = "student";
-    String myId = "123456";
-    String myChatId = myType + "_" + myId;
+    String myType = "staff";
+    String myId;
+    String myChatId;
 
 
     public FriendListAdapter(Context context, List<ChatRoom> chatRooms, int cellToInflate, String id) {
@@ -60,6 +60,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         this.id = id;
         sharedPreferences = context.getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
         myRoot = firebaseDatabase.getReference("users").child(myType);
+
+        myId = sharedPreferences.getString("myId", null);
+        myChatId = myType + "_" + myId;
 
     }
 
@@ -73,20 +76,21 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, final int position) {
 
-        holder.getName().setText(chatRooms.get(position).getReceiverName());
+        final ChatRoom chatRoom = chatRooms.get(position);
+        holder.getName().setText(chatRoom.getReceiverName());
 
-        if (chatRooms.get(position).isHasPendingMessages())
+        if (chatRoom.isHasPendingMessages())
             holder.getMessage_image().setVisibility(View.VISIBLE);
         else
             holder.getMessage_image().setVisibility(View.INVISIBLE);
 
-        holder.getImageLoader().loadImage(holder.getAvatarView(), (String) null, chatRooms.get(position).getReceiverName());
+        holder.getImageLoader().loadImage(holder.getAvatarView(), chatRoom.getReceiverImagePath()
+                , chatRoom.getReceiverName());
 
         //onclick listener
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ChatRoom chatRoom = chatRooms.get(position);
                 String roomKey = sharedPreferences.getString(chatRoom.getReceiverId(), null);
 
                 //check network status

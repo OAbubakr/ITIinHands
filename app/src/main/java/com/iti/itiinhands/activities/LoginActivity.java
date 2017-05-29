@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.LoginResponse;
@@ -66,6 +67,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String password = passwordEdTxt.getText().toString();
+                String name = userNameEdTxt.getText().toString();
+
+                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myId", password).apply();
+                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myName", name).apply();
+
                 Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
                 startActivity(intent);
             }
