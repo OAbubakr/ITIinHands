@@ -91,10 +91,14 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
 
         TextView txt = (TextView) convertView.findViewById(R.id.dayDetails);
 
-        String temp = listChildData.get(listDataHeader.get(i)).get(i1).getCourseName();
-        temp = temp + "\n" + listChildData.get(listDataHeader.get(i)).get(i1).getSessionTime();
-        temp = temp + "\n" + listChildData.get(listDataHeader.get(i)).get(i1).getSessionPercentage();
-        temp = temp + "\n" + listChildData.get(listDataHeader.get(i)).get(i1).getRoomName();
+        SessionModel sessionModel = listChildData.get(listDataHeader.get(i)).get(i1);
+
+        String temp = sessionModel.getCourseName();
+        temp = temp + "\n" + sessionModel.getSessionTime();
+        temp = temp + "\n" + sessionModel.getSessionPercentage();
+        temp = temp + "\n" + sessionModel.getRoomName();
+        if (sessionModel.getSessionTime() != null) temp = temp + "\n" + sessionModel.getTrackName();
+
 
         txt.setText(temp);
 

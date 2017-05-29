@@ -36,6 +36,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
+import com.iti.itiinhands.fragments.StaffSchedule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
