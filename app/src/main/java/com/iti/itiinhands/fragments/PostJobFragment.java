@@ -1,5 +1,6 @@
 package com.iti.itiinhands.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,8 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
             @Override
             public void onClick(View v) {
 
-                int companyId = 15;
+                SharedPreferences data = getActivity().getSharedPreferences("userData", 0);
+                int companyId = data.getInt("userId", 0);
                 String code = jobCode.getText().toString();
                 String title = jobTitle.getText().toString();
                 String desc = jobDescription.getText().toString();
@@ -73,7 +75,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
     }
 }

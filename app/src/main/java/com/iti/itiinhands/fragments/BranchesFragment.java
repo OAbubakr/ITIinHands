@@ -94,7 +94,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
 
     }
 
