@@ -11,6 +11,7 @@ import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
 
@@ -228,4 +229,74 @@ public class NetworkManager {
             }
         });
     }
+
+    public void getInstructorSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+
+        Call<List<SessionModel>> call = web.getInstructorSchedule(id);
+
+        call.enqueue(new Callback<List<SessionModel>>() {
+
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+
+                network.onResponse(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getStudentSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<List<SessionModel>> call = web.getStudentSchedule(id);
+        call.enqueue(new Callback<List<SessionModel>>() {
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getTrackSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<List<SessionModel>> call = web.getTrackSchedule(id);
+        call.enqueue(new Callback<List<SessionModel>>() {
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+
 }

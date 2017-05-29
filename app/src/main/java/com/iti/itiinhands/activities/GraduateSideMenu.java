@@ -1,5 +1,7 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 
 import java.util.ArrayList;
@@ -102,7 +105,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -113,16 +116,31 @@ public class GraduateSideMenu extends AppCompatActivity {
                     case 0:
                         //replace profile fragment
                         break;
+
+
                     case 3:
+                        fragment = new AnnouncementFragment();
+                        mDrawerLayout.closeDrawer(expListView);
+                        break;
+                    case 4:
                         //logout  fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.clear();
+                        editor.commit();
+
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
+
+                        //send user back to login activity
+                        finish();
                         break;
                     default:
                         break;
 
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-
 
                 return false;
             }
@@ -207,6 +225,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         listDataHeader.add("Profile");
         listDataHeader.add("Community");
         listDataHeader.add("ITI");
+        listDataHeader.add("Announcement");
         listDataHeader.add("Logout");
 
 
@@ -226,12 +245,15 @@ public class GraduateSideMenu extends AppCompatActivity {
         aboutIti.add("Maps");
         aboutIti.add("Bus Services");
 
+        List<String> annoucment = new ArrayList<String>();
+
         List<String> logout = new ArrayList<String>();
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), community);
         listDataChild.put(listDataHeader.get(2), aboutIti);
-        listDataChild.put(listDataHeader.get(3), logout);
+        listDataChild.put(listDataHeader.get(3), annoucment);
+        listDataChild.put(listDataHeader.get(4), logout);
 
 
     }

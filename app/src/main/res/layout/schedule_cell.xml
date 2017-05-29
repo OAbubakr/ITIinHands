@@ -13,12 +13,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:srcCompat="@mipmap/ic_launcher"
-        />
+        app:srcCompat="@mipmap/ic_launcher" />
+
     <TextView
         android:id="@+id/allDay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3">
-    </TextView>
+        android:layout_weight="3"></TextView>
 </LinearLayout>

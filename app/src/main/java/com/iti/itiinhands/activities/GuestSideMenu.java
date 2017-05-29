@@ -1,5 +1,7 @@
 package com.iti.itiinhands.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -125,14 +127,21 @@ public class GuestSideMenu extends AppCompatActivity {
                         // maps fragment
                         Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
                         break;
-                    case 4:
-                        // handle bus services action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
-                        break;
 
-                    case 5:
+                    case 4:
                         // handle logout action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+//                        SharedPreferences setting = getSharedPreferences("userData", 0);
+//                        SharedPreferences.Editor editor = setting.edit();
+//                        editor.clear();
+//                        editor.commit();
+
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
+
+                        //send user back to login activity
+                        finish();
                         break;
 
                     default:
@@ -169,21 +178,18 @@ public class GuestSideMenu extends AppCompatActivity {
         listDataHeader.add("Tracks");
         listDataHeader.add("Events");
         listDataHeader.add("Maps");
-        listDataHeader.add("Bus services");
 
         // Adding child data
         List<String> iti = new ArrayList<String>();
         List<String> tracks = new ArrayList<String>();
         List<String> events = new ArrayList<String>();
         List<String> maps = new ArrayList<String>();
-        List<String> busServices = new ArrayList<String>();
 
 
         listDataChild.put(listDataHeader.get(0), iti); // Header, Child data
         listDataChild.put(listDataHeader.get(1), tracks);
         listDataChild.put(listDataHeader.get(2), events);
         listDataChild.put(listDataHeader.get(3), maps);
-        listDataChild.put(listDataHeader.get(4), busServices);
 
     }
 
