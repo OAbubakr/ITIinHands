@@ -130,6 +130,9 @@ public class GraduateSideMenu extends AppCompatActivity {
                         editor.clear();
                         editor.commit();
 
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
+
                         //send user back to login activity
                         finish();
                         break;

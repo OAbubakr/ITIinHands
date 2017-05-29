@@ -69,6 +69,7 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
                     Intent tracksView = new Intent(context, Tracks.class);
                     tracksView.putExtra("branchObject",branch);
                     tracksView.putExtra("flag",flag);
+                    tracksView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(tracksView);
                 }
             });

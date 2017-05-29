@@ -43,11 +43,43 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private Button companyBtn;
     private int userType = 0;
     private Intent navigationIntent;
+    private SharedPreferences data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_view);
+
+        //check loggedIn flag in shared preferences
+        data = getSharedPreferences("userData", 0);
+        userType = data.getInt("userType", 0);
+        if(data.getBoolean("loggedIn", false)){
+            //navigate using intent to next Activity
+            switch (userType) {
+                case 0:
+                    //type 0 -> goes to Guest side menu
+                    navigationIntent = new Intent(getApplicationContext(), GuestSideMenu.class);
+                    break;
+                case 1:
+                    //type 1 -> goes to Student side menu
+                    navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
+                    break;
+                case 2:
+                    //type 2 -> goes to Staff side menu
+                    navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
+                    break;
+                case 3:
+                    //type 3 -> goes to Company side menu
+                    navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
+                    break;
+                case 4:
+                    //type 4 -> goes to Graduate side menu
+                    navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
+                    break;
+            }
+            startActivity(navigationIntent);
+            finish();
+        };
 
         userNameEdTxt = (EditText) findViewById(R.id.userNameLoginViewId);
         passwordEdTxt = (EditText) findViewById(R.id.passwordLoginViewId);
@@ -66,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
                 startActivity(intent);
             }
         });
@@ -201,9 +233,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         switch (status) {
             case "success":
                 //save userID in SharedPreferences
-                SharedPreferences data = getSharedPreferences("userData", 0);
                 SharedPreferences.Editor editor = data.edit();
                 editor.putInt("userId", userId);
+                editor.putInt("userType", userType);
+
+                //logged in flag
+                editor.putBoolean("loggedIn", true);
                 ///////////////////////////////////////
                 //get all student data
                 ///////////////////////////////////////
@@ -212,15 +247,19 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                 //navigate using intent to next Activity
                 switch (userType) {
                     case 1:
+                        //type 1 -> goes to Student side menu
                         navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
                         break;
                     case 2:
+                        //type 2 -> goes to Staff side menu
                         navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
                         break;
                     case 3:
+                        //type 3 -> goes to Company side menu
                         navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
                         break;
                     case 4:
+                        //type 4 -> goes to Graduate side menu
                         navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
                         break;
                 }
