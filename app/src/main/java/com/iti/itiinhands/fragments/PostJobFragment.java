@@ -73,7 +73,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onFaliure() {
+    public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
     }
 }

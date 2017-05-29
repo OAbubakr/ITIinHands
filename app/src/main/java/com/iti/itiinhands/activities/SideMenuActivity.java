@@ -135,9 +135,15 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 1:
                         switch (childPosition) {
                             case 0:
-                                //handle scheduale fragment
-                               //fragment=new FragmentClass();
-//                                fragment= new ScheduleFragment();
+
+
+
+                                // get type from share prefs
+
+                                //if(student)  fragment= new ScheduleFragment();
+
+                                //if(staff)
+
                                 fragment= new StaffSchedule();
                                 break;
                             case 1:
