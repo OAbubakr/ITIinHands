@@ -1,4 +1,4 @@
-package com.iti.itiinhands.activities;
+package com.iti.itiinhands.fragments;
 
 
 import android.content.Intent;

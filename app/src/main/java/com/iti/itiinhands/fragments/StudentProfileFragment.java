@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.activities.EditProfileFragment;
 import com.iti.itiinhands.dto.UserData;
 
 /**

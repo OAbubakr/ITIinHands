@@ -11,15 +11,8 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
-import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.schedule.SessionModel;
-import com.iti.itiinhands.model.*;
-
-import java.util.ArrayList;
-
-import retrofit2.*;
-import retrofit2.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +88,7 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<Response> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+        Call<com.iti.itiinhands.model.Response> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -243,7 +236,7 @@ public class NetworkManager {
         Call<ArrayList<Course>> call = web.getCoursesByTrack(id);
         call.enqueue(new Callback<ArrayList<Course>>() {
             @Override
-            public void onResponse(Call<ArrayList<Course>> call, Response<ArrayList<Course>> response) {
+            public void onResponse(Call<ArrayList<Course>> call, retrofit2.Response<ArrayList<Course>> response) {
                 ArrayList<Course> courses = response.body();
                 network.onResponse(courses);
             }
@@ -268,7 +261,7 @@ public class NetworkManager {
         call.enqueue(new Callback<List<SessionModel>>() {
 
             @Override
-            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+            public void onResponse(Call<List<SessionModel>> call, retrofit2.Response<List<SessionModel>> response) {
 
                 network.onResponse(response.body());
 
@@ -291,7 +284,7 @@ public class NetworkManager {
         Call<List<SessionModel>> call = web.getStudentSchedule(id);
         call.enqueue(new Callback<List<SessionModel>>() {
             @Override
-            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+            public void onResponse(Call<List<SessionModel>> call, retrofit2.Response<List<SessionModel>> response) {
                 network.onResponse(response.body());
             }
 
@@ -312,7 +305,7 @@ public class NetworkManager {
         Call<List<SessionModel>> call = web.getTrackSchedule(id);
         call.enqueue(new Callback<List<SessionModel>>() {
             @Override
-            public void onResponse(Call<List<SessionModel>> call, Response<List<SessionModel>> response) {
+            public void onResponse(Call<List<SessionModel>> call, retrofit2.Response<List<SessionModel>> response) {
                 network.onResponse(response.body());
             }
 
