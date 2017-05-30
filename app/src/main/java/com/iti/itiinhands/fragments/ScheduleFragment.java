@@ -52,7 +52,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         Bundle b = getArguments();
-        flag = b.getInt("flag", 0);
+//        flag = b.getInt("flag", 0);
 
 //        if(flag == 0){
 //            networkManager.getStudentSchedule(this,5699);
