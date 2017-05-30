@@ -1,12 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.iti.itiinhands.fragments.ScheduleFragment">
 
-    <ExpandableListView
-        android:id="@+id/expLstView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+    <!--<ExpandableListView-->
+        <!--android:id="@+id/expLstView"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"/>-->
 
-</FrameLayout>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/day"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+</LinearLayout>

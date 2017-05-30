@@ -8,8 +8,12 @@ import java.util.ArrayList;
  */
 
 public class Branch implements Serializable{
+    private  int branchId;
+    private String branchName;
+    private String branchArabicName;
+
     private String location;
-    private ArrayList<Track> tracks;
+    private ArrayList<Track> tracks = new ArrayList<>();
     private ArrayList<String> mapImgUrl = new ArrayList<>();
     private ArrayList<Bus> buses = new ArrayList<>();
 
