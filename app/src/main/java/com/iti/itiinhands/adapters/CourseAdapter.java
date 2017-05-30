@@ -45,7 +45,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(CourseViewHolder holder, int position) {
         StudentGrade studentGrade = studentCourseList.get(position);
         holder.courseName.setText(studentGrade.getCourseName());
-
+        holder.gradeName.setText(studentGrade.getGradeName());
 
     }
 
@@ -64,7 +64,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             courseName = (TextView) itemView.findViewById(R.id.event_time);
             gradeName = (TextView) itemView.findViewById(R.id.gradeTV);
             evaluate_Button = (Button) itemView.findViewById(R.id.evaluateBtn);
-
+            evaluate_Button.setOnClickListener(this);
         }
 
         @Override

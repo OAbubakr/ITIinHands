@@ -1,5 +1,6 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
@@ -35,6 +36,9 @@ public interface NetworkApi {
 //    @GET("login/onLoginAuth")
     @POST("login/onLoginAuth")
     public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
+
+    @GET("getEmpHours")
+    public Call<EmpHour> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
 
     @GET("getStudentGrades")
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);

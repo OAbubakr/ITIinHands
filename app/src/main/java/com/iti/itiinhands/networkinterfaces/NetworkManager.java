@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
@@ -26,7 +27,7 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.7:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://192.168.1.6:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -78,6 +79,31 @@ public class NetworkManager {
 
     }
 
+//    -----------------------get employee hours-----------------------------------------------------
+public void getEmployeeHours(NetworkResponse networkResponse, int id,String start,String end) {
+    final NetworkResponse network = networkResponse;
+
+    NetworkApi web = retrofit.create(NetworkApi.class);
+    Call<EmpHour> call = web.getEmpHours(id,start,end);
+    call.enqueue(new Callback<EmpHour>() {
+        @Override
+        public void onResponse(Call<EmpHour> call, retrofit2.Response<EmpHour> response) {
+            network.onResponse(response.body());
+
+            System.out.println("response is"+response.body().getWorkingDays());
+        }
+
+        @Override
+        public void onFailure(Call<EmpHour> call, Throwable t) {
+            t.printStackTrace();
+            Log.e("network", t.toString());
+            network.onFailure();
+        }
+    });
+
+
+}
+//--------------------------------------------------------------------------------------------------
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
         final NetworkResponse network = networkResponse;
 
@@ -121,7 +147,7 @@ public class NetworkManager {
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
     }
