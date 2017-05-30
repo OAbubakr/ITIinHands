@@ -31,6 +31,7 @@ import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
+import com.iti.itiinhands.fragments.StudentProfileFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,7 +124,10 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 0:
 
                         //replace with profile fragment
-                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        fragment = new StudentProfileFragment();
+                        final FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
                         break;
 
                     case 4:

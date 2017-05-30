@@ -2,10 +2,10 @@ package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
-import com.iti.itiinhands.model.LoginRequest;
-import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.*;
 import com.iti.itiinhands.model.schedule.SessionModel;
-
+import com.iti.itiinhands.model.Response;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,29 +20,21 @@ import retrofit2.http.Query;
 
 public interface NetworkApi {
 
-    //An example
-    /*
-    @GET("example")
-    public Call<Model>getModel();
-
-    @GET("example/{id}")
-    public Call<Model>getModel(@Path("id")int id);
-
-    @GET("example")
-    public Call<Model>getModel(@Query("id")int id);
-     */
-//    @FormUrlEncoded
-//    @GET("login/onLoginAuth")
     @POST("login/onLoginAuth")
-    public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
+    public Call<Response> onLoginAuth(@Body LoginRequest request);
 
     @GET("getStudentGrades")
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);
-//    (@Query("userType") int userType,@Query("userName") String userName,
-//                                           @Query("password") String password);
+
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();
+
+    @GET("profile/onGetUserData")
+    public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);
+
+    @GET("profile/onSetUserData")
+    public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Query("userData") UserData userData);
 }

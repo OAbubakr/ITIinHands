@@ -5,10 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
-import com.iti.itiinhands.model.LoginRequest;
-import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.7:8084/restfulSpring/"; // Ragab ip and url
+    //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.1.2:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -84,16 +84,16 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
-        call.enqueue(new Callback<LoginResponse>() {
+        Call<Response> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+        call.enqueue(new Callback<Response>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
-                LoginResponse loginResponse = response.body();
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response loginResponse = response.body();
                 network.onResponse(loginResponse);
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<Response> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 network.onFailure();
@@ -104,7 +104,7 @@ public class NetworkManager {
     }
 
     //------------------------------------GET EVENTS------------------------------------------------
-    public void getEvents(NetworkResponse networkResponse){
+    public void getEvents(NetworkResponse networkResponse) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -113,19 +113,43 @@ public class NetworkManager {
         call.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, retrofit2.Response<List<Event>> response) {
-                ArrayList<Event> events =(ArrayList<Event>) response.body();
+                ArrayList<Event> events = (ArrayList<Event>) response.body();
                 network.onResponse(events);
             }
 
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
     }
 
+    //////////////////////////////////getProfile data /////////////
+    public void getStudentProfileData(NetworkResponse networkResponse, int userType, int userId) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getUserData(userType, userId);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
+    ////////////////////////////////////////////
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

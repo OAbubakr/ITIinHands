@@ -5,16 +5,16 @@ package com.iti.itiinhands.model;
  */
 
 public class Response {
-    private Object reponseData;
+    private Object responseData;
     private String status;
     private String error;
 
     public Object getResponseData() {
-        return reponseData;
+        return responseData;
     }
 
-    public void setResponseData(Object reponseData) {
-        this.reponseData = reponseData;
+    public void setResponseData(Object responseData) {
+        this.responseData = responseData;
     }
 
     public String getStatus() {
