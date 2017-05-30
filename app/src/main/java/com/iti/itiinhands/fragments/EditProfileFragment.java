@@ -91,7 +91,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void redirectFrag(){
-        //fdds
+
         Fragment fragment = new StudentProfileFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();

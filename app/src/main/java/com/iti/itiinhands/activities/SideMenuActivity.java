@@ -114,7 +114,7 @@ public class SideMenuActivity extends AppCompatActivity {
         expListView.addHeaderView(headerView);
 
 //        //////////////////////////sert the default fragment  student schedule
-        fragment = new ScheduleFragment();
+        fragment = new StudentProfileFragment();
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
