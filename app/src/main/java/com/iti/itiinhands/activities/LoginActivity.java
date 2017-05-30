@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
                 //save userType in SharedPreferences
                 SharedPreferences data = getSharedPreferences("userData", 0);
                 SharedPreferences.Editor editor = data.edit();

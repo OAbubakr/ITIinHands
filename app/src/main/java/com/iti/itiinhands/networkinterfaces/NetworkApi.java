@@ -45,6 +45,15 @@ public interface NetworkApi {
 
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+//    (@Query("userType") int userType,@Query("userName") String userName,
+//                                           @Query("password") String password);
+
+    @GET("getBranches")
+    public Call<ArrayList<Branch>> getBranches();
+
+    @GET("getCourses")
+    public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
+
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();

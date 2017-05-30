@@ -35,8 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://172.16.2.224:8084/restfulSpring/"; // Ragab ip and url
+    //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.1.2:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -92,7 +92,6 @@ public class NetworkManager {
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
 
         final NetworkResponse network = networkResponse;
-
         NetworkApi web = retrofit.create(NetworkApi.class);
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
@@ -116,7 +115,7 @@ public class NetworkManager {
     }
 
     //------------------------------------GET EVENTS------------------------------------------------
-    public void getEvents(NetworkResponse networkResponse){
+    public void getEvents(NetworkResponse networkResponse) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -125,14 +124,14 @@ public class NetworkManager {
         call.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, retrofit2.Response<List<Event>> response) {
-                ArrayList<Event> events =(ArrayList<Event>) response.body();
+                ArrayList<Event> events = (ArrayList<Event>) response.body();
                 network.onResponse(events);
             }
 
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
