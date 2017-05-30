@@ -6,6 +6,7 @@ import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
@@ -71,4 +72,10 @@ public interface NetworkApi {
 
     @GET("getTrackSchedule")
     Call<List<SessionModel>> getTrackSchedule(@Query("trackId")int trackId);
+
+
+//////////
+@GET("getStudentsByTrackId")
+    public Call<ArrayList<StudentDataByTrackId>>getAllStudentsByTracId(@Query("id")int id);
+
 }
