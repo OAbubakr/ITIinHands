@@ -11,6 +11,7 @@ import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
@@ -296,6 +297,33 @@ public class NetworkManager {
         });
 
     }
+
+
+ public void getAllStudentsByTrackId(final NetworkResponse networkResponse, int id){
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<ArrayList<StudentDataByTrackId>> call = web.getAllStudentsByTracId(id);
+
+        call.enqueue(new Callback<ArrayList<StudentDataByTrackId>>() {
+            @Override
+            public void onResponse(Call<ArrayList<StudentDataByTrackId>> call, retrofit2.Response<ArrayList<StudentDataByTrackId>> response) {
+
+                networkResponse.onResponse(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<StudentDataByTrackId>> call, Throwable t) {
+
+                networkResponse.onFailure();
+
+            }
+        });
+
+
+
+    }
+
 
 
 
