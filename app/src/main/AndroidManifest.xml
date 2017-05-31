@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +17,6 @@
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,17 +24,17 @@
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.TrackDetails" />
         <activity android:name=".activities.StudentCourseList" />
-        <activity android:name=".activities.TrackDetails" />
+        <activity android:name=".activities.TrackDetails"></activity>
         <activity android:name=".activities.StudentCourseList">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
-        <activity android:name=".activities.EventList" />
-        <!-- android:label="@string/title_activity_event_list" -->
-        <!-- android:theme="@style/AppTheme_NoActionBar" /> -->
+        <activity
+            android:name=".activities.EventList"></activity>
+            <!--android:label="@string/title_activity_event_list"-->
+            <!--android:theme="@style/AppTheme_NoActionBar" />-->
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
 
@@ -51,7 +51,7 @@
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
         <activity android:name=".activities.GraduateSideMenu" />
-        <activity android:name=".activities.EmployeeHours"></activity>
+        <activity android:name=".activities.Schedule"></activity>
     </application>
 
 </manifest>

@@ -21,15 +21,14 @@ import java.util.List;
 public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> listDataHeader;
-    private HashMap<String, List<SessionModel>> listChildData;
+    private List<SessionModel> listDataHeader;
+//    private HashMap<Integer, List<SessionModel>> listChildData;
 
 
-    public ScheduleExapandableAdapter(Context context, List<String> listDataHeader,
-                                      HashMap<String, List<SessionModel>> listChildData) {
+    public ScheduleExapandableAdapter(Context context, List<SessionModel> listDataHeader) {
         this.context = context;
         this.listDataHeader = listDataHeader;
-        this.listChildData = listChildData;
+//        this.listChildData = listChildData;
     }
 
     @Override
@@ -39,7 +38,7 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
-        return listChildData.get(listDataHeader.get(i)).size();
+        return 1;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int i, int i1) {
-        return listChildData.get(listDataHeader.get(i)).get(i1);
+        return listDataHeader.get(i);
     }
 
     @Override
@@ -76,8 +75,8 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.schedule_cell, null);
         }
 
-    TextView txt = (TextView) convertView.findViewById(R.id.allDay);
-        txt.setText(listDataHeader.get(i));
+        TextView txt = (TextView) convertView.findViewById(R.id.allDay);
+        txt.setText(listDataHeader.get(i).getCourseName());
         return convertView;
     }
 
@@ -90,7 +89,17 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txt = (TextView) convertView.findViewById(R.id.dayDetails);
-        txt.setText(listChildData.get(listDataHeader.get(i)).get(i1).getCourseName());
+
+        SessionModel sessionModel = listDataHeader.get(i);
+
+        String temp = sessionModel.getCourseName();
+        temp = temp + "\n" + sessionModel.getSessionTime();
+        temp = temp + "\n" + sessionModel.getSessionPercentage();
+        temp = temp + "\n" + sessionModel.getRoomName();
+        if (sessionModel.getSessionTime() != null) temp = temp + "\n" + sessionModel.getTrackName();
+
+
+        txt.setText(temp);
 
         return convertView;
     }

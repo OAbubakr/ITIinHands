@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/layoutProfileViewId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -10,11 +12,11 @@
         android:layout_gravity="right">
 
         <Button
-            android:id="@+id/editBtnProfilrViewId"
-            android:layout_width="55dp"
+            android:id="@+id/editBtnProfileViewId"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@android:drawable/ic_menu_edit" />
+            android:layout_gravity="end"
+            android:text="@string/editBtnStr" />
 
     </FrameLayout>
 
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/profilePicProfileViewId"
             android:layout_width="120dp"
             android:layout_height="124dp"
             android:layout_gravity="center"
@@ -36,28 +38,60 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/nameTvProfileViewId"
+            android:id="@+id/firstTvProfileViewId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="TextView"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/secondTvProfileViewId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="TextView"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/thirdTvProfileViewId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="TextView"
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/fourthTvProfileViewId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/proLinksLayoutProfileViewId">
+
+        <Button
+            android:id="@+id/gitBtnProfileId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gitProfileTxt" />
+
+        <Button
+            android:id="@+id/linkedInBtnProfileId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/linkedinProfileTxt" />
+
+        <Button
+            android:id="@+id/behanceBtnProfileId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/behanceProfileTxt" />
+
     </LinearLayout>
 
 </LinearLayout>

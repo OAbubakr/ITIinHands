@@ -2,6 +2,7 @@ package com.iti.itiinhands.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.Schedule;
 import com.iti.itiinhands.activities.TrackDetails;
-import com.iti.itiinhands.beans.Track;
+import com.iti.itiinhands.model.Track;
 
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -23,10 +27,12 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
 
     private ArrayList<Track> tracksList = new ArrayList<>();
     private Context context;
+    private int flag;
 
-    public TracksAdapter(ArrayList<Track> tracksList, Context context){
+    public TracksAdapter(ArrayList<Track> tracksList, Context context,int flag){
         this.tracksList = tracksList;
         this.context = context;
+        this.flag = flag;
     }
 
     @Override
@@ -63,10 +69,25 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
-                    Intent trackDetailsView = new Intent(context, TrackDetails.class);
-                    trackDetailsView.putExtra("trackObject", track);
-                    context.startActivity(trackDetailsView);
+
+                    if (flag != 2) { // open details not from staff
+                        Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
+                        Intent trackDetailsView = new Intent(context, TrackDetails.class);
+                        trackDetailsView.putExtra("trackObject", track);
+
+                        context.startActivity(trackDetailsView);
+                    } else {// from staff open schedule
+
+                        Intent i = new Intent(context, Schedule.class);
+
+                        Bundle b = new Bundle();
+                        b.putInt("trackId", track.getPlatformIntakeId());
+                        b.putInt("flag",flag);
+                        i.putExtra("bundle", b);
+                        context.startActivity(i);
+
+                     
+                 }
                 }
             });
         }

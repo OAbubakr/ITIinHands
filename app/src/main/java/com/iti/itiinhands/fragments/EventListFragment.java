@@ -108,7 +108,6 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         for(Event e: eventsList){
             com.github.sundeepk.compactcalendarview.domain.Event ev = new com.github.sundeepk.compactcalendarview.domain.Event(Color.parseColor("#7F0000"), e.getEventStart());
             calendarView.addEvent(ev);
-//            calendarView.setDate(e.getEventStart());
         }
     }
 
@@ -131,19 +130,5 @@ public class EventListFragment extends Fragment implements NetworkResponse {
     public void onDetach() {
         super.onDetach();
 
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }
