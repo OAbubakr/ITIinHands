@@ -14,13 +14,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -47,20 +52,16 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 //    private boolean namesDownloaded = false;
 
     String myName;
-    String myType = "staff";
+    String myType;
     String myId;
     String myChatId;
     SharedPreferences sharedPreferences;
-    private List<ChatRoom> chatRooms = new ArrayList<>();
     private RecyclerView chatRoomsRecyclerView;
     private FriendListAdapter friendListAdapter;
     private BroadcastReceiver receiver;
+    List<ChatRoom> chatRooms = new ArrayList<>();
 
     private ProgressDialog progressDialog;
-
-//    ViewPager viewPager;
-//    TabLayout tabLayout;
-//    FriendlistFragment fragmentFriendsList;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -81,21 +82,24 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
                 new IntentFilter(FirebaseMessageReceiverService.MESSAGE_RECEIVED_ACTION));
 
-        sharedPreferences.edit().putString("friendListActivityActive", "true").apply();
+        getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE)
+                .edit().putString("friendListActivityActive", "true").apply();
     }
 
 
     @Override
     public void onStop() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
-        sharedPreferences.edit().putString("friendListActivityActive", "false").apply();
+        getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE)
+                .edit().putString("friendListActivityActive", "false").apply();
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sharedPreferences.edit().putString("friendListActivityActive", "false").apply();
+        getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE).
+                edit().putString("friendListActivityActive", "false").apply();
     }
 
 
@@ -106,30 +110,37 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-
         Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
         ((StaffSideMenuActivity)getActivity()).setSupportActionBar(tb);
-        ActionBar ab = ((StaffSideMenuActivity)getActivity()).getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        ab.setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
+//        ActionBar ab = ((MainActivity2)getActivity()).getSupportActionBar();
+//        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+//        ab.setDisplayHomeAsUpEnabled(true);
+
 
         chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
 
-        sharedPreferences = getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences("userData", MODE_PRIVATE);
         myName = sharedPreferences.getString("myName", null);
         myId = sharedPreferences.getString("myId", null);
+        int userType = sharedPreferences.getInt("userType", -1);
+        switch (userType){
+            case 1:
+                myType = "student";
+                break;
+            case 2:
+                myType = "staff";
+                break;
+        }
+
         myChatId = myType + "_" + myId;
 
         //configure the recycler view
-        friendListAdapter = new FriendListAdapter(getActivity(),
-                chatRooms, R.layout.friends_list_cell, myId);
+        friendListAdapter = new FriendListAdapter(getActivity(), chatRooms, R.layout.friends_list_cell, myId);
         chatRoomsRecyclerView.setAdapter(friendListAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatRoomsRecyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        chatRoomsRecyclerView.addItemDecoration(dividerItemDecoration);
 
         progressDialog = new ProgressDialog(getActivity());
 
@@ -152,7 +163,6 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         };
 
         getActivity().setTitle(myName);
-
 
         downloadList(-1);
 
@@ -192,8 +202,8 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                 progressDialog.hide();
                 switch (receiver_type) {
                     case "staff":
-                        chatRooms.clear();
                         List<Instructor> instructors = (List<Instructor>) response;
+                        chatRooms.clear();
 
                         for (Instructor instructor : instructors) {
                             ChatRoom chatRoom = new ChatRoom();
@@ -212,8 +222,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                             chatRoom.setSenderName(myName);
                             chatRooms.add(chatRoom);
                         }
-                        friendListAdapter.notifyDataSetChanged();
-//                        fragmentFriendsList.setData(chatRooms);
+                        friendListAdapter.updateData();
                         break;
                 }
             }
@@ -227,6 +236,30 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         progressDialog.hide();
         Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
         System.out.println("error");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+
+        inflater.inflate(R.menu.search_action_button, menu);
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                friendListAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                friendListAdapter.filter(newText);
+                return true;
+            }
+        });
+
+
     }
 
 

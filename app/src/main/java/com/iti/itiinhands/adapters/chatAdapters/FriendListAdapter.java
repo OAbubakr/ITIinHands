@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.model.chat.ChatRoom;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,8 @@ import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.FriendsViewHolder> {
 
     private Context context;
-    private List<ChatRoom> chatRooms;
-    private List<ChatRoom> chatRoomsCopy;
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+    private List<ChatRoom> chatRoomsCopy = new ArrayList<>();
     private int cellToInflate;
     private SharedPreferences sharedPreferences;
     private String id;
@@ -48,20 +50,30 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     private String roomKey;
     private DatabaseReference chatRoomNode;
 
-    String myType = "staff";
+    String myType;
     String myId;
     String myChatId;
+
+
 
 
     public FriendListAdapter(Context context, List<ChatRoom> chatRooms, int cellToInflate, String id) {
 
         this.context = context;
         this.chatRooms = chatRooms;
-        this.chatRoomsCopy = chatRooms;
-
         this.cellToInflate = cellToInflate;
         this.id = id;
-        sharedPreferences = context.getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences("userData", MODE_PRIVATE);
+        int userType = sharedPreferences.getInt("userType", -1);
+        switch (userType){
+            case 1:
+                myType = "student";
+                break;
+            case 2:
+                myType = "staff";
+                break;
+        }
+
         myRoot = firebaseDatabase.getReference("users").child(myType);
 
         myId = sharedPreferences.getString("myId", null);
@@ -75,6 +87,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         View view = li.inflate(cellToInflate, parent, false);
         return new FriendsViewHolder(view);
     }
+
+
 
     public void filter(String text) {
 
@@ -249,7 +263,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         FriendsViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.friend_name);
-            this.view = itemView;
+            this.view = itemView.findViewById(R.id.cell);;
             this.message_image = (ImageView) itemView.findViewById(R.id.message_image);
             this.avatarView = (AvatarView) itemView.findViewById(R.id.avatar);
             this.imageLoader = new PicassoLoader();
@@ -280,4 +294,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     }
 
 
+    public void updateData(){
+        this.chatRoomsCopy.clear();
+        this.chatRoomsCopy.addAll(chatRooms);
+        notifyDataSetChanged();
+
+    }
 }

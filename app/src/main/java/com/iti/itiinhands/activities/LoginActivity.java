@@ -23,6 +23,8 @@ import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 import java.util.List;
 
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
+
 /**
  * Created by Mahmoud on 5/21/2017.
  */
@@ -238,7 +240,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     @Override
     public void onResponse(Object response) {
         Response result = (Response) response;
-
         if (result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = new UserData();
@@ -269,6 +270,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putInt("token", userId);
                     editor.putInt("userType", userType);
+                    editor.putString("myId", String.valueOf(userId));
+                    editor.putString("myName", userNameEdTxt.getText().toString());
 //                editor.putString("token", userId);
                     editor.commit();
                     //navigate using intent to next Activity

@@ -20,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
@@ -30,6 +36,7 @@ import com.iti.itiinhands.fragments.chat.ChatFragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StaffSideMenuActivity extends AppCompatActivity {
 
@@ -48,6 +55,19 @@ public class StaffSideMenuActivity extends AppCompatActivity {
             R.drawable.outbox};
     FragmentManager fragmentManager;
 
+
+    /*
+    * chat part
+    * */
+    SharedPreferences sharedPreferences;
+    String myType;
+    String myId;
+    String myName;
+    String myChatId;
+    DatabaseReference myRoot;
+    /*
+    **/
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -64,6 +84,47 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
             }
         });
+
+        /*
+        * chat part
+        *
+        * */
+
+        //subscribe to my topic to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
+
+        this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
+        //listen for my node to save chat rooms
+        myRoot.child(myChatId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Object val = dataSnapshot.getValue();
+                if(val == null)
+                    myRoot.child(myChatId).setValue("");
+                else if (val instanceof HashMap) {
+                    HashMap<String, String> usersRoomsMap = (HashMap) val;
+                    Map<String, ?> all = sharedPreferences.getAll();
+                    //update the stored keys
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    for (String key : usersRoomsMap.keySet()) {
+                        editor.putString(usersRoomsMap.get(key), key);
+                    }
+                    editor.apply();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        /*
+        *
+        * */
     }
 
     @Override
@@ -75,6 +136,26 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
 
+
+        /*
+        * chat part
+        * */
+        sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+        myName = sharedPreferences.getString("myName", null);
+        myId = sharedPreferences.getString("myId", null);
+        int userType = sharedPreferences.getInt("userType", -1);
+        switch (userType){
+            case 1:
+                myType = "student";
+                break;
+            case 2:
+                myType = "staff";
+                break;
+        }
+
+        myChatId = myType + "_" + myId;
+        /*
+        * */
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(

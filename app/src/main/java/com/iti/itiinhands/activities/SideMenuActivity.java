@@ -71,17 +71,6 @@ public class SideMenuActivity extends AppCompatActivity {
             R.drawable.outbox};
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    /*
-    * chat part
-    * */
-    SharedPreferences sharedPreferences;
-    String myType = "staff";
-    String myId;
-    String myName;
-    String myChatId;
-    DatabaseReference myRoot;
-    /*
-    **/
 
     @Override
     protected void onStart() {
@@ -101,62 +90,13 @@ public class SideMenuActivity extends AppCompatActivity {
             }
         });
 */
-        /*
-        * chat part
-        *
-        * */
 
-        //subscribe to my topic to receive notifications
-        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
-
-        this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
-        //listen for my node to save chat rooms
-        myRoot.child(myChatId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Object val = dataSnapshot.getValue();
-                if(val == null)
-                    myRoot.child(myChatId).setValue("");
-                else if (val instanceof HashMap) {
-                    HashMap<String, String> usersRoomsMap = (HashMap) val;
-                    Map<String, ?> all = sharedPreferences.getAll();
-                    //update the stored keys
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    for (String key : usersRoomsMap.keySet()) {
-                        editor.putString(usersRoomsMap.get(key), key);
-                    }
-                    editor.apply();
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-        /*
-        *
-        * */
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        * chat part
-        * */
-        sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
-        myName = sharedPreferences.getString("myName", null);
-        myId = sharedPreferences.getString("myId", null);
-        myChatId = myType + "_" + myId;
-
-        /*
-        * */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
