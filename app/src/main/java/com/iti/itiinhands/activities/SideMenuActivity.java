@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -78,6 +79,7 @@ public class SideMenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        /*
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +92,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
             }
         });
-
+*/
         /*
         * chat part
         *
@@ -151,14 +153,17 @@ public class SideMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        home = (ImageView) findViewById(R.id.home);
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        ab.setDisplayHomeAsUpEnabled(true);
+    //    home = (ImageView) findViewById(R.id.home);
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
+//                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mDrawerLayout.setDrawerListener(toggle);
+//        toggle.syncState();
 
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
@@ -167,6 +172,9 @@ public class SideMenuActivity extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -383,22 +391,34 @@ public class SideMenuActivity extends AppCompatActivity {
 
     }
 
+//
+//    @Override
+//    public void onBackPressed() {
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return true;
+//    }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 

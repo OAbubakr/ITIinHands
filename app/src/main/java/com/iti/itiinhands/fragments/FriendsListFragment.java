@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -105,6 +106,8 @@ public class FriendsListFragment extends Fragment implements NetworkResponse {
         myId = sharedPreferences.getString("myId", null);
         myChatId = myType + "_" + myId;
 
+        progressDialog = new ProgressDialog(getActivity());
+
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -131,7 +134,12 @@ public class FriendsListFragment extends Fragment implements NetworkResponse {
         friendListAdapter = new FriendListAdapter(getActivity(),
                 chatRooms, R.layout.friends_list_cell, myId);
         chatRoomsRecyclerView.setAdapter(friendListAdapter);
-        chatRoomsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatRoomsRecyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        chatRoomsRecyclerView.addItemDecoration(dividerItemDecoration);
 
         branchesNamesList = new ArrayList<>();
         branchesNamesList.add("Branches");
@@ -218,7 +226,6 @@ public class FriendsListFragment extends Fragment implements NetworkResponse {
             case "staff":
                 NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, id);
 
-                progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setMessage("Loading...");
                 progressDialog.setCancelable(false);
                 progressDialog.show();

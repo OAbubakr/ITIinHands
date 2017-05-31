@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "963936475488",
+    "firebase_url": "https://chatmodule-2fee3.firebaseio.com",
+    "project_id": "chatmodule-2fee3",
+    "storage_bucket": "chatmodule-2fee3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963936475488:android:c60b32daa314ffef",
+        "android_client_info": {
+          "package_name": "com.iti.itiinhands"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963936475488-8d2250914r73vvc4jh3ig65am07h6b25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iti.itiinhands",
+            "certificate_hash": "81b17ab9b765b28761282a00fba69885b08e617e"
+          }
+        },
+        {
+          "client_id": "963936475488-g98lq759lla4s711vipoueledbal1fnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC_0L2YaZVGdaVSTleeOU5B5R341GgNR4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963936475488-g98lq759lla4s711vipoueledbal1fnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

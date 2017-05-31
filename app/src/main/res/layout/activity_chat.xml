@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true">
 
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -27,15 +27,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/chat_edittext_hint"
+                android:textCursorDrawable="@null"
                 android:inputType="text" />
         </FrameLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/chatSendButton"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@android:drawable/ic_input_add" />
 
 

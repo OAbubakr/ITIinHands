@@ -35,6 +35,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     private Context context;
     private List<ChatRoom> chatRooms;
+    private List<ChatRoom> chatRoomsCopy;
     private int cellToInflate;
     private SharedPreferences sharedPreferences;
     private String id;
@@ -56,6 +57,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
         this.context = context;
         this.chatRooms = chatRooms;
+        this.chatRoomsCopy = chatRooms;
+
         this.cellToInflate = cellToInflate;
         this.id = id;
         sharedPreferences = context.getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
@@ -72,6 +75,24 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         View view = li.inflate(cellToInflate, parent, false);
         return new FriendsViewHolder(view);
     }
+
+    public void filter(String text) {
+
+        chatRooms.clear();
+        if (text.isEmpty()) {
+            chatRooms.addAll(chatRoomsCopy);
+        } else {
+            text = text.toLowerCase();
+            for (ChatRoom item : chatRoomsCopy) {
+                if (item.getReceiverName().toLowerCase().contains(text)) {
+                    chatRooms.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+
+    }
+
 
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, final int position) {

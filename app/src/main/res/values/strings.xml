@@ -26,5 +26,5 @@
     <string name="staffLogin">Login as a Staff</string>
     <string name="companyLogin">Login as a Company</string>
 
-    <string name="chat_edittext_hint">type message</string>
+    <string name="chat_edittext_hint">Your Message</string>
 </resources>

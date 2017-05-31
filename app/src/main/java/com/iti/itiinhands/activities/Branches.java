@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Branches extends AppCompatActivity {
-
     private ArrayList<Branch> branchesList = new ArrayList<>();
     private RecyclerView recyclerView;
     private BranchesAdapter branchesAdapter;

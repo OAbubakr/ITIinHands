@@ -32,9 +32,9 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-//private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Ragab ip and url
+private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // mob
 
-    private static final String BASEURL = "http://172.16.3.53:8090/restfulSpring/"; // Ragab ip and url
+//    private static final String BASEURL = "http://172.16.3.53:8090/restfulSpring/"; // iti
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
