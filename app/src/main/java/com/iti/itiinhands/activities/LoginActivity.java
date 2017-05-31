@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         //check loggedIn flag in shared preferences
         data = getSharedPreferences("userData", 0);
         userType = data.getInt("userType", 0);
-        if(data.getBoolean("loggedIn", false)){
+        if (data.getBoolean("loggedIn", false)) {
             //navigate using intent to next Activity
             switch (userType) {
                 case 0:
@@ -81,7 +81,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             }
             startActivity(navigationIntent);
             finish();
-        };
+        }
+        ;
 
         userNameEdTxt = (EditText) findViewById(R.id.userNameLoginViewId);
         passwordEdTxt = (EditText) findViewById(R.id.passwordLoginViewId);
@@ -235,15 +236,15 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         if (result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = new UserData();
-            Double idData = (Double)  map.get("intakeId");
+            Double idData = (Double) map.get("intakeId");
             data.setIntakeId(Integer.valueOf(idData.intValue()));
             data.setBranchName((String) map.get("branchName"));
             data.setTrackName((String) map.get("trackName"));
             data.setName((String) map.get("name"));
-            if(map.get("imagePath")!=null)
-                data.setImagePath((String)map.get("imagePath"));
-            if(map.get("professionalData")!=null)
-                data.setProfessionalData((List<StudentProfessional>)map.get("professionalData"));
+            if (map.get("imagePath") != null)
+                data.setImagePath((String) map.get("imagePath"));
+            if (map.get("professionalData") != null)
+                data.setProfessionalData((List<StudentProfessional>) map.get("professionalData"));
             navigationIntent.putExtra("userData", data);
             startActivity(navigationIntent);
             finish();
@@ -266,23 +267,30 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     editor.commit();
                     //navigate using intent to next Activity
                     switch (userType) {
-                        case 1:
+                        case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
+                            networkManager.getStudentProfileData(myRef, userType, userId);
                             break;
-                        case 2:
+                        case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
+                            startActivity(navigationIntent);
+                            finish();
                             break;
-                        case 3:
+                        case 3://company
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
+                            startActivity(navigationIntent);
+                            finish();
                             break;
-                        case 4:
+                        case 4://guest
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
+                            startActivity(navigationIntent);
+                            finish();
                             break;
                     }
                     ///////////////////////////////////////
                     //get all student data
                     ///////////////////////////////////////
-                    networkManager.getStudentProfileData(myRef, userType, userId);
+
 //                    startActivity(navigationIntent);
 //                    finish();
                     break;

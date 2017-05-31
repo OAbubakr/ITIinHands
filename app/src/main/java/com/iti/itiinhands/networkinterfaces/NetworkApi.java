@@ -9,6 +9,7 @@ import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.*;
+import com.iti.itiinhands.model.behance.BehanceData;
 import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
@@ -48,11 +49,6 @@ public interface NetworkApi {
 //    (@Query("userType") int userType,@Query("userName") String userName,
 //                                           @Query("password") String password);
 
-//    @GET("getBranches")
-//    public Call<ArrayList<Branch>> getBranches();
-//
-//    @GET("getCourses")
-//    public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
 
 
     @GET("getEvents")
@@ -86,4 +82,6 @@ public interface NetworkApi {
 @GET("getStudentsByTrackId")
     public Call<ArrayList<StudentDataByTrackId>>getAllStudentsByTracId(@Query("id")int id);
 
+    @GET("")
+    public Call<BehanceData> getbehanceData(@Query("api_key") String apiKey);
 }

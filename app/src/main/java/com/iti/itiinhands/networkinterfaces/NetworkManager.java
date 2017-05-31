@@ -13,6 +13,7 @@ import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.schedule.SessionModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.2:8084/restfulSpring/"; // Ragab ip and url
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+        private static final String BASEURL = "http://192.168.1.2:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -157,12 +158,12 @@ public class NetworkManager {
     //-------------------------------------POST JOB-------------------------------------------------
     public void postJob(NetworkResponse networkResponse, int companyId, String jobCode,
                         String jobTitle, String jobDesc, String experience, String closingDate,
-                        String sendTo, int jobNoNeed, int subTrackId, String jobDate){
+                        String sendTo, int jobNoNeed, int subTrackId, String jobDate) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Void> call = web.postJob(companyId, jobCode, jobTitle, jobDesc, experience,
-                                         closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
+                closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -173,7 +174,7 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
@@ -202,9 +203,9 @@ public class NetworkManager {
 //        return retrofit;
 //    }
 
-    public void getBranches(NetworkResponse networkResponse){
+    public void getBranches(NetworkResponse networkResponse) {
 
-        final NetworkResponse network=networkResponse;
+        final NetworkResponse network = networkResponse;
 
         NetworkApi web = retrofit.create(NetworkApi.class);
 
@@ -222,17 +223,17 @@ public class NetworkManager {
             public void onFailure(Call<ArrayList<Branch>> call, Throwable t) {
 
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
 
     }
 
-    public void getCoursesByTrack(NetworkResponse networkResponse,int id){
+    public void getCoursesByTrack(NetworkResponse networkResponse, int id) {
 
-        final NetworkResponse network=networkResponse;
-        NetworkApi web =retrofit.create(NetworkApi.class);
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
         Call<ArrayList<Course>> call = web.getCoursesByTrack(id);
         call.enqueue(new Callback<ArrayList<Course>>() {
             @Override
@@ -245,7 +246,7 @@ public class NetworkManager {
             public void onFailure(Call<ArrayList<Course>> call, Throwable t) {
 
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
@@ -319,7 +320,7 @@ public class NetworkManager {
     }
 
 
- public void getAllStudentsByTrackId(final NetworkResponse networkResponse, int id){
+    public void getAllStudentsByTrackId(final NetworkResponse networkResponse, int id) {
 
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<ArrayList<StudentDataByTrackId>> call = web.getAllStudentsByTracId(id);
@@ -341,10 +342,11 @@ public class NetworkManager {
         });
 
 
-
     }
 
 
+    ////////////////////get behance data/////////
+    public void getBehanceData(final NetworkResponse networkResponse){
 
-
+    }
 }
