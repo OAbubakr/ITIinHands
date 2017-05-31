@@ -13,13 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.chatAdapters.ChatRoomAdapter;
 import com.iti.itiinhands.model.chat.ChatMessage;
 
-import static com.iti.itiinhands.fragments.FriendsListFragment.SP_NAME;
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 /**
  * Created by home on 5/22/2017.

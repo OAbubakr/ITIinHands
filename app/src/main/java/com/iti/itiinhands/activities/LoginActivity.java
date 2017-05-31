@@ -12,8 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.dto.StudentProfessional;
 import com.iti.itiinhands.dto.UserData;

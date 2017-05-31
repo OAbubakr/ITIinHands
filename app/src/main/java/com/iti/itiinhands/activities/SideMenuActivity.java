@@ -43,7 +43,6 @@ import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
@@ -52,6 +51,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class SideMenuActivity extends AppCompatActivity {
 
@@ -149,7 +150,7 @@ public class SideMenuActivity extends AppCompatActivity {
         /*
         * chat part
         * */
-        sharedPreferences = getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         myName = sharedPreferences.getString("myName", null);
         myId = sharedPreferences.getString("myId", null);
         myChatId = myType + "_" + myId;
@@ -275,28 +276,10 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
 
                             case 0:
-                                Toast.makeText(getApplicationContext(), "students community", Toast.LENGTH_LONG).show();
-                                fragment = new FriendsListFragment();
-                                bundle = new Bundle();
-                                bundle.putString("receiver_type", "student");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 1:
-                                Toast.makeText(getApplicationContext(), "staff community", Toast.LENGTH_LONG).show();
-                                fragment = new FriendsListFragment();
-                                bundle = new Bundle();
-                                bundle.putString("receiver_type", "staff");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
-                                Toast.makeText(getApplicationContext(), "graduates community", Toast.LENGTH_LONG).show();
-                                fragment = new FriendsListFragment();
-                                bundle = new Bundle();
-                                bundle.putString("receiver_type", "graduate");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             default:
                                 break;
