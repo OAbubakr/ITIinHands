@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -42,26 +44,23 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
     public static final String SP_NAME = "chatRoomsKeys";
     private String receiver_type;
-    private List<ChatRoom> chatRooms = new ArrayList<>();
-//    private List<String> branchesNamesList;
-    SharedPreferences sharedPreferences;
-//    private ArrayAdapter<String> branchesNamesAdapter;
-    private boolean namesDownloaded = false;
+//    private boolean namesDownloaded = false;
+
     String myName;
     String myType = "staff";
     String myId;
     String myChatId;
-
+    SharedPreferences sharedPreferences;
+    private List<ChatRoom> chatRooms = new ArrayList<>();
     private RecyclerView chatRoomsRecyclerView;
     private FriendListAdapter friendListAdapter;
     private BroadcastReceiver receiver;
 
     private ProgressDialog progressDialog;
 
-    ViewPager viewPager;
-    TabLayout tabLayout;
-    FriendlistFragment fragmentFriendsList;
-    RecentChatsFragment fragmentRecentChats;
+//    ViewPager viewPager;
+//    TabLayout tabLayout;
+//    FriendlistFragment fragmentFriendsList;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -107,20 +106,30 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
 
-//        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
-//        ((StaffSideMenuActivity)getActivity()).setSupportActionBar(tb);
-//        ActionBar ab = ((StaffSideMenuActivity)getActivity()).getSupportActionBar();
-//        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-//        ab.setDisplayHomeAsUpEnabled(true);
+        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
+        ((StaffSideMenuActivity)getActivity()).setSupportActionBar(tb);
+        ActionBar ab = ((StaffSideMenuActivity)getActivity()).getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        ab.setDisplayHomeAsUpEnabled(true);
 
+        chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
 
         sharedPreferences = getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE);
         myName = sharedPreferences.getString("myName", null);
         myId = sharedPreferences.getString("myId", null);
         myChatId = myType + "_" + myId;
+
+        //configure the recycler view
+        friendListAdapter = new FriendListAdapter(getActivity(),
+                chatRooms, R.layout.friends_list_cell, myId);
+        chatRoomsRecyclerView.setAdapter(friendListAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatRoomsRecyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        chatRoomsRecyclerView.addItemDecoration(dividerItemDecoration);
 
         progressDialog = new ProgressDialog(getActivity());
 
@@ -150,67 +159,12 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         return view;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ChatFragment.ViewPagerAdapter adapter = new ChatFragment.
-                ViewPagerAdapter(getActivity().getSupportFragmentManager());
-
-        fragmentFriendsList = new FriendlistFragment();
-        fragmentRecentChats = new RecentChatsFragment();
-        adapter.addFragment(fragmentFriendsList, "CONTACTS");
-        adapter.addFragment(fragmentRecentChats, "RECENT CHATS");
-        viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     @Override
     public void onPause() {
         super.onPause();
         System.out.println("");
-        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentFriendsList).commit();
-    //    getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentRecentChats).commit();
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-
-
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-
+//        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentFriendsList).commit();
+//        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentRecentChats).commit();
     }
 
     private void downloadList(int id){
@@ -258,8 +212,8 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                             chatRoom.setSenderName(myName);
                             chatRooms.add(chatRoom);
                         }
-//                        friendListAdapter.notifyDataSetChanged();
-                        fragmentFriendsList.setData(chatRooms);
+                        friendListAdapter.notifyDataSetChanged();
+//                        fragmentFriendsList.setData(chatRooms);
                         break;
                 }
             }
