@@ -10,7 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 
-import static com.iti.itiinhands.fragments.FriendsListFragment.SP_NAME;
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
+
 
 public class FirebaseMessageReceiverService extends FirebaseMessagingService {
 

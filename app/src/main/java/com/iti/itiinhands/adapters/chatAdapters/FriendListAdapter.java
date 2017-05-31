@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
-import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.iti.itiinhands.model.chat.ChatRoom;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +29,7 @@ import agency.tango.android.avatarview.loader.PicassoLoader;
 import agency.tango.android.avatarview.views.AvatarView;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.FriendsViewHolder> {
 
@@ -61,7 +61,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
         this.cellToInflate = cellToInflate;
         this.id = id;
-        sharedPreferences = context.getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(SP_NAME, MODE_PRIVATE);
         myRoot = firebaseDatabase.getReference("users").child(myType);
 
         myId = sharedPreferences.getString("myId", null);
