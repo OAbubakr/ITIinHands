@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
@@ -43,8 +44,6 @@ import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.FriendsListFragment;
-import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
@@ -53,6 +52,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class SideMenuActivity extends AppCompatActivity {
 
@@ -107,8 +108,10 @@ public class SideMenuActivity extends AppCompatActivity {
         * */
 
         //subscribe to my topic to receive notifications
-        FirebaseMessaging f = FirebaseMessaging.getInstance();
-        f.subscribeToTopic(myChatId);
+        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
+        String token = FirebaseInstanceId.getInstance().getToken();
+
 
         this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
         //listen for my node to save chat rooms
@@ -151,7 +154,7 @@ public class SideMenuActivity extends AppCompatActivity {
         /*
         * chat part
         * */
-        sharedPreferences = getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         myName = sharedPreferences.getString("myName", null);
         myId = sharedPreferences.getString("myId", null);
         myChatId = myType + "_" + myId;
@@ -215,8 +218,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         final FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
-                        mDrawerLayout.closeDrawer(expListView);
-
                         break;
 
                     case 4:
@@ -259,13 +260,14 @@ public class SideMenuActivity extends AppCompatActivity {
                                 fragment= new ScheduleFragment();
                                 break;
                             case 1:
-                                //handle permission fragment
-//                                fragment= new PermissionFragment();
+                                //handle grades fragment
+//                                fragment= new StudentCourseList();
+                                fragment = new EmployeeHours();
                                 break;
 
                             case 2:
                                 //handle list of courses fragment
-                                fragment= new StudentCourseList();
+                                fragment = new BranchesFragment();
                                 break;
                             default:
                                 break;
@@ -278,28 +280,10 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
 
                             case 0:
-                                Toast.makeText(getApplicationContext(), "students community", Toast.LENGTH_LONG).show();
-                                fragment = new FriendsListFragment();
-                                bundle = new Bundle();
-                                bundle.putString("receiver_type", "student");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 1:
-                                Toast.makeText(getApplicationContext(), "staff community", Toast.LENGTH_LONG).show();
-                                fragment = new FriendsListFragment();
-                                bundle = new Bundle();
-                                bundle.putString("receiver_type", "staff");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
-                                Toast.makeText(getApplicationContext(), "graduates community", Toast.LENGTH_LONG).show();
-                                fragment = new FriendsListFragment();
-                                bundle = new Bundle();
-                                bundle.putString("receiver_type", "graduate");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             default:
                                 break;
