@@ -115,6 +115,7 @@ public class GraduateSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace profile fragment
+                        Toast.makeText(getApplicationContext(), "Profile", Toast.LENGTH_LONG).show();
                         break;
 
 

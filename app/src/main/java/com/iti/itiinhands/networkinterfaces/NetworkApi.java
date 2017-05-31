@@ -6,10 +6,14 @@ import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.StudentDataByTrackId;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.*;
 import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
 
+import com.iti.itiinhands.model.Response;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,21 +28,8 @@ import retrofit2.http.Query;
 
 public interface NetworkApi {
 
-    //An example
-    /*
-    @GET("example")
-    public Call<Model>getModel();
-
-    @GET("example/{id}")
-    public Call<Model>getModel(@Path("id")int id);
-
-    @GET("example")
-    public Call<Model>getModel(@Query("id")int id);
-     */
-//    @FormUrlEncoded
-//    @GET("login/onLoginAuth")
     @POST("login/onLoginAuth")
-    public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
+    public Call<Response> onLoginAuth(@Body LoginRequest request);
 
     @GET("getStudentGrades")
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);
@@ -52,8 +43,26 @@ public interface NetworkApi {
     public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
 
 
+    @POST("getStudentSchedule")
+    public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+//    (@Query("userType") int userType,@Query("userName") String userName,
+//                                           @Query("password") String password);
+
+    @GET("getBranches")
+    public Call<ArrayList<Branch>> getBranches();
+
+    @GET("getCourses")
+    public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
+
+
     @GET("getEvents")
     public Call<List<Event>> getEvents();
+
+    @GET("profile/onGetUserData")
+    public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);
+
+    @GET("profile/onSetUserData")
+    public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Query("userData") UserData userData);
 
     @GET("postJob")
     public Call<Void> postJob(@Query("companyId") int companyId, @Query("jobCode") String jopCode,
@@ -71,4 +80,10 @@ public interface NetworkApi {
 
     @GET("getTrackSchedule")
     Call<List<SessionModel>> getTrackSchedule(@Query("trackId")int trackId);
+
+
+//////////
+@GET("getStudentsByTrackId")
+    public Call<ArrayList<StudentDataByTrackId>>getAllStudentsByTracId(@Query("id")int id);
+
 }

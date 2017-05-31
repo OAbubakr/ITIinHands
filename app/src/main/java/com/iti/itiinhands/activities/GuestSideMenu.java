@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.EventListFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,18 +115,20 @@ public class GuestSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace with about iti fragment
+                        Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_LONG).show();
                         break;
                     case 1:
                         //tracks fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Tracks", Toast.LENGTH_LONG).show();
                         break;
                     case 2:
                         //events fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        fragment = new EventListFragment();
+                        Toast.makeText(getApplicationContext(), "Events", Toast.LENGTH_LONG).show();
                         break;
                     case 3:
                         // maps fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Maps", Toast.LENGTH_LONG).show();
                         break;
 
                     case 4:

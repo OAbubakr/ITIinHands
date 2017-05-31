@@ -24,4 +24,11 @@
     <string name="graduateLogin">Login as a Graduate</string>
     <string name="staffLogin">Login as a Staff</string>
     <string name="companyLogin">Login as a Company</string>
+    <string name="editBtnStr">Edit</string>
+    <string name="uploadBtnStr">Upload</string>
+    <string name="gitProfileTxt">Git Hub</string>
+    <string name="linkedinProfileTxt">LinkedIn</string>
+    <string name="behanceProfileTxt">Behance</string>
+    <string name="cancelStrBtn">CANCEL</string>
+    <string name="submitStrBtn">SUBMIT</string>
 </resources>
