@@ -1,6 +1,5 @@
 package com.iti.itiinhands.activities;
 
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -60,34 +59,5 @@ public class Branches extends AppCompatActivity implements NetworkResponse{
     @Override
     public void onFailure() {
 
-        Track t4 = new Track();
-        t4.setTrackName("Mobile");
-
-        Track t5 = new Track();
-        t5.setTrackName("OS");
-
-        ArrayList<Track> tracksList = new ArrayList<>();
-        Track[] t = new Track[]{t1, t2, t3, t4, t5};
-        tracksList.addAll(Arrays.asList(t));
-
-        Branch b1 = new Branch();
-        b1.setLocation("Alexandria");
-        b1.setTracks(tracksList);
-
-        Branch b2 = new Branch();
-        b2.setLocation("Cairo");
-        b2.setTracks(tracksList);
-
-        Branch b3 = new Branch();
-        b3.setLocation("Esmailia");
-        b3.setTracks(tracksList);
-
-        Branch b4 = new Branch();
-        b4.setLocation("Elmansoura");
-        b4.setTracks(tracksList);
-
-        Branch[] b = new Branch[]{b1, b2, b3, b4};
-        branchesList.addAll(Arrays.asList(b));
-        branchesAdapter.notifyDataSetChanged();
     }
 }

@@ -102,13 +102,13 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String password = passwordEdTxt.getText().toString();
-                String name = userNameEdTxt.getText().toString();
-
-                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myId", password).apply();
-                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myName", name).apply();
-
-                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
+//                String password = passwordEdTxt.getText().toString();
+//                String name = userNameEdTxt.getText().toString();
+//
+//                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myId", password).apply();
+//                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myName", name).apply();
+//
+//                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
                 Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
                 //save userType in SharedPreferences
                 SharedPreferences data = getSharedPreferences("userData", 0);

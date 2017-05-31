@@ -1,30 +1,17 @@
 package com.iti.itiinhands.model;
 
-import com.iti.itiinhands.beans.Track;
+import com.iti.itiinhands.model.Track;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by home on 5/29/2017.
  */
 
-public class Branch {
+public class Branch implements Serializable {
 
-    int branchId;
-    String branchName;
-    String branchArabicName;
-    ArrayList<Track> tracks = new ArrayList<>();
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
-/**
- * Created by salma on 24/05/2017.
- */
-
-public class Branch implements Serializable{
-
-    private  int branchId;
+    private int branchId;
     private String branchName;
     private String branchArabicName;
     private ArrayList<Track> tracks = new ArrayList<>();
@@ -60,9 +47,4 @@ public class Branch implements Serializable{
     public void setTracks(ArrayList<Track> tracks) {
         this.tracks = tracks;
     }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/master
 }
