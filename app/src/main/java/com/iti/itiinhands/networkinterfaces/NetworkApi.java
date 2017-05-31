@@ -50,6 +50,8 @@ public interface NetworkApi {
 
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+//    (@Query("userType") int userType,@Query("userName") String userName,
+//                                           @Query("password") String password);
 
 
 
