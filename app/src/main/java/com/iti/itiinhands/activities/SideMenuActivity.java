@@ -181,13 +181,13 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 4:
                                 //handle announcment fragment
 
-                                Announcement announcement=new Announcement();
-                                announcement.setDate(1234);
-                                announcement.setBody("cdcnjkdnckc");
-                                announcement.setType(1);
-                                announcement.setTitle("dnwkendjkwnejdk");
-                                DataBase DB=DataBase.getInstance(getApplicationContext());
-                                DB.insertAnnouncement(announcement);
+//                                Announcement announcement=new Announcement();
+//                                announcement.setDate(1234);
+//                                announcement.setBody("cdcnjkdnckc");
+//                                announcement.setType(1);
+//                                announcement.setTitle("dnwkendjkwnejdk");
+//                                DataBase DB=DataBase.getInstance(getApplicationContext());
+//                                DB.insertAnnouncement(announcement);
                                 fragment = new AnnouncementFragment();
                                 break;
                             case 5:
