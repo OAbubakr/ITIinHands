@@ -185,10 +185,10 @@ public class SideMenuActivity extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        ///It will be retrieved from shared preferences whish would be set on login
         name.setText("dina");
         track.setText("web and mobile");
 
+        // Add header view to the expandable list
 
         expListView.addHeaderView(headerView);
 
@@ -255,9 +255,11 @@ public class SideMenuActivity extends AppCompatActivity {
                                 fragment= new ScheduleFragment();
                                 break;
                             case 1:
-                                //handle permission fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
+                                //handle grades fragment
+//                                fragment= new StudentCourseList();
+                                fragment = new EmployeeHours();
                                 break;
+
                             case 2:
                                 //handle list of courses fragment
                                 fragment = new BranchesFragment();

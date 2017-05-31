@@ -2,6 +2,7 @@ package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.Branch;
@@ -33,6 +34,9 @@ public interface NetworkApi {
 
     @POST("login/onLoginAuth")
     public Call<Response> onLoginAuth(@Body LoginRequest request);
+
+    @GET("getEmpHours")
+    public Call<EmpHour> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
 
     @GET("getStudentGrades")
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);
