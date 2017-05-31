@@ -180,10 +180,7 @@ public class SideMenuActivity extends AppCompatActivity {
 //                                fragment= new StudentCourseList();
                                 fragment = new EmployeeHours();
                                 break;
-                            case 2:
-                                //handle permission fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
-                                break;
+
                             case 2:
                                 //handle list of courses fragment
                                 fragment = new BranchesFragment();
