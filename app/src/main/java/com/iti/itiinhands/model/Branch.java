@@ -15,6 +15,19 @@ public class Branch {
     String branchArabicName;
     ArrayList<Track> tracks = new ArrayList<>();
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+/**
+ * Created by salma on 24/05/2017.
+ */
+
+public class Branch implements Serializable{
+
+    private  int branchId;
+    private String branchName;
+    private String branchArabicName;
+    private ArrayList<Track> tracks = new ArrayList<>();
 
     public int getBranchId() {
         return branchId;
@@ -47,6 +60,9 @@ public class Branch {
     public void setTracks(ArrayList<Track> tracks) {
         this.tracks = tracks;
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
 }

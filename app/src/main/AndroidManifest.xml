@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,10 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
@@ -34,6 +30,41 @@
             <!--android:name=".activities.EventList"></activity>-->
             <!--android:label="@string/title_activity_event_list"-->
             <!--android:theme="@style/AppTheme_NoActionBar" />-->
+        <activity android:name=".activities.StudentCourseList" />
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- android:label="@string/title_activity_event_list" -->
+        <!-- android:theme="@style/AppTheme_NoActionBar" /> -->
+        <!--<activity android:name=".activities.Our"-->
+        <activity android:name=".activities.MainActivity" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <!--<activity android:name=".activities.StudentCourseList" />-->
+        <!-- <activity android:name=".activities.TrackDetails"></activity> -->
+        <!-- <activity android:name=".activities.StudentCourseList"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name=".activities.EventList"></activity> -->
+        <!-- android:label="@string/title_activity_event_list" -->
+        <!-- android:theme="@style/AppTheme_NoActionBar" /> -->
+
+        <activity android:name=".activities.OurWalkthrough">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
 
@@ -68,6 +99,8 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".activities.GraduateSideMenu" />
+        <activity android:name=".activities.Schedule"></activity>
     </application>
 
 </manifest>

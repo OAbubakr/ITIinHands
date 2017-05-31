@@ -1,6 +1,8 @@
 package com.iti.itiinhands.activities;
 
 import android.content.SharedPreferences;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -36,10 +38,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.beans.Announcement;
+import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
+import com.iti.itiinhands.fragments.StaffSchedule;
+import com.iti.itiinhands.fragments.StudentProfileFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,17 +160,14 @@ public class SideMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        ab.setDisplayHomeAsUpEnabled(true);
-    //    home = (ImageView) findViewById(R.id.home);
+        home = (ImageView) findViewById(R.id.home);
 
 
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
-//                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        mDrawerLayout.setDrawerListener(toggle);
-//        toggle.syncState();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
 
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
@@ -172,9 +176,6 @@ public class SideMenuActivity extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -184,15 +185,16 @@ public class SideMenuActivity extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
+        ///It will be retrieved from shared preferences whish would be set on login
         name.setText("dina");
         track.setText("web and mobile");
 
-        // Add header view to the expandable list
 
         expListView.addHeaderView(headerView);
 
 //        //////////////////////////sert the default fragment  student schedule
-        fragment = new BranchesFragment();
+        fragment = new StudentProfileFragment();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
@@ -207,12 +209,27 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 0:
 
                         //replace with profile fragment
-                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        fragment = new StudentProfileFragment();
+                        final FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
                         break;
 
                     case 4:
                         //logout action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.remove("loggedIn");
+                        editor.remove("userId");
+                        editor.remove("userType");
+                        editor.commit();
+
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
+
+                        //send user back to login activity
+                        finish();
                         break;
 
 
@@ -238,22 +255,10 @@ public class SideMenuActivity extends AppCompatActivity {
                                 fragment= new ScheduleFragment();
                                 break;
                             case 1:
-                                //handle grades fragment
-                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
-                                break;
-                            case 2:
                                 //handle permission fragment
                                 Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
                                 break;
-                            case 3:
-                                //handle evaluation fragment
-                                fragment = new BranchesFragment();
-                                break;
-                            case 4:
-                                //handle announcment fragment
-                                fragment = new BranchesFragment();
-                                break;
-                            case 5:
+                            case 2:
                                 //handle list of courses fragment
                                 fragment = new BranchesFragment();
                                 break;
@@ -299,19 +304,36 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 3:
                         switch (childPosition) {
                             case 0:
+                                //About ITI
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
+                                //Tracks
                                 fragment = new BranchesFragment();
                                 break;
                             case 2:
+                                //Events
                                 fragment = new EventListFragment();
                                 break;
                             case 3:
+                                //Maps
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 4:
+                                //Bus Services
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                break;
+                            case 5:
+                                //Announcements
+                                //handle announcment fragment
+                                Announcement announcement=new Announcement();
+                                announcement.setDate(1234);
+                                announcement.setBody("cdcnjkdnckc");
+                                announcement.setType(1);
+                                announcement.setTitle("dnwkendjkwnejdk");
+                                DataBase DB=DataBase.getInstance(getApplicationContext());
+                                DB.insertAnnouncement(announcement);
+                                fragment = new AnnouncementFragment();
                                 break;
 
                             default:
@@ -359,10 +381,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         List<String> myTrack = new ArrayList<String>();
         myTrack.add("Schedule");
-        myTrack.add("Grades");
         myTrack.add("Permission");
-        myTrack.add("Evaluation");
-        myTrack.add("Announcment");
         myTrack.add("List of Courses");
 
 
@@ -378,6 +397,7 @@ public class SideMenuActivity extends AppCompatActivity {
         aboutIti.add("Events");
         aboutIti.add("Maps");
         aboutIti.add("Bus Services");
+        aboutIti.add("Announcements");
 
 
         List<String> logout = new ArrayList<String>();
@@ -391,34 +411,22 @@ public class SideMenuActivity extends AppCompatActivity {
 
     }
 
-//
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu, menu);
-//        return true;
-//    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
 
 
