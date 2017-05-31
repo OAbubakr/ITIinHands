@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.EventListFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,32 +115,33 @@ public class GuestSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace with about iti fragment
+                        Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_LONG).show();
                         break;
                     case 1:
                         //tracks fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Tracks", Toast.LENGTH_LONG).show();
                         break;
                     case 2:
                         //events fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        fragment = new EventListFragment();
+                        Toast.makeText(getApplicationContext(), "Events", Toast.LENGTH_LONG).show();
                         break;
                     case 3:
                         // maps fragment
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
-                        break;
-                    case 4:
-                        // handle bus services action
-                        Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Maps", Toast.LENGTH_LONG).show();
                         break;
 
-                    case 5:
+                    case 4:
                         // handle logout action
                         //Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
-                        SharedPreferences.Editor editor = setting.edit();
-                        editor.clear();
-                        editor.commit();
+//                        SharedPreferences setting = getSharedPreferences("userData", 0);
+//                        SharedPreferences.Editor editor = setting.edit();
+//                        editor.clear();
+//                        editor.commit();
+
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
 
                         //send user back to login activity
                         finish();
@@ -179,21 +181,18 @@ public class GuestSideMenu extends AppCompatActivity {
         listDataHeader.add("Tracks");
         listDataHeader.add("Events");
         listDataHeader.add("Maps");
-        listDataHeader.add("Bus services");
 
         // Adding child data
         List<String> iti = new ArrayList<String>();
         List<String> tracks = new ArrayList<String>();
         List<String> events = new ArrayList<String>();
         List<String> maps = new ArrayList<String>();
-        List<String> busServices = new ArrayList<String>();
 
 
         listDataChild.put(listDataHeader.get(0), iti); // Header, Child data
         listDataChild.put(listDataHeader.get(1), tracks);
         listDataChild.put(listDataHeader.get(2), events);
         listDataChild.put(listDataHeader.get(3), maps);
-        listDataChild.put(listDataHeader.get(4), busServices);
 
     }
 

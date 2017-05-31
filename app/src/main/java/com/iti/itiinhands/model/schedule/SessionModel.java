@@ -14,13 +14,13 @@ public class SessionModel {
     private String instructorName;
     private String sessionPercentage;
     private String dayName;
-    private Session trackName;
+    private String trackName;
 
-    public Session getTrackName() {
+    public String getTrackName() {
         return trackName;
     }
 
-    public void setTrackName(Session trackName) {
+    public void setTrackName(String trackName) {
         this.trackName = trackName;
     }
 

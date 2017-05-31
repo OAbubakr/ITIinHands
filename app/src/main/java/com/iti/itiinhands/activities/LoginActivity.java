@@ -3,8 +3,6 @@ package com.iti.itiinhands.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,13 +12,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
+import com.iti.itiinhands.fragments.FriendsListFragment;
+import com.google.gson.internal.LinkedTreeMap;
+import com.iti.itiinhands.dto.StudentProfessional;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
-import com.iti.itiinhands.networkinterfaces.Response;
+
+import java.util.List;
 
 /**
  * Created by Mahmoud on 5/21/2017.
@@ -43,11 +46,44 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private Button companyBtn;
     private int userType = 0;
     private Intent navigationIntent;
+    private SharedPreferences data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_view);
+
+        //check loggedIn flag in shared preferences
+        data = getSharedPreferences("userData", 0);
+        userType = data.getInt("userType", 0);
+        if (data.getBoolean("loggedIn", false)) {
+            //navigate using intent to next Activity
+            switch (userType) {
+                case 0:
+                    //type 0 -> goes to Guest side menu
+                    navigationIntent = new Intent(getApplicationContext(), GuestSideMenu.class);
+                    break;
+                case 1:
+                    //type 1 -> goes to Student side menu
+                    navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
+                    break;
+                case 2:
+                    //type 2 -> goes to Staff side menu
+                    navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
+                    break;
+                case 3:
+                    //type 3 -> goes to Company side menu
+                    navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
+                    break;
+                case 4:
+                    //type 4 -> goes to Graduate side menu
+                    navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
+                    break;
+            }
+            startActivity(navigationIntent);
+            finish();
+        }
+        ;
 
         userNameEdTxt = (EditText) findViewById(R.id.userNameLoginViewId);
         passwordEdTxt = (EditText) findViewById(R.id.passwordLoginViewId);
@@ -66,7 +102,18 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
+//                String password = passwordEdTxt.getText().toString();
+//                String name = userNameEdTxt.getText().toString();
+//
+//                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myId", password).apply();
+//                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myName", name).apply();
+//
+//                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
+                //save userType in SharedPreferences
+                SharedPreferences data = getSharedPreferences("userData", 0);
+                SharedPreferences.Editor editor = data.edit();
+                editor.putInt("userType", 5);
                 startActivity(intent);
             }
         });
@@ -117,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                         userNameCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         if (userNameEdTxt.length() > 0 && passwordEdTxt.length() > 0) {
-                            networkManager.getLoginAuthData(myRef,userType, userNameEdTxt.getText().toString(), passwordEdTxt.getText().toString());
+                            networkManager.getLoginAuthData(myRef, userType, userNameEdTxt.getText().toString(), passwordEdTxt.getText().toString());
                         } else {
                             if (userNameEdTxt.length() == 0) {
                                 userNameCheckTv.setText("Username is empty");
@@ -192,45 +239,74 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onResponse(Object response) {
-        LoginResponse loginResponse = (LoginResponse) response;
-        String status = loginResponse.getStatus();
-        String error = loginResponse.getError();
-        int userId = loginResponse.getData();
-        //get data from msg and then check status value if success navigate to next activity
-        //if failed print the error in username or password check textView
-        switch (status) {
-            case "success":
-                //save userID in SharedPreferences
-                SharedPreferences data = getSharedPreferences("userData", 0);
-                SharedPreferences.Editor editor = data.edit();
-                editor.putInt("userId", userId);
-                ///////////////////////////////////////
-                //get all student data
-                ///////////////////////////////////////
+        Response result = (Response) response;
 
-                editor.commit();
-                //navigate using intent to next Activity
-                switch (userType) {
-                    case 1:
-                        navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
-                        break;
-                    case 2:
-                        navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
-                        break;
-                    case 3:
-                        navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
-                        break;
-                    case 4:
-                        navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
-                        break;
-                }
-                startActivity(navigationIntent);
-                finish();
-                break;
-            case "fail":
-                passwordCheckTv.setText(error);
-                passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
-                break;
+        if (result.getResponseData() instanceof LinkedTreeMap) {
+            LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
+            UserData data = new UserData();
+            Double idData = (Double) map.get("intakeId");
+            data.setIntakeId(Integer.valueOf(idData.intValue()));
+            data.setBranchName((String) map.get("branchName"));
+            data.setTrackName((String) map.get("trackName"));
+            data.setName((String) map.get("name"));
+            if (map.get("imagePath") != null)
+                data.setImagePath((String) map.get("imagePath"));
+            if (map.get("professionalData") != null)
+                data.setProfessionalData((List<StudentProfessional>) map.get("professionalData"));
+            navigationIntent.putExtra("userData", data);
+            startActivity(navigationIntent);
+            finish();
+        } else {
+//            LoginResponse loginResponse = (R) response;
+            String status = result.getStatus();
+            String error = result.getError();
+            Double idData = (Double) result.getResponseData();
+            int userId = Integer.valueOf(idData.intValue());
+            //get data from msg and then check status value if success navigate to next activity
+            //if failed print the error in username or password check textView
+            switch (status) {
+                case "success":
+                    //save userID and userType in SharedPreferences
+                    SharedPreferences data = getSharedPreferences("userData", 0);
+                    SharedPreferences.Editor editor = data.edit();
+                    editor.putInt("token", userId);
+                    editor.putInt("userType", userType);
+//                editor.putString("token", userId);
+                    editor.commit();
+                    //navigate using intent to next Activity
+                    switch (userType) {
+                        case 1://student
+                            navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
+                            networkManager.getStudentProfileData(myRef, userType, userId);
+                            break;
+                        case 2://staff
+                            navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
+                            startActivity(navigationIntent);
+                            finish();
+                            break;
+                        case 3://company
+                            navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
+                            startActivity(navigationIntent);
+                            finish();
+                            break;
+                        case 4://guest
+                            navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
+                            startActivity(navigationIntent);
+                            finish();
+                            break;
+                    }
+                    ///////////////////////////////////////
+                    //get all student data
+                    ///////////////////////////////////////
+
+//                    startActivity(navigationIntent);
+//                    finish();
+                    break;
+                case "fail":
+                    passwordCheckTv.setText(error);
+                    passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
+                    break;
+            }
         }
     }
 

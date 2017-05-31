@@ -7,15 +7,16 @@ import android.util.Log;
 
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
-import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.StudentDataByTrackId;
+import com.iti.itiinhands.model.schedule.SessionModel;
 
-import java.util.ArrayList;
-
-import retrofit2.*;
-import retrofit2.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class NetworkManager {
 
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.101:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://192.168.1.6:8084/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -84,22 +85,86 @@ public class NetworkManager {
 
     }
 
+//    -----------------------get employee hours-----------------------------------------------------
+public void getEmployeeHours(NetworkResponse networkResponse, int id,String start,String end) {
+    final NetworkResponse network = networkResponse;
+
+    NetworkApi web = retrofit.create(NetworkApi.class);
+    Call<EmpHour> call = web.getEmpHours(id,start,end);
+    call.enqueue(new Callback<EmpHour>() {
+        @Override
+        public void onResponse(Call<EmpHour> call, retrofit2.Response<EmpHour> response) {
+            network.onResponse(response.body());
+
+            System.out.println("response is"+response.body().getWorkingDays());
+        }
+
+        @Override
+        public void onFailure(Call<EmpHour> call, Throwable t) {
+            t.printStackTrace();
+            Log.e("network", t.toString());
+            network.onFailure();
+        }
+    });
+
+
+}
+//--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
+
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Instructor>> call = web.getInstructorByBranch(branchId);
+        call.enqueue(new Callback<List<Instructor>>() {
+            @Override
+            public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Instructor>> call, Throwable t) {
+                t.printStackTrace();
+                networkResponse.onFailure();
+            }
+        });
+
+    }
+
+    public void getBranchesNames(final NetworkResponse networkResponse){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Branch>> call = web.getBranchesNames();
+        call.enqueue(new Callback<List<Branch>>() {
+            @Override
+            public void onResponse(Call<List<Branch>> call, retrofit2.Response<List<Branch>> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Branch>> call, Throwable t) {
+                t.printStackTrace();
+                networkResponse.onFailure();
+            }
+        });
+
+    }
+
+
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
 
-        call.enqueue(new Callback<LoginResponse>() {
+//        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
+        Call<com.iti.itiinhands.model.Response> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+        call.enqueue(new Callback<Response>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
-                LoginResponse loginResponse = response.body();
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response loginResponse = response.body();
                 network.onResponse(loginResponse);
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<Response> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 network.onFailure();
@@ -110,7 +175,7 @@ public class NetworkManager {
     }
 
     //------------------------------------GET EVENTS------------------------------------------------
-    public void getEvents(NetworkResponse networkResponse){
+    public void getEvents(NetworkResponse networkResponse) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -119,28 +184,52 @@ public class NetworkManager {
         call.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, retrofit2.Response<List<Event>> response) {
-                ArrayList<Event> events =(ArrayList<Event>) response.body();
+                ArrayList<Event> events = (ArrayList<Event>) response.body();
                 network.onResponse(events);
             }
 
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
     }
 
+    //////////////////////////////////getProfile data /////////////
+    public void getStudentProfileData(NetworkResponse networkResponse, int userType, int userId) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getUserData(userType, userId);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
+    ////////////////////////////////////////////
     //-------------------------------------POST JOB-------------------------------------------------
     public void postJob(NetworkResponse networkResponse, int companyId, String jobCode,
                         String jobTitle, String jobDesc, String experience, String closingDate,
-                        String sendTo, int jobNoNeed, int subTrackId, String jobDate){
+                        String sendTo, int jobNoNeed, int subTrackId, String jobDate) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Void> call = web.postJob(companyId, jobCode, jobTitle, jobDesc, experience,
-                                         closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
+                closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -151,7 +240,7 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
@@ -180,9 +269,9 @@ public class NetworkManager {
 //        return retrofit;
 //    }
 
-    public void getBranches(NetworkResponse networkResponse){
+    public void getBranches(NetworkResponse networkResponse) {
 
-        final NetworkResponse network=networkResponse;
+        final NetworkResponse network = networkResponse;
 
         NetworkApi web = retrofit.create(NetworkApi.class);
 
@@ -200,21 +289,21 @@ public class NetworkManager {
             public void onFailure(Call<ArrayList<Branch>> call, Throwable t) {
 
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
 
     }
 
-    public void getCoursesByTrack(NetworkResponse networkResponse,int id){
+    public void getCoursesByTrack(NetworkResponse networkResponse, int id) {
 
-        final NetworkResponse network=networkResponse;
-        NetworkApi web =retrofit.create(NetworkApi.class);
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
         Call<ArrayList<Course>> call = web.getCoursesByTrack(id);
         call.enqueue(new Callback<ArrayList<Course>>() {
             @Override
-            public void onResponse(Call<ArrayList<Course>> call, Response<ArrayList<Course>> response) {
+            public void onResponse(Call<ArrayList<Course>> call, retrofit2.Response<ArrayList<Course>> response) {
                 ArrayList<Course> courses = response.body();
                 network.onResponse(courses);
             }
@@ -223,9 +312,107 @@ public class NetworkManager {
             public void onFailure(Call<ArrayList<Course>> call, Throwable t) {
 
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
+    }
+
+    public void getInstructorSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+
+        Call<List<SessionModel>> call = web.getInstructorSchedule(id);
+
+        call.enqueue(new Callback<List<SessionModel>>() {
+
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, retrofit2.Response<List<SessionModel>> response) {
+
+                network.onResponse(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getStudentSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<List<SessionModel>> call = web.getStudentSchedule(id);
+        call.enqueue(new Callback<List<SessionModel>>() {
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, retrofit2.Response<List<SessionModel>> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getTrackSchedule(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+
+        Call<List<SessionModel>> call = web.getTrackSchedule(id);
+        call.enqueue(new Callback<List<SessionModel>>() {
+            @Override
+            public void onResponse(Call<List<SessionModel>> call, retrofit2.Response<List<SessionModel>> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SessionModel>> call, Throwable t) {
+                network.onFailure();
+
+            }
+        });
+
+    }
+
+
+    public void getAllStudentsByTrackId(final NetworkResponse networkResponse, int id) {
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<ArrayList<StudentDataByTrackId>> call = web.getAllStudentsByTracId(id);
+
+        call.enqueue(new Callback<ArrayList<StudentDataByTrackId>>() {
+            @Override
+            public void onResponse(Call<ArrayList<StudentDataByTrackId>> call, retrofit2.Response<ArrayList<StudentDataByTrackId>> response) {
+
+                networkResponse.onResponse(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<StudentDataByTrackId>> call, Throwable t) {
+
+                networkResponse.onFailure();
+
+            }
+        });
+
+
+    }
+
+
+    ////////////////////get behance data/////////
+    public void getBehanceData(final NetworkResponse networkResponse){
+
     }
 }

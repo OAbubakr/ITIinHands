@@ -115,6 +115,7 @@ public class GraduateSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace profile fragment
+                        Toast.makeText(getApplicationContext(), "Profile", Toast.LENGTH_LONG).show();
                         break;
 
 
@@ -129,6 +130,9 @@ public class GraduateSideMenu extends AppCompatActivity {
                         SharedPreferences.Editor editor = setting.edit();
                         editor.clear();
                         editor.commit();
+
+                        Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(logIn);
 
                         //send user back to login activity
                         finish();
