@@ -44,6 +44,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.FriendsListFragment;
+import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
@@ -106,7 +107,8 @@ public class SideMenuActivity extends AppCompatActivity {
         * */
 
         //subscribe to my topic to receive notifications
-        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
+        FirebaseMessaging f = FirebaseMessaging.getInstance();
+        f.subscribeToTopic(myChatId);
 
         this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
         //listen for my node to save chat rooms
@@ -213,6 +215,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         final FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        mDrawerLayout.closeDrawer(expListView);
+
                         break;
 
                     case 4:
@@ -255,14 +259,13 @@ public class SideMenuActivity extends AppCompatActivity {
                                 fragment= new ScheduleFragment();
                                 break;
                             case 1:
-                                //handle grades fragment
-//                                fragment= new StudentCourseList();
-                                fragment = new EmployeeHours();
+                                //handle permission fragment
+//                                fragment= new PermissionFragment();
                                 break;
 
                             case 2:
                                 //handle list of courses fragment
-                                fragment = new BranchesFragment();
+                                fragment= new StudentCourseList();
                                 break;
                             default:
                                 break;

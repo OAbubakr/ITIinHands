@@ -271,9 +271,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putInt("token", userId);
                     editor.putInt("userType", userType);
-//                editor.putString("token", userId);
-                    editor.commit();
+                    editor.putBoolean("loggedIn", true);
                     //navigate using intent to next Activity
+//                    editor.commit();
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
