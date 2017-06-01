@@ -46,8 +46,10 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
+import com.iti.itiinhands.fragments.StudentCourseList;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -104,7 +106,23 @@ public class SideMenuActivity extends AppCompatActivity {
 
         ////for expandale
         /////////
+
+
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
+
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousItem = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousItem)
+                    expListView.collapseGroup(previousItem);
+                previousItem = groupPosition;
+            }
+        });
+
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -115,9 +133,9 @@ public class SideMenuActivity extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
-        SharedPreferences data = getSharedPreferences("userData", 0);
+        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString("userObject",""));
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -143,18 +161,15 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 0:
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
-                        //final FragmentManager fragmentManager = getSupportFragmentManager();
-                        //fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-//                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 3:
+                    case 2:
                         //job posts
                         fragment = new AllJobPostsFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
-                    case 5:
+                    case 4:
                         //logout action
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
@@ -197,12 +212,12 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 1:
                                 //handle grades fragment
 //                                fragment= new StudentCourseList();
-                                fragment = new EmployeeHours();
+                                fragment = new PermissionFragment();
                                 break;
 
                             case 2:
                                 //handle list of courses fragment
-                                fragment = new BranchesFragment();
+                                fragment = new StudentCourseList();
                                 break;
                             default:
                                 break;
@@ -210,22 +225,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                     case 2:
-                        //community part
-                        Bundle bundle;
-                        switch (childPosition) {
-
-                            case 0:
-                                break;
-                            case 1:
-                                break;
-                            case 2:
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-
-                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //About ITI
@@ -294,7 +293,6 @@ public class SideMenuActivity extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("My Track");
-        listDataHeader.add("Community");
         listDataHeader.add("Job Posts");
         listDataHeader.add("ITI");
         listDataHeader.add("Logout");
@@ -332,10 +330,9 @@ public class SideMenuActivity extends AppCompatActivity {
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), myTrack);
-        listDataChild.put(listDataHeader.get(2), community);
-        listDataChild.put(listDataHeader.get(3), jobposts);
-        listDataChild.put(listDataHeader.get(4), aboutIti);
-        listDataChild.put(listDataHeader.get(5), logout);
+        listDataChild.put(listDataHeader.get(2), jobposts);
+        listDataChild.put(listDataHeader.get(3), aboutIti);
+        listDataChild.put(listDataHeader.get(4), logout);
 
     }
 

@@ -30,7 +30,7 @@
             <!--android:name=".activities.EventList"></activity>-->
             <!--android:label="@string/title_activity_event_list"-->
             <!--android:theme="@style/AppTheme_NoActionBar" />-->
-        <activity android:name=".activities.StudentCourseList" />
+        <!--<activity android:name=".activities.StudentCourseList" />-->
 
 
         <activity android:name=".activities.OurWalkthrough">
@@ -40,8 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.EventList"></activity>
+        <!--<activity-->
+            <!--android:name=".activities.EventList"></activity>-->
             <!--android:label="@string/title_activity_event_list"-->
             <!--android:theme="@style/AppTheme_NoActionBar" />-->
         <activity android:name=".activities.MainActivity" />
@@ -78,7 +78,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.GraduateSideMenu" />
+        <!--<activity android:name=".activities.GraduateSideMenu" />-->
         <activity android:name=".activities.Schedule"></activity>
     </application>
 

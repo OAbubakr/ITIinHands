@@ -31,14 +31,14 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
     NetworkManager networkManager;
     Track track;
 
-    ArrayList<Course> courses= new ArrayList<>();
+    ArrayList<Course> courses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_details);
 
-        networkManager=NetworkManager.getInstance(getApplicationContext());
+        networkManager = NetworkManager.getInstance(getApplicationContext());
 
         track = (Track) getIntent().getSerializableExtra("trackObject");
 
@@ -64,8 +64,8 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
 
     }
 
-    public void prepareCourses(){
-        networkManager.getCoursesByTrack(this,track.getPlatformIntakeId());
+    public void prepareCourses() {
+        networkManager.getCoursesByTrack(this, track.getPlatformIntakeId());
     }
 
     @Override
