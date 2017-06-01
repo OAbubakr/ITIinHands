@@ -9,8 +9,11 @@ import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.behance.BehanceData;
@@ -94,7 +97,70 @@ public class NetworkManager {
 
     }
 
+//    -----------------------get employee hours-----------------------------------------------------
+public void getEmployeeHours(NetworkResponse networkResponse, int id,String start,String end) {
+    final NetworkResponse network = networkResponse;
+
+    NetworkApi web = retrofit.create(NetworkApi.class);
+    Call<EmpHour> call = web.getEmpHours(id,start,end);
+    call.enqueue(new Callback<EmpHour>() {
+        @Override
+        public void onResponse(Call<EmpHour> call, retrofit2.Response<EmpHour> response) {
+            network.onResponse(response.body());
+
+            System.out.println("response is"+response.body().getWorkingDays());
+        }
+
+        @Override
+        public void onFailure(Call<EmpHour> call, Throwable t) {
+            t.printStackTrace();
+            Log.e("network", t.toString());
+            network.onFailure();
+        }
+    });
+
+
+}
+//--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
+
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeId){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeId);
+        call.enqueue(new Callback<List<Instructor>>() {
+            @Override
+            public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Instructor>> call, Throwable t) {
+                t.printStackTrace();
+                networkResponse.onFailure();
+            }
+        });
+
+    }
+
+    public void getBranchesNames(final NetworkResponse networkResponse){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<Branch>> call = web.getBranchesNames();
+        call.enqueue(new Callback<List<Branch>>() {
+            @Override
+            public void onResponse(Call<List<Branch>> call, retrofit2.Response<List<Branch>> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Branch>> call, Throwable t) {
+                t.printStackTrace();
+                networkResponse.onFailure();
+            }
+        });
+
+    }
+
+
     public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
 
         final NetworkResponse network = networkResponse;

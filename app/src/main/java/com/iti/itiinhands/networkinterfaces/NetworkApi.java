@@ -2,8 +2,11 @@ package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.StudentDataByTrackId;
@@ -32,6 +35,9 @@ public interface NetworkApi {
 
     @POST("login/onLoginAuth")
     public Call<Response> onLoginAuth(@Body LoginRequest request);
+
+    @GET("getEmpHours")
+    public Call<EmpHour> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
 
     @GET("getStudentGrades")
     public Call<List<StudentGrade>> getGrades(@Query("id") int id);
@@ -86,4 +92,14 @@ public interface NetworkApi {
 
     @GET
     public Call<GitData> getGitData(@Url String url);
+    @GET("")
+    public Call<BehanceData> getbehanceData(@Query("api_key") String apiKey);
+
+    @GET("getInstructorByBranch")
+    public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId, @Query("excludeId") int excludeId);
+
+    @GET("getBranchesNames")
+    public Call<List<Branch>> getBranchesNames();
+
+
 }
