@@ -92,8 +92,7 @@ public interface NetworkApi {
 
     @GET
     public Call<GitData> getGitData(@Url String url);
-    @GET("")
-    public Call<BehanceData> getbehanceData(@Query("api_key") String apiKey);
+
 
     @GET("getInstructorByBranch")
     public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId, @Query("excludeId") int excludeId);
