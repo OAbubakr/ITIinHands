@@ -49,7 +49,6 @@ public class DataBase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-
         //create announcement table
         sqLiteDatabase.execSQL("create table IF NOT EXISTS " + AnnouncementTable + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " " + AnnouncementType + " Integer, " +
@@ -60,7 +59,15 @@ public class DataBase extends SQLiteOpenHelper {
     }
 
 
-/////////////////////////////////////////////// Announcement Table ////////////////////////////////////////
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AnnouncementTable);
+        onCreate(sqLiteDatabase);
+    }
+
+
+
+    /////////////////////////////////////////////// Announcement Table ////////////////////////////////////////
     //insert announcement
     public Long insertAnnouncement(Announcement announcement) {
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -93,6 +100,7 @@ public class DataBase extends SQLiteOpenHelper {
 
         while (c.moveToNext()) {
             Announcement announcement = new Announcement();
+            announcement.setId(c.getInt(0));
             announcement.setType(c.getType(1));
             announcement.setTitle(c.getString(2));
             announcement.setBody(c.getString(3));
@@ -109,18 +117,15 @@ public class DataBase extends SQLiteOpenHelper {
 
 
 
-//    public int deleteAnnouncement()
-//    {
-//        SQLiteDatabase DB=this.getWritableDatabase();
-//        int delete =DB.delete(AnnouncementTable,AnnouncementTitle+" =?",new String[]{""});
-//        return delete;
-//    }
-
-
-
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.i("rwsult","upgrade");
+    public int deleteAnnouncement(int id )
+    {
+        SQLiteDatabase DB=this.getWritableDatabase();
+        int delete =DB.delete(AnnouncementTable,"ID = ?",new String[]{String.valueOf(id)});
+        return delete;
     }
+
+
+
+
+
 }
