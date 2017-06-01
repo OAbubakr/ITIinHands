@@ -9,4 +9,7 @@
     <color name="walkthrough_title">#7F0000</color>
     <color name="walkthrough_details">#273c51</color>
     <color name="itiLogo">#7F0000</color>
+    <color name="colorPrimary">#7f0000</color>
+    <color name="colorPrimaryDark">#b71c1c</color>
+    <color name="colorAccent">#FFFFFF</color>
 </resources>
