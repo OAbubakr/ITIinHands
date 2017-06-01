@@ -165,7 +165,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
         getActivity().setTitle(myName);
 
-        downloadList(-1);
+        downloadList(-1, Integer.parseInt(myId));
 
         return view;
     }
@@ -178,11 +178,11 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 //        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentRecentChats).commit();
     }
 
-    private void downloadList(int id){
+    private void downloadList(int id, int excludeId){
 
         switch (receiver_type) {
             case "staff":
-                NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, id);
+                NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, id, excludeId);
 
                 progressDialog.setMessage("Loading...");
                 progressDialog.setCancelable(false);

@@ -92,7 +92,7 @@ public interface NetworkApi {
     public Call<BehanceData> getbehanceData(@Query("api_key") String apiKey);
 
     @GET("getInstructorByBranch")
-    public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId);
+    public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId, @Query("excludeId") int excludeId);
 
     @GET("getBranchesNames")
     public Call<List<Branch>> getBranchesNames();
