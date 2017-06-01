@@ -14,12 +14,13 @@ import com.iti.itiinhands.adapters.TrackCoursesAdapter;
 import com.iti.itiinhands.beans.Instructor;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.Track;
+import com.iti.itiinhands.model.TrackInstructor;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 import java.util.ArrayList;
 
-public class TrackDetails extends AppCompatActivity implements NetworkResponse {
+public class TrackDetails extends AppCompatActivity implements NetworkResponse{
     RecyclerView instructorsRecyclerView;
     RecyclerView.Adapter instructorsAdapter;
     RecyclerView.LayoutManager instructorsLayoutManager;
@@ -40,18 +41,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         networkManager = NetworkManager.getInstance(getApplicationContext());
 
         track = (Track) getIntent().getSerializableExtra("trackObject");
-        //////GETTING List of instructors////
-        Instructor i1 = new Instructor();
-        i1.setFirstName("Mahmoud");
-        Instructor i2 = new Instructor();
-        i2.setFirstName("Ghada");
-        Instructor[] instructors = {i1, i2, i1, i2, i1, i2};
-        ////////GETTING list of courses////
-//        Course c1 = new Course();
-//        c1.setCourseName("Java");
-//        Course c2 = new Course();
-//        c2.setCourseName("Android");
-//        Course courses[] = {c1, c2, c1, c2, c1, c2, c1};
+
 
         instructorsRecyclerView = (RecyclerView) findViewById(R.id.instructorsRV);
         coursesRecyclerView = (RecyclerView) findViewById(R.id.coursesRV);
@@ -69,8 +59,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
         //setting the adapter
-        instructorsAdapter = new InstructorsAdapter(instructors);
-        instructorsRecyclerView.setAdapter(instructorsAdapter);
+
         prepareCourses();
 
     }
@@ -82,15 +71,27 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
     @Override
     public void onResponse(Object response) {
 
-        courses = (ArrayList<Course>) response;
-        if (courses != null) {
-            coursesAdapter = new TrackCoursesAdapter(courses);
-            coursesRecyclerView.setAdapter(coursesAdapter);
+        courses= (ArrayList<Course>) response;
+        coursesAdapter = new TrackCoursesAdapter(courses);
+        coursesRecyclerView.setAdapter(coursesAdapter);
+        ArrayList<TrackInstructor> trackInstructors = new ArrayList<>();
+        for (int i =0 ;i< courses.size();i++){
+            Course course = courses.get(i);
+            if (course.getTrackInstructors().size() != 0){
+                for (int j =0 ; j<course.getTrackInstructors().size();j++){
+                    trackInstructors.add(course.getTrackInstructors().get(j));
+                }
+
+            }
         }
+        instructorsAdapter = new InstructorsAdapter(trackInstructors);
+        instructorsRecyclerView.setAdapter(instructorsAdapter);
     }
 
     @Override
     public void onFailure() {
 
     }
+
+
 }

@@ -1,10 +1,12 @@
 package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
@@ -59,6 +61,12 @@ public interface NetworkApi {
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();
+
+    @GET("getCompanyProfile")
+    public Call<Company> getCompanyProfile(@Query("companyID")int id);
+
+    @GET("getAllVacancies")
+    public Call<List<JobVacancy>> getJobs();
 
     @GET("profile/onGetUserData")
     public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);

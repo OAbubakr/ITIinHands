@@ -6,11 +6,13 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
@@ -31,7 +33,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkManager {
 
-    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
+
+   // private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
+    private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -110,9 +114,9 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 //--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
-    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeId){
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID){
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeId);
+        Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeID);
         call.enqueue(new Callback<List<Instructor>>() {
             @Override
             public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
@@ -411,6 +415,54 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 
     ////////////////////get behance data/////////
     public void getBehanceData(final NetworkResponse networkResponse){
+
+    }
+
+    public void getCompanyProfile(NetworkResponse networkResponse,int id){
+        final NetworkResponse network=networkResponse;
+        NetworkApi web =retrofit.create(NetworkApi.class);
+        Call<Company> call = web.getCompanyProfile(id);
+        call.enqueue(new Callback<Company>() {
+            @Override
+            public void onResponse(Call<Company> call, retrofit2.Response<Company> response) {
+                Company company = response.body();
+                network.onResponse(company);
+            }
+
+            @Override
+            public void onFailure(Call<Company> call, Throwable t) {
+
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFailure();
+            }
+        });
+
+    }
+
+
+    public void getAllJobs(NetworkResponse networkResponse){
+        final NetworkResponse network=networkResponse;
+        NetworkApi web =retrofit.create(NetworkApi.class);
+        Call<List<JobVacancy>> call = web.getJobs();
+        call.enqueue(new Callback<List<JobVacancy>>() {
+
+
+            @Override
+            public void onResponse(Call<List<JobVacancy>> call, retrofit2.Response<List<JobVacancy>> response) {
+                ArrayList<JobVacancy> jobVacancies = (ArrayList<JobVacancy>) response.body();
+                network.onResponse(jobVacancies);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<JobVacancy>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFailure();
+
+            }
+        });
 
     }
 }
