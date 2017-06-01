@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:weightSum="1"
+    android:layout_height="72dp">
+
+    <agency.tango.android.avatarview.views.AvatarView
+        android:id="@+id/avatar"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_weight="0"
+        app:av_border_color="@android:color/white"
+        app:av_border_width="2dp"
+        app:av_text_size_percentage="35" />
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_weight="0"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/message_image"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:visibility="visible" />
+
+
+</LinearLayout>

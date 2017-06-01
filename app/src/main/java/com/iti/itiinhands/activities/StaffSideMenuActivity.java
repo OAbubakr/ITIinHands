@@ -25,6 +25,7 @@ import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.chat.ChatFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +41,12 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
-
+    int[] images = {R.drawable.social,
+            R.drawable.home_512,
+            R.drawable.forums,
+            R.drawable.info_512,
+            R.drawable.outbox};
+    FragmentManager fragmentManager;
 
     @Override
     protected void onStart() {
@@ -102,7 +107,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
 //        //////////////////////////sert the default
         fragment = new BranchesFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
@@ -188,7 +193,12 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle staff community
-                                Toast.makeText(getApplicationContext(), "1,1", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "staff community", Toast.LENGTH_LONG).show();
+                                fragment = new ChatFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("receiver_type", "staff");
+                                fragment.setArguments(bundle);
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
                                 //handle graduate community
@@ -212,7 +222,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle working hours fragment
-                                fragment = new EventListFragment();
+                                fragment = new EmployeeHours();
                                 break;
                             default:
                                 break;

@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.dto.StudentProfessional;
 import com.iti.itiinhands.dto.UserData;
@@ -101,6 +100,13 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                String password = passwordEdTxt.getText().toString();
+//                String name = userNameEdTxt.getText().toString();
+//
+//                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myId", password).apply();
+//                getSharedPreferences(FriendsListFragment.SP_NAME, MODE_PRIVATE).edit().putString("myName", name).apply();
+//
+//                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
                 Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
                 //save userType in SharedPreferences
                 SharedPreferences data = getSharedPreferences("userData", 0);
@@ -263,9 +269,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putInt("token", userId);
                     editor.putInt("userType", userType);
-//                editor.putString("token", userId);
-                    editor.commit();
+                    editor.putBoolean("loggedIn", true);
                     //navigate using intent to next Activity
+//                    editor.commit();
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);

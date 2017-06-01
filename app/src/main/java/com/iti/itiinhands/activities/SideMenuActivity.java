@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +30,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.beans.Announcement;
@@ -42,6 +51,9 @@ import com.iti.itiinhands.fragments.StudentProfileFragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class SideMenuActivity extends AppCompatActivity {
 
@@ -53,13 +65,30 @@ public class SideMenuActivity extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.social,
+            R.drawable.home_512,
+            R.drawable.forums,
+            R.drawable.info_512,
+            R.drawable.outbox};
+    final FragmentManager fragmentManager = getSupportFragmentManager();
 
+    /*
+    * chat part
+    * */
+    SharedPreferences sharedPreferences;
+    String myType = "staff";
+    String myId;
+    String myName;
+    String myChatId;
+    DatabaseReference myRoot;
+    /*
+    **/
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        /*
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,11 +101,66 @@ public class SideMenuActivity extends AppCompatActivity {
 
             }
         });
+*/
+        /*
+        * chat part
+        *
+        * */
+
+        //subscribe to my topic to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+
+        this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
+        //listen for my node to save chat rooms
+        myRoot.child(myChatId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Object val = dataSnapshot.getValue();
+                if(val == null)
+                    myRoot.child(myChatId).setValue("");
+                else if (val instanceof HashMap) {
+                    HashMap<String, String> usersRoomsMap = (HashMap) val;
+                    Map<String, ?> all = sharedPreferences.getAll();
+                    //update the stored keys
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    for (String key : usersRoomsMap.keySet()) {
+                        editor.putString(usersRoomsMap.get(key), key);
+                    }
+                    editor.apply();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        /*
+        *
+        * */
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+        * chat part
+        * */
+        sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        myName = sharedPreferences.getString("myName", null);
+        myId = sharedPreferences.getString("myId", null);
+        myChatId = myType + "_" + myId;
+
+        /*
+        * */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -191,18 +275,15 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                     case 2:
+                        //community part
+                        Bundle bundle;
                         switch (childPosition) {
+
                             case 0:
-                                //Students Community
-                                Toast.makeText(getApplicationContext(), "1,0", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
-                                //Staff Community
-                                Toast.makeText(getApplicationContext(), "1,1", Toast.LENGTH_LONG).show();
                                 break;
                             case 2:
-                                //Graduates community
-                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
                                 break;
                             default:
                                 break;
