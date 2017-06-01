@@ -19,7 +19,7 @@ import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 import java.util.ArrayList;
 
-public class TrackDetails extends AppCompatActivity implements NetworkResponse{
+public class TrackDetails extends AppCompatActivity implements NetworkResponse {
     RecyclerView instructorsRecyclerView;
     RecyclerView.Adapter instructorsAdapter;
     RecyclerView.LayoutManager instructorsLayoutManager;
@@ -30,14 +30,14 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
     NetworkManager networkManager;
     Track track;
 
-    ArrayList<Course> courses= new ArrayList<>();
+    ArrayList<Course> courses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_details);
 
-        networkManager=NetworkManager.getInstance(getApplicationContext());
+        networkManager = NetworkManager.getInstance(getApplicationContext());
 
         track = (Track) getIntent().getSerializableExtra("trackObject");
         //////GETTING List of instructors////
@@ -75,16 +75,18 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
 
     }
 
-    public void prepareCourses(){
-        networkManager.getCoursesByTrack(this,track.getPlatformIntakeId());
+    public void prepareCourses() {
+        networkManager.getCoursesByTrack(this, track.getPlatformIntakeId());
     }
 
     @Override
     public void onResponse(Object response) {
 
-        courses= (ArrayList<Course>) response;
-        coursesAdapter = new TrackCoursesAdapter(courses);
-        coursesRecyclerView.setAdapter(coursesAdapter);
+        courses = (ArrayList<Course>) response;
+        if (courses != null) {
+            coursesAdapter = new TrackCoursesAdapter(courses);
+            coursesRecyclerView.setAdapter(coursesAdapter);
+        }
     }
 
     @Override

@@ -55,9 +55,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         setContentView(R.layout.login_view);
 
         //check loggedIn flag in shared preferences
-        data = getSharedPreferences("userData", 0);
-        userType = data.getInt("userType", 0);
-        if (data.getBoolean("loggedIn", false)) {
+        data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        userType = data.getInt(Constants.USER_TYPE, 0);
+        if (data.getBoolean(Constants.LOGGED_FLAG, false)) {
             //navigate using intent to next Activity
             switch (userType) {
                 case 0:
@@ -261,6 +261,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
+            editor.commit();
             startActivity(navigationIntent);
             finish();
         } else {

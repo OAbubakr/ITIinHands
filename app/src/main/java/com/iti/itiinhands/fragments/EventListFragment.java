@@ -104,11 +104,11 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         eventsList = (ArrayList<Event>) response;
         eventsAdapter = new EventAdapter(eventsList, getActivity().getApplicationContext());
         recyclerView.setAdapter(eventsAdapter);
-
+if(eventsList !=null){
         for(Event e: eventsList){
             com.github.sundeepk.compactcalendarview.domain.Event ev = new com.github.sundeepk.compactcalendarview.domain.Event(Color.parseColor("#7F0000"), e.getEventStart());
             calendarView.addEvent(ev);
-        }
+        }}
     }
 
     @Override
