@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">ITIinHands</string>
     <string name="helloWorld">Hello bas</string>
     <string name="title_activity_event_list">EventList</string>
@@ -24,4 +25,13 @@
     <string name="graduateLogin">Login as a Graduate</string>
     <string name="staffLogin">Login as a Staff</string>
     <string name="companyLogin">Login as a Company</string>
+
+    <string name="chat_edittext_hint">Your Message</string>
+    <string name="editBtnStr">Edit</string>
+    <string name="uploadBtnStr">Upload</string>
+    <string name="gitProfileTxt">Git Hub</string>
+    <string name="linkedinProfileTxt">LinkedIn</string>
+    <string name="behanceProfileTxt">Behance</string>
+    <string name="cancelStrBtn">CANCEL</string>
+    <string name="submitStrBtn">SUBMIT</string>
 </resources>

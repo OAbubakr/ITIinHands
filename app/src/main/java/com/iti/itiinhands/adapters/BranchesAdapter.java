@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.Tracks;
 import com.iti.itiinhands.model.Branch;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -25,10 +23,12 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
 
     private ArrayList<Branch> branchesList = new ArrayList<>();
     private Context context;
+    private  int flag;
 
-    public BranchesAdapter(ArrayList<Branch> branchesList, Context context){
+    public BranchesAdapter(ArrayList<Branch> branchesList, Context context, int flag){
         this.branchesList = branchesList;
         this.context = context;
+        this.flag = flag;
     }
 
     @Override
@@ -68,6 +68,8 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
                     //Toast.makeText(context, branch.getLocation(), Toast.LENGTH_SHORT).show();
                     Intent tracksView = new Intent(context, Tracks.class);
                     tracksView.putExtra("branchObject",branch);
+                    tracksView.putExtra("flag",flag);
+                    tracksView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(tracksView);
                 }
             });
