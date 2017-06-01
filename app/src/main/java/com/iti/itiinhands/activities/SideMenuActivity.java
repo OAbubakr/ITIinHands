@@ -22,6 +22,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
@@ -50,8 +51,11 @@ public class SideMenuActivity extends AppCompatActivity {
     int[] images = {R.drawable.social,
             R.drawable.home_512,
             R.drawable.forums,
+            R.drawable.forums,
             R.drawable.info_512,
-            R.drawable.outbox};
+            R.drawable.outbox,
+    };
+
 
     UserData userData;
 
@@ -124,13 +128,15 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 0:
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
-                        final FragmentManager fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                         mDrawerLayout.closeDrawer(expListView);
-
+                        break;
+                    case 2:
+                        //job posts
+                        fragment = new AllJobPostsFragment();
+                        mDrawerLayout.closeDrawer(expListView);
                         break;
 
-                    case 3:
+                    case 4:
                         //logout action
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
@@ -143,6 +149,8 @@ public class SideMenuActivity extends AppCompatActivity {
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
+
+                        //send user back to login activity
                         finish();
                         break;
 
@@ -251,8 +259,10 @@ public class SideMenuActivity extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("My Track");
+        listDataHeader.add("Job Posts");
         listDataHeader.add("ITI");
         listDataHeader.add("Logout");
+
 
         // Adding child data
         List<String> profile = new ArrayList<>();
@@ -280,13 +290,15 @@ public class SideMenuActivity extends AppCompatActivity {
         aboutIti.add("Announcements");
 
 
-        List<String> logout = new ArrayList<>();
+        List<String> logout = new ArrayList<String>();
+        List<String> jobposts = new ArrayList<String>();
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), myTrack);
-        listDataChild.put(listDataHeader.get(2), aboutIti);
-        listDataChild.put(listDataHeader.get(3), logout);
+        listDataChild.put(listDataHeader.get(2), jobposts);
+        listDataChild.put(listDataHeader.get(3), aboutIti);
+        listDataChild.put(listDataHeader.get(4), logout);
 
     }
 
