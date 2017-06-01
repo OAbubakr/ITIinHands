@@ -1,6 +1,7 @@
 package com.iti.itiinhands.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,10 +18,13 @@ import com.iti.itiinhands.adapters.scheduleAdapters.ScheduleAdapter;
 import com.iti.itiinhands.adapters.scheduleAdapters.ScheduleCardAdapter;
 import com.iti.itiinhands.adapters.scheduleAdapters.ScheduleExapandableAdapter;
 import com.iti.itiinhands.beans.Session;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.schedule.SessionModel;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -34,8 +38,11 @@ import java.util.Map;
 public class ScheduleFragment extends Fragment implements NetworkResponse {
     NetworkManager networkManager;
     RecyclerView recyclerView;
+    UserData userData;
     int flag = 0;
-    int id;
+    int userType;
+    int token;
+
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -47,36 +54,45 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
                              Bundle savedInstanceState) {
 
         // get id from share prefs
-        id = 0;
 
 
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        token = sharedPreferences.getInt(Constants.TOKEN,0);
+
+
         Bundle b = getArguments();
-        if(b != null){
-            flag = b.getInt("flag", 0);
-        }
+        if (b != null) flag = b.getInt("flag", 0);
 
-        if(flag == 0){
-            networkManager.getStudentSchedule(this,5699);
+        if (userType == 1) {
+            networkManager.getStudentSchedule(this,token);
 
+        } else if (userType == 2) {
+            if (flag == 0)
+                networkManager.getInstructorSchedule(this, token);
+            else {
+                int trackId = b.getInt("trackId");
+                networkManager.getTrackSchedule(this, trackId);
+            }
         }
-        else if (flag == 1) {
-            networkManager.getInstructorSchedule(this, 1059);
-        }
-        else{
-            int trackId = b.getInt("trackId");
-
-            networkManager.getTrackSchedule(this, trackId);
-        }
-
 
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.day);
 
+
+
+
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        ////////////////////////////////////////////////////
 
 
 //        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -100,9 +116,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         ScheduleAdapter adapter = new ScheduleAdapter(sessions);
         List<String> groups = adapter.getGroups();
         HashMap<String, List<SessionModel>> details = adapter.getDetails();
-
         ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
-
         recyclerView.setAdapter(scheduleCardAdapter);
     }
 
