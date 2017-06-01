@@ -14,6 +14,7 @@ public class ChatMessage {
     private String receiverName;
     private long date;
     private String senderName;
+    private String offline;
 
 
     public ChatMessage() {
@@ -25,6 +26,15 @@ public class ChatMessage {
         this.date = new Date().getTime();
         this.receiverId = receiverId;
         this.senderName = senderName;
+        this.offline = offline;
+    }
+
+    public String getOffline() {
+        return offline;
+    }
+
+    public void setOffline(String offline) {
+        this.offline = offline;
     }
 
     public String getReceiverName() {

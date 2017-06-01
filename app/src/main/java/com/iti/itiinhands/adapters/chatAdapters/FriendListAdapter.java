@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.model.chat.ChatRoom;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

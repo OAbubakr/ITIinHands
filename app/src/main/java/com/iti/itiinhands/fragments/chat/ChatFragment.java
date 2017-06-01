@@ -153,6 +153,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                 for (ChatRoom chatRoom : chatRooms) {
                     if (chatRoom.getReceiverId().equals(receiverId)) {
                         chatRoom.setHasPendingMessages(true);
+
                         chatRooms.remove(chatRoom);
                         chatRooms.add(0, chatRoom);
                         break;

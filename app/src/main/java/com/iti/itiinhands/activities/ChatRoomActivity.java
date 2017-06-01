@@ -104,9 +104,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                     boolean isConnected = activeNetwork != null &&
                             activeNetwork.isConnectedOrConnecting();
 
+                    ChatMessage chatMessage = new ChatMessage(messageData, senderId, receiverId, myName);
                     if (isConnected) {
 
-                        ChatMessage chatMessage = new ChatMessage(messageData, senderId, receiverId, myName);
+                        chatMessage.setOffline("false");
 
                         //create the message node
                         DatabaseReference messageNode = roomNode.push();
@@ -114,7 +115,12 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                         message.getText().clear();
                     } else {
-                        Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                        chatMessage.setOffline("true");
+                        DatabaseReference messageNode = roomNode.push();
+                        messageNode.setValue(chatMessage);
+
+                        message.getText().clear();
                     }
                 }
 
