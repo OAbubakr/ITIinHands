@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.AnnouncementAdapter;
@@ -47,14 +49,24 @@ public class AnnouncementFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL,false));
 
 
-        announcements=dataBase.getAnnoucements();
-        announcementAdapter =new AnnouncementAdapter(announcements);
-        recyclerView.setAdapter(announcementAdapter);
-        announcementAdapter.notifyDataSetChanged();
+//        announcements=dataBase.getAnnoucements();
+//        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext());
+//        recyclerView.setAdapter(announcementAdapter);
+//        announcementAdapter.notifyDataSetChanged();
+
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        announcements=dataBase.getAnnoucements();
+        Log.i("size",String.valueOf(announcements.size()));
+        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext());
+        recyclerView.setAdapter(announcementAdapter);
+        //announcementAdapter.notifyDataSetChanged();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

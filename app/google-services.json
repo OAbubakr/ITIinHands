@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "963936475488-t1vohstlfs6s6a4g0ebg9a1dp88lft7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iti.itiinhands",
+            "certificate_hash": "e2bc33e02c9af44dcb9b18e1cb2919668c6f1159"
+          }
+        },
+        {
           "client_id": "963936475488-fqrn0okcrjb6k2tcahsus30siemuifrj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
