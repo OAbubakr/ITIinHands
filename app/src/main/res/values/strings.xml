@@ -31,4 +31,7 @@
     <string name="behanceProfileTxt">Behance</string>
     <string name="cancelStrBtn">CANCEL</string>
     <string name="submitStrBtn">SUBMIT</string>
+    <string name="gitStr">GitHub Url</string>
+    <string name="linkedInStr">LinkedIn Url</string>
+    <string name="behanceStr">Behance Url</string>
 </resources>

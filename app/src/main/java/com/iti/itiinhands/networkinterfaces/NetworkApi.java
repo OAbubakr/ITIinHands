@@ -22,6 +22,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by admin on 5/22/2017.
@@ -80,6 +81,9 @@ public interface NetworkApi {
 @GET("getStudentsByTrackId")
     public Call<ArrayList<StudentDataByTrackId>>getAllStudentsByTracId(@Query("id")int id);
 
-    @GET("")
-    public Call<BehanceData> getbehanceData(@Query("api_key") String apiKey);
+    @GET
+    public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
+
+    @GET
+    public Call<GitData> getGitData(@Url String url);
 }
