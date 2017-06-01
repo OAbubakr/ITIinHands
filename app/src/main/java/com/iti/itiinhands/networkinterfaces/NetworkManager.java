@@ -114,9 +114,9 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 //--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
-    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId){
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID){
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<List<Instructor>> call = web.getInstructorByBranch(branchId);
+        Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeID);
         call.enqueue(new Callback<List<Instructor>>() {
             @Override
             public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
@@ -315,8 +315,6 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFailure();
-                Log.e("network",t.toString());
                 network.onFailure();
             }
         });

@@ -42,12 +42,15 @@ import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,13 +76,15 @@ public class SideMenuActivity extends AppCompatActivity {
             R.drawable.info_512,
             R.drawable.outbox,
     };
+
+
+    UserData userData;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -109,8 +114,13 @@ public class SideMenuActivity extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        name.setText("dina");
-        track.setText("web and mobile");
+
+        SharedPreferences data = getSharedPreferences("userData", 0);
+
+        userData = UserDataSerializer.deSerialize(data.getString("userObject",""));
+
+        name.setText(userData.getName());
+        track.setText(userData.getTrackName());
 
         // Add header view to the expandable list
 
@@ -128,10 +138,9 @@ public class SideMenuActivity extends AppCompatActivity {
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Log.d("onGroupClick:", "worked");
+//                Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 0:
-
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
                         //final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -148,11 +157,12 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 5:
                         //logout action
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.remove("loggedIn");
-                        editor.remove("userId");
-                        editor.remove("userType");
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
@@ -215,7 +225,7 @@ public class SideMenuActivity extends AppCompatActivity {
                         }
                         break;
 
-                    case 4:
+                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //About ITI
@@ -291,23 +301,23 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
         // Adding child data
-        List<String> profile = new ArrayList<String>();
+        List<String> profile = new ArrayList<>();
         //profile.add("");
 
 
-        List<String> myTrack = new ArrayList<String>();
+        List<String> myTrack = new ArrayList<>();
         myTrack.add("Schedule");
         myTrack.add("Permission");
         myTrack.add("List of Courses");
 
 
-        List<String> community = new ArrayList<String>();
+        List<String> community = new ArrayList<>();
         community.add("Students");
         community.add("Staff");
         community.add("Graduates");
 
 
-        List<String> aboutIti = new ArrayList<String>();
+        List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
         aboutIti.add("Tracks");
         aboutIti.add("Events");
