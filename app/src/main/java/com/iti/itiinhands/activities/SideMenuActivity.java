@@ -74,65 +74,6 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        /*
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (mDrawerLayout.isDrawerOpen(expListView)) {
-                    mDrawerLayout.closeDrawer(expListView);
-                } else {
-                    mDrawerLayout.openDrawer(expListView);
-                }
-
-            }
-        });
-*/
-
-        //subscribe to my topic to receive notifications
-        FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
-        FirebaseMessaging.getInstance().subscribeToTopic("events");
-        String token = FirebaseInstanceId.getInstance().getToken();
-
-
-        this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
-        //listen for my node to save chat rooms
-        myRoot.child(myChatId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Object val = dataSnapshot.getValue();
-                if(val == null)
-                    myRoot.child(myChatId).setValue("");
-                else if (val instanceof HashMap) {
-                    HashMap<String, String> usersRoomsMap = (HashMap) val;
-                    Map<String, ?> all = sharedPreferences.getAll();
-                    //update the stored keys
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    for (String key : usersRoomsMap.keySet()) {
-                        editor.putString(usersRoomsMap.get(key), key);
-                    }
-                    editor.apply();
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-        /*
-        *
-        * */
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
