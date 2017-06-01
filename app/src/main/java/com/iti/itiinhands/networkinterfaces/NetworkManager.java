@@ -31,7 +31,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkManager {
 
-    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Ragab ip and url
+
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://192.168.1.6:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Sandra ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 

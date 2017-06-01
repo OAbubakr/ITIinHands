@@ -23,8 +23,6 @@ import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 import java.util.List;
 
-import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
-
 /**
  * Created by Mahmoud on 5/21/2017.
  */
@@ -274,7 +272,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     editor.putString("myName", userNameEdTxt.getText().toString());
 //                editor.putString("token", userId);
                     editor.commit();
+                    editor.putBoolean("loggedIn", true);
                     //navigate using intent to next Activity
+//                    editor.commit();
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);

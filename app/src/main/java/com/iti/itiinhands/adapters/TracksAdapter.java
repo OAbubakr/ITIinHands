@@ -74,6 +74,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
                         Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
                         Intent trackDetailsView = new Intent(context, TrackDetails.class);
                         trackDetailsView.putExtra("trackObject", track);
+                        trackDetailsView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         context.startActivity(trackDetailsView);
                     } else {// from staff open schedule

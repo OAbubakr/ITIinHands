@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "963936475488-fqrn0okcrjb6k2tcahsus30siemuifrj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iti.itiinhands",
+            "certificate_hash": "792a697390ce513ef9a6ecdbf386233cab5d52bc"
+          }
+        },
+        {
+          "client_id": "963936475488-8ssnkl0f6apg63s424opk3vm6e3be99c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iti.itiinhands",
+            "certificate_hash": "e92d5040f3b47bf8c6dc6a8cc1d1c015a8ccff79"
+          }
+        },
+        {
           "client_id": "963936475488-8d2250914r73vvc4jh3ig65am07h6b25.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
