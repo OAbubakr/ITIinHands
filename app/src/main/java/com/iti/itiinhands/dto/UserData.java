@@ -15,7 +15,7 @@ public class UserData implements Serializable{
     private String trackName;
     private String name;
     private String imagePath;
-    private List<StudentProfessional> professionalData;
+//    private List<StudentProfessional> professionalData;
     private String gitUrl;
     private String linkedInUrl;
     private String behanceUrl;
@@ -84,12 +84,6 @@ public class UserData implements Serializable{
         this.imagePath = imagePath;
     }
 
-    public List<StudentProfessional> getProfessionalData() {
-        return professionalData;
-    }
 
-    public void setProfessionalData(List<StudentProfessional> professionalData) {
-        this.professionalData = professionalData;
-    }
 
 }

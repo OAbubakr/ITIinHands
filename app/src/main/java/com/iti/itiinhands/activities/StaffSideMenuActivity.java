@@ -303,7 +303,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle working hours fragment
-                                fragment = new EmployeeHours();
+                                fragment = new EventListFragment();
                                 break;
                             default:
                                 break;
