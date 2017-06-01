@@ -9,21 +9,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.chatAdapters.ChatRoomAdapter;
 import com.iti.itiinhands.model.chat.ChatMessage;
 
-import static com.iti.itiinhands.fragments.FriendsListFragment.SP_NAME;
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 /**
  * Created by home on 5/22/2017.
  */
+
 public class ChatRoomActivity extends AppCompatActivity {
 
     private FloatingActionButton sendMessage;
@@ -46,13 +50,13 @@ public class ChatRoomActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        sharedPreferences.edit().putString("chatRoomActive", null).apply();
+        getApplicationContext().getSharedPreferences(SP_NAME, MODE_PRIVATE).edit().putString("chatRoomActive", null).apply();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        sharedPreferences.edit().putString("chatRoomActive", null).apply();
+        getApplicationContext().getSharedPreferences(SP_NAME, MODE_PRIVATE).edit().putString("chatRoomActive", null).apply();
     }
 
     @Override
@@ -60,13 +64,18 @@ public class ChatRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         roomKey = getIntent().getStringExtra("roomKey");
         senderId = getIntent().getStringExtra("senderId");
         receiverId = getIntent().getStringExtra("receiverId");
         receiverName = getIntent().getStringExtra("receiverName");
 
-        sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
-        sharedPreferences.edit().putString("chatRoomActive", receiverId).apply();
+        sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+        getApplicationContext().getSharedPreferences(SP_NAME, MODE_PRIVATE)
+                .edit().putString("chatRoomActive", receiverId).apply();
 
 
         myName = sharedPreferences.getString("myName", null);
@@ -95,9 +104,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                     boolean isConnected = activeNetwork != null &&
                             activeNetwork.isConnectedOrConnecting();
 
+                    ChatMessage chatMessage = new ChatMessage(messageData, senderId, receiverId, myName);
                     if (isConnected) {
 
-                        ChatMessage chatMessage = new ChatMessage(messageData, senderId, receiverId, myName);
+                        chatMessage.setOffline("false");
 
                         //create the message node
                         DatabaseReference messageNode = roomNode.push();
@@ -105,7 +115,12 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                         message.getText().clear();
                     } else {
-                        Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                        chatMessage.setOffline("true");
+                        DatabaseReference messageNode = roomNode.push();
+                        messageNode.setValue(chatMessage);
+
+                        message.getText().clear();
                     }
                 }
 
@@ -149,5 +164,13 @@ public class ChatRoomActivity extends AppCompatActivity {
 
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }else
+            return false;
+    }
 
 }

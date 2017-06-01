@@ -1,4 +1,4 @@
-package com.iti.itiinhands.fragments;
+package com.iti.itiinhands.fragments.chat;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import com.iti.itiinhands.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatFragment extends Fragment {
+public class RecentChatsFragment extends Fragment {
 
 
-    public ChatFragment() {
+    public RecentChatsFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_chat, container, false);
+        return inflater.inflate(R.layout.fragment_recent_chats, container, false);
     }
 
 }

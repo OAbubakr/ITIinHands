@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iti.itiinhands.fragments.FriendsListFragment;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.dto.StudentProfessional;
 import com.iti.itiinhands.dto.UserData;
@@ -22,8 +21,10 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
-import java.util.List;
+
 
 /**
  * Created by Mahmoud on 5/21/2017.
@@ -239,8 +240,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onResponse(Object response) {
-        Response result = (Response) response;
 
+        Response result = (Response) response;
         if (result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = new UserData();
@@ -251,9 +252,15 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             data.setName((String) map.get("name"));
             if (map.get("imagePath") != null)
                 data.setImagePath((String) map.get("imagePath"));
-            if (map.get("professionalData") != null)
-                data.setProfessionalData((List<StudentProfessional>) map.get("professionalData"));
-            navigationIntent.putExtra("userData", data);
+            if (map.get("gitUrl") != null)
+                data.setGitUrl((String) map.get("gitUrl"));
+            if (map.get("behanceUrl") != null)
+                data.setBehanceUrl((String) map.get("behanceUrl"));
+            if (map.get("linkedInUrl") != null)
+                data.setLinkedInUrl((String) map.get("linkedInUrl"));
+            SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+            SharedPreferences.Editor editor = userData.edit();
+            editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
             startActivity(navigationIntent);
             finish();
         } else {
@@ -267,13 +274,13 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             switch (status) {
                 case "success":
                     //save userID and userType in SharedPreferences
-                    SharedPreferences data = getSharedPreferences("userData", 0);
+                    SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                     SharedPreferences.Editor editor = data.edit();
-                    editor.putInt("token", userId);
-                    editor.putInt("userType", userType);
-//                editor.putString("token", userId);
+                    editor.putInt(Constants.TOKEN, userId);
+                    editor.putInt(Constants.USER_TYPE, userType);
+                    editor.putBoolean(Constants.LOGGED_FLAG, true);
                     editor.commit();
-                    //navigate using intent to next Activity
+
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);

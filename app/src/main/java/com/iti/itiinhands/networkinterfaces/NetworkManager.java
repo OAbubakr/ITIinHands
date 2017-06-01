@@ -31,9 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkManager {
 
-
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.6:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://localhost:8085/restfulSpring/"; // Ragab ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 
@@ -112,9 +110,9 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 //--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
-    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId){
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeId){
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<List<Instructor>> call = web.getInstructorByBranch(branchId);
+        Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeId);
         call.enqueue(new Callback<List<Instructor>>() {
             @Override
             public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
