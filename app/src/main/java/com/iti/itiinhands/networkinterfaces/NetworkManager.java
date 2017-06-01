@@ -426,7 +426,7 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
         Call<Company> call = web.getCompanyProfile(id);
         call.enqueue(new Callback<Company>() {
             @Override
-            public void onResponse(Call<Company> call, Response<Company> response) {
+            public void onResponse(Call<Company> call, retrofit2.Response<Company> response) {
                 Company company = response.body();
                 network.onResponse(company);
             }
@@ -448,10 +448,13 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
         NetworkApi web =retrofit.create(NetworkApi.class);
         Call<List<JobVacancy>> call = web.getJobs();
         call.enqueue(new Callback<List<JobVacancy>>() {
+
+
             @Override
-            public void onResponse(Call<List<JobVacancy>> call, Response<List<JobVacancy>> response) {
+            public void onResponse(Call<List<JobVacancy>> call, retrofit2.Response<List<JobVacancy>> response) {
                 ArrayList<JobVacancy> jobVacancies = (ArrayList<JobVacancy>) response.body();
                 network.onResponse(jobVacancies);
+
             }
 
             @Override
