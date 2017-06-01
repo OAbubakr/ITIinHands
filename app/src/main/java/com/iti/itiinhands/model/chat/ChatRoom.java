@@ -19,6 +19,15 @@ public class ChatRoom implements Serializable{
 
     private String roomKey;
     private boolean hasPendingMessages;
+    private int pendingMessagesCount;
+
+    public int getPendingMessagesCount() {
+        return pendingMessagesCount;
+    }
+
+    public void setPendingMessagesCount(int pendingMessagesCount) {
+        this.pendingMessagesCount = pendingMessagesCount;
+    }
 
 
     public ChatRoom() {

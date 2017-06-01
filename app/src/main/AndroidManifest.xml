@@ -33,7 +33,7 @@
         <activity android:name=".activities.StudentCourseList" />
 
 
-        <activity android:name=".activities.StaffSideMenuActivity">
+        <activity android:name=".activities.OurWalkthrough">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +56,7 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <!--<activity android:name=".activities.StaffSideMenuActivity" />-->
+        <activity android:name=".activities.StaffSideMenuActivity" />
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
         <activity android:name=".activities.GraduateSideMenu"/>

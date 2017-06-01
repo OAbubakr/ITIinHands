@@ -14,11 +14,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -42,26 +49,19 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
     public static final String SP_NAME = "chatRoomsKeys";
     private String receiver_type;
-    private List<ChatRoom> chatRooms = new ArrayList<>();
-//    private List<String> branchesNamesList;
-    SharedPreferences sharedPreferences;
-//    private ArrayAdapter<String> branchesNamesAdapter;
-    private boolean namesDownloaded = false;
+//    private boolean namesDownloaded = false;
+
     String myName;
-    String myType = "staff";
+    String myType;
     String myId;
     String myChatId;
-
+    SharedPreferences sharedPreferences;
     private RecyclerView chatRoomsRecyclerView;
     private FriendListAdapter friendListAdapter;
     private BroadcastReceiver receiver;
+    List<ChatRoom> chatRooms = new ArrayList<>();
 
     private ProgressDialog progressDialog;
-
-    ViewPager viewPager;
-    TabLayout tabLayout;
-    FriendlistFragment fragmentFriendsList;
-    RecentChatsFragment fragmentRecentChats;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -82,21 +82,24 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
                 new IntentFilter(FirebaseMessageReceiverService.MESSAGE_RECEIVED_ACTION));
 
-        sharedPreferences.edit().putString("friendListActivityActive", "true").apply();
+        getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE)
+                .edit().putString("friendListActivityActive", "true").apply();
     }
 
 
     @Override
     public void onStop() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
-        sharedPreferences.edit().putString("friendListActivityActive", "false").apply();
+        getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE)
+                .edit().putString("friendListActivityActive", "false").apply();
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sharedPreferences.edit().putString("friendListActivityActive", "false").apply();
+        getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE).
+                edit().putString("friendListActivityActive", "false").apply();
     }
 
 
@@ -107,20 +110,37 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-//        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
-//        ((StaffSideMenuActivity)getActivity()).setSupportActionBar(tb);
-//        ActionBar ab = ((StaffSideMenuActivity)getActivity()).getSupportActionBar();
+        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
+        ((StaffSideMenuActivity)getActivity()).setSupportActionBar(tb);
+        setHasOptionsMenu(true);
+//        ActionBar ab = ((MainActivity2)getActivity()).getSupportActionBar();
 //        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 //        ab.setDisplayHomeAsUpEnabled(true);
 
 
-        sharedPreferences = getActivity().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
+
+        sharedPreferences = getActivity().getSharedPreferences("userData", MODE_PRIVATE);
         myName = sharedPreferences.getString("myName", null);
         myId = sharedPreferences.getString("myId", null);
+        int userType = sharedPreferences.getInt("userType", -1);
+        switch (userType){
+            case 1:
+                myType = "student";
+                break;
+            case 2:
+                myType = "staff";
+                break;
+        }
+
         myChatId = myType + "_" + myId;
+
+        //configure the recycler view
+        friendListAdapter = new FriendListAdapter(getActivity(), chatRooms, R.layout.friends_list_cell, myId);
+        chatRoomsRecyclerView.setAdapter(friendListAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
 
         progressDialog = new ProgressDialog(getActivity());
 
@@ -133,6 +153,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                 for (ChatRoom chatRoom : chatRooms) {
                     if (chatRoom.getReceiverId().equals(receiverId)) {
                         chatRoom.setHasPendingMessages(true);
+
                         chatRooms.remove(chatRoom);
                         chatRooms.add(0, chatRoom);
                         break;
@@ -144,73 +165,17 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
         getActivity().setTitle(myName);
 
-
         downloadList(-1);
 
         return view;
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        ChatFragment.ViewPagerAdapter adapter = new ChatFragment.
-                ViewPagerAdapter(getActivity().getSupportFragmentManager());
-
-        fragmentFriendsList = new FriendlistFragment();
-        fragmentRecentChats = new RecentChatsFragment();
-        adapter.addFragment(fragmentFriendsList, "CONTACTS");
-        adapter.addFragment(fragmentRecentChats, "RECENT CHATS");
-        viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         System.out.println("");
-        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentFriendsList).commit();
-    //    getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentRecentChats).commit();
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-
-
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-
+//        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentFriendsList).commit();
+//        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentRecentChats).commit();
     }
 
     private void downloadList(int id){
@@ -238,8 +203,8 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                 progressDialog.hide();
                 switch (receiver_type) {
                     case "staff":
-                        chatRooms.clear();
                         List<Instructor> instructors = (List<Instructor>) response;
+                        chatRooms.clear();
 
                         for (Instructor instructor : instructors) {
                             ChatRoom chatRoom = new ChatRoom();
@@ -258,8 +223,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                             chatRoom.setSenderName(myName);
                             chatRooms.add(chatRoom);
                         }
-//                        friendListAdapter.notifyDataSetChanged();
-                        fragmentFriendsList.setData(chatRooms);
+                        friendListAdapter.updateData();
                         break;
                 }
             }
@@ -273,6 +237,30 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         progressDialog.hide();
         Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
         System.out.println("error");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+
+        inflater.inflate(R.menu.search_action_button, menu);
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                friendListAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                friendListAdapter.filter(newText);
+                return true;
+            }
+        });
+
+
     }
 
 

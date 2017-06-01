@@ -238,7 +238,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     @Override
     public void onResponse(Object response) {
         Response result = (Response) response;
-
         if (result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = new UserData();
@@ -269,9 +268,13 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putInt("token", userId);
                     editor.putInt("userType", userType);
+                    editor.putString("myId", String.valueOf(userId));
+                    editor.putString("myName", userNameEdTxt.getText().toString());
 //                editor.putString("token", userId);
                     editor.commit();
+                    editor.putBoolean("loggedIn", true);
                     //navigate using intent to next Activity
+//                    editor.commit();
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
