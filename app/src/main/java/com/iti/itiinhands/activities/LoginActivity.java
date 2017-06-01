@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.dto.StudentProfessional;
 import com.iti.itiinhands.dto.UserData;
@@ -244,20 +245,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         Response result = (Response) response;
         if (result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
-            UserData data = new UserData();
-            Double idData = (Double) map.get("intakeId");
-            data.setIntakeId(Integer.valueOf(idData.intValue()));
-            data.setBranchName((String) map.get("branchName"));
-            data.setTrackName((String) map.get("trackName"));
-            data.setName((String) map.get("name"));
-            if (map.get("imagePath") != null)
-                data.setImagePath((String) map.get("imagePath"));
-            if (map.get("gitUrl") != null)
-                data.setGitUrl((String) map.get("gitUrl"));
-            if (map.get("behanceUrl") != null)
-                data.setBehanceUrl((String) map.get("behanceUrl"));
-            if (map.get("linkedInUrl") != null)
-                data.setLinkedInUrl((String) map.get("linkedInUrl"));
+            UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
@@ -289,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             break;
                         case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
-                            startActivity(navigationIntent);
+                            networkManager.getStudentProfileData(myRef, userType, userId);
                             finish();
                             break;
                         case 3://company

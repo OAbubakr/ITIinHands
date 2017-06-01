@@ -35,7 +35,7 @@ public class NetworkManager {
 
 
    // private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
-    private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
+    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
 

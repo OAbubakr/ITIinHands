@@ -28,10 +28,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.ScheduleFragment;
+import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +70,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     String myName;
     String myChatId;
     DatabaseReference myRoot;
+    int userType;
+    int token;
+    UserData userData;
     /*
     **/
 
@@ -72,18 +80,18 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (mDrawerLayout.isDrawerOpen(expListView)) {
-                    mDrawerLayout.closeDrawer(expListView);
-                } else {
-                    mDrawerLayout.openDrawer(expListView);
-                }
-
-            }
-        });
+//        home.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if (mDrawerLayout.isDrawerOpen(expListView)) {
+//                    mDrawerLayout.closeDrawer(expListView);
+//                } else {
+//                    mDrawerLayout.openDrawer(expListView);
+//                }
+//
+//            }
+//        });
 
         /*
         * chat part
@@ -131,7 +139,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_staff_side_menu);
+        setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
@@ -140,10 +148,15 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         /*
         * chat part
         * */
-        sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
-        myName = sharedPreferences.getString("myName", null);
-        myId = sharedPreferences.getString("myId", null);
-        int userType = sharedPreferences.getInt("userType", -1);
+        sharedPreferences = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        token = sharedPreferences.getInt(Constants.TOKEN,0);
+
+        myName = userData.getEmployeeName();
+        myId = token+"";
+        int userType = this.userType;
         switch (userType){
             case 1:
                 myType = "student";
@@ -179,8 +192,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        name.setText("instructor name");
-        track.setText("instructor track o position");
+        name.setText(userData.getEmployeeName());
+        track.setText(userData.getEmployeeBranchName());
 
         // Add header view to the expandable list
 
@@ -200,23 +213,32 @@ public class StaffSideMenuActivity extends AppCompatActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
+                    case 1:
+                        fragment = new ChatFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("receiver_type", "staff");
+                        fragment.setArguments(bundle);
+                        mDrawerLayout.closeDrawer(expListView);
+
+                        break;
                     case 3:
                         //replace with announcment
                         fragment=new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
+
                         break;
 
                     case 4:
                         //logout action
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.remove("loggedIn");
-                        editor.remove("userId");
-                        editor.remove("userType");
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
 
-                        //send user back to login activity
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
                         finish();
@@ -248,10 +270,11 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 1:
                                 //handle tracks fragment
                                 //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
+                                fragment = new BranchesFragment();
                                 break;
                             case 2:
                                 //handle events fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
+                                fragment = new EventListFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
@@ -259,36 +282,13 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 4:
                                 //handle bus services fragment
-                                fragment = new BranchesFragment();
+//                                fragment = new BranchesFragment();
                                 break;
                             default:
                                 break;
                         }
                         break;
 
-                    case 1:
-                        switch (childPosition) {
-                            case 0:
-                                //handle student community
-                                Toast.makeText(getApplicationContext(), "1,0", Toast.LENGTH_LONG).show();
-                                break;
-                            case 1:
-                                //handle staff community
-                                Toast.makeText(getApplicationContext(), "staff community", Toast.LENGTH_LONG).show();
-                                fragment = new ChatFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("receiver_type", "staff");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                                break;
-                            case 2:
-                                //handle graduate community
-                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
 
                     case 2:
                         switch (childPosition) {
@@ -299,11 +299,11 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle scheduale fragment
-                                fragment = new BranchesFragment();
+                                fragment = new StaffSchedule();
                                 break;
                             case 2:
                                 //handle working hours fragment
-                                fragment = new EventListFragment();
+                                fragment = new EmployeeHours();
                                 break;
                             default:
                                 break;
@@ -354,9 +354,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
 
         List<String> community = new ArrayList<String>();
-        community.add("Students");
-        community.add("Staff");
-        community.add("Graduates");
+
 
 
         List<String> myWork = new ArrayList<String>();

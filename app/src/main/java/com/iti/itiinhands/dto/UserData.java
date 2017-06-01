@@ -9,16 +9,27 @@ import java.util.List;
  * Created by Mahmoud on 5/28/2017.
  */
 
-public class UserData implements Serializable{
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ *
+ * @author Mahmoud
+ */
+public class UserData implements Serializable {
+    //
+    //student
     private int intakeId;
     private String branchName;
     private String trackName;
     private String name;
     private String imagePath;
     private String gitUrl;
-    private String linkedInUrl;
     private String behanceUrl;
+    private String linkedInUrl;
 
+    //company
     private int companyID;
     private String companyName;
     private int companyNoOfEmp;
@@ -32,6 +43,44 @@ public class UserData implements Serializable{
     private String companyProfilePath;
     private String companyUserName;
     private String companyPassWord;
+
+    //staff
+    private int employeeBranchId;
+    private String employeeName;
+    private String employeeBranchName;
+    private String employeePosition;
+
+    public int getEmployeeBranchId() {
+        return employeeBranchId;
+    }
+
+    public void setEmployeeBranchId(int employeeBranchId) {
+        this.employeeBranchId = employeeBranchId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getEmployeeBranchName() {
+        return employeeBranchName;
+    }
+
+    public void setEmployeeBranchName(String employeeBranchName) {
+        this.employeeBranchName = employeeBranchName;
+    }
+
+    public String getEmployeePosition() {
+        return employeePosition;
+    }
+
+    public void setEmployeePosition(String employeePosition) {
+        this.employeePosition = employeePosition;
+    }
 
     public int getCompanyID() {
         return companyID;
@@ -138,10 +187,6 @@ public class UserData implements Serializable{
     }
 
 
-
-
-
-
     public String getGitUrl() {
         return gitUrl;
     }
@@ -150,20 +195,20 @@ public class UserData implements Serializable{
         this.gitUrl = gitUrl;
     }
 
-    public String getLinkedInUrl() {
-        return linkedInUrl;
-    }
-
-    public void setLinkedInUrl(String linkedInUrl) {
-        this.linkedInUrl = linkedInUrl;
-    }
-
     public String getBehanceUrl() {
         return behanceUrl;
     }
 
     public void setBehanceUrl(String behanceUrl) {
         this.behanceUrl = behanceUrl;
+    }
+
+    public String getLinkedInUrl() {
+        return linkedInUrl;
+    }
+
+    public void setLinkedInUrl(String linkedInUrl) {
+        this.linkedInUrl = linkedInUrl;
     }
 
     public int getIntakeId() {
@@ -205,7 +250,5 @@ public class UserData implements Serializable{
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-
-
 
 }

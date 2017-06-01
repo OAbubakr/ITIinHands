@@ -82,8 +82,9 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
 
                         Bundle b = new Bundle();
                         b.putInt("trackId", track.getPlatformIntakeId());
-                        b.putInt("flag",flag);
+                        b.putInt("flag",2);
                         i.putExtra("bundle", b);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
 
                      

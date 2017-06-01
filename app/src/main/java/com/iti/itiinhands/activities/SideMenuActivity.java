@@ -190,7 +190,7 @@ public class SideMenuActivity extends AppCompatActivity {
                         }
                         break;
 
-                    case 2:
+                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //About ITI
