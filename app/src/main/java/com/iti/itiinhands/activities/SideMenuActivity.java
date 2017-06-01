@@ -41,12 +41,18 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.fragments.AllJobPostsFragment;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
+import com.iti.itiinhands.fragments.StudentCourseList;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,15 +74,19 @@ public class SideMenuActivity extends AppCompatActivity {
     int[] images = {R.drawable.social,
             R.drawable.home_512,
             R.drawable.forums,
+            R.drawable.forums,
             R.drawable.info_512,
-            R.drawable.outbox};
+            R.drawable.outbox,
+    };
+
+
+    UserData userData;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -96,7 +106,23 @@ public class SideMenuActivity extends AppCompatActivity {
 
         ////for expandale
         /////////
+
+
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
+
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousItem = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousItem)
+                    expListView.collapseGroup(previousItem);
+                previousItem = groupPosition;
+            }
+        });
+
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -106,8 +132,13 @@ public class SideMenuActivity extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        name.setText("dina");
-        track.setText("web and mobile");
+
+        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+
+        name.setText(userData.getName());
+        track.setText(userData.getTrackName());
 
         // Add header view to the expandable list
 
@@ -125,25 +156,28 @@ public class SideMenuActivity extends AppCompatActivity {
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Log.d("onGroupClick:", "worked");
+//                Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 0:
-
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
-                        final FragmentManager fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-//                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        mDrawerLayout.closeDrawer(expListView);
+                        break;
+                    case 2:
+                        //job posts
+                        fragment = new AllJobPostsFragment();
+                        mDrawerLayout.closeDrawer(expListView);
                         break;
 
                     case 4:
                         //logout action
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.remove("loggedIn");
-                        editor.remove("userId");
-                        editor.remove("userType");
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
@@ -178,12 +212,12 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 1:
                                 //handle grades fragment
 //                                fragment= new StudentCourseList();
-                                fragment = new EmployeeHours();
+                                fragment = new PermissionFragment();
                                 break;
 
                             case 2:
                                 //handle list of courses fragment
-                                fragment = new BranchesFragment();
+                                fragment = new StudentCourseList();
                                 break;
                             default:
                                 break;
@@ -191,22 +225,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                     case 2:
-                        //community part
-                        Bundle bundle;
-                        switch (childPosition) {
-
-                            case 0:
-                                break;
-                            case 1:
-                                break;
-                            case 2:
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-
-                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //About ITI
@@ -275,28 +293,29 @@ public class SideMenuActivity extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("My Track");
-        listDataHeader.add("Community");
+        listDataHeader.add("Job Posts");
         listDataHeader.add("ITI");
         listDataHeader.add("Logout");
 
+
         // Adding child data
-        List<String> profile = new ArrayList<String>();
+        List<String> profile = new ArrayList<>();
         //profile.add("");
 
 
-        List<String> myTrack = new ArrayList<String>();
+        List<String> myTrack = new ArrayList<>();
         myTrack.add("Schedule");
         myTrack.add("Permission");
         myTrack.add("List of Courses");
 
 
-        List<String> community = new ArrayList<String>();
+        List<String> community = new ArrayList<>();
         community.add("Students");
         community.add("Staff");
         community.add("Graduates");
 
 
-        List<String> aboutIti = new ArrayList<String>();
+        List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
         aboutIti.add("Tracks");
         aboutIti.add("Events");
@@ -306,11 +325,12 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
         List<String> logout = new ArrayList<String>();
+        List<String> jobposts = new ArrayList<String>();
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), myTrack);
-        listDataChild.put(listDataHeader.get(2), community);
+        listDataChild.put(listDataHeader.get(2), jobposts);
         listDataChild.put(listDataHeader.get(3), aboutIti);
         listDataChild.put(listDataHeader.get(4), logout);
 

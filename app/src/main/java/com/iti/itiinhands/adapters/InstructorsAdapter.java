@@ -10,15 +10,19 @@ import android.widget.TextView;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.beans.Instructor;
 import com.iti.itiinhands.beans.Track;
+import com.iti.itiinhands.model.TrackInstructor;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sandra on 5/8/2017.
  */
 
 public class InstructorsAdapter extends RecyclerView.Adapter<InstructorsAdapter.ViewHolder> {
-    private Instructor[] instructors;
+    ArrayList<TrackInstructor> instructors;
 
-    public InstructorsAdapter(Instructor[] instructors){
+
+    public InstructorsAdapter(ArrayList<TrackInstructor> instructors){
 
         this.instructors = instructors;
     }
@@ -39,12 +43,12 @@ public class InstructorsAdapter extends RecyclerView.Adapter<InstructorsAdapter.
 
         // - get element from  dataset at this position
         // - replace the contents of the view with that element
-        holder.instructorNameTV.setText(instructors[position].getFirstName());
+        holder.instructorNameTV.setText(instructors.get(position).getInstructorName());
     }
 
     @Override
     public int getItemCount() {
-        return instructors.length;
+        return instructors.size();
     }
 
 
