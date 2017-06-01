@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 public class Branches extends AppCompatActivity implements NetworkResponse{
 
+
     private ArrayList<Branch> branchesList = new ArrayList<>();
     private RecyclerView recyclerView;
     private BranchesAdapter branchesAdapter;
