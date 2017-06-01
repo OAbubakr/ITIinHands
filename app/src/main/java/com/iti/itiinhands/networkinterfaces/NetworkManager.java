@@ -6,9 +6,11 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 
@@ -31,8 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.1.7:8084/restfulSpring/"; // Ragab ip and url
+   // private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
     private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit ;
@@ -78,7 +79,7 @@ public class NetworkManager {
             public void onFailure(Call<List<StudentGrade>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
 
@@ -223,7 +224,7 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
 
@@ -246,8 +247,53 @@ public class NetworkManager {
 
                 t.printStackTrace();
                 Log.e("network",t.toString());
-                network.onFaliure();
+                network.onFailure();
             }
         });
+    }
+
+    public void getCompanyProfile(NetworkResponse networkResponse,int id){
+        final NetworkResponse network=networkResponse;
+        NetworkApi web =retrofit.create(NetworkApi.class);
+        Call<Company> call = web.getCompanyProfile(id);
+        call.enqueue(new Callback<Company>() {
+            @Override
+            public void onResponse(Call<Company> call, Response<Company> response) {
+                Company company = response.body();
+                network.onResponse(company);
+            }
+
+            @Override
+            public void onFailure(Call<Company> call, Throwable t) {
+
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFailure();
+            }
+        });
+
+    }
+
+
+    public void getAllJobs(NetworkResponse networkResponse){
+        final NetworkResponse network=networkResponse;
+        NetworkApi web =retrofit.create(NetworkApi.class);
+        Call<List<JobVacancy>> call = web.getJobs();
+        call.enqueue(new Callback<List<JobVacancy>>() {
+            @Override
+            public void onResponse(Call<List<JobVacancy>> call, Response<List<JobVacancy>> response) {
+                ArrayList<JobVacancy> jobVacancies = (ArrayList<JobVacancy>) response.body();
+                network.onResponse(jobVacancies);
+            }
+
+            @Override
+            public void onFailure(Call<List<JobVacancy>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network",t.toString());
+                network.onFailure();
+
+            }
+        });
+
     }
 }

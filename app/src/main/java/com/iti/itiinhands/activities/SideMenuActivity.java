@@ -28,7 +28,9 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 
@@ -123,7 +125,10 @@ public class SideMenuActivity extends AppCompatActivity {
                     case 0:
 
                         //replace with profile fragment
-                        Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
+                        fragment = new CompanyProfileFragment();
+                        mDrawerLayout.closeDrawer(expListView);
+
                         break;
 
                     case 4:
@@ -163,7 +168,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 3:
                                 //handle evaluation fragment
-                                fragment = new BranchesFragment();
+                                fragment = new AllJobPostsFragment();
                                 break;
                             case 4:
                                 //handle announcment fragment

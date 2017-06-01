@@ -4,36 +4,35 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
+import com.iti.itiinhands.adapters.JobsAdapter;
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
-public class BranchesFragment extends Fragment implements NetworkResponse {
+public class AllJobPostsFragment extends Fragment implements NetworkResponse{
 
-    private ArrayList<Branch> branchesList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private BranchesAdapter branchesAdapter;
     private NetworkManager networkManager;
-    private TextView branchViewTitle;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
+    ArrayList<JobVacancy> jobVacancies = new ArrayList<>();
 
-    public BranchesFragment() {
+    public AllJobPostsFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -46,26 +45,16 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_branches, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_job_posts, container, false);
+        recyclerView =
+                (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
-        branchViewTitle = (TextView) view.findViewById(R.id.branch_view_title);
-        branchViewTitle.setText("ITI-BRANCHES");
+        recyclerView.setLayoutManager(layoutManager);
+        networkManager.getAllJobs(this);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.branch_recycler_view);
-
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        prepareBranchData();
         return view;
-    }
-
-    private void prepareBranchData(){
-        Log.i("network","yamosahel");
-        networkManager.getBranches(this);
     }
 
 
@@ -82,19 +71,16 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
 
     }
 
+
     @Override
     public void onResponse(Object response) {
-        branchesList= (ArrayList<Branch>) response;
-        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext());
-        recyclerView.setAdapter(branchesAdapter);
+        jobVacancies= (ArrayList<JobVacancy>) response;
+        adapter = new JobsAdapter(jobVacancies,getActivity().getApplicationContext());
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onFailure() {
 
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }
