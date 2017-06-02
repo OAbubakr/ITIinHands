@@ -90,6 +90,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setGroupIndicator(null);
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -107,7 +108,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         expListView.addHeaderView(headerView);
 
 //        //////////////////////////sert the dcompany fragment  student schedule
-        fragment = new BranchesFragment();
+        fragment = new AboutIti();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////

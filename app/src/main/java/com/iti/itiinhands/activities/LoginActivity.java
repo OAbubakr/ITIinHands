@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         if (data.getBoolean(Constants.LOGGED_FLAG, false)) {
             //navigate using intent to next Activity
             switch (userType) {
-                case 0:
-                    //type 0 -> goes to Guest side menu
+                case 5:
+                    //type 5 -> goes to Guest side menu
                     navigationIntent = new Intent(getApplicationContext(), GuestSideMenu.class);
                     break;
                 case 1:
@@ -243,7 +243,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     public void onResponse(Object response) {
 
         Response result = (Response) response;
-        if (result.getResponseData() instanceof LinkedTreeMap) {
+        if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
 

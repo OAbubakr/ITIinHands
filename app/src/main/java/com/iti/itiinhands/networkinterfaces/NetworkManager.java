@@ -1,10 +1,14 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.iti.itiinhands.activities.EmployeeHours;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
@@ -21,10 +25,15 @@ import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.behance.BehanceData;
 import com.iti.itiinhands.model.schedule.SessionModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,11 +47,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-//    private static final String BASEURL = "http://192.168.1.6:8084/restfulSpring/"; // Ragab ip and url
-
-//    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
+    //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/"; // Ragab ip and url
+//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Sandra ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -98,37 +105,59 @@ public class NetworkManager {
                 network.onFailure();
             }
         });
+    }
+    //    ----------------------- upload  images -----------------------------------------------------
+    public void uploadImage(NetworkResponse networkResponse,String imagePath ,int id) {
+        final NetworkResponse network = networkResponse;
+        System.out.println("##########################################");
+        File file = new File(imagePath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
 
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<String> call = web.uploadImage(fileToUpload,id);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+//                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
+                System.out.println("********************* "+response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("********************* failed");
+                System.out.println(t.toString());
+
+            }
+        });
 
     }
+    //    -----------------------get employee hours-----------------------------------------------------
+    public void getEmployeeHours(NetworkResponse networkResponse, int id, String start, String end) {
+        final NetworkResponse network = networkResponse;
 
-//    -----------------------get employee hours-----------------------------------------------------
-public void getEmployeeHours(NetworkResponse networkResponse, int id,String start,String end) {
-    final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<EmpHour> call = web.getEmpHours(id, start, end);
+        call.enqueue(new Callback<EmpHour>() {
+            @Override
+            public void onResponse(Call<EmpHour> call, retrofit2.Response<EmpHour> response) {
+                network.onResponse(response.body());
 
-    NetworkApi web = retrofit.create(NetworkApi.class);
-    Call<EmpHour> call = web.getEmpHours(id,start,end);
-    call.enqueue(new Callback<EmpHour>() {
-        @Override
-        public void onResponse(Call<EmpHour> call, retrofit2.Response<EmpHour> response) {
-            network.onResponse(response.body());
+                System.out.println("response is" + response.body().getWorkingDays());
+            }
 
-            System.out.println("response is"+response.body().getWorkingDays());
-        }
-
-        @Override
-        public void onFailure(Call<EmpHour> call, Throwable t) {
-            t.printStackTrace();
-            Log.e("network", t.toString());
-            network.onFailure();
-        }
-    });
-
-
-}
+            @Override
+            public void onFailure(Call<EmpHour> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
 //--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId) {
     public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID){
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeID);
@@ -137,7 +166,6 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
             public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
                 networkResponse.onResponse(response.body());
             }
-
             @Override
             public void onFailure(Call<List<Instructor>> call, Throwable t) {
                 t.printStackTrace();
@@ -147,7 +175,7 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 
     }
 
-    public void getBranchesNames(final NetworkResponse networkResponse){
+    public void getBranchesNames(final NetworkResponse networkResponse) {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<Branch>> call = web.getBranchesNames();
         call.enqueue(new Callback<List<Branch>>() {

@@ -20,7 +20,9 @@ import com.iti.itiinhands.activities.SideMenuActivity;
 import com.iti.itiinhands.activities.StaffSideMenuActivity;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.Date;
 
@@ -78,9 +80,39 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
             }
 
 
-            sideMenu.putExtra("notificationTite", notificationTitle);
+            sideMenu.putExtra("notificationTitle", notificationTitle);
             sideMenu.putExtra("notificationBody", notificationBody);
             sideMenu.putExtra("notificationType", notificationType);
+
+            //getting user name
+            SharedPreferences setting = getApplicationContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+            UserData userData = UserDataSerializer.deSerialize(setting.getString(Constants.USER_OBJECT,""));
+            int type = setting.getInt(Constants.USER_TYPE,0 );
+            String userName = "";
+
+            switch (type){
+                case 0:
+                    //guest
+                    userName = "guest";
+                    break;
+                case 1:
+                    //Student
+                    userName = userData.getName();
+                    break;
+                case 2:
+                    //Staff
+                    userName = userData.getEmployeeName();
+                    break;
+                case 3:
+                    //Company
+                    userName = userData.getCompanyUserName();
+                    break;
+                case 4:
+                    //Graduate
+                    userName = "graduate";
+                    break;
+
+            }
 
             //inserting announcement into sqlite
             Announcement announcement = new Announcement();
@@ -88,6 +120,7 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
             announcement.setBody(notificationBody);
             announcement.setType(notificationType);
             announcement.setTitle(notificationTitle);
+            announcement.setUserName(userName);
             DataBase DB = DataBase.getInstance(getApplicationContext());
             DB.insertAnnouncement(announcement);
 

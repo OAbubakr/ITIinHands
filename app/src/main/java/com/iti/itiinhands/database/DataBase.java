@@ -31,6 +31,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String AnnouncementTitle = "Announcement_title";
     private static final String AnnouncementBody = "Announcement_body";
     private static final String AnnouncementDate = "Announcement_date";
+    private static final String AnnouncementUserName = "Announcement_userName";
+
 
 
 
@@ -54,7 +56,8 @@ public class DataBase extends SQLiteOpenHelper {
                 " " + AnnouncementType + " Integer, " +
                 AnnouncementTitle + " varchar(255), " +
                 AnnouncementBody + " varchar(255) ,  " +
-                AnnouncementDate + " Long)");
+                AnnouncementDate + " Long , " +
+                AnnouncementUserName + "  varchar(255) )");
 
     }
 
@@ -78,6 +81,7 @@ public class DataBase extends SQLiteOpenHelper {
         row.put(AnnouncementTitle, announcement.getTitle());
         row.put(AnnouncementBody,announcement.getBody());
         row.put(AnnouncementDate,announcement.getDate());
+        row.put(AnnouncementUserName,announcement.getUserName());
 
         //insertQuery
         Long result = DB.insert(AnnouncementTable, null, row);
@@ -91,12 +95,12 @@ public class DataBase extends SQLiteOpenHelper {
 
 
     //get all trips
-    public ArrayList getAnnoucements() {
+    public ArrayList getAnnoucements(String userName) {
         ArrayList<Announcement> AnnoucementList = new ArrayList<Announcement>();
         SQLiteDatabase DB = this.getReadableDatabase();
 
         int i = 0;
-        Cursor c = DB.rawQuery("SELECT * FROM " + AnnouncementTable, null);
+        Cursor c = DB.rawQuery("SELECT * FROM " + AnnouncementTable + " Where "+ AnnouncementUserName + " = ? ", new String[]{userName});
 
         while (c.moveToNext()) {
             Announcement announcement = new Announcement();
@@ -117,10 +121,10 @@ public class DataBase extends SQLiteOpenHelper {
 
 
 
-    public int deleteAnnouncement(int id )
+    public int deleteAnnouncement(int id, String userName)
     {
         SQLiteDatabase DB=this.getWritableDatabase();
-        int delete =DB.delete(AnnouncementTable,"ID = ?",new String[]{String.valueOf(id)});
+        int delete =DB.delete(AnnouncementTable,"ID = ? And "+ AnnouncementUserName +" = ? ",new String[]{String.valueOf(id),userName});
         return delete;
     }
 

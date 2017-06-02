@@ -166,6 +166,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setGroupIndicator(null);
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousItem = -1;
 
@@ -196,7 +197,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         expListView.addHeaderView(headerView);
 
 //        //////////////////////////sert the default
-        fragment = new BranchesFragment();
+        fragment = new AboutIti();
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
