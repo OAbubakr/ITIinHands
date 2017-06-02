@@ -36,6 +36,7 @@ import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
@@ -285,8 +286,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 3:
                                 //handle maps fragment
-                                //fragment=new BranchesFragment();
-                                break;
+                                fragment = new BranchesList();
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();                                break;
                             case 4:
                                 //handle bus services fragment
 //                                fragment = new BranchesFragment();
@@ -296,6 +297,28 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         }
                         break;
 
+                    case 1:
+                        switch (childPosition) {
+                            case 0:
+                                //handle student community
+                                Toast.makeText(getApplicationContext(), "1,0", Toast.LENGTH_LONG).show();
+                                break;
+                            case 1:
+                                //handle staff community
+                                fragment = new ChatFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("receiver_type", "staff");
+                                fragment.setArguments(bundle);
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                                break;
+                            case 2:
+                                //handle graduate community
+                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
 
                     case 2:
                         switch (childPosition) {

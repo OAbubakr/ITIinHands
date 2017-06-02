@@ -115,15 +115,17 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                         message.getText().clear();
                     } else {
-                     //   Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatRoomActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
+
+                     /*
                         chatMessage.setOffline("true");
                         DatabaseReference messageNode = roomNode.push();
                         messageNode.setValue(chatMessage);
 
                         message.getText().clear();
+                        */
                     }
                 }
-
             }
         });
 

@@ -31,6 +31,7 @@ import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class CompanySideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.home_512, R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.home_512,R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
 
 
     @Override
@@ -115,7 +116,7 @@ public class CompanySideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -124,13 +125,13 @@ public class CompanySideMenu extends AppCompatActivity {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
 
-                    case 0:
-                        fragment = new CompanyProfileFragment();
+                    case 0 :
+                        fragment= new CompanyProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
                     case 3:
-                        fragment = new PostJobFragment();
+                        fragment= new PostJobFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
                     case 4:
@@ -141,8 +142,7 @@ public class CompanySideMenu extends AppCompatActivity {
                     case 5:
                         // handle logout action
                         //clear data in shared perference
-                        //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                        SharedPreferences setting = getSharedPreferences("userData", 0);
                         SharedPreferences.Editor editor = setting.edit();
                         editor.remove(Constants.LOGGED_FLAG);
                         editor.remove(Constants.TOKEN);
@@ -276,7 +276,7 @@ public class CompanySideMenu extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(5), logout);
 
         //check extras
-        if (getIntent().getExtras() != null) {
+        if(getIntent().getExtras() != null){
 
             Fragment announcementFragment = new AnnouncementFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();

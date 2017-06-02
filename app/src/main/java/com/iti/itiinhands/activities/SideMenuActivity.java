@@ -33,6 +33,7 @@ import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
@@ -221,7 +222,8 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 3:
                                 //Maps
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                fragment = new BranchesList();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 4:
                                 //Bus Services
