@@ -94,18 +94,23 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
                 case 0:
                     //guest
                     userName = "guest";
+                    break;
                 case 1:
                     //Student
                     userName = userData.getName();
+                    break;
                 case 2:
                     //Staff
                     userName = userData.getEmployeeName();
+                    break;
                 case 3:
                     //Company
                     userName = userData.getCompanyUserName();
+                    break;
                 case 4:
                     //Graduate
                     userName = "graduate";
+                    break;
 
             }
 

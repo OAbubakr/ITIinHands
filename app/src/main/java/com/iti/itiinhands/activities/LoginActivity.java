@@ -243,7 +243,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     public void onResponse(Object response) {
 
         Response result = (Response) response;
-        if (result.getResponseData() instanceof LinkedTreeMap) {
+        if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
 

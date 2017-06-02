@@ -121,10 +121,10 @@ public class DataBase extends SQLiteOpenHelper {
 
 
 
-    public int deleteAnnouncement(int id )
+    public int deleteAnnouncement(int id, String userName)
     {
         SQLiteDatabase DB=this.getWritableDatabase();
-        int delete =DB.delete(AnnouncementTable,"ID = ?",new String[]{String.valueOf(id)});
+        int delete =DB.delete(AnnouncementTable,"ID = ? And "+ AnnouncementUserName +" = ? ",new String[]{String.valueOf(id),userName});
         return delete;
     }
 
