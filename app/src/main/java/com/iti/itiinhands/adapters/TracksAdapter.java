@@ -23,13 +23,13 @@ import java.util.ArrayList;
  * Created by Rana Gamal on 07/05/2017.
  */
 
-public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHolder>{
+public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHolder> {
 
     private ArrayList<Track> tracksList = new ArrayList<>();
     private Context context;
     private int flag;
 
-    public TracksAdapter(ArrayList<Track> tracksList, Context context,int flag){
+    public TracksAdapter(ArrayList<Track> tracksList, Context context, int flag) {
         this.tracksList = tracksList;
         this.context = context;
         this.flag = flag;
@@ -53,7 +53,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
     }
 
     //----------------------------------View Holder Class-------------------------------------------
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView trackName;
         ArrayList<Track> tracksList = new ArrayList<>();
@@ -64,31 +64,30 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
             trackName = (TextView) itemView.findViewById(R.id.track_list_item);
         }
 
-        public void bind(final Track track){
+        public void bind(final Track track) {
             trackName.setText(track.getTrackName());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (flag != 2) { // open details not from staff
+                    if (flag == 0) { // open details not from staff
                         Toast.makeText(context, track.getTrackName(), Toast.LENGTH_SHORT).show();
                         Intent trackDetailsView = new Intent(context, TrackDetails.class);
                         trackDetailsView.putExtra("trackObject", track);
                         trackDetailsView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(trackDetailsView);
-                    } else {// from staff open schedule
-
+                    } else if (flag == 2) {// from staff open schedule
                         Intent i = new Intent(context, Schedule.class);
-
                         Bundle b = new Bundle();
                         b.putInt("trackId", track.getPlatformIntakeId());
-                        b.putInt("flag",2);
+                        b.putInt("flag", 2);
                         i.putExtra("bundle", b);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
+                    } else if (flag == 1) {
 
-                     
-                 }
+
+                    }
                 }
             });
         }

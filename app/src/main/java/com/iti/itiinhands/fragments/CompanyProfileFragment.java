@@ -1,6 +1,7 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 public class CompanyProfileFragment extends Fragment implements NetworkResponse{
 
@@ -24,7 +28,7 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse{
     TextView website;
     TextView knowledge;
     private NetworkManager networkManager;
-    Company company;
+    UserData company;
     public CompanyProfileFragment() {
         // Required empty public constructor
     }
@@ -51,7 +55,23 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse{
         website = (TextView) view.findViewById(R.id.website);
         knowledge = (TextView) view.findViewById(R.id.knowledge);
 
-        networkManager.getCompanyProfile(this,4);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+//        userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+        company = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+
+//        company = (Company) response;
+        name.setText(company.getCompanyName());
+        mobile.setText(company.getCompanyMobile());
+        address.setText(company.getCompanyAddress());
+        phone.setText(company.getCompanyPhone());
+        website.setText(company.getCompanyWebSite());
+        email.setText(company.getCompanyEmail());
+        knowledge.setText(company.getCompanyAreaKnowledge());
+
+
+
+
+//        networkManager.getCompanyProfile(this,4);
 
 
         return view;
@@ -74,14 +94,14 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse{
     @Override
     public void onResponse(Object response) {
 
-        company = (Company) response;
-        name.setText(company.getCompanyName());
-        mobile.setText(company.getCompanyMobile());
-        address.setText(company.getCompanyAddress());
-        phone.setText(company.getCompanyPhone());
-        website.setText(company.getCompanyWebSite());
-        email.setText(company.getCompanyEmail());
-        knowledge.setText(company.getCompanyAreaKnowledge());
+//        company = (Company) response;
+//        name.setText(company.getCompanyName());
+//        mobile.setText(company.getCompanyMobile());
+//        address.setText(company.getCompanyAddress());
+//        phone.setText(company.getCompanyPhone());
+//        website.setText(company.getCompanyWebSite());
+//        email.setText(company.getCompanyEmail());
+//        knowledge.setText(company.getCompanyAreaKnowledge());
     }
 
     @Override
