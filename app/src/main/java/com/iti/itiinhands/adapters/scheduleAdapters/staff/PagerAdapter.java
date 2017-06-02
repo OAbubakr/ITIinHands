@@ -28,9 +28,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 ScheduleFragment tab1 = new ScheduleFragment();
-                Bundle b = new Bundle();
-                b.putInt("flag",1);
-                tab1.setArguments(b);
+//                Bundle b = new Bundle();
+//                b.putInt("flag",1);
+//                tab1.setArguments(b);
 
                 return tab1;
             case 1:

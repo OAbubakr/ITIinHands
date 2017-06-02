@@ -1,8 +1,10 @@
 package com.iti.itiinhands.fragments;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -56,6 +58,12 @@ public class StudentProfileFragment extends Fragment {
         behanceBtn = (Button) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (Button) view.findViewById(R.id.editBtnProfileViewId);
 
+        if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
+        if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
+        if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+
+
+
         firstTv.setText(userData.getName());
         secondTv.setText(new Integer(userData.getIntakeId()).toString());
         thirdTv.setText(userData.getTrackName());
@@ -74,21 +82,21 @@ public class StudentProfileFragment extends Fragment {
         gitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                redirectUrl(userData.getGitUrl());
+                redirectUrl(userData.getGitUrl());
             }
         });
 
         linkedInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                redirectUrl(userData.getLinkedInUrl());
+                redirectUrl(userData.getLinkedInUrl());
             }
         });
 
         behanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                redirectUrl(userData.getBehanceUrl());
+                redirectUrl(userData.getBehanceUrl());
             }
         });
 
@@ -97,6 +105,10 @@ public class StudentProfileFragment extends Fragment {
     }
 
     private void redirectUrl(String url){
+
+        Intent  intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
+import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
@@ -17,11 +18,14 @@ import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.StudentDataByTrackId;
+import com.iti.itiinhands.model.behance.BehanceData;
 import com.iti.itiinhands.model.schedule.SessionModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -34,11 +38,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-   // private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
-    private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://192.168.1.6:8084/restfulSpring/"; // Ragab ip and url
+
+//    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
+    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Sandra ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
-
+    private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
     //    private NetworkResponse network;
     private Context context;
 
@@ -54,7 +61,7 @@ public class NetworkManager {
                 if (newInstance == null) {
                     newInstance = new NetworkManager(context);
                     retrofit = new Retrofit.Builder()
-                            .baseUrl(BASEURL)
+                            .baseUrl(BASEURL).client(getRequestHeader(60, 60))
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                 }
@@ -63,6 +70,14 @@ public class NetworkManager {
         return newInstance;
     }
 
+    private static OkHttpClient getRequestHeader(int readTime, int connectTime) {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(readTime, TimeUnit.SECONDS)
+                .connectTimeout(connectTime, TimeUnit.SECONDS)
+                .build();
+
+        return okHttpClient;
+    }
 
     public void getStudentsGrades(NetworkResponse networkResponse, int id) {
         final NetworkResponse network = networkResponse;
@@ -414,8 +429,26 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
 
 
     ////////////////////get behance data/////////
-    public void getBehanceData(final NetworkResponse networkResponse){
+    public void getBehanceData(final NetworkResponse networkResponse, String name) {
+        String url = "https://api.behance.net/v2/users/";
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<BehanceData> call = web.getBehanceData(name, API_KEY_BEHANCE);
+        call.enqueue(new Callback<BehanceData>() {
+            @Override
+            public void onResponse(Call<BehanceData> call, retrofit2.Response<BehanceData> response) {
+                networkResponse.onResponse(response.body());
+            }
 
+            @Override
+            public void onFailure(Call<BehanceData> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                networkResponse.onFailure();
+            }
+        });
     }
 
     public void getCompanyProfile(NetworkResponse networkResponse,int id){
@@ -465,4 +498,29 @@ public void getEmployeeHours(NetworkResponse networkResponse, int id,String star
         });
 
     }
+
+    //////////get git data////
+    public void getGitData(final NetworkResponse networkResponse, String name) {
+        String url = "https://api.github.com/users/";
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
+                .client(getRequestHeader(60, 60))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<GitData> call = web.getGitData(name);
+        call.enqueue(new Callback<GitData>() {
+            @Override
+            public void onResponse(Call<GitData> call, retrofit2.Response<GitData> response) {
+                networkResponse.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<GitData> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                networkResponse.onFailure();
+            }
+        });
+    }
+
 }

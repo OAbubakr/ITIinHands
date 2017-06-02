@@ -32,11 +32,15 @@ import android.widget.Toast;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.StaffSideMenuActivity;
 import com.iti.itiinhands.adapters.chatAdapters.FriendListAdapter;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.chat.ChatRoom;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.services.FirebaseMessageReceiverService;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +64,9 @@ public class ChatFragment extends Fragment implements NetworkResponse {
     private FriendListAdapter friendListAdapter;
     private BroadcastReceiver receiver;
     List<ChatRoom> chatRooms = new ArrayList<>();
+    int userType;
+    int token;
+    UserData userData;
 
     private ProgressDialog progressDialog;
 
@@ -120,10 +127,15 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
         chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
 
-        sharedPreferences = getActivity().getSharedPreferences("userData", MODE_PRIVATE);
-        myName = sharedPreferences.getString("myName", null);
-        myId = sharedPreferences.getString("myId", null);
-        int userType = sharedPreferences.getInt("userType", -1);
+        sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        token = sharedPreferences.getInt(Constants.TOKEN,0);
+
+        myName = userData.getName();
+        myId = token+"";
+        int userType = this.userType;
         switch (userType){
             case 1:
                 myType = "student";
@@ -221,6 +233,9 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
                             chatRoom.setSenderId(myChatId);
                             chatRoom.setSenderName(myName);
+
+                            chatRoom.setBranchName(instructor.getBranchName());
+
                             chatRooms.add(chatRoom);
                         }
                         friendListAdapter.updateData();

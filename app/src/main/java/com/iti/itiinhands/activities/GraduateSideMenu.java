@@ -20,11 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +72,9 @@ public class GraduateSideMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
+
+        //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -132,13 +138,20 @@ public class GraduateSideMenu extends AppCompatActivity {
                     case 5:
                         //logout  fragment
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.clear();
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
+
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
                         //send user back to login activity
                         finish();
@@ -178,12 +191,11 @@ public class GraduateSideMenu extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
-                                //fragment=new FragmentClass();
+                                fragment = new AboutIti();
                                 break;
                             case 1:
                                 //handle tracks fragment
-                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
-                                break;
+                                fragment = new BranchesFragment();                                break;
                             case 2:
                                 //handle events fragment
                                 Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();

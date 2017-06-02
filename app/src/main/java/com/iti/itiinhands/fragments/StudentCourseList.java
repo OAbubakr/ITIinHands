@@ -56,8 +56,8 @@ public class StudentCourseList extends Fragment implements NetworkResponse{
     @Override
     public void onResponse(Object object) {
         List<StudentGrade> list = (List<StudentGrade>) object;
-        CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
-        SCourses_RV.setAdapter(courseAdapter);
+      if(getActivity()!=null) { CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
+        SCourses_RV.setAdapter(courseAdapter);}
     }
 
     @Override

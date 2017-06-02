@@ -117,8 +117,8 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         ScheduleAdapter adapter = new ScheduleAdapter(sessions);
         List<String> groups = adapter.getGroups();
         HashMap<String, List<SessionModel>> details = adapter.getDetails();
-        ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
-        recyclerView.setAdapter(scheduleCardAdapter);
+       if(getContext()!=null) {ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
+        recyclerView.setAdapter(scheduleCardAdapter);}
     }
 
     @Override

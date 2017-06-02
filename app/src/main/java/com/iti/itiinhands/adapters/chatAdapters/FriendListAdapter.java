@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.model.chat.ChatRoom;
+import com.iti.itiinhands.utilities.Constants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +64,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         this.chatRooms = chatRooms;
         this.cellToInflate = cellToInflate;
         this.id = id;
-        sharedPreferences = context.getSharedPreferences("userData", MODE_PRIVATE);
-        int userType = sharedPreferences.getInt("userType", -1);
+
+
+        sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        int userType = sharedPreferences.getInt(Constants.USER_TYPE, -1);
         switch (userType){
             case 1:
                 myType = "student";
@@ -120,6 +125,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
         holder.getImageLoader().loadImage(holder.getAvatarView(), chatRoom.getReceiverImagePath()
                 , chatRoom.getReceiverName());
+
+        holder.getBranchName().setText(chatRoom.getBranchName());
 
         //onclick listener
         holder.getView().setOnClickListener(new View.OnClickListener() {
@@ -254,6 +261,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     class FriendsViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
+        private TextView branchName;
         private ImageView message_image;
         private View view;
         private AvatarView avatarView;
@@ -266,7 +274,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             this.message_image = (ImageView) itemView.findViewById(R.id.message_image);
             this.avatarView = (AvatarView) itemView.findViewById(R.id.avatar);
             this.imageLoader = new PicassoLoader();
-
+            this.branchName = (TextView) itemView.findViewById(R.id.branch_name_text);
         }
 
         TextView getName() {
@@ -289,6 +297,13 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             return imageLoader;
         }
 
+        public TextView getBranchName() {
+            return branchName;
+        }
+
+        public void setBranchName(TextView branchName) {
+            this.branchName = branchName;
+        }
 
     }
 
