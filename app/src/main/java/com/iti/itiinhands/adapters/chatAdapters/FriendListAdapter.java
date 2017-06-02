@@ -21,6 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.model.chat.ChatRoom;
+import com.iti.itiinhands.utilities.Constants;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +37,8 @@ import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.FriendsViewHolder> {
 
     private Context context;
-    private List<ChatRoom> chatRooms;
-    private List<ChatRoom> chatRoomsCopy;
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+    private List<ChatRoom> chatRoomsCopy = new ArrayList<>();
     private int cellToInflate;
     private SharedPreferences sharedPreferences;
     private String id;
@@ -48,20 +51,33 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     private String roomKey;
     private DatabaseReference chatRoomNode;
 
-    String myType = "staff";
+    String myType;
     String myId;
     String myChatId;
+
+
 
 
     public FriendListAdapter(Context context, List<ChatRoom> chatRooms, int cellToInflate, String id) {
 
         this.context = context;
         this.chatRooms = chatRooms;
-        this.chatRoomsCopy = chatRooms;
-
         this.cellToInflate = cellToInflate;
         this.id = id;
-        sharedPreferences = context.getSharedPreferences(SP_NAME, MODE_PRIVATE);
+
+
+        sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        int userType = sharedPreferences.getInt(Constants.USER_TYPE, -1);
+        switch (userType){
+            case 1:
+                myType = "student";
+                break;
+            case 2:
+                myType = "staff";
+                break;
+        }
+
         myRoot = firebaseDatabase.getReference("users").child(myType);
 
         myId = sharedPreferences.getString("myId", null);
@@ -75,6 +91,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         View view = li.inflate(cellToInflate, parent, false);
         return new FriendsViewHolder(view);
     }
+
+
 
     public void filter(String text) {
 
@@ -107,6 +125,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
         holder.getImageLoader().loadImage(holder.getAvatarView(), chatRoom.getReceiverImagePath()
                 , chatRoom.getReceiverName());
+
+        holder.getBranchName().setText(chatRoom.getBranchName());
 
         //onclick listener
         holder.getView().setOnClickListener(new View.OnClickListener() {
@@ -241,6 +261,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     class FriendsViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
+        private TextView branchName;
         private ImageView message_image;
         private View view;
         private AvatarView avatarView;
@@ -249,11 +270,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         FriendsViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.friend_name);
-            this.view = itemView;
+            this.view = itemView.findViewById(R.id.cell);;
             this.message_image = (ImageView) itemView.findViewById(R.id.message_image);
             this.avatarView = (AvatarView) itemView.findViewById(R.id.avatar);
             this.imageLoader = new PicassoLoader();
-
+            this.branchName = (TextView) itemView.findViewById(R.id.branch_name_text);
         }
 
         TextView getName() {
@@ -276,8 +297,21 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             return imageLoader;
         }
 
+        public TextView getBranchName() {
+            return branchName;
+        }
+
+        public void setBranchName(TextView branchName) {
+            this.branchName = branchName;
+        }
 
     }
 
 
+    public void updateData(){
+        this.chatRoomsCopy.clear();
+        this.chatRoomsCopy.addAll(chatRooms);
+        notifyDataSetChanged();
+
+    }
 }

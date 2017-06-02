@@ -20,10 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AboutIti;
+import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +43,7 @@ public class GraduateSideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.social, R.drawable.home_512,R.drawable.home_512 ,R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
 
 
     @Override
@@ -68,6 +72,9 @@ public class GraduateSideMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
+
+        //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -119,20 +126,32 @@ public class GraduateSideMenu extends AppCompatActivity {
                         break;
 
 
-                    case 3:
+                    case 2:
+                        fragment=new AllJobPostsFragment();
+                        mDrawerLayout.closeDrawer(expListView);
+                        break;
+
+                    case 4:
                         fragment = new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 4:
+                    case 5:
                         //logout  fragment
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.clear();
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
+
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
                         //send user back to login activity
                         finish();
@@ -168,16 +187,15 @@ public class GraduateSideMenu extends AppCompatActivity {
                         }
                         break;
 
-                    case 2:
+                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
-                                //fragment=new FragmentClass();
+                                fragment = new AboutIti();
                                 break;
                             case 1:
                                 //handle tracks fragment
-                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
-                                break;
+                                fragment = new BranchesFragment();                                break;
                             case 2:
                                 //handle events fragment
                                 Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
@@ -225,6 +243,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("Community");
+        listDataHeader.add("Job posts");
         listDataHeader.add("ITI");
         listDataHeader.add("Announcement");
         listDataHeader.add("Logout");
@@ -238,6 +257,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         community.add("Graduates");
         community.add("Staff");
 
+        List<String> jobPosts = new ArrayList<String>();
 
         List<String> aboutIti = new ArrayList<String>();
         aboutIti.add("About ITI");
@@ -252,9 +272,10 @@ public class GraduateSideMenu extends AppCompatActivity {
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), community);
-        listDataChild.put(listDataHeader.get(2), aboutIti);
-        listDataChild.put(listDataHeader.get(3), annoucment);
-        listDataChild.put(listDataHeader.get(4), logout);
+        listDataChild.put(listDataHeader.get(2), jobPosts);
+        listDataChild.put(listDataHeader.get(3), aboutIti);
+        listDataChild.put(listDataHeader.get(4), annoucment);
+        listDataChild.put(listDataHeader.get(5), logout);
 
 
     }

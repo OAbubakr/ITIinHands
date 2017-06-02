@@ -10,6 +10,20 @@ public class Announcement {
     String title;
     String body;
     long date;
+    int id;
+
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 
 
     public int getType() {

@@ -1,7 +1,10 @@
 package com.iti.itiinhands.fragments;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 /**
  * Created by Mahmoud on 5/28/2017.
@@ -36,8 +41,8 @@ public class StudentProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent activityIntent = getActivity().getIntent();
-        userData = (UserData) activityIntent.getExtras().getSerializable("userData");
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
     }
 
     @Nullable
@@ -52,6 +57,12 @@ public class StudentProfileFragment extends Fragment {
         linkedInBtn = (Button) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (Button) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (Button) view.findViewById(R.id.editBtnProfileViewId);
+
+        if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
+        if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
+        if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+
+
 
         firstTv.setText(userData.getName());
         secondTv.setText(new Integer(userData.getIntakeId()).toString());
@@ -71,21 +82,21 @@ public class StudentProfileFragment extends Fragment {
         gitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                redirectUrl(userData.getGitUrl());
+                redirectUrl(userData.getGitUrl());
             }
         });
 
         linkedInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                redirectUrl(userData.getLinkedInUrl());
+                redirectUrl(userData.getLinkedInUrl());
             }
         });
 
         behanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                redirectUrl(userData.getBehanceUrl());
+                redirectUrl(userData.getBehanceUrl());
             }
         });
 
@@ -94,6 +105,10 @@ public class StudentProfileFragment extends Fragment {
     }
 
     private void redirectUrl(String url){
+
+        Intent  intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
 }

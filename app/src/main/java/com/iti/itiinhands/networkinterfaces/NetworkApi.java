@@ -1,10 +1,12 @@
 package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
@@ -30,6 +32,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by admin on 5/22/2017.
@@ -57,13 +60,17 @@ public interface NetworkApi {
 
     @POST("getStudentSchedule")
     public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
-//    (@Query("userType") int userType,@Query("userName") String userName,
-//                                           @Query("password") String password);
 
 
 
     @GET("getEvents")
     public Call<List<Event>> getEvents();
+
+    @GET("getCompanyProfile")
+    public Call<Company> getCompanyProfile(@Query("companyID")int id);
+
+    @GET("getAllVacancies")
+    public Call<List<JobVacancy>> getJobs();
 
     @GET("profile/onGetUserData")
     public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);
@@ -93,11 +100,15 @@ public interface NetworkApi {
 @GET("getStudentsByTrackId")
     public Call<ArrayList<StudentDataByTrackId>>getAllStudentsByTracId(@Query("id")int id);
 
-    @GET("")
-    public Call<BehanceData> getbehanceData(@Query("api_key") String apiKey);
+    @GET
+    public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
+
+    @GET
+    public Call<GitData> getGitData(@Url String url);
+
 
     @GET("getInstructorByBranch")
-    public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId);
+    public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId, @Query("excludeId") int excludeId);
 
     @GET("getBranchesNames")
     public Call<List<Branch>> getBranchesNames();

@@ -2,6 +2,7 @@ package com.iti.itiinhands.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -20,10 +21,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AboutIti;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,25 +54,25 @@ public class GuestSideMenu extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (mDrawerLayout.isDrawerOpen(expListView)) {
-                    mDrawerLayout.closeDrawer(expListView);
-                } else {
-                    mDrawerLayout.openDrawer(expListView);
-                }
-
-            }
-        });
+//        home.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if (mDrawerLayout.isDrawerOpen(expListView)) {
+//                    mDrawerLayout.closeDrawer(expListView);
+//                } else {
+//                    mDrawerLayout.openDrawer(expListView);
+//                }
+//
+//            }
+//        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_guest_side_menu);
+        setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
@@ -79,6 +87,8 @@ public class GuestSideMenu extends AppCompatActivity {
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
 
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
+
 
         ////for expandale
         /////////
@@ -88,19 +98,31 @@ public class GuestSideMenu extends AppCompatActivity {
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
+        name.setVisibility(View.GONE);
+        track.setVisibility(View.GONE);
+
+        ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
+
+        ////////////////////////////////////////////////////////
+        //set name and track or company of the user
+
+
+        avatar.setImageResource(R.drawable.logo1);
+
+//        Picasso.with(getApplicationContext()).load(R.d).into(avatar);
 
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        name.setText("dina");
-        track.setText("web and mobile");
+//        name.setText("dina");
+//        track.setText("web and mobile");
 
         // Add header view to the expandable list
 
         expListView.addHeaderView(headerView);
 
 //        //////////////////////////sert the dcompany fragment  student schedule
-        fragment = new BranchesFragment();
+        fragment = new AboutIti();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
@@ -115,20 +137,19 @@ public class GuestSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace with about iti fragment
-                        Toast.makeText(getApplicationContext(), "About", Toast.LENGTH_LONG).show();
+                        fragment = new AboutIti();
                         break;
                     case 1:
                         //tracks fragment
-                        Toast.makeText(getApplicationContext(), "Tracks", Toast.LENGTH_LONG).show();
-                        break;
+                        fragment = new BranchesFragment();                        break;
                     case 2:
                         //events fragment
                         fragment = new EventListFragment();
-                        Toast.makeText(getApplicationContext(), "Events", Toast.LENGTH_LONG).show();
                         break;
                     case 3:
                         // maps fragment
-                        Toast.makeText(getApplicationContext(), "Maps", Toast.LENGTH_LONG).show();
+                        fragment = new BranchesList();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 
                     case 4:
@@ -139,6 +160,9 @@ public class GuestSideMenu extends AppCompatActivity {
 //                        SharedPreferences.Editor editor = setting.edit();
 //                        editor.clear();
 //                        editor.commit();
+
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
@@ -151,6 +175,7 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
 
                 }
+                mDrawerLayout.closeDrawer(expListView);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 
@@ -177,22 +202,32 @@ public class GuestSideMenu extends AppCompatActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add(" About ITI");
+        listDataHeader.add("About ITI");
         listDataHeader.add("Tracks");
         listDataHeader.add("Events");
         listDataHeader.add("Maps");
+        listDataHeader.add("Login");
 
         // Adding child data
         List<String> iti = new ArrayList<String>();
         List<String> tracks = new ArrayList<String>();
         List<String> events = new ArrayList<String>();
         List<String> maps = new ArrayList<String>();
+        List<String> login = new ArrayList<String>();
 
 
         listDataChild.put(listDataHeader.get(0), iti); // Header, Child data
         listDataChild.put(listDataHeader.get(1), tracks);
         listDataChild.put(listDataHeader.get(2), events);
         listDataChild.put(listDataHeader.get(3), maps);
+        listDataChild.put(listDataHeader.get(4), login);
+
+        //check extras
+        if(getIntent().getExtras() != null){
+
+            Fragment announcementFragment = new AnnouncementFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
+        }
 
     }
 
