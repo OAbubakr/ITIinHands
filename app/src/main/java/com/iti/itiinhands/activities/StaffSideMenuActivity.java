@@ -101,6 +101,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         //subscribe to my topic to receive notifications
         FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         this.myRoot = FirebaseDatabase.getInstance().getReference("users").child(myType);
         //listen for my node to save chat rooms
@@ -370,7 +371,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         List<String> myWork = new ArrayList<String>();
         myWork.add("Evaluation");
-        myWork.add("Scheduale");
+        myWork.add("Schedule");
         myWork.add("Working hours");
 
 
@@ -385,6 +386,13 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(2), myWork);
         listDataChild.put(listDataHeader.get(3), announcement);
         listDataChild.put(listDataHeader.get(4), logout);
+
+        //check extras
+        if(getIntent().getExtras() != null){
+
+            Fragment announcementFragment = new AnnouncementFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
+        }
 
     }
 

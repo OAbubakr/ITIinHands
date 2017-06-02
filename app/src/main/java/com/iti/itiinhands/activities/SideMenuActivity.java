@@ -77,6 +77,15 @@ public class SideMenuActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
+
+
+        ////for expandale
+        /////////
+
+        //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -125,6 +134,7 @@ public class SideMenuActivity extends AppCompatActivity {
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+//                Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 0:
                         //replace with profile fragment
@@ -216,13 +226,6 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 5:
                                 //Announcements
                                 //handle announcment fragment
-                                Announcement announcement=new Announcement();
-                                announcement.setDate(1234);
-                                announcement.setBody("cdcnjkdnckc");
-                                announcement.setType(1);
-                                announcement.setTitle("dnwkendjkwnejdk");
-                                DataBase DB=DataBase.getInstance(getApplicationContext());
-                                DB.insertAnnouncement(announcement);
                                 fragment = new AnnouncementFragment();
                                 break;
 
@@ -300,6 +303,13 @@ public class SideMenuActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(2), jobposts);
         listDataChild.put(listDataHeader.get(3), aboutIti);
         listDataChild.put(listDataHeader.get(4), logout);
+
+        //check extras
+        if(getIntent().getExtras() != null){
+
+            Fragment announcementFragment = new AnnouncementFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
+        }
 
     }
 
