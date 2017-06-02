@@ -29,6 +29,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
@@ -183,6 +184,16 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousItem = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousItem)
+                    expListView.collapseGroup(previousItem);
+                previousItem = groupPosition;
+            }
+        });
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -265,7 +276,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle about ITI Fragment
-                                //fragment=new FragmentClass();
+                                fragment=new AboutIti();
                                 break;
                             case 1:
                                 //handle tracks fragment

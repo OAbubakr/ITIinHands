@@ -22,6 +22,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
@@ -194,7 +195,7 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //About ITI
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                fragment = new AboutIti();
                                 break;
                             case 1:
                                 //Tracks
