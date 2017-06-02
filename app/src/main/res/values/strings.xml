@@ -38,4 +38,5 @@
     <string name="gitStr">GitHub Url</string>
     <string name="linkedInStr">LinkedIn Url</string>
     <string name="behanceStr">Behance Url</string>
+    <string name="whoStr">Who are you ?</string>
 </resources>

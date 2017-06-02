@@ -15,12 +15,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.iti.itiinhands.dto.StudentProfessional;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -274,16 +272,16 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
-                            networkManager.getStudentProfileData(myRef, userType, userId);
+                            networkManager.getUserProfileData(myRef, userType, userId);
                             break;
                         case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
-                            networkManager.getStudentProfileData(myRef, userType, userId);
+                            networkManager.getUserProfileData(myRef, userType, userId);
 //                            finish();
                             break;
                         case 3://company
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
-                            networkManager.getStudentProfileData(myRef, userType, userId);
+                            networkManager.getUserProfileData(myRef, userType, userId);
 //                            finish();
                             break;
                         case 4://guest

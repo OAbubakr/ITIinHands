@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/untitled1"
     android:orientation="vertical"
-    android:weightSum="7">
+    android:weightSum="10">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
+        android:layout_height="0dp"
+        android:layout_weight="2.5">
 
         <ImageView
             android:id="@+id/imageView"
@@ -25,42 +25,134 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="2.2"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/studentBtnId"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/StudentBtn" />
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
-        <Button
-            android:id="@+id/graduateBtnId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/graduateBtn"/>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:drawableLeft="@drawable/gender_neutral_user"
+                android:text="@string/whoStr"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+        </FrameLayout>
 
-        <Button
-            android:id="@+id/staffBtnId"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/staffBtn" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/companyBtnId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/companyBtn"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/studentBtnId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/group542" />
+
+                <TextView
+                    android:id="@+id/srudentTxtLoginId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/StudentBtn" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/staffBtnId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/group541" />
+
+                <TextView
+                    android:id="@+id/staffTxtLoginId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/staffBtn" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/graduateBtnId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/group540" />
+
+                <TextView
+                    android:id="@+id/graduateTxtLoginId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/graduateBtn" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/companyBtnId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/group539" />
+
+                <TextView
+                    android:id="@+id/companyTxtLoginId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/companyBtn" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <LinearLayout
@@ -97,7 +189,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <LinearLayout
@@ -130,54 +222,48 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="2.5"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
+        <Button
+            android:id="@+id/loginbtnLoginViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_17"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/loginView_LoginBtn"
+            android:textColor="@android:color/white"
+            android:textColorLink="#B71C1C" />
 
-            <Button
-                android:id="@+id/loginbtnLoginViewId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle_17"
-                android:enabled="false"
-                android:gravity="center"
-                android:text="@string/loginView_LoginBtn"
-                android:textColor="@android:color/white"
-                android:textColorLink="#B71C1C" />
+        <Button
+            android:id="@+id/continueAsGuest"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
 
-            <Button
-                android:id="@+id/continueAsGuest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_17"
+            android:gravity="center"
+            android:text="@string/loginView_GuestLoginBtn"
+            android:textColor="@android:color/white" />
 
-                android:layout_weight="1"
-                android:background="@drawable/rectangle_17"
-                android:gravity="center"
-                android:text="@string/loginView_GuestLoginBtn"
-                android:textColor="@android:color/white" />
-
-        </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/networkFaildLoginViewId"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
         android:background="@drawable/navbar"
         android:gravity="center"
         android:orientation="horizontal"
