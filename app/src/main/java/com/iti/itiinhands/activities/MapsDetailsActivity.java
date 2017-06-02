@@ -30,7 +30,7 @@ public class MapsDetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_map);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //        Uri imageUri = Uri.parse("res:/" + R.drawable.ground_floor_model);
 //        SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.sdvImage);

@@ -142,7 +142,7 @@ public class CompanySideMenu extends AppCompatActivity {
                     case 5:
                         // handle logout action
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
                         editor.remove(Constants.LOGGED_FLAG);
                         editor.remove(Constants.TOKEN);
@@ -194,7 +194,7 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 3:
                                 //handle maps fragment
-                                fragment = new BranchesFragment();
+                                fragment = new BranchesList();
                                 break;
                         }
                         break;
@@ -207,7 +207,7 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 1:
                                 //access graduates profile
-                                Toast.makeText(getApplicationContext(), "1,1", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
                                 break;
                             default:
                                 break;
