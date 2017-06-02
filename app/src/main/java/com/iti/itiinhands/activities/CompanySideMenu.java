@@ -20,10 +20,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
@@ -42,7 +45,7 @@ public class CompanySideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.home_512,R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
 
 
     @Override
@@ -71,6 +74,9 @@ public class CompanySideMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
+
+        //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,16 +122,22 @@ public class CompanySideMenu extends AppCompatActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
-                    case 2:
+
+                    case 0 :
+                        fragment= new CompanyProfileFragment();
+                        mDrawerLayout.closeDrawer(expListView);
+                        break;
+
+                    case 3:
                         fragment= new PostJobFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 3:
+                    case 4:
                         //announcment fragment
                         fragment=new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 4:
+                    case 5:
                         // handle logout action
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences("userData", 0);
@@ -159,7 +171,7 @@ public class CompanySideMenu extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
-                    case 0:
+                    case 1:
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
@@ -187,7 +199,7 @@ public class CompanySideMenu extends AppCompatActivity {
                         }
                         break;
 
-                    case 1:
+                    case 2:
                         switch (childPosition) {
                             case 0:
                                 //accesss students profile
@@ -231,6 +243,7 @@ public class CompanySideMenu extends AppCompatActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
+        listDataHeader.add("Profile");
         listDataHeader.add("ITI");
         listDataHeader.add("Itians");
         listDataHeader.add("post job");
@@ -251,16 +264,25 @@ public class CompanySideMenu extends AppCompatActivity {
         itians.add("Graduates");
 
 
+        List<String> profile = new ArrayList<String>();
         List<String> postJobs = new ArrayList<String>();
         List<String> announcement = new ArrayList<String>();
         List<String> logout = new ArrayList<String>();
 
 
-        listDataChild.put(listDataHeader.get(0), iti); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), itians);
-        listDataChild.put(listDataHeader.get(2), postJobs);
-        listDataChild.put(listDataHeader.get(3), announcement);
-        listDataChild.put(listDataHeader.get(4), logout);
+        listDataChild.put(listDataHeader.get(0), profile);
+        listDataChild.put(listDataHeader.get(1), iti); // Header, Child data
+        listDataChild.put(listDataHeader.get(2), itians);
+        listDataChild.put(listDataHeader.get(3), postJobs);
+        listDataChild.put(listDataHeader.get(4), announcement);
+        listDataChild.put(listDataHeader.get(5), logout);
+
+        //check extras
+        if(getIntent().getExtras() != null){
+
+            Fragment announcementFragment = new AnnouncementFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
+        }
 
     }
 

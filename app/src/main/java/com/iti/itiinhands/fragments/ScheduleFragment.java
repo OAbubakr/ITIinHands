@@ -58,6 +58,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));

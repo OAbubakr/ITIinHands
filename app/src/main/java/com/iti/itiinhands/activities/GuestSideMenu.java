@@ -20,8 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
@@ -79,6 +81,8 @@ public class GuestSideMenu extends AppCompatActivity {
 
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
 
         ////for expandale
@@ -195,6 +199,13 @@ public class GuestSideMenu extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(1), tracks);
         listDataChild.put(listDataHeader.get(2), events);
         listDataChild.put(listDataHeader.get(3), maps);
+
+        //check extras
+        if(getIntent().getExtras() != null){
+
+            Fragment announcementFragment = new AnnouncementFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
+        }
 
     }
 

@@ -20,8 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
@@ -40,7 +42,7 @@ public class GraduateSideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.social, R.drawable.home_512,R.drawable.home_512 ,R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
 
 
     @Override
@@ -69,6 +71,9 @@ public class GraduateSideMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
+
+        //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -120,11 +125,16 @@ public class GraduateSideMenu extends AppCompatActivity {
                         break;
 
 
-                    case 3:
+                    case 2:
+                        fragment=new AllJobPostsFragment();
+                        mDrawerLayout.closeDrawer(expListView);
+                        break;
+
+                    case 4:
                         fragment = new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 4:
+                    case 5:
                         //logout  fragment
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences("userData", 0);
@@ -169,7 +179,7 @@ public class GraduateSideMenu extends AppCompatActivity {
                         }
                         break;
 
-                    case 2:
+                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
@@ -227,6 +237,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("Community");
+        listDataHeader.add("Job posts");
         listDataHeader.add("ITI");
         listDataHeader.add("Announcement");
         listDataHeader.add("Logout");
@@ -240,6 +251,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         community.add("Graduates");
         community.add("Staff");
 
+        List<String> jobPosts = new ArrayList<String>();
 
         List<String> aboutIti = new ArrayList<String>();
         aboutIti.add("About ITI");
@@ -254,9 +266,10 @@ public class GraduateSideMenu extends AppCompatActivity {
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), community);
-        listDataChild.put(listDataHeader.get(2), aboutIti);
-        listDataChild.put(listDataHeader.get(3), annoucment);
-        listDataChild.put(listDataHeader.get(4), logout);
+        listDataChild.put(listDataHeader.get(2), jobPosts);
+        listDataChild.put(listDataHeader.get(3), aboutIti);
+        listDataChild.put(listDataHeader.get(4), annoucment);
+        listDataChild.put(listDataHeader.get(5), logout);
 
 
     }
