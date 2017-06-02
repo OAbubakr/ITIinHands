@@ -138,7 +138,7 @@ public class CompanySideMenu extends AppCompatActivity {
         });
 
 //        //////////////////////////sert the dcompany fragment  student schedule
-        fragment = new BranchesFragment();
+        fragment = new AboutIti();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
