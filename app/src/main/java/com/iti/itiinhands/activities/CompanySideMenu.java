@@ -23,12 +23,14 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
+import com.iti.itiinhands.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,7 @@ public class CompanySideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.home_512,R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.home_512, R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
 
 
     @Override
@@ -113,7 +115,7 @@ public class CompanySideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -122,29 +124,34 @@ public class CompanySideMenu extends AppCompatActivity {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
 
-                    case 0 :
-                        fragment= new CompanyProfileFragment();
+                    case 0:
+                        fragment = new CompanyProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
                     case 3:
-                        fragment= new PostJobFragment();
+                        fragment = new PostJobFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
                     case 4:
                         //announcment fragment
-                        fragment=new AnnouncementFragment();
+                        fragment = new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
                     case 5:
                         // handle logout action
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        //clear data in shared perference
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.remove("loggedIn");
-                        editor.remove("userId");
-                        editor.remove("userType");
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
+
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
@@ -175,24 +182,19 @@ public class CompanySideMenu extends AppCompatActivity {
                             case 0:
                                 //handle about iti fragment
                                 //fragment=new FragmentClass();
+                                fragment = new AboutIti();
                                 break;
                             case 1:
                                 //handle tracks fragment
-                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
+                                fragment = new BranchesFragment();
                                 break;
                             case 2:
                                 //handle events fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
+                                fragment = new EventListFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
                                 fragment = new BranchesFragment();
-                                break;
-                            case 4:
-                                //handle bus services fragment
-                                fragment = new BranchesFragment();
-                                break;
-                            default:
                                 break;
                         }
                         break;
@@ -211,7 +213,6 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                         }
                         break;
-
 
 
                     default:
@@ -254,7 +255,6 @@ public class CompanySideMenu extends AppCompatActivity {
         iti.add("Tracks");
         iti.add("Events");
         iti.add("Maps");
-        iti.add("Bus Services");
 
 
         List<String> itians = new ArrayList<String>();
@@ -276,7 +276,7 @@ public class CompanySideMenu extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(5), logout);
 
         //check extras
-        if(getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
 
             Fragment announcementFragment = new AnnouncementFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();

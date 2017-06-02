@@ -29,6 +29,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
@@ -240,6 +241,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         editor.remove(Constants.USER_OBJECT);
                         editor.commit();
 
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
+
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
                         finish();
@@ -267,6 +272,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 0:
                                 //handle about ITI Fragment
                                 //fragment=new FragmentClass();
+                                fragment = new AboutIti();
                                 break;
                             case 1:
                                 //handle tracks fragment
