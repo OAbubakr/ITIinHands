@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.model.chat.ChatRoom;
+import com.iti.itiinhands.utilities.Constants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +64,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         this.chatRooms = chatRooms;
         this.cellToInflate = cellToInflate;
         this.id = id;
-        sharedPreferences = context.getSharedPreferences("userData", MODE_PRIVATE);
-        int userType = sharedPreferences.getInt("userType", -1);
+
+
+        sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        int userType = sharedPreferences.getInt(Constants.USER_TYPE, -1);
         switch (userType){
             case 1:
                 myType = "student";
