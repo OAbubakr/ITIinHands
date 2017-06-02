@@ -126,6 +126,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         holder.getImageLoader().loadImage(holder.getAvatarView(), chatRoom.getReceiverImagePath()
                 , chatRoom.getReceiverName());
 
+        holder.getBranchName().setText(chatRoom.getBranchName());
+
         //onclick listener
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,6 +261,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     class FriendsViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
+        private TextView branchName;
         private ImageView message_image;
         private View view;
         private AvatarView avatarView;
@@ -271,7 +274,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             this.message_image = (ImageView) itemView.findViewById(R.id.message_image);
             this.avatarView = (AvatarView) itemView.findViewById(R.id.avatar);
             this.imageLoader = new PicassoLoader();
-
+            this.branchName = (TextView) itemView.findViewById(R.id.branch_name_text);
         }
 
         TextView getName() {
@@ -294,6 +297,13 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             return imageLoader;
         }
 
+        public TextView getBranchName() {
+            return branchName;
+        }
+
+        public void setBranchName(TextView branchName) {
+            this.branchName = branchName;
+        }
 
     }
 

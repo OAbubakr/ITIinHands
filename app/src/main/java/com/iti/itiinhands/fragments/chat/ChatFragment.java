@@ -233,6 +233,9 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
                             chatRoom.setSenderId(myChatId);
                             chatRoom.setSenderName(myName);
+
+                            chatRoom.setBranchName(instructor.getBranchName());
+
                             chatRooms.add(chatRoom);
                         }
                         friendListAdapter.updateData();

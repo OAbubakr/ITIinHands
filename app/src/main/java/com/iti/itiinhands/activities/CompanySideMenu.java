@@ -25,12 +25,15 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
@@ -138,7 +141,7 @@ public class CompanySideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -166,10 +169,14 @@ public class CompanySideMenu extends AppCompatActivity {
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences("userData", 0);
                         SharedPreferences.Editor editor = setting.edit();
-                        editor.remove("loggedIn");
-                        editor.remove("userId");
-                        editor.remove("userType");
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
                         editor.commit();
+
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
@@ -278,7 +285,6 @@ public class CompanySideMenu extends AppCompatActivity {
         iti.add("Tracks");
         iti.add("Events");
         iti.add("Maps");
-        iti.add("Bus Services");
 
 
         List<String> itians = new ArrayList<String>();
