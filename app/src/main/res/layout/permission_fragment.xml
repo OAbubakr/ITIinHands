@@ -8,309 +8,283 @@
     android:paddingRight="25dp"
     android:background="@drawable/bg1"
     >
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg2"
-    android:orientation="vertical"
-    android:weightSum="5"
-    >
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:orientation="vertical"
-      android:layout_weight="1">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/supervisorImageView"
-        android:src="@drawable/track_supervisor"
-        />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/supervisorName"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-
-  </LinearLayout>
-    <!-- date    -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg2"
         android:orientation="vertical"
-       android:layout_weight="1" >
+        android:weightSum="5">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/per_date"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/bg_select"
-        android:weightSum="4">
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight="3.15"
-        android:layout_height="wrap_content"
-        android:hint="11/10/2017"
-        android:layout_gravity="center"
-        android:textAlignment="center"/>
-     <Button
-         android:layout_width="0dp"
-         android:layout_weight="0.5"
-         android:layout_height="wrap_content"
-         android:background="@drawable/per_arrow"
-         android:layout_gravity="center"
-         android:id="@+id/date_arrow"/>
-
-    </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-
-        <!-- start time -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_alignParentLeft="true">
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/supervisorImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/track_supervisor" />
+
+            <EditText
+                android:id="@+id/supervisorName"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.68" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+
+        </LinearLayout>
+        <!-- date    -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dateImageView"
-                android:src="@drawable/start_time"/>
+                android:src="@drawable/per_date" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@drawable/bg_select"
+                android:orientation="horizontal"
                 android:weightSum="4">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="3.15"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    >
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"
-                        android:hint="09"
-                        android:clickable="true"
-                        android:id="@+id/start_hour"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textStart"
-                        android:hint="09"
-                        android:clickable="true"
-                        android:id="@+id/start_minute"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textStart"
-                        android:hint="AM"
-                        android:clickable="true"
-                        android:id="@+id/start_dayORnight"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/per_arrow_top"
-                        android:layout_marginBottom="2dp"
-                        android:id="@+id/start_down"
-                       />
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/per_arrow"
-                        android:layout_marginTop="2dp"
-                        android:id="@+id/start_up"
-                        />
-                </LinearLayout>
+                    android:hint="11/10/2017"
+                    android:textAlignment="center" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
         </LinearLayout>
 
-        <!-- end time -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentRight="true">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                android:src="@drawable/end_time"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
+            <!-- start time -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_select"
-                android:weightSum="4">
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/dateImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/start_time" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="3.15"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_select"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    >
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textEnd"
-                        android:hint="09"
-                        android:clickable="true"
-                        android:id="@+id/end_hour"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"/>
+                    android:weightSum="4">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textStart"
-                        android:hint="09"
-                        android:clickable="true"
-                        android:id="@+id/end_minute"/>
-                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_weight="3.15"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:id="@+id/start_hour"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:hint="09"
+                            android:textAlignment="textEnd" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/start_minute"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:hint="09"
+                            android:textAlignment="textStart" />
+
+                        <TextView
+                            android:id="@+id/start_dayORnight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:hint="AM"
+                            android:textAlignment="textStart" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="textStart"
-                        android:clickable="true"
-                        android:hint="AM"
-                        android:id="@+id/end_dayORnight"/>
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
 
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/per_arrow_top"
-                        android:layout_marginBottom="2dp"
-                        android:id="@+id/end_up"
-                        />
+            </LinearLayout>
 
-                    <Button
-                        android:layout_width="match_parent"
+            <!-- end time -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:src="@drawable/end_time" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_select"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/per_arrow"
-                        android:layout_marginTop="2dp"
-                        android:id="@+id/end_down"
-                        />
+                        android:layout_gravity="center"
+                        android:layout_weight="3.15"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:id="@+id/end_hour"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:hint="09"
+                            android:textAlignment="textEnd" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":" />
+
+                        <TextView
+                            android:id="@+id/end_minute"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:hint="09"
+                            android:textAlignment="textStart" />
+
+                        <TextView
+                            android:id="@+id/end_dayORnight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:hint="AM"
+                            android:textAlignment="textStart" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/darker_gray" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cause" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="179dp"
+                android:background="@android:color/white"
+                android:hint="type here"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:textColorHint="@android:color/darker_gray"
+
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/send_button"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_alignParentBottom="true"/>
 
-    </RelativeLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/cause"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:lines="4"
-        android:background="@android:color/white"
-        android:hint="type here"
-        android:textColorHint="@android:color/darker_gray"
-
-        />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/send_button"
-        android:layout_gravity="center_horizontal"
-        android:text="SEND"
-        android:gravity="center_vertical"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"/>
-
-
-
-</LinearLayout>
-
-
-
-
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

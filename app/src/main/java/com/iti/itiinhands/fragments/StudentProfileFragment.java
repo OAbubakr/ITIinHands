@@ -37,6 +37,7 @@ public class StudentProfileFragment extends Fragment {
     private Button behanceBtn;
     private Button editBtn;
     private ImageView profilePicIv;
+    private int flag;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,26 +49,37 @@ public class StudentProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.student_profile, container, false);
-        firstTv =(TextView) view.findViewById(R.id.firstTvProfileViewId);
-        secondTv =(TextView) view.findViewById(R.id.secondTvProfileViewId);
-        thirdTv =(TextView) view.findViewById(R.id.thirdTvProfileViewId);
-        fourthTv =(TextView) view.findViewById(R.id.fourthTvProfileViewId);
+        View view = inflater.inflate(R.layout.student_profile, container, false);
+        firstTv = (TextView) view.findViewById(R.id.firstTvProfileViewId);
+        secondTv = (TextView) view.findViewById(R.id.secondTvProfileViewId);
+        thirdTv = (TextView) view.findViewById(R.id.thirdTvProfileViewId);
+        fourthTv = (TextView) view.findViewById(R.id.fourthTvProfileViewId);
         gitBtn = (Button) view.findViewById(R.id.gitBtnProfileId);
         linkedInBtn = (Button) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (Button) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (Button) view.findViewById(R.id.editBtnProfileViewId);
 
-        if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
-        if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
-        if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+        Bundle b = getArguments();
+        if (b != null) flag = b.getInt("flag", 0);
+        if (flag == 1){
+            editBtn.setVisibility(View.GONE);
+            userData =(UserData) b.getSerializable("student");
 
+
+        }
+
+
+        if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
+        if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
+        if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
 
 
         firstTv.setText(userData.getName());
         secondTv.setText(new Integer(userData.getIntakeId()).toString());
         thirdTv.setText(userData.getTrackName());
         fourthTv.setText(userData.getBranchName());
+
+
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +116,9 @@ public class StudentProfileFragment extends Fragment {
         return view;
     }
 
-    private void redirectUrl(String url){
+    private void redirectUrl(String url) {
 
-        Intent  intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 

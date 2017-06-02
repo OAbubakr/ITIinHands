@@ -1,5 +1,8 @@
 package com.iti.itiinhands.adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -9,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.CompanyStudentProfile;
+import com.iti.itiinhands.activities.Tracks;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 
 import java.util.ArrayList;
@@ -21,9 +26,11 @@ import java.util.Date;
 public class AllStudentByTrackIdAdapter  extends RecyclerView.Adapter<AllStudentByTrackIdAdapter.MyViewHolder>{
 
     private ArrayList<StudentDataByTrackId> students;
+    Context context;
 
-    public AllStudentByTrackIdAdapter(ArrayList<StudentDataByTrackId>students){
+    public AllStudentByTrackIdAdapter(ArrayList<StudentDataByTrackId>students,Context context){
         this.students=students;
+        this.context = context;
     }
 
 
@@ -74,6 +81,14 @@ public class AllStudentByTrackIdAdapter  extends RecyclerView.Adapter<AllStudent
                 @Override
                 public void onClick(View v) {
 
+
+                    Intent tracksView = new Intent(context, CompanyStudentProfile.class);
+                    Bundle  b= new Bundle();
+                    b.putInt("flag",1);
+                    tracksView.putExtra("bundle",b);
+                    tracksView.putExtra("stuId",studnet.getStudentId());
+                    tracksView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(tracksView);
 
 
                 }
