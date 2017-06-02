@@ -34,4 +34,5 @@
     <string name="behanceProfileTxt">Behance</string>
     <string name="cancelStrBtn">CANCEL</string>
     <string name="submitStrBtn">SUBMIT</string>
+    <string name="view_map">View Map</string>
 </resources>

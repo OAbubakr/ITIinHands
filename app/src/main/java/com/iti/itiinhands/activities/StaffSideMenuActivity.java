@@ -32,6 +32,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -255,8 +256,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 3:
                                 //handle maps fragment
-                                //fragment=new BranchesFragment();
-                                break;
+                                fragment = new BranchesList();
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();                                break;
                             case 4:
                                 //handle bus services fragment
                                 fragment = new BranchesFragment();
@@ -274,7 +275,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle staff community
-                                Toast.makeText(getApplicationContext(), "staff community", Toast.LENGTH_LONG).show();
                                 fragment = new ChatFragment();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("receiver_type", "staff");

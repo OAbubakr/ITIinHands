@@ -26,6 +26,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -174,7 +175,8 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 3:
                                 //handle maps fragment
-                                fragment = new BranchesFragment();
+                                fragment = new BranchesList();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 4:
                                 //handle bus services fragment

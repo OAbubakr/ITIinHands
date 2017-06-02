@@ -47,6 +47,8 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
 
+        <activity android:name=".activities.MapsDetailsActivity"/>
+
         <!-- <activity android:name=".activities.LoginActivity" -->
         <!-- android:theme="@style/AppTheme.NoActionBar"> -->
         <!-- <intent-filter> -->

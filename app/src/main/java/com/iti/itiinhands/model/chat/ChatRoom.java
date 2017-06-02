@@ -21,6 +21,25 @@ public class ChatRoom implements Serializable{
     private boolean hasPendingMessages;
     private int pendingMessagesCount;
 
+    private String branchName;
+    private String arabicBranchName;
+
+    public String getArabicBranchName() {
+        return arabicBranchName;
+    }
+
+    public void setArabicBranchName(String arabicBranchName) {
+        this.arabicBranchName = arabicBranchName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public int getPendingMessagesCount() {
         return pendingMessagesCount;
     }

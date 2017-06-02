@@ -24,6 +24,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,7 +129,8 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
                     case 3:
                         // maps fragment
-                        Toast.makeText(getApplicationContext(), "Maps", Toast.LENGTH_LONG).show();
+                        fragment = new BranchesList();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 
                     case 4:
