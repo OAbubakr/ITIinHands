@@ -85,7 +85,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_side_menu);
@@ -107,7 +107,8 @@ public class SideMenuActivity extends AppCompatActivity {
         ////for expandale
         /////////
 
-
+        //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -135,7 +136,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -150,7 +151,7 @@ public class SideMenuActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -206,8 +207,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle scheduale fragment
-                               //fragment=new FragmentClass();
-                                fragment= new ScheduleFragment();
+                                //fragment=new FragmentClass();
+                                fragment = new ScheduleFragment();
                                 break;
                             case 1:
                                 //handle grades fragment
@@ -249,13 +250,6 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 5:
                                 //Announcements
                                 //handle announcment fragment
-                                Announcement announcement=new Announcement();
-                                announcement.setDate(1234);
-                                announcement.setBody("cdcnjkdnckc");
-                                announcement.setType(1);
-                                announcement.setTitle("dnwkendjkwnejdk");
-                                DataBase DB=DataBase.getInstance(getApplicationContext());
-                                DB.insertAnnouncement(announcement);
                                 fragment = new AnnouncementFragment();
                                 break;
 
@@ -333,6 +327,13 @@ public class SideMenuActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(2), jobposts);
         listDataChild.put(listDataHeader.get(3), aboutIti);
         listDataChild.put(listDataHeader.get(4), logout);
+
+        //check extras
+        if(getIntent().getExtras() != null){
+
+            Fragment announcementFragment = new AnnouncementFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
+        }
 
     }
 
