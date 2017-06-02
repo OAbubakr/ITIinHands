@@ -99,6 +99,7 @@ public class CompanySideMenu extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setGroupIndicator(null);
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
@@ -114,11 +115,12 @@ public class CompanySideMenu extends AppCompatActivity {
 
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
 
-        name.setText(userData.getCompanyName());
-        track.setText("");
+        if(userData != null){
+            name.setText(userData.getCompanyName());
+            track.setText("");
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
-        Picasso.with(getApplicationContext()).load(userData.getCompanyLogoPath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
-
+            Picasso.with(getApplicationContext()).load(userData.getCompanyLogoPath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+        }
 
         // Add header view to the expandable list
 
@@ -225,6 +227,7 @@ public class CompanySideMenu extends AppCompatActivity {
 //                                fragment = new BranchesFragment();
                                 break;
                             default:
+                                fragment = new BranchesList();
                                 break;
                         }
                         break;
@@ -237,7 +240,7 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 1:
                                 //access graduates profile
-                                Toast.makeText(getApplicationContext(), "1,1", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
                                 break;
                             default:
                                 break;

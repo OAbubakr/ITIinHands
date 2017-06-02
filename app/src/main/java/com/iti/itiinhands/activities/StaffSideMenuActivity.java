@@ -166,6 +166,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setGroupIndicator(null);
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousItem = -1;
 
