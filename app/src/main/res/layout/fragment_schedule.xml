@@ -12,12 +12,34 @@
         <!--android:layout_marginLeft="10dp"-->
         <!--android:layout_marginRight="10dp"/>-->
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
 
+            android:id="@+id/progressBar" />
+    </RelativeLayout>
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/day"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
+</LinearLayout>
+
+</RelativeLayout>
+
 
 </LinearLayout>

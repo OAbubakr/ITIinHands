@@ -27,6 +27,8 @@ import com.iti.itiinhands.utilities.UserDataSerializer;
  */
 
 public class EditProfileFragment extends Fragment {
+
+
 //    private UserData userData;
 //    private TextView firstTv;
 //    private TextView secondTv;

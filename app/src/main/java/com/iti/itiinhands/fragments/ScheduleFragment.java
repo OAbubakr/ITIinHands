@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,7 +43,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     int flag = 0;
     int userType;
     int token;
-
+    ProgressBar spinner;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -88,6 +89,8 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
 
 
+        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -119,6 +122,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         HashMap<String, List<SessionModel>> details = adapter.getDetails();
        if(getContext()!=null) {ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
         recyclerView.setAdapter(scheduleCardAdapter);}
+        spinner.setVisibility(View.GONE);
     }
 
     @Override
