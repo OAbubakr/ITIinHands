@@ -1,6 +1,7 @@
 package com.iti.itiinhands.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,7 +97,38 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
                 @Override
                 public void onClick(View view) {
                     Log.i("delete","delete");
-                    int delete=DataBase.getInstance(context).deleteAnnouncement(announcementBean.getId());
+
+                    SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                    UserData userData = UserDataSerializer.deSerialize(setting.getString(Constants.USER_OBJECT,""));
+                    int type = setting.getInt(Constants.USER_TYPE,0 );
+                    String userName = "";
+
+                    switch (type){
+                        case 0:
+                            //guest
+                            userName = "guest";
+                            break;
+                        case 1:
+                            //Student
+                            userName = userData.getName();
+                            break;
+                        case 2:
+                            //Staff
+                            userName = userData.getEmployeeName();
+                            break;
+                        case 3:
+                            //Company
+                            userName = userData.getCompanyUserName();
+                            break;
+                        case 4:
+                            //Graduate
+                            userName = "graduate";
+                            break;
+
+                    }
+
+
+                    int delete=DataBase.getInstance(context).deleteAnnouncement(announcementBean.getId(),userName);
                     Log.i("delete",String.valueOf(delete));
                     announcements.remove(announcementBean);
                     notifyItemRemoved(getAdapterPosition());

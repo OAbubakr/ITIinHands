@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         if (data.getBoolean(Constants.LOGGED_FLAG, false)) {
             //navigate using intent to next Activity
             switch (userType) {
-                case 0:
-                    //type 0 -> goes to Guest side menu
+                case 5:
+                    //type 5 -> goes to Guest side menu
                     navigationIntent = new Intent(getApplicationContext(), GuestSideMenu.class);
                     break;
                 case 1:
@@ -113,9 +113,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 //                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
                 Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
                 //save userType in SharedPreferences
-                SharedPreferences data = getSharedPreferences("userData", 0);
+                SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                 SharedPreferences.Editor editor = data.edit();
-                editor.putInt("userType", 5);
+                editor.putInt(Constants.USER_TYPE, 5);
                 startActivity(intent);
             }
         });
@@ -243,7 +243,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     public void onResponse(Object response) {
 
         Response result = (Response) response;
-        if (result.getResponseData() instanceof LinkedTreeMap) {
+        if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
 
