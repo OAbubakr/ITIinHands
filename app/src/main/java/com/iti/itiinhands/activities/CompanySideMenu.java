@@ -167,7 +167,7 @@ public class CompanySideMenu extends AppCompatActivity {
                     case 5:
                         // handle logout action
                         //clear data in shared perference
-                        SharedPreferences setting = getSharedPreferences("userData", 0);
+                        SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                         SharedPreferences.Editor editor = setting.edit();
                         editor.remove(Constants.LOGGED_FLAG);
                         editor.remove(Constants.TOKEN);

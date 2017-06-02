@@ -113,9 +113,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 //                Intent intent = new Intent(getApplicationContext(), SideMenuActivity.class);
                 Intent intent = new Intent(getApplicationContext(), GuestSideMenu.class);
                 //save userType in SharedPreferences
-                SharedPreferences data = getSharedPreferences("userData", 0);
+                SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                 SharedPreferences.Editor editor = data.edit();
-                editor.putInt("userType", 5);
+                editor.putInt(Constants.USER_TYPE, 5);
                 startActivity(intent);
             }
         });
