@@ -2,6 +2,7 @@ package com.iti.itiinhands.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,9 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,25 +54,25 @@ public class GuestSideMenu extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (mDrawerLayout.isDrawerOpen(expListView)) {
-                    mDrawerLayout.closeDrawer(expListView);
-                } else {
-                    mDrawerLayout.openDrawer(expListView);
-                }
-
-            }
-        });
+//        home.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if (mDrawerLayout.isDrawerOpen(expListView)) {
+//                    mDrawerLayout.closeDrawer(expListView);
+//                } else {
+//                    mDrawerLayout.openDrawer(expListView);
+//                }
+//
+//            }
+//        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_guest_side_menu);
+        setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
@@ -94,12 +98,24 @@ public class GuestSideMenu extends AppCompatActivity {
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
+        name.setVisibility(View.GONE);
+        track.setVisibility(View.GONE);
+
+        ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
+
+        ////////////////////////////////////////////////////////
+        //set name and track or company of the user
+
+
+        avatar.setImageResource(R.drawable.logo1);
+
+//        Picasso.with(getApplicationContext()).load(R.d).into(avatar);
 
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        name.setText("dina");
-        track.setText("web and mobile");
+//        name.setText("dina");
+//        track.setText("web and mobile");
 
         // Add header view to the expandable list
 

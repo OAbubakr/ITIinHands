@@ -24,6 +24,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
@@ -36,6 +37,7 @@ import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,7 +110,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
-
+        ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
@@ -119,6 +121,9 @@ public class SideMenuActivity extends AppCompatActivity {
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
+//        if(userData.getImagePath()==null) userData.setImagePath("") ;
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+
 
         // Add header view to the expandable list
 
@@ -210,7 +215,7 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //About ITI
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                fragment = new AboutIti();
                                 break;
                             case 1:
                                 //Tracks

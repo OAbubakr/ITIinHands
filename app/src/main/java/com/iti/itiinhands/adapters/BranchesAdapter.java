@@ -26,7 +26,7 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
     private  int flag;
 
     public BranchesAdapter(ArrayList<Branch> branchesList, Context context, int flag){
-        this.branchesList = branchesList;
+        if ( branchesList!= null)  this.branchesList = branchesList;
         this.context = context;
         this.flag = flag;
     }

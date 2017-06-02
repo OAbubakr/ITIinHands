@@ -39,6 +39,7 @@ import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,23 +83,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        home.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if (mDrawerLayout.isDrawerOpen(expListView)) {
-//                    mDrawerLayout.closeDrawer(expListView);
-//                } else {
-//                    mDrawerLayout.openDrawer(expListView);
-//                }
-//
-//            }
-//        });
-
-        /*
-        * chat part
-        *
-        * */
 
         //subscribe to my topic to receive notifications
         FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
@@ -110,7 +94,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Object val = dataSnapshot.getValue();
-                if(val == null)
+                if (val == null)
                     myRoot.child(myChatId).setValue("");
                 else if (val instanceof HashMap) {
                     HashMap<String, String> usersRoomsMap = (HashMap) val;
@@ -155,12 +139,12 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN,0);
+        token = sharedPreferences.getInt(Constants.TOKEN, 0);
 
         myName = userData.getEmployeeName();
-        myId = token+"";
+        myId = token + "";
         int userType = this.userType;
-        switch (userType){
+        switch (userType) {
             case 1:
                 myType = "student";
                 break;
@@ -179,24 +163,33 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
-
-
         ////for expandale
         /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousItem = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousItem)
+                    expListView.collapseGroup(previousItem);
+                previousItem = groupPosition;
+            }
+        });
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
+        ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
 
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
         name.setText(userData.getEmployeeName());
         track.setText(userData.getEmployeeBranchName());
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+
 
         // Add header view to the expandable list
 
@@ -208,7 +201,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -226,7 +219,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         break;
                     case 3:
                         //replace with announcment
-                        fragment=new AnnouncementFragment();
+                        fragment = new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
 
                         break;
@@ -251,7 +244,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         finish();
 
 
-
                         break;
 
                     default:
@@ -272,7 +264,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle about ITI Fragment
-                                //fragment=new FragmentClass();
                                 fragment = new AboutIti();
                                 break;
                             case 1:
@@ -386,7 +377,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         List<String> community = new ArrayList<String>();
 
 
-
         List<String> myWork = new ArrayList<String>();
         myWork.add("Evaluation");
         myWork.add("Schedule");
@@ -406,7 +396,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(4), logout);
 
         //check extras
-        if(getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
 
             Fragment announcementFragment = new AnnouncementFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();

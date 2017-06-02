@@ -246,6 +246,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         if (result.getResponseData() instanceof LinkedTreeMap) {
             LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
             UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
+
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
@@ -278,12 +279,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                         case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
                             networkManager.getStudentProfileData(myRef, userType, userId);
-                            finish();
+//                            finish();
                             break;
                         case 3://company
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
-                            startActivity(navigationIntent);
-                            finish();
+                            networkManager.getStudentProfileData(myRef, userType, userId);
+//                            finish();
                             break;
                         case 4://guest
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);

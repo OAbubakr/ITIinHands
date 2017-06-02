@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.JobVacancy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
         public TextView cvTo;
         public TextView noNeed;
         public TextView companyName;
+        public ImageView companyImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +58,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             closeDate = (TextView)itemView.findViewById(R.id.close_date);
             cvTo = (TextView)itemView.findViewById(R.id.cvto);
             noNeed = (TextView)itemView.findViewById(R.id.noneed);
+            companyImage = (ImageView) itemView.findViewById(R.id.img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -84,28 +87,30 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.jobTilte.setText(jobVacancies.get(i).getJobTitle());
-        viewHolder.jobDesc.setText(jobVacancies.get(i).getJobDesc());
-        viewHolder.jobExp.setText(jobVacancies.get(i).getJobYearExperience());
-        viewHolder.noNeed.setText(jobVacancies.get(i).getJobNoNeed()+"");
+        viewHolder.jobTilte.setText("Job Title: "+jobVacancies.get(i).getJobTitle());
+        viewHolder.jobDesc.setText("Job Description: "+jobVacancies.get(i).getJobDesc());
+        viewHolder.jobExp.setText("Years Of Experience: "+jobVacancies.get(i).getJobYearExperience());
+        viewHolder.noNeed.setText("Number OF People Need: "+jobVacancies.get(i).getJobNoNeed()+"");
 
         if (jobVacancies.get(i).getCompanyName() == null){
-            viewHolder.companyName.setText("INVALID");
+            viewHolder.companyName.setText("NULL");
         }
         else {
             viewHolder.companyName.setText(jobVacancies.get(i).getCompanyName());
         }
         if (jobVacancies.get(i).getJobCVTo() == null){
-            viewHolder.cvTo.setText("INVALID");
+            viewHolder.cvTo.setText("NULL");
         }
         else {
             viewHolder.cvTo.setText(jobVacancies.get(i).getJobCVTo());
         }
 
-
+        Picasso.with(context)
+                .load(jobVacancies.get(i).getCompanyLogoPath())
+                .into(viewHolder.companyImage);
 
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(jobVacancies.get(i).getJobClosingDate())).toString();
-        viewHolder.closeDate.setText(dateString);
+        viewHolder.closeDate.setText("Closing Date: "+dateString);
 
 
 
