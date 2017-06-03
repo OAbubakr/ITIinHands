@@ -62,25 +62,19 @@ public class StudentProfileFragment extends Fragment {
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
 
+
+
+        Bundle b = getArguments(); // company
+        if (b != null) flag = b.getInt("flag", 0);
+        if (flag == 1){
+            editBtn.setVisibility(View.GONE);
+            userData =(UserData) b.getSerializable("student");
+        }
         if(userData != null){
             if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
             if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
             if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
         }
-
-        Bundle b = getArguments();
-        if (b != null) flag = b.getInt("flag", 0);
-        if (flag == 1){
-            editBtn.setVisibility(View.GONE);
-            userData =(UserData) b.getSerializable("student");
-
-
-        }
-
-
-        if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
-        if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
-        if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
 
 
         firstTv.setText(userData.getName());

@@ -48,8 +48,8 @@ public class NetworkManager {
 
 
     //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/"; // Ragab ip and url
-//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Sandra ip and url
+//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Sandra ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -157,7 +157,7 @@ public class NetworkManager {
 //--------------------------------------------------------------------------------------------------
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
-    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId) {
+
     public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID){
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeID);
