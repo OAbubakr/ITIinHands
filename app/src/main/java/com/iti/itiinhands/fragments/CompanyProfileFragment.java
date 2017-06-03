@@ -58,18 +58,16 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse{
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 //        userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         company = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-
-//        company = (Company) response;
-        name.setText(company.getCompanyName());
-        mobile.setText(company.getCompanyMobile());
-        address.setText(company.getCompanyAddress());
-        phone.setText(company.getCompanyPhone());
-        website.setText(company.getCompanyWebSite());
-        email.setText(company.getCompanyEmail());
-        knowledge.setText(company.getCompanyAreaKnowledge());
-
-
-
+        if(company != null ){
+            //        company = (Company) response;
+            name.setText(company.getCompanyName());
+            mobile.setText(company.getCompanyMobile());
+            address.setText(company.getCompanyAddress());
+            phone.setText(company.getCompanyPhone());
+            website.setText(company.getCompanyWebSite());
+            email.setText(company.getCompanyEmail());
+            knowledge.setText(company.getCompanyAreaKnowledge());
+        }
 
 //        networkManager.getCompanyProfile(this,4);
 

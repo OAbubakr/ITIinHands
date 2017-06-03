@@ -25,8 +25,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-//    compile 'com.firebaseui:firebase-ui-database:1.2.0'
     compile project(':walkthrough')
+    compile 'com.firebaseui:firebase-ui-database:1.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -52,7 +53,11 @@ dependencies {
     compile project(path: ':linkedin-sdk')
 }
 
-//apply plugin: 'com.google.gms.google-services'
+
+
+
+
+
 
 
 apply plugin: 'com.google.gms.google-services'

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -32,11 +33,13 @@ public class StudentProfileFragment extends Fragment {
     private TextView secondTv;
     private TextView thirdTv;
     private TextView fourthTv;
-    private Button gitBtn;
-    private Button linkedInBtn;
-    private Button behanceBtn;
-    private Button editBtn;
+    private TextView fifthTv;
+    private ImageView gitBtn;
+    private ImageView linkedInBtn;
+    private ImageView behanceBtn;
+    private FloatingActionButton editBtn;
     private ImageView profilePicIv;
+    private int flag;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,28 +56,52 @@ public class StudentProfileFragment extends Fragment {
         secondTv =(TextView) view.findViewById(R.id.secondTvProfileViewId);
         thirdTv =(TextView) view.findViewById(R.id.thirdTvProfileViewId);
         fourthTv =(TextView) view.findViewById(R.id.fourthTvProfileViewId);
-        gitBtn = (Button) view.findViewById(R.id.gitBtnProfileId);
-        linkedInBtn = (Button) view.findViewById(R.id.linkedInBtnProfileId);
-        behanceBtn = (Button) view.findViewById(R.id.behanceBtnProfileId);
-        editBtn = (Button) view.findViewById(R.id.editBtnProfileViewId);
+        fifthTv =(TextView) view.findViewById(R.id.fifthTvProfileViewId);
+        gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
+        linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
+        behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
+        editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
 
-        if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
-        if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
-        if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+        if(userData != null){
+            if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
+            if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
+            if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+        }
 
+        Bundle b = getArguments();
+        if (b != null) flag = b.getInt("flag", 0);
+        if (flag == 1){
+            editBtn.setVisibility(View.GONE);
+            userData =(UserData) b.getSerializable("student");
+
+
+        }
+
+
+        if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
+        if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
+        if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
 
 
         firstTv.setText(userData.getName());
-        secondTv.setText(new Integer(userData.getIntakeId()).toString());
+        secondTv.setText("Intake" +new Integer(userData.getIntakeId()).toString()+ userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
-        fourthTv.setText(userData.getBranchName());
+
+       //SET USER EMAIL
+        if(userData.getStudentEmail() != null)
+        fourthTv.setText(userData.getStudentEmail());
+
+        //SET USER PHONE
+        if(userData.getStudentMobile() != null)
+        fifthTv.setText(userData.getStudentMobile());
+
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new EditProfileFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
             }
         });
 
@@ -104,11 +131,15 @@ public class StudentProfileFragment extends Fragment {
         return view;
     }
 
-    private void redirectUrl(String url){
+    private void redirectUrl(String url) {
 
-        Intent  intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
+
+
+
+
 }

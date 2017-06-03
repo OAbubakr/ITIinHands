@@ -93,6 +93,7 @@ public class SideMenuActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView.setGroupIndicator(null);
 
 
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

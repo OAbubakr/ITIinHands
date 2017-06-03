@@ -1,6 +1,7 @@
 package com.iti.itiinhands.fragments;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -92,7 +93,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         cancelBtn = (Button) view.findViewById(R.id.cancelBtnEditId);
         submitBtn = (Button) view.findViewById(R.id.submitBtnEditId);
         myRef = this;
-
+        prepareView();
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,10 +231,20 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             emailEt.setText(userData.getStudentEmail());
         if (userData.getStudentMobile() != null)
             mobileEt.setText(userData.getStudentMobile());
-        if (userData.getBehanceUrl() != null)
+        if (userData.getBehanceUrl() != null){
             behanceEt.setText(userData.getBehanceUrl());
-        if (userData.getGitUrl() != null)
+            behanceUrl = userData.getBehanceUrl();
+        }
+
+        if (userData.getGitUrl() != null){
             githubEt.setText(userData.getGitUrl());
+            gitUrl = userData.getGitUrl();
+        }
+
+        if (userData.getLinkedInUrl() != null){
+            linkedInUrl = userData.getLinkedInUrl();
+        }
+
         if (userData.getImagePath() != null)
             Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
     }
