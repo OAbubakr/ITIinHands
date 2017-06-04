@@ -1,5 +1,6 @@
 package com.iti.itiinhands.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
@@ -31,7 +33,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     private NetworkManager networkManager;
     private TextView branchViewTitle;
     private int flag = 0;
-
+    private ProgressBar spinner;
 
     public void setFlag(int flag) {
         this.flag = flag;
@@ -60,7 +62,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
+        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         prepareBranchData();
         return view;
     }
@@ -91,6 +94,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         branchesList = (ArrayList<Branch>) response;
         branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
         recyclerView.setAdapter(branchesAdapter);
+        spinner.setVisibility(View.GONE);
+
     }
 
     @Override

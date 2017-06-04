@@ -37,6 +37,7 @@ import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.linkedin.platform.LISessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -343,5 +344,8 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+    }
 }

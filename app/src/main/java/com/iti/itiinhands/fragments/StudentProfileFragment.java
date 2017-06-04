@@ -42,15 +42,15 @@ public class StudentProfileFragment extends Fragment {
     private int flag;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.student_profile, container, false);
         firstTv =(TextView) view.findViewById(R.id.firstTvProfileViewId);
         secondTv =(TextView) view.findViewById(R.id.secondTvProfileViewId);
@@ -82,10 +82,12 @@ public class StudentProfileFragment extends Fragment {
         thirdTv.setText(userData.getTrackName());
 
        //SET USER EMAIL
-        fourthTv.setText(userData.getBranchName());
+        if(userData.getStudentEmail() != null)
+        fourthTv.setText(userData.getStudentEmail());
 
         //SET USER PHONE
-        fifthTv.setText(userData.getBranchName());
+        if(userData.getStudentMobile() != null)
+        fifthTv.setText(userData.getStudentMobile());
 
 
         editBtn.setOnClickListener(new View.OnClickListener() {

@@ -75,8 +75,8 @@ public interface NetworkApi {
     @GET("profile/onGetUserData")
     public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);
 
-    @GET("profile/onSetUserData")
-    public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Query("userData") UserData userData);
+    @POST("profile/onSetUserData")
+    public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
 
     @GET("postJob")
     public Call<Void> postJob(@Query("companyId") int companyId, @Query("jobCode") String jopCode,

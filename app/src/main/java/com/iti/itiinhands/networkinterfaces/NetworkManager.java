@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.iti.itiinhands.activities.EmployeeHours;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
@@ -49,7 +50,7 @@ public class NetworkManager {
 
     //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Sandra ip and url
+    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Sandra ip and url
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -243,7 +244,7 @@ public class NetworkManager {
     }
 
     //////////////////////////////////getProfile data /////////////
-    public void getStudentProfileData(NetworkResponse networkResponse, int userType, int userId) {
+    public void getUserProfileData(NetworkResponse networkResponse, int userType, int userId) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.getUserData(userType, userId);
@@ -259,6 +260,28 @@ public class NetworkManager {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 network.onFailure();
+            }
+        });
+
+
+    }
+    ///////////////////setProfile data///////////////
+    public void setUserProfileData(NetworkResponse networkResponse, int userType, int userId, UserData userdata) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.setUserData(userType, userId,userdata);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                Response result = response.body();
+//                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+//                t.printStackTrace();
+//                Log.e("network", t.toString());
+//                network.onFailure();
             }
         });
 

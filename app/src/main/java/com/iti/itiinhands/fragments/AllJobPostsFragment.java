@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
@@ -29,6 +30,7 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse{
     RecyclerView.Adapter adapter;
     ArrayList<JobVacancy> jobVacancies = new ArrayList<>();
 
+    ProgressBar spinner;
     public AllJobPostsFragment() {
         // Required empty public constructor
     }
@@ -52,6 +54,8 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse{
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         networkManager.getAllJobs(this);
 
         return view;
@@ -77,6 +81,7 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse{
         jobVacancies= (ArrayList<JobVacancy>) response;
         adapter = new JobsAdapter(jobVacancies,getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
+        spinner.setVisibility(View.GONE);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CourseAdapter;
@@ -30,6 +31,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse{
     public RecyclerView SCourses_RV;
     UserData userData;
     int token;
+    ProgressBar spinner;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +51,8 @@ public class StudentCourseList extends Fragment implements NetworkResponse{
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         SCourses_RV.setLayoutManager(linearLayoutManager);
-
+        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         return view;
     }
 
@@ -58,6 +61,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse{
         List<StudentGrade> list = (List<StudentGrade>) object;
       if(getActivity()!=null) { CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
         SCourses_RV.setAdapter(courseAdapter);}
+        spinner.setVisibility(View.GONE);
     }
 
     @Override

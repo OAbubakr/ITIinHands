@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
@@ -31,6 +33,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
     NetworkManager networkManager;
     Track track;
 
+    private ProgressBar spinner;
     ArrayList<Course> courses = new ArrayList<>();
 
     @Override
@@ -58,6 +61,8 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
         coursesLayoutManager = new GridLayoutManager(this, 3);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         //setting the adapter
 
         prepareCourses();
@@ -86,6 +91,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
         }
         instructorsAdapter = new InstructorsAdapter(trackInstructors);
         instructorsRecyclerView.setAdapter(instructorsAdapter);
+        spinner.setVisibility(View.GONE);
     }
 
     @Override

@@ -17,11 +17,8 @@ import com.iti.itiinhands.R;
  */
 
 public class PermissionFragment extends Fragment {
-//
-//    Button endUp;
-//    Button endDown;
-//    Button startUp;
-//    Button startDown;
+
+
     TextView startMin;
     TextView startHour;
     TextView endMin;
@@ -48,11 +45,8 @@ public class PermissionFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//
-//        startUp =(Button) view.findViewById(R.id.start_up);
-//        startDown = (Button)view.findViewById(R.id.start_down);
-//        endUp = (Button)view.findViewById(R.id.end_up);
-//        endDown=(Button)view.findViewById(R.id.end_down);
+        
+
         startMin = (TextView)view.findViewById(R.id.start_minute);
         endMin = (TextView)view.findViewById(R.id.end_minute);
         startHour = (TextView)view.findViewById(R.id.start_hour);
@@ -60,92 +54,12 @@ public class PermissionFragment extends Fragment {
         endCase= (TextView)view.findViewById(R.id.end_dayORnight);
         startCase =(TextView)view.findViewById(R.id.start_dayORnight);
 
-//        startUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               if(startMin.isSelected()){
-//
-//
-//               }else if(startHour.isSelected()){
-//
-//
-//               }else{
-//
-//
-//               }
-//
-//
-//            }
-//        });
-//
-//
-//
-//        startDown.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(startMin.isSelected()){
-//
-//
-//                }else if(startHour.isSelected()){
-//
-//
-//                }else{
-//
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//
-//
-//
-//        endUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(endMin.isSelected()){
-//
-//
-//                }else if(endHour.isSelected()){
-//
-//
-//                }else{
-//
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//
-//        endDown.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(endMin.isSelected()){
-//
-//
-//                }else if(endHour.isSelected()){
-//
-//
-//                }else{
-//
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//
-//
-//
-//
-//
+
+
+
+
+
+
 
 
 
