@@ -27,6 +27,7 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.utilities.Constants;
 
 import java.util.ArrayList;
@@ -123,7 +124,9 @@ public class GraduateSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace profile fragment
-                        Toast.makeText(getApplicationContext(), "Profile", Toast.LENGTH_LONG).show();
+                        fragment = new StudentProfileFragment();
+                        mDrawerLayout.closeDrawer(expListView);
+//                        Toast.makeText(getApplicationContext(), "Profile", Toast.LENGTH_LONG).show();
                         break;
 
 

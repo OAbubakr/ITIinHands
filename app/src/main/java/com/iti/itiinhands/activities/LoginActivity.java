@@ -2,6 +2,7 @@ package com.iti.itiinhands.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private TextView userNameCheckTv;
     private TextView passwordCheckTv;
     private LinearLayout networkErrorTv;
-    private Button continueAsGuest;
+    private TextView continueAsGuest;
     private NetworkManager networkManager;
     private NetworkResponse myRef;
     private Button studentBtn;
@@ -47,6 +48,10 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private int userType = 0;
     private Intent navigationIntent;
     private SharedPreferences data;
+    private TextView studentTxt;
+    private TextView staffTxt;
+    private TextView companyTxt;
+    private TextView graduateTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +97,15 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         passwordCheckTv = (TextView) findViewById(R.id.passwordCheckLoginViewId);
         networkErrorTv = (LinearLayout) findViewById(R.id.networkFaildLoginViewId);
         networkManager = NetworkManager.getInstance(getApplicationContext());
-        continueAsGuest = (Button) findViewById(R.id.continueAsGuest);
+        continueAsGuest = (TextView) findViewById(R.id.continueAsGuest);
         studentBtn = (Button) findViewById(R.id.studentBtnId);
         graduateBtn = (Button) findViewById(R.id.graduateBtnId);
         staffBtn = (Button) findViewById(R.id.staffBtnId);
         companyBtn = (Button) findViewById(R.id.companyBtnId);
+        studentTxt = (TextView) findViewById(R.id.srudentTxtLoginId);
+        staffTxt = (TextView) findViewById(R.id.staffTxtLoginId);
+        companyTxt = (TextView) findViewById(R.id.companyTxtLoginId);
+        graduateTxt = (TextView) findViewById(R.id.graduateTxtLoginId);
 
         myRef = this;
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
@@ -117,21 +126,36 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                 startActivity(intent);
             }
         });
-        loginBtn.setEnabled(true);
+//        loginBtn.setEnabled(true);
 
         studentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 userType = 1;
-                loginBtn.setText(R.string.studentLogin);
+                studentTxt.setTextColor(Color.parseColor("#B71C1C"));
+                studentTxt.setBackgroundResource(R.drawable.hyperlink_underline);
+                staffTxt.setTextColor(Color.parseColor("#000000"));
+                staffTxt.setBackgroundResource(0);
+                companyTxt.setTextColor(Color.parseColor("#000000"));
+                companyTxt.setBackgroundResource(0);
+                graduateTxt.setTextColor(Color.parseColor("#000000"));
+                graduateTxt.setBackgroundResource(0);
             }
         });
+
 
         graduateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 userType = 4;
-                loginBtn.setText(R.string.graduateLogin);
+                studentTxt.setTextColor(Color.parseColor("#000000"));
+                studentTxt.setBackgroundResource(0);
+                staffTxt.setTextColor(Color.parseColor("#000000"));
+                staffTxt.setBackgroundResource(0);
+                companyTxt.setTextColor(Color.parseColor("#000000"));
+                companyTxt.setBackgroundResource(0);
+                graduateTxt.setTextColor(Color.parseColor("#B71C1C"));
+                graduateTxt.setBackgroundResource(R.drawable.hyperlink_underline);
             }
         });
 
@@ -139,7 +163,14 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             @Override
             public void onClick(View v) {
                 userType = 2;
-                loginBtn.setText(R.string.staffLogin);
+                studentTxt.setTextColor(Color.parseColor("#000000"));
+                studentTxt.setBackgroundResource(0);
+                staffTxt.setTextColor(Color.parseColor("#B71C1C"));
+                staffTxt.setBackgroundResource(R.drawable.hyperlink_underline);
+                companyTxt.setTextColor(Color.parseColor("#000000"));
+                companyTxt.setBackgroundResource(0);
+                graduateTxt.setTextColor(Color.parseColor("#000000"));
+                graduateTxt.setBackgroundResource(0);
             }
         });
 
@@ -147,7 +178,14 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             @Override
             public void onClick(View v) {
                 userType = 3;
-                loginBtn.setText(R.string.companyLogin);
+                studentTxt.setTextColor(Color.parseColor("#000000"));
+                studentTxt.setBackgroundResource(0);
+                staffTxt.setTextColor(Color.parseColor("#000000"));
+                staffTxt.setBackgroundResource(0);
+                companyTxt.setTextColor(Color.parseColor("#B71C1C"));
+                companyTxt.setBackgroundResource(R.drawable.hyperlink_underline);
+                graduateTxt.setTextColor(Color.parseColor("#000000"));
+                graduateTxt.setBackgroundResource(0);
             }
         });
 
@@ -158,6 +196,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     Toast.makeText(getApplicationContext(), "Choose a type first to Login", Toast.LENGTH_LONG).show();
                 } else {
                     if (networkManager.isOnline()) {
+
                         networkErrorTv.setVisibility(View.INVISIBLE);
                         userNameCheckTv.setText("");
                         passwordCheckTv.setText("");
@@ -165,6 +204,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                         passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         if (userNameEdTxt.length() > 0 && passwordEdTxt.length() > 0) {
                             networkManager.getLoginAuthData(myRef, userType, userNameEdTxt.getText().toString(), passwordEdTxt.getText().toString());
+                            loginBtn.setEnabled(false);
                         } else {
                             if (userNameEdTxt.length() == 0) {
                                 userNameCheckTv.setText("Username is empty");
@@ -272,28 +312,28 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
-                            networkManager.getUserProfileData(myRef, userType, userId);
+//                            networkManager.getUserProfileData(myRef, userType, userId);
                             break;
                         case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
-                            networkManager.getUserProfileData(myRef, userType, userId);
+//                            networkManager.getUserProfileData(myRef, userType, userId);
 //                            finish();
                             break;
                         case 3://company
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
-                            networkManager.getUserProfileData(myRef, userType, userId);
+//                            networkManager.getUserProfileData(myRef, userType, userId);
 //                            finish();
                             break;
                         case 4://guest
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
-                            startActivity(navigationIntent);
-                            finish();
+//                            startActivity(navigationIntent);
+//                            finish();
                             break;
                     }
                     ///////////////////////////////////////
                     //get all student data
                     ///////////////////////////////////////
-
+                    networkManager.getUserProfileData(myRef, userType, userId);
 //                    startActivity(navigationIntent);
 //                    finish();
                     break;
