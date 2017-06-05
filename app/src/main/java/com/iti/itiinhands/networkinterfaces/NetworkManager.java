@@ -48,8 +48,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    private static final String BASEURL = "http://192.168.43.81:8084/restfulSpring/"; // Ragab ip and url
+    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://192.168.43.81:8084/restfulSpring/"; // Ragab ip and url
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";

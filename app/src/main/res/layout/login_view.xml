@@ -52,126 +52,100 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:layout_margin="5dp"
 
-            <LinearLayout
+            android:orientation="horizontal"
+
+            android:weightSum="4">
+
+            <ImageView
+                android:id="@+id/studentBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group542" />
 
-                <Button
-                    android:id="@+id/studentBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group542" />
-
-                <TextView
-                    android:id="@+id/srudentTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:layout_weight="1"
-
-                    android:gravity="center"
-                    android:text="@string/StudentBtn"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/staffBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group541" />
 
-                <Button
-                    android:id="@+id/staffBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group541" />
-
-                <TextView
-                    android:id="@+id/staffTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/staffBtn"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/graduateBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group540" />
 
-                <Button
-                    android:id="@+id/graduateBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group540" />
-
-                <TextView
-                    android:id="@+id/graduateTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/graduateBtn"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/companyBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group539" />
 
-                <Button
-                    android:id="@+id/companyBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group539" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/companyTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/companyBtn"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
+            <TextView
+                android:id="@+id/srudentTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+                android:text="@string/StudentBtn"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/staffTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/staffBtn"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/graduateTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/graduateBtn"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/companyTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/companyBtn"
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </LinearLayout>
 
@@ -251,6 +225,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_weight="2"
+
         android:orientation="vertical">
 
         <Button
