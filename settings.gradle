@@ -1,5 +1,3 @@
 include ':app'
 include ':walkthrough'
-include ':sampleapp'
 include ':linkedin-sdk'
-include ':eventsapp'
