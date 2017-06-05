@@ -20,6 +20,7 @@ import java.util.List;
 public class UserData implements Serializable {
     //
     //student
+
     private int intakeId;
     private String branchName;
     private String trackName;

@@ -9,11 +9,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.iti.itiinhands.activities.EmployeeHours;
+import com.iti.itiinhands.beans.InstructorEvaluation;
+import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.GitData;
+import com.iti.itiinhands.model.Permission;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
@@ -25,6 +28,7 @@ import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.behance.BehanceData;
 import com.iti.itiinhands.model.schedule.SessionModel;
+import com.iti.itiinhands.model.schedule.Supervisor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -295,14 +299,11 @@ public class NetworkManager {
 
     ////////////////////////////////////////////
     //-------------------------------------POST JOB-------------------------------------------------
-    public void postJob(NetworkResponse networkResponse, int companyId, String jobCode,
-                        String jobTitle, String jobDesc, String experience, String closingDate,
-                        String sendTo, int jobNoNeed, int subTrackId, String jobDate) {
+    public void postJob(NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Void> call = web.postJob(companyId, jobCode, jobTitle, jobDesc, experience,
-                closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
+        Call<Void> call = web.postJob(jobOpportunity);
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -575,6 +576,80 @@ public class NetworkManager {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 networkResponse.onFailure();
+            }
+        });
+    }
+///////////get supervisor
+    public void getSupervisor(final NetworkResponse networkResponse , int id){
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Supervisor> call = web.getSupervisor(id);
+        call.enqueue(new Callback<Supervisor>() {
+            @Override
+            public void onResponse(Call<Supervisor> call, retrofit2.Response<Supervisor> response) {
+
+                networkResponse.onResponse(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Supervisor> call, Throwable throwable) {
+
+                networkResponse.onFailure();
+
+            }
+        });
+
+
+
+    }
+
+
+public void sendPermission(NetworkResponse networkResponse , Permission permission){
+    NetworkApi web = retrofit.create(NetworkApi.class);
+
+    Call<Void>call = web.sendPermission(permission);
+
+    call.enqueue(new Callback<Void>() {
+        @Override
+        public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+
+
+        }
+
+        @Override
+        public void onFailure(Call<Void> call, Throwable t) {
+
+
+        }
+    });
+
+
+
+}
+
+
+
+
+
+    //------------------------------------GET Instructor Evaluation------------------------------------------------
+    public void getInstructorEvaluation(NetworkResponse networkResponse, int instId) {
+
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<InstructorEvaluation>> call = web.getInstructorEvaluation(instId);
+
+        call.enqueue(new Callback<List<InstructorEvaluation>>() {
+            @Override
+            public void onResponse(Call<List<InstructorEvaluation>> call, retrofit2.Response<List<InstructorEvaluation>> response) {
+                ArrayList<InstructorEvaluation> instructorEvaluations = (ArrayList<InstructorEvaluation>) response.body();
+                network.onResponse(instructorEvaluations);
+            }
+
+            @Override
+            public void onFailure(Call<List<InstructorEvaluation>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
             }
         });
     }

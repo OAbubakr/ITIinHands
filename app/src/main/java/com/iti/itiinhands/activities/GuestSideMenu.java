@@ -28,6 +28,7 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -138,7 +139,7 @@ public class GuestSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace with about iti fragment
-                        fragment = new AboutIti();
+                        fragment = new PermissionFragment();
                         break;
                     case 1:
                         //tracks fragment
