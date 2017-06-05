@@ -33,7 +33,7 @@ public class LinkedInLogin {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 String hash = Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                Log.i("result",Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                Log.i("result",hash);
 
 
             }
