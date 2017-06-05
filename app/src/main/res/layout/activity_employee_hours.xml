@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iti.itiinhands.activities.EmployeeHours"
+    android:orientation="vertical"
+    android:weightSum="4"
+    android:paddingTop="20dp"
+    android:theme="@style/AppTheme">
+
+
+    <EditText
+        android:id="@+id/startDateTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.05"
+        android:ems="10"
+        android:hint="Start Date"
+        android:inputType="textPersonName"
+        android:focusable="false"/>
+
+    <EditText
+        android:id="@+id/endDateTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="End Date"
+        android:inputType="textPersonName"
+        android:focusable="false"/>
+
+    <Button
+        android:id="@+id/getEmpBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.05"
+        android:text="Show Hours" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="8">
+
+            <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="161dp"
+                android:padding="10dp"
+                app:egBarWidth="20dp"
+                app:egFixedBarWidth="true"
+                app:egLegendHeight="40dp" />
+
+            <GridView
+                android:id="@+id/HoursGridView"
+                android:layout_width="match_parent"
+                android:layout_height="274dp"
+                android:numColumns="4" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

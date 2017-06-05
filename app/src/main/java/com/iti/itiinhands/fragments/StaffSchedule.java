@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.scheduleAdapters.staff.PagerAdapter;

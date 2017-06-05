@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iti.itiinhands.activities.StudentCourseList">
+    tools:context="com.iti.itiinhands.fragments.StudentCourseList">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvStudentCourses"
@@ -19,5 +19,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+
+            android:id="@+id/progressBar" />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

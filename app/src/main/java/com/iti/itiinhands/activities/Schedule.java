@@ -17,17 +17,11 @@ public class Schedule extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_schedule);
-
         FragmentManager fM = getSupportFragmentManager();
-
-
         FragmentTransaction fragTransaction = fM.beginTransaction();
-
         ScheduleFragment scheduleFragment = new ScheduleFragment();
-
         scheduleFragment.setArguments(getIntent().getBundleExtra("bundle"));
         fragTransaction.replace(R.id.frame,scheduleFragment);
-
         fragTransaction.commit();
 
     }

@@ -1,19 +1,25 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.AnnouncementAdapter;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 
@@ -47,14 +53,52 @@ public class AnnouncementFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL,false));
 
 
-        announcements=dataBase.getAnnoucements();
-        announcementAdapter =new AnnouncementAdapter(announcements);
-        recyclerView.setAdapter(announcementAdapter);
-        announcementAdapter.notifyDataSetChanged();
+//        announcements=dataBase.getAnnoucements();
+//        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext());
+//        recyclerView.setAdapter(announcementAdapter);
+//        announcementAdapter.notifyDataSetChanged();
+
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        SharedPreferences setting = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        UserData userData = UserDataSerializer.deSerialize(setting.getString(Constants.USER_OBJECT,""));
+        int type = setting.getInt(Constants.USER_TYPE,0 );
+        String userName = "";
+
+        switch (type){
+            case 0:
+                //guest
+                userName = "guest";
+                break;
+            case 1:
+                //Student
+                userName = userData.getName();
+                break;
+            case 2:
+                //Staff
+                userName = userData.getEmployeeName();
+                break;
+            case 3:
+                //Company
+                userName = userData.getCompanyUserName();
+                break;
+            case 4:
+                //Graduate
+                userName = "graduate";
+                break;
+
+        }
+        announcements=dataBase.getAnnoucements(userName);
+        Log.i("size",String.valueOf(announcements.size()));
+        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext());
+        recyclerView.setAdapter(announcementAdapter);
+        //announcementAdapter.notifyDataSetChanged();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

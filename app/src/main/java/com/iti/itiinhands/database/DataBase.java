@@ -31,6 +31,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String AnnouncementTitle = "Announcement_title";
     private static final String AnnouncementBody = "Announcement_body";
     private static final String AnnouncementDate = "Announcement_date";
+    private static final String AnnouncementUserName = "Announcement_userName";
+
 
 
 
@@ -49,18 +51,26 @@ public class DataBase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-
         //create announcement table
         sqLiteDatabase.execSQL("create table IF NOT EXISTS " + AnnouncementTable + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " " + AnnouncementType + " Integer, " +
                 AnnouncementTitle + " varchar(255), " +
                 AnnouncementBody + " varchar(255) ,  " +
-                AnnouncementDate + " Long)");
+                AnnouncementDate + " Long , " +
+                AnnouncementUserName + "  varchar(255) )");
 
     }
 
 
-/////////////////////////////////////////////// Announcement Table ////////////////////////////////////////
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AnnouncementTable);
+        onCreate(sqLiteDatabase);
+    }
+
+
+
+    /////////////////////////////////////////////// Announcement Table ////////////////////////////////////////
     //insert announcement
     public Long insertAnnouncement(Announcement announcement) {
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -71,6 +81,7 @@ public class DataBase extends SQLiteOpenHelper {
         row.put(AnnouncementTitle, announcement.getTitle());
         row.put(AnnouncementBody,announcement.getBody());
         row.put(AnnouncementDate,announcement.getDate());
+        row.put(AnnouncementUserName,announcement.getUserName());
 
         //insertQuery
         Long result = DB.insert(AnnouncementTable, null, row);
@@ -84,15 +95,16 @@ public class DataBase extends SQLiteOpenHelper {
 
 
     //get all trips
-    public ArrayList getAnnoucements() {
+    public ArrayList getAnnoucements(String userName) {
         ArrayList<Announcement> AnnoucementList = new ArrayList<Announcement>();
         SQLiteDatabase DB = this.getReadableDatabase();
 
         int i = 0;
-        Cursor c = DB.rawQuery("SELECT * FROM " + AnnouncementTable, null);
+        Cursor c = DB.rawQuery("SELECT * FROM " + AnnouncementTable + " Where "+ AnnouncementUserName + " = ? ", new String[]{userName});
 
         while (c.moveToNext()) {
             Announcement announcement = new Announcement();
+            announcement.setId(c.getInt(0));
             announcement.setType(c.getType(1));
             announcement.setTitle(c.getString(2));
             announcement.setBody(c.getString(3));
@@ -109,18 +121,15 @@ public class DataBase extends SQLiteOpenHelper {
 
 
 
-//    public int deleteAnnouncement()
-//    {
-//        SQLiteDatabase DB=this.getWritableDatabase();
-//        int delete =DB.delete(AnnouncementTable,AnnouncementTitle+" =?",new String[]{""});
-//        return delete;
-//    }
-
-
-
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.i("rwsult","upgrade");
+    public int deleteAnnouncement(int id, String userName)
+    {
+        SQLiteDatabase DB=this.getWritableDatabase();
+        int delete =DB.delete(AnnouncementTable,"ID = ? And "+ AnnouncementUserName +" = ? ",new String[]{String.valueOf(id),userName});
+        return delete;
     }
+
+
+
+
+
 }

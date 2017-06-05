@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
@@ -14,6 +16,7 @@ import com.iti.itiinhands.adapters.TrackCoursesAdapter;
 import com.iti.itiinhands.beans.Instructor;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.Track;
+import com.iti.itiinhands.model.TrackInstructor;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
@@ -30,28 +33,18 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
     NetworkManager networkManager;
     Track track;
 
-    ArrayList<Course> courses= new ArrayList<>();
+    private ProgressBar spinner;
+    ArrayList<Course> courses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_details);
 
-        networkManager=NetworkManager.getInstance(getApplicationContext());
+        networkManager = NetworkManager.getInstance(getApplicationContext());
 
         track = (Track) getIntent().getSerializableExtra("trackObject");
-        //////GETTING List of instructors////
-        Instructor i1 = new Instructor();
-        i1.setFirstName("Mahmoud");
-        Instructor i2 = new Instructor();
-        i2.setFirstName("Ghada");
-        Instructor[] instructors = {i1, i2, i1, i2, i1, i2};
-        ////////GETTING list of courses////
-//        Course c1 = new Course();
-//        c1.setCourseName("Java");
-//        Course c2 = new Course();
-//        c2.setCourseName("Android");
-//        Course courses[] = {c1, c2, c1, c2, c1, c2, c1};
+
 
         instructorsRecyclerView = (RecyclerView) findViewById(R.id.instructorsRV);
         coursesRecyclerView = (RecyclerView) findViewById(R.id.coursesRV);
@@ -68,15 +61,16 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
         coursesLayoutManager = new GridLayoutManager(this, 3);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         //setting the adapter
-        instructorsAdapter = new InstructorsAdapter(instructors);
-        instructorsRecyclerView.setAdapter(instructorsAdapter);
+
         prepareCourses();
 
     }
 
-    public void prepareCourses(){
-        networkManager.getCoursesByTrack(this,track.getPlatformIntakeId());
+    public void prepareCourses() {
+        networkManager.getCoursesByTrack(this, track.getPlatformIntakeId());
     }
 
     @Override
@@ -85,10 +79,25 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse{
         courses= (ArrayList<Course>) response;
         coursesAdapter = new TrackCoursesAdapter(courses);
         coursesRecyclerView.setAdapter(coursesAdapter);
+        ArrayList<TrackInstructor> trackInstructors = new ArrayList<>();
+        for (int i =0 ;i< courses.size();i++){
+            Course course = courses.get(i);
+            if (course.getTrackInstructors().size() != 0){
+                for (int j =0 ; j<course.getTrackInstructors().size();j++){
+                    trackInstructors.add(course.getTrackInstructors().get(j));
+                }
+
+            }
+        }
+        instructorsAdapter = new InstructorsAdapter(trackInstructors);
+        instructorsRecyclerView.setAdapter(instructorsAdapter);
+        spinner.setVisibility(View.GONE);
     }
 
     @Override
     public void onFailure() {
 
     }
+
+
 }

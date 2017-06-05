@@ -1,15 +1,12 @@
 package com.iti.itiinhands.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.AllStudentByTrackIdAdapter;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
  * Created by admin on 5/29/2017.
  */
 
-public class StudentsOfTrack extends Fragment implements NetworkResponse {
+public class StudentsOfTrack extends AppCompatActivity implements NetworkResponse {
 
 
     NetworkManager networkManager;
@@ -35,51 +32,56 @@ public class StudentsOfTrack extends Fragment implements NetworkResponse {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        Intent intent = getActivity().getIntent();
-        id = intent.getIntExtra("trackId", 240);
-
-        return inflater.inflate(R.layout.students_of_track_fragment, container, false);
+            setContentView(R.layout.students_of_track_fragment);
+            Intent intent = getIntent();
+        id = intent.getIntExtra("trackId", 0);
 
 
-    }
+        recyclerView = (RecyclerView) findViewById(R.id.studentsList);
 
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.studentsList);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
         recyclerView.setLayoutManager(mLayoutManager);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
+        networkManager = NetworkManager.getInstance(getApplicationContext());
 
         networkManager.getAllStudentsByTrackId(this, id);
 
-
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//
+//        Intent intent = getActivity().getIntent();
+//
+//        return inflater.inflate(R.layout.students_of_track_fragment, container, false);
+//
+//
+//    }
+
+
+//    @Override
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//
+//
+//
+//    }
+//
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
 
     @Override
     public void onResponse(Object response) {
 
         students = (ArrayList<StudentDataByTrackId>) response;
-        adapter = new AllStudentByTrackIdAdapter(students);
+        adapter = new AllStudentByTrackIdAdapter(students,getApplicationContext());
 
         recyclerView.setAdapter(adapter);
 

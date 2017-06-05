@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
     private ArrayList<Event> eventsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private EventAdapter eventsAdapter;
-
+    private ProgressBar spinner;
     private TextView dayTitle;
     private TextView dateTitle;
     CompactCalendarView calendarView;
@@ -75,7 +76,8 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         prepareEventData();
         return view;
     }
@@ -102,13 +104,18 @@ public class EventListFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Object response) {
         eventsList = (ArrayList<Event>) response;
-        eventsAdapter = new EventAdapter(eventsList, getActivity().getApplicationContext());
-        recyclerView.setAdapter(eventsAdapter);
+if(eventsList !=null){
 
+
+
+    eventsAdapter = new EventAdapter(eventsList, getActivity().getApplicationContext());
+    recyclerView.setAdapter(eventsAdapter);
         for(Event e: eventsList){
+
             com.github.sundeepk.compactcalendarview.domain.Event ev = new com.github.sundeepk.compactcalendarview.domain.Event(Color.parseColor("#7F0000"), e.getEventStart());
             calendarView.addEvent(ev);
-        }
+        }}
+        spinner.setVisibility(View.GONE);
     }
 
     @Override
