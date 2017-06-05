@@ -139,7 +139,7 @@ public class GuestSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace with about iti fragment
-                        fragment = new PermissionFragment();
+                        fragment = new AboutIti();
                         break;
                     case 1:
                         //tracks fragment

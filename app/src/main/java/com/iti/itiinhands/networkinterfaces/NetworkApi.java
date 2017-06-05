@@ -50,33 +50,33 @@ public interface NetworkApi {
     public Call<Response> onLoginAuth(@Body LoginRequest request);
 
     @GET("getEmpHours")
-    public Call<EmpHour> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
+    public Call<Response> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
 
     @GET("getStudentGrades")
-    public Call<List<StudentGrade>> getGrades(@Query("id") int id);
+    public Call<Response> getGrades(@Query("id") int id);
 //    (@Query("userType") int userType,@Query("userName") String userName,
 //                                           @Query("password") String password);
 
     @GET("getBranches")
-    public Call<ArrayList<Branch>> getBranches();
+    public Call<Response> getBranches();
 
     @GET("getCourses")
-    public Call<ArrayList<Course>> getCoursesByTrack(@Query("trackId")int id);
+    public Call<Response> getCoursesByTrack(@Query("trackId")int id);
 
 
     @POST("getStudentSchedule")
-    public Call<SessionModel> getStudentSchedule (@Body LoginRequest request);
+    public Call<Response> getStudentSchedule (@Body LoginRequest request);
 
 
 
     @GET("getEvents")
-    public Call<List<Event>> getEvents();
+    public Call<Response> getEvents();
 
     @GET("getCompanyProfile")
-    public Call<Company> getCompanyProfile(@Query("companyID")int id);
+    public Call<Response> getCompanyProfile(@Query("companyID")int id);
 
     @GET("getAllVacancies")
-    public Call<List<JobVacancy>> getJobs();
+    public Call<Response> getJobs();
 
     @GET("profile/onGetUserData")
     public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);
@@ -85,50 +85,50 @@ public interface NetworkApi {
     public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
 
     @POST("postJob")
-    public Call<Void> postJob(@Body JobOpportunity jobOpportunity);
+    public Call<Response> postJob(@Body JobOpportunity jobOpportunity);
 
     @GET("getInstructorSchedule")
-    public  Call<List<SessionModel>> getInstructorSchedule(@Query("instructorId")int instructorId );
+    public  Call<Response> getInstructorSchedule(@Query("instructorId")int instructorId );
 
     @GET("getStudentSchedule")
-    public  Call<List<SessionModel>> getStudentSchedule(@Query("studentId") int studentId);
+    public  Call<Response> getStudentSchedule(@Query("studentId") int studentId);
 
 
     @GET("getTrackSchedule")
-    Call<List<SessionModel>> getTrackSchedule(@Query("trackId")int trackId);
+    Call<Response> getTrackSchedule(@Query("trackId")int trackId);
 
 
 //////////
 @GET("getStudentsByTrackId")
-    public Call<ArrayList<StudentDataByTrackId>>getAllStudentsByTracId(@Query("id")int id);
+    public Call<Response>getAllStudentsByTracId(@Query("id")int id);
 
     @GET
-    public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
+    public Call<Response> getBehanceData(@Url String url,@Query("api_key") String apiKey);
 
     @GET
-    public Call<GitData> getGitData(@Url String url);
+    public Call<Response> getGitData(@Url String url);
 
 
     @GET("getInstructorByBranch")
-    public Call<List<Instructor>> getInstructorByBranch(@Query("id") int branchId, @Query("excludeId") int excludeId);
+    public Call<Response> getInstructorByBranch(@Query("id") int branchId, @Query("excludeId") int excludeId);
 
     @GET("getBranchesNames")
-    public Call<List<Branch>> getBranchesNames();
+    public Call<Response> getBranchesNames();
 
     @Multipart
     @POST("{id}/fileupload")
-    Call<String> uploadImage(@Part MultipartBody.Part file , @Path("id") int id);
+    Call<Response> uploadImage(@Part MultipartBody.Part file , @Path("id") int id);
 
 
     @GET("getSupervisorByTrackId")
-    public Call<Supervisor>getSupervisor(@Query("id") int id);
+    public Call<Response>getSupervisor(@Query("id") int id);
 
 
     @POST("addPermission")
-    public Call<Void> sendPermission(@Body Permission permission);
+    public Call<Response> sendPermission(@Body Permission permission);
 
 
     @GET("getInstructorEvaluation")
-    public Call<List<InstructorEvaluation>> getInstructorEvaluation(@Query("instId") int instId);
+    public Call<Response> getInstructorEvaluation(@Query("instId") int instId);
 
 }

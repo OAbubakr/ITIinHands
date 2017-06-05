@@ -7,15 +7,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
 
+import com.iti.itiinhands.beans.StudentGrade;
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Branches extends AppCompatActivity implements NetworkResponse{
 
@@ -51,11 +56,18 @@ public class Branches extends AppCompatActivity implements NetworkResponse{
     }
 
     @Override
-    public void onResponse(Object response) {
-        branchesList= (ArrayList<Branch>) response;
+    public void onResponse(Response response) {
+
+        if(response.getStatus().equals(Response.SUCCESS)){
+            branchesList = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<Branch>>(){}.getType());
+
+//            branchesList= (ArrayList<Branch>) response.getResponseData();
         branchesAdapter = new BranchesAdapter(branchesList, getApplicationContext(),flag);
         recyclerView.setAdapter(branchesAdapter);
+        }
     }
+
+
 
     @Override
     public void onFailure() {

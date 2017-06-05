@@ -23,8 +23,8 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
-
 
 
 /**
@@ -279,12 +279,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response result) {
 
-        Response result = (Response) response;
         if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
-            LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
-            UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
+            UserData data = DataSerializer.convert(result.getResponseData(),UserData.class) ;
+//                    UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
 
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
@@ -293,16 +292,14 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             editor.commit();
             startActivity(navigationIntent);
             finish();
-        } else if(result != null) {
-//            LoginResponse loginResponse = (R) response;
+        } else if (result != null) {
             String status = result.getStatus();
             String error = result.getError();
             Double idData = (Double) result.getResponseData();
             int userId = Integer.valueOf(idData.intValue());
-            //get data from msg and then check status value if success navigate to next activity
-            //if failed print the error in username or password check textView
+
             switch (status) {
-                case "success":
+                case "SUCCESS":
                     //save userID and userType in SharedPreferences
                     SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                     SharedPreferences.Editor editor = data.edit();
@@ -313,32 +310,26 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
-//                            networkManager.getUserProfileData(myRef, userType, userId);
+
                             break;
                         case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
-//                            networkManager.getUserProfileData(myRef, userType, userId);
-//                            finish();
+
                             break;
                         case 3://company
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
-//                            networkManager.getUserProfileData(myRef, userType, userId);
-//                            finish();
+
                             break;
                         case 4://guest
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
-//                            startActivity(navigationIntent);
-//                            finish();
+
                             break;
                     }
-                    ///////////////////////////////////////
-                    //get all student data
-                    ///////////////////////////////////////
+
                     networkManager.getUserProfileData(myRef, userType, userId);
-//                    startActivity(navigationIntent);
-//                    finish();
+
                     break;
-                case "fail":
+                case "FAILURE":
                     passwordCheckTv.setText(error);
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                     break;

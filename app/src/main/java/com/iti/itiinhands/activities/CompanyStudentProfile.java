@@ -8,14 +8,19 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+
+import java.util.ArrayList;
 
 
 public class CompanyStudentProfile extends AppCompatActivity implements NetworkResponse {
@@ -34,21 +39,26 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
     }
 
     @Override
-    public void onResponse(Object response) {
-        FragmentManager fM = getSupportFragmentManager();
-        FragmentTransaction fragTransaction = fM.beginTransaction();
-        StudentProfileFragment scheduleFragment = new StudentProfileFragment();
-        Bundle b = getIntent().getBundleExtra("bundle");
+    public void onResponse(Response response) {
+
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            FragmentManager fM = getSupportFragmentManager();
+            FragmentTransaction fragTransaction = fM.beginTransaction();
+            StudentProfileFragment scheduleFragment = new StudentProfileFragment();
+            Bundle b = getIntent().getBundleExtra("bundle");
 
 
-        Response result = (Response) response;
+//        Response result = (Response) response;
 //        LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
-        UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
-        b.putSerializable("student",data);
-        scheduleFragment.setArguments(b);
-        fragTransaction.replace(R.id.frame, scheduleFragment);
-        fragTransaction.commit();
+            UserData data = DataSerializer.convert(response.getResponseData(),UserData.class);
 
+//            UserData data = (UserData) response.getResponseData();
+//                UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
+            b.putSerializable("student", data);
+            scheduleFragment.setArguments(b);
+            fragTransaction.replace(R.id.frame, scheduleFragment);
+            fragTransaction.commit();
+        }
     }
 
     @Override

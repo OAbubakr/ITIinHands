@@ -17,16 +17,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.EventAdapter;
 import com.iti.itiinhands.beans.Event;
+import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -53,7 +58,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_event_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
         dayTitle = (TextView) view.findViewById(R.id.day_title);
@@ -61,7 +66,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         calendarView = (CompactCalendarView) view.findViewById(R.id.calenderView);
 
         Calendar calendar = Calendar.getInstance();
-        System.out.println("------------------------------"+calendar.getTime());
+        System.out.println("------------------------------" + calendar.getTime());
         calendarView.setFirstDayOfWeek(Calendar.SATURDAY);
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
@@ -70,21 +75,21 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM d", Locale.US);
         SimpleDateFormat dayNumFormat = new SimpleDateFormat("d", Locale.US);
         String n = getDayOfMonthSuffix(Integer.parseInt(dayNumFormat.format(calendar.getTime())));
-        dateTitle.setText(monthFormat.format(calendar.getTime()).toUpperCase()+ n);
+        dateTitle.setText(monthFormat.format(calendar.getTime()).toUpperCase() + n);
 
-        recyclerView =(RecyclerView) view.findViewById(R.id.event_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.event_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         prepareEventData();
         return view;
     }
 
-    private void prepareEventData(){
+    private void prepareEventData() {
 
-        if (networkManager.isOnline()){
+        if (networkManager.isOnline()) {
             networkManager.getEvents(this);
         }
     }
@@ -94,28 +99,36 @@ public class EventListFragment extends Fragment implements NetworkResponse {
             return "TH";
         }
         switch (n % 10) {
-            case 1:  return "ST";
-            case 2:  return "ND";
-            case 3:  return "RD";
-            default: return "TH";
+            case 1:
+                return "ST";
+            case 2:
+                return "ND";
+            case 3:
+                return "RD";
+            default:
+                return "TH";
         }
     }
 
     @Override
-    public void onResponse(Object response) {
-        eventsList = (ArrayList<Event>) response;
-if(eventsList !=null){
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            eventsList = DataSerializer.convert(response.getResponseData(),new TypeToken< ArrayList<Event>>(){}.getType());
+
+//            eventsList = (ArrayList<Event>) response.getResponseData();
+            if (eventsList != null) {
 
 
+                eventsAdapter = new EventAdapter(eventsList, getActivity().getApplicationContext());
+                recyclerView.setAdapter(eventsAdapter);
+                for (Event e : eventsList) {
 
-    eventsAdapter = new EventAdapter(eventsList, getActivity().getApplicationContext());
-    recyclerView.setAdapter(eventsAdapter);
-        for(Event e: eventsList){
-
-            com.github.sundeepk.compactcalendarview.domain.Event ev = new com.github.sundeepk.compactcalendarview.domain.Event(Color.parseColor("#7F0000"), e.getEventStart());
-            calendarView.addEvent(ev);
-        }}
-        spinner.setVisibility(View.GONE);
+                    com.github.sundeepk.compactcalendarview.domain.Event ev = new com.github.sundeepk.compactcalendarview.domain.Event(Color.parseColor("#7F0000"), e.getEventStart());
+                    calendarView.addEvent(ev);
+                }
+            }
+            spinner.setVisibility(View.GONE);
+        }
     }
 
     @Override

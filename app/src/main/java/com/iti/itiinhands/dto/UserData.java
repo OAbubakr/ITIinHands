@@ -19,9 +19,28 @@ import java.util.List;
  */
 public class UserData implements Serializable {
     //
+
+    private int id;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     //student
 
     private int intakeId;
+    private int platformIntakeId;
+
+    public int getPlatformIntakeId() {
+        return platformIntakeId;
+    }
+
+    public void setPlatformIntakeId(int platformIntakeId) {
+        this.platformIntakeId = platformIntakeId;
+    }
+
     private String branchName;
     private String trackName;
     private String name;

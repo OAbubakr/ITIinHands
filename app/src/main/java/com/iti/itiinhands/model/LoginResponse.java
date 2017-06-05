@@ -2,13 +2,13 @@ package com.iti.itiinhands.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.iti.itiinhands.networkinterfaces.Response;
+//import com.iti.itiinhands.networkinterfaces.Response;
 
 /**
  * Created by Mahmoud on 5/22/2017.
  */
 
-public class LoginResponse implements Response{
+public class LoginResponse {
     @SerializedName("data")
     @Expose
     private int data;

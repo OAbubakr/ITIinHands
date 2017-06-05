@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.model.JobVacancy;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
@@ -74,7 +75,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
 
     }
 

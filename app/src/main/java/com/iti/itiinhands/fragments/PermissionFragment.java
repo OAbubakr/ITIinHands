@@ -19,10 +19,12 @@ import android.widget.TimePicker;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Permission;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.schedule.Supervisor;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.Calendar;
@@ -32,7 +34,7 @@ import java.util.Calendar;
  * Created by admin on 5/30/2017.
  */
 
-public class PermissionFragment extends Fragment implements NetworkResponse{
+public class PermissionFragment extends Fragment implements NetworkResponse {
 
     TextView supervisorName;
     TextView date;
@@ -70,18 +72,18 @@ public class PermissionFragment extends Fragment implements NetworkResponse{
 
         date = (TextView) view.findViewById(R.id.datedate);
         networkManager = NetworkManager.getInstance(getActivity());
-        networkManager.getSupervisor(this ,userData.getIntakeId());
-        dateArrow =(Button) view.findViewById(R.id.date_arrow);
+        networkManager.getSupervisor(this, userData.getPlatformIntakeId());
+        dateArrow = (Button) view.findViewById(R.id.date_arrow);
         supervisorName = (TextView) view.findViewById(R.id.supervisorName);
-        start =(Button) view.findViewById(R.id.startTime_button);
-        end = (Button)view.findViewById(R.id.endTime_button);
-        startTime = (TextView)view.findViewById(R.id.startTime);
-        endTime = (TextView)view.findViewById(R.id.endTime);
-        cause = (EditText)view.findViewById(R.id.permissionCause);
-        send =(Button) view.findViewById(R.id.permissionSend);
+        start = (Button) view.findViewById(R.id.startTime_button);
+        end = (Button) view.findViewById(R.id.endTime_button);
+        startTime = (TextView) view.findViewById(R.id.startTime);
+        endTime = (TextView) view.findViewById(R.id.endTime);
+        cause = (EditText) view.findViewById(R.id.permissionCause);
+        send = (Button) view.findViewById(R.id.permissionSend);
         permission = new Permission();
-//        permission.setCreatorID(userData.g);
-
+        permission.setCreatorID(userData.getId());
+        permission.setStudentName(userData.getName());
 
 
         dateArrow.setOnClickListener(new View.OnClickListener() {
@@ -94,19 +96,17 @@ public class PermissionFragment extends Fragment implements NetworkResponse{
                 int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
 
-
                 DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), R.style.DatePickerTheme, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
 
                         selectedmonth = selectedmonth + 1;
                         date.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
-                        permission.setPermissionDate(selectedyear+"-"+selectedmonth+"-"+selectedday+" 00:00:00");
+                        permission.setPermissionDate(selectedyear + "-" + selectedmonth + "-" + selectedday + " 00:00:00");
 
                     }
                 }, mYear, mMonth, mDay);
 
                 mDatePicker.show();
-
 
 
             }
@@ -152,7 +152,6 @@ public class PermissionFragment extends Fragment implements NetworkResponse{
         });
 
 
-
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +161,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse{
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 final int minute = mcurrentTime.get(Calendar.MINUTE);
 
-                TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), R.style.DatePickerTheme,new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), R.style.DatePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
 
@@ -192,27 +191,17 @@ public class PermissionFragment extends Fragment implements NetworkResponse{
         });
 
 
-
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 permission.setComment(cause.getText().toString());
 
-
-
+                networkManager.sendPermission(PermissionFragment.this, permission);
 
 
             }
         });
-
-
-
-
-
-
-
-
 
 
     }
@@ -224,21 +213,21 @@ public class PermissionFragment extends Fragment implements NetworkResponse{
 
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
 
-        Supervisor supervisor = (Supervisor)response;
 
-        supervisorName.setText(supervisor.getName());
+        if (response.getStatus().equals(Response.SUCCESS)) {
 
-        permission.setEmpID(supervisor.getId());
+            Supervisor supervisor = DataSerializer.convert(response.getResponseData(),Supervisor.class);
+            supervisorName.setText(supervisor.getName());
+            permission.setEmpID(supervisor.getId());
+        }
 
 
     }
 
     @Override
     public void onFailure() {
-
-
 
 
     }

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.Manifest;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
@@ -85,7 +86,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
     }
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
         Toast.makeText(getApplicationContext(), "Response is success", Toast.LENGTH_SHORT).show();
     }
 

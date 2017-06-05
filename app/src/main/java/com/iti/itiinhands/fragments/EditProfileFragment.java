@@ -17,14 +17,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.GitData;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.behance.BehanceData;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.services.LinkedInLogin;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
@@ -39,6 +43,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -231,17 +236,17 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             emailEt.setText(userData.getStudentEmail());
         if (userData.getStudentMobile() != null)
             mobileEt.setText(userData.getStudentMobile());
-        if (userData.getBehanceUrl() != null){
+        if (userData.getBehanceUrl() != null) {
             behanceEt.setText(userData.getBehanceUrl());
             behanceUrl = userData.getBehanceUrl();
         }
 
-        if (userData.getGitUrl() != null){
+        if (userData.getGitUrl() != null) {
             githubEt.setText(userData.getGitUrl());
             gitUrl = userData.getGitUrl();
         }
 
-        if (userData.getLinkedInUrl() != null){
+        if (userData.getLinkedInUrl() != null) {
             linkedInUrl = userData.getLinkedInUrl();
         }
 
@@ -250,23 +255,27 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
-        if (response != null) {
-            if (response instanceof BehanceData) {
-                BehanceData data = (BehanceData) response;
-                behanceUrl = data.getUser().getUrl();
-                HashMap<Integer, String> images = data.getUser().getImages();
-                Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
-            }
-            if (response instanceof GitData) {
-                GitData data = (GitData) response;
-                gitUrl = data.getHtml_url();
-                Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            if (response != null) {
+                if (response.getResponseData() instanceof BehanceData) {
+                    BehanceData data  = DataSerializer.convert(response.getResponseData(),BehanceData.class);
 
-            }
+//                    BehanceData data = (BehanceData) response.getResponseData();
+                    behanceUrl = data.getUser().getUrl();
+                    HashMap<Integer, String> images = data.getUser().getImages();
+                    Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
+                }
+                if (response.getResponseData() instanceof GitData) {
+                    GitData data = (GitData) response.getResponseData();
+                    gitUrl = data.getHtml_url();
+                    Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
 
-        } else {
-            Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+                Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

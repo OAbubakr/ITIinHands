@@ -21,10 +21,12 @@ import com.iti.itiinhands.adapters.scheduleAdapters.ScheduleExapandableAdapter;
 import com.iti.itiinhands.beans.Session;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.schedule.SessionModel;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.lang.reflect.Type;
@@ -63,14 +65,14 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN,0);
+        token = sharedPreferences.getInt(Constants.TOKEN, 0);
 
 
         Bundle b = getArguments();
         if (b != null) flag = b.getInt("flag", 0);
 
         if (userType == 1) {
-            networkManager.getStudentSchedule(this,token);
+            networkManager.getStudentSchedule(this, token);
 
         } else if (userType == 2) {
             if (flag == 0)
@@ -86,10 +88,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         recyclerView = (RecyclerView) view.findViewById(R.id.day);
 
 
-
-
-
-        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -115,14 +114,19 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
-        ArrayList<SessionModel> sessions = (ArrayList<SessionModel>) response;
-        ScheduleAdapter adapter = new ScheduleAdapter(sessions);
-        List<String> groups = adapter.getGroups();
-        HashMap<String, List<SessionModel>> details = adapter.getDetails();
-       if(getContext()!=null) {ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
-        recyclerView.setAdapter(scheduleCardAdapter);}
-        spinner.setVisibility(View.GONE);
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+
+            ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<SessionModel>>(){}.getType());
+            ScheduleAdapter adapter = new ScheduleAdapter(sessions);
+            List<String> groups = adapter.getGroups();
+            HashMap<String, List<SessionModel>> details = adapter.getDetails();
+            if (getContext() != null) {
+                ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
+                recyclerView.setAdapter(scheduleCardAdapter);
+            }
+            spinner.setVisibility(View.GONE);
+        }
     }
 
     @Override
