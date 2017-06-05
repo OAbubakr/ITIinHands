@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.beans.JobOpportunity;
+import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
@@ -59,9 +61,11 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
                 int subTrackId = Integer.parseInt(jobSubTrack.getText().toString());
                 String date = jobDate.getText().toString();
 
+                JobOpportunity jobOpportunity = new JobOpportunity(companyId, code, title, desc, experience,
+                        closingDate, sendTo, noNeed, subTrackId, date);
+
                 if (networkManager.isOnline()){
-                    networkManager.postJob(PostJobFragment.this, companyId, code, title, desc, experience,
-                            closingDate, sendTo, noNeed, subTrackId, date);
+                    networkManager.postJob(PostJobFragment.this, jobOpportunity);
                 }
             }
         });

@@ -11,12 +11,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5">
+        android:layout_weight="2">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="94dp"
-            android:layout_height="187dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:srcCompat="@drawable/logo1"
             tools:ignore="ContentDescription" />
@@ -26,8 +26,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.2"
-        android:orientation="vertical">
+        android:layout_weight="2.7"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -49,111 +52,107 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="5dp"
 
-            <LinearLayout
+            android:orientation="horizontal"
+
+            android:weightSum="4">
+
+            <ImageView
+                android:id="@+id/studentBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group542" />
 
-                <Button
-                    android:id="@+id/studentBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/group542" />
-
-                <TextView
-                    android:id="@+id/srudentTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/StudentBtn" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/staffBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group541" />
 
-                <Button
-                    android:id="@+id/staffBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group541" />
-
-                <TextView
-                    android:id="@+id/staffTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/staffBtn" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/graduateBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group540" />
 
-                <Button
-                    android:id="@+id/graduateBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group540" />
-
-                <TextView
-                    android:id="@+id/graduateTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/graduateBtn" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/companyBtnId"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:background="@drawable/group539" />
 
-                <Button
-                    android:id="@+id/companyBtnId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/group539" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/companyTxtLoginId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/companyBtn" />
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
+            <TextView
+                android:id="@+id/srudentTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+                android:text="@string/StudentBtn"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/staffTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/staffBtn"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/graduateTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/graduateBtn"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/companyTxtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/companyBtn"
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1.25">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -178,7 +177,6 @@
                 android:id="@+id/userNameCheckLoginViewId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textColor="#B71C1C" />
@@ -190,7 +188,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1.25">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,7 +212,6 @@
                 android:id="@+id/passwordCheckLoginViewId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textColor="#B71C1C" />
@@ -227,7 +224,8 @@
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="2.5"
+        android:layout_weight="2"
+
         android:orientation="vertical">
 
         <Button
@@ -235,27 +233,28 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/rectangle_17"
-            android:enabled="false"
             android:gravity="center"
+            android:paddingBottom="7dp"
             android:text="@string/loginView_LoginBtn"
+            android:textAlignment="center"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textColorLink="#B71C1C" />
+            android:textColorLink="#B71C1C"
+            android:textSize="16sp" />
 
-        <Button
+        <TextView
             android:id="@+id/continueAsGuest"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
 
             android:layout_weight="1"
-            android:background="@drawable/rectangle_17"
             android:gravity="center"
             android:text="@string/loginView_GuestLoginBtn"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

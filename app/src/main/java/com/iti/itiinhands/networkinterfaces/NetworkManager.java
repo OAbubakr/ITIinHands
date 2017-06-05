@@ -9,7 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.iti.itiinhands.activities.EmployeeHours;
-
+import com.iti.itiinhands.beans.InstructorEvaluation;
+import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
@@ -63,7 +64,6 @@ public class NetworkManager {
     private Context context;
 
     //ur activity must implements NetworkResponse
-
 
     private NetworkManager(Context context) {
         this.context = context;
@@ -297,14 +297,11 @@ public class NetworkManager {
 
     ////////////////////////////////////////////
     //-------------------------------------POST JOB-------------------------------------------------
-    public void postJob(NetworkResponse networkResponse, int companyId, String jobCode,
-                        String jobTitle, String jobDesc, String experience, String closingDate,
-                        String sendTo, int jobNoNeed, int subTrackId, String jobDate) {
+    public void postJob(NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Void> call = web.postJob(companyId, jobCode, jobTitle, jobDesc, experience,
-                closingDate, sendTo, jobNoNeed, subTrackId, jobDate);
+        Call<Void> call = web.postJob(jobOpportunity);
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -631,5 +628,28 @@ public void sendPermission(NetworkResponse networkResponse , Permission permissi
 
 
 
+
+    //------------------------------------GET Instructor Evaluation------------------------------------------------
+    public void getInstructorEvaluation(NetworkResponse networkResponse, int instId) {
+
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<List<InstructorEvaluation>> call = web.getInstructorEvaluation(instId);
+
+        call.enqueue(new Callback<List<InstructorEvaluation>>() {
+            @Override
+            public void onResponse(Call<List<InstructorEvaluation>> call, retrofit2.Response<List<InstructorEvaluation>> response) {
+                ArrayList<InstructorEvaluation> instructorEvaluations = (ArrayList<InstructorEvaluation>) response.body();
+                network.onResponse(instructorEvaluations);
+            }
+
+            @Override
+            public void onFailure(Call<List<InstructorEvaluation>> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
 
 }

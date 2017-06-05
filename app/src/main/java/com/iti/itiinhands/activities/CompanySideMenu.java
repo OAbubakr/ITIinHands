@@ -220,7 +220,7 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 3:
                                 //handle maps fragment
-//                                fragment = new BranchesFragment();
+                                fragment = new BranchesList();
                                 break;
                             case 4:
                                 //handle bus services fragment
