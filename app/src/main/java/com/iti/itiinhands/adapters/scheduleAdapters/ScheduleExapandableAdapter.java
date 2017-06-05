@@ -76,7 +76,12 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txt = (TextView) convertView.findViewById(R.id.allDay);
+
         txt.setText(listDataHeader.get(i).getCourseName());
+        if (listDataHeader.get(i).getTypeId()==2){convertView.setBackgroundColor(0xFFacd5cd);}
+        else if(listDataHeader.get(i).getTypeId()==1){convertView.setBackgroundColor(0xFFb9c1d4);}
+        else{convertView.setBackgroundColor(0xffd5accd);}
+
         return convertView;
     }
 

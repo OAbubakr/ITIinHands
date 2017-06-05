@@ -48,9 +48,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Sandra ip and url
+    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Omar ITI
+
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -107,8 +109,9 @@ public class NetworkManager {
             }
         });
     }
+
     //    ----------------------- upload  images -----------------------------------------------------
-    public void uploadImage(NetworkResponse networkResponse,String imagePath ,int id) {
+    public void uploadImage(NetworkResponse networkResponse, String imagePath, int id) {
         final NetworkResponse network = networkResponse;
         System.out.println("##########################################");
         File file = new File(imagePath);
@@ -116,12 +119,12 @@ public class NetworkManager {
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
 
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<String> call = web.uploadImage(fileToUpload,id);
+        Call<String> call = web.uploadImage(fileToUpload, id);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, retrofit2.Response<String> response) {
 //                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
-                System.out.println("********************* "+response.body());
+                System.out.println("********************* " + response.body());
             }
 
             @Override
@@ -133,6 +136,7 @@ public class NetworkManager {
         });
 
     }
+
     //    -----------------------get employee hours-----------------------------------------------------
     public void getEmployeeHours(NetworkResponse networkResponse, int id, String start, String end) {
         final NetworkResponse network = networkResponse;
@@ -159,7 +163,7 @@ public class NetworkManager {
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
 
-    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID){
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID) {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<Instructor>> call = web.getInstructorByBranch(branchId, excludeID);
         call.enqueue(new Callback<List<Instructor>>() {
@@ -167,6 +171,7 @@ public class NetworkManager {
             public void onResponse(Call<List<Instructor>> call, retrofit2.Response<List<Instructor>> response) {
                 networkResponse.onResponse(response.body());
             }
+
             @Override
             public void onFailure(Call<List<Instructor>> call, Throwable t) {
                 t.printStackTrace();
@@ -265,11 +270,12 @@ public class NetworkManager {
 
 
     }
+
     ///////////////////setProfile data///////////////
     public void setUserProfileData(NetworkResponse networkResponse, int userType, int userId, UserData userdata) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.setUserData(userType, userId,userdata);
+        Call<Response> call = web.setUserData(userType, userId, userdata);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -502,9 +508,9 @@ public class NetworkManager {
         });
     }
 
-    public void getCompanyProfile(NetworkResponse networkResponse,int id){
-        final NetworkResponse network=networkResponse;
-        NetworkApi web =retrofit.create(NetworkApi.class);
+    public void getCompanyProfile(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Company> call = web.getCompanyProfile(id);
         call.enqueue(new Callback<Company>() {
             @Override
@@ -517,7 +523,7 @@ public class NetworkManager {
             public void onFailure(Call<Company> call, Throwable t) {
 
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
@@ -525,9 +531,9 @@ public class NetworkManager {
     }
 
 
-    public void getAllJobs(NetworkResponse networkResponse){
-        final NetworkResponse network=networkResponse;
-        NetworkApi web =retrofit.create(NetworkApi.class);
+    public void getAllJobs(NetworkResponse networkResponse) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
         Call<List<JobVacancy>> call = web.getJobs();
         call.enqueue(new Callback<List<JobVacancy>>() {
 
@@ -542,7 +548,7 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<List<JobVacancy>> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
 
             }

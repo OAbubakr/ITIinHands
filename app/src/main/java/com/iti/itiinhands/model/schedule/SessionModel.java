@@ -15,6 +15,15 @@ public class SessionModel {
     private String sessionPercentage;
     private String dayName;
     private String trackName;
+    private int typeId;
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
 
     public String getTrackName() {
         return trackName;
