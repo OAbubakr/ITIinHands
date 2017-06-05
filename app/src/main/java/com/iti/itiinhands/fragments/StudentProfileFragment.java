@@ -42,15 +42,15 @@ public class StudentProfileFragment extends Fragment {
     private int flag;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.student_profile, container, false);
         firstTv =(TextView) view.findViewById(R.id.firstTvProfileViewId);
         secondTv =(TextView) view.findViewById(R.id.secondTvProfileViewId);
@@ -62,25 +62,19 @@ public class StudentProfileFragment extends Fragment {
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
 
+
+
+        Bundle b = getArguments(); // company
+        if (b != null) flag = b.getInt("flag", 0);
+        if (flag == 1){
+            editBtn.setVisibility(View.GONE);
+            userData =(UserData) b.getSerializable("student");
+        }
         if(userData != null){
             if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
             if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
             if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
         }
-
-        Bundle b = getArguments();
-        if (b != null) flag = b.getInt("flag", 0);
-        if (flag == 1){
-            editBtn.setVisibility(View.GONE);
-            userData =(UserData) b.getSerializable("student");
-
-
-        }
-
-
-        if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
-        if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
-        if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
 
 
         firstTv.setText(userData.getName());

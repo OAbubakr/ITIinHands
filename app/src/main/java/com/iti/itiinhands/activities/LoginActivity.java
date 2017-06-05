@@ -288,10 +288,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
+            editor.putBoolean(Constants.LOGGED_FLAG, true);
             editor.commit();
             startActivity(navigationIntent);
             finish();
-        } else {
+        } else if(result != null) {
 //            LoginResponse loginResponse = (R) response;
             String status = result.getStatus();
             String error = result.getError();
@@ -306,7 +307,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putInt(Constants.TOKEN, userId);
                     editor.putInt(Constants.USER_TYPE, userType);
-                    editor.putBoolean(Constants.LOGGED_FLAG, true);
                     editor.commit();
 
                     switch (userType) {
@@ -343,6 +343,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     break;
             }
         }
+
     }
 
     @Override

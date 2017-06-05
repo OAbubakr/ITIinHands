@@ -1,14 +1,14 @@
 [
     {
-        "merged": "F:\\ITI- MWD - intake 37\\graduation project\\FinalProject\\Android 2-6\\ITIinHands\\sampleapp\\build\\intermediates\\res\\merged\\debug\\menu\\main.xml",
-        "source": "F:\\ITI- MWD - intake 37\\graduation project\\FinalProject\\Android 2-6\\ITIinHands\\sampleapp\\src\\main\\res\\menu\\main.xml"
+        "merged": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\sampleapp\\build\\intermediates\\res\\merged\\debug\\menu\\api.xml",
+        "source": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\sampleapp\\src\\main\\res\\menu\\api.xml"
     },
     {
-        "merged": "F:\\ITI- MWD - intake 37\\graduation project\\FinalProject\\Android 2-6\\ITIinHands\\sampleapp\\build\\intermediates\\res\\merged\\debug\\menu\\api.xml",
-        "source": "F:\\ITI- MWD - intake 37\\graduation project\\FinalProject\\Android 2-6\\ITIinHands\\sampleapp\\src\\main\\res\\menu\\api.xml"
+        "merged": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\sampleapp\\build\\intermediates\\res\\merged\\debug\\menu\\deeplink.xml",
+        "source": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\sampleapp\\src\\main\\res\\menu\\deeplink.xml"
     },
     {
-        "merged": "F:\\ITI- MWD - intake 37\\graduation project\\FinalProject\\Android 2-6\\ITIinHands\\sampleapp\\build\\intermediates\\res\\merged\\debug\\menu\\deeplink.xml",
-        "source": "F:\\ITI- MWD - intake 37\\graduation project\\FinalProject\\Android 2-6\\ITIinHands\\sampleapp\\src\\main\\res\\menu\\deeplink.xml"
+        "merged": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\sampleapp\\build\\intermediates\\res\\merged\\debug\\menu\\main.xml",
+        "source": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\sampleapp\\src\\main\\res\\menu\\main.xml"
     }
 ]
