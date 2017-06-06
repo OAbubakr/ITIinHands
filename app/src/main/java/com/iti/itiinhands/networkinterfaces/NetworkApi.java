@@ -103,10 +103,10 @@ public interface NetworkApi {
     public Call<Response>getAllStudentsByTracId(@Query("id")int id);
 
     @GET
-    public Call<Response> getBehanceData(@Url String url,@Query("api_key") String apiKey);
+    public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
 
     @GET
-    public Call<Response> getGitData(@Url String url);
+    public Call<GitData> getGitData(@Url String url);
 
 
     @GET("getInstructorByBranch")

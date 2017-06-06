@@ -1,12 +1,14 @@
 package com.iti.itiinhands.model.behance;
 
+import com.iti.itiinhands.model.Response;
+
 import java.io.Serializable;
 
 /**
  * Created by Mahmoud on 5/30/2017.
  */
 
-public class BehanceData implements Serializable {
+public class BehanceData extends Response implements Serializable {
 
     private BehanceUser user;
 

@@ -256,28 +256,27 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            if (response != null) {
-                if (response.getResponseData() instanceof BehanceData) {
-                    BehanceData data  = DataSerializer.convert(response.getResponseData(),BehanceData.class);
 
-//                    BehanceData data = (BehanceData) response.getResponseData();
+                if (response instanceof BehanceData) {
+
+
+                    BehanceData data = (BehanceData) response;
                     behanceUrl = data.getUser().getUrl();
                     HashMap<Integer, String> images = data.getUser().getImages();
                     Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
-                }
-                if (response.getResponseData() instanceof GitData) {
-                    GitData data = (GitData) response.getResponseData();
+                }else
+                if (response instanceof GitData) {
+                    GitData data = (GitData) response;
                     gitUrl = data.getHtml_url();
                     Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
 
+                }else {
+                    Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
                 }
 
-            } else {
-                Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
             }
-        }
-    }
+
+
 
     @Override
     public void onFailure() {

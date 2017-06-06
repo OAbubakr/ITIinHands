@@ -54,8 +54,8 @@ public class NetworkManager {
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Omar ITI
-    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
+    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
@@ -489,15 +489,15 @@ public class NetworkManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.getBehanceData(name, API_KEY_BEHANCE);
-        call.enqueue(new Callback<Response>() {
+        Call<BehanceData> call = web.getBehanceData(name, API_KEY_BEHANCE);
+        call.enqueue(new Callback<BehanceData>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<BehanceData> call, retrofit2.Response<BehanceData> response) {
                 networkResponse.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<BehanceData> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 networkResponse.onFailure();
@@ -561,15 +561,15 @@ public class NetworkManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.getGitData(name);
-        call.enqueue(new Callback<Response>() {
+        Call<GitData> call = web.getGitData(name);
+        call.enqueue(new Callback<GitData>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<GitData> call, retrofit2.Response<GitData> response) {
                 networkResponse.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<GitData> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 networkResponse.onFailure();
