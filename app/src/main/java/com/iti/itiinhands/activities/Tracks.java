@@ -1,5 +1,6 @@
 package com.iti.itiinhands.activities;
 
+import android.app.ActionBar;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
@@ -34,18 +36,37 @@ public class Tracks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracks);
+
         branch = (Branch) getIntent().getSerializableExtra("branchObject");
         flag = getIntent().getIntExtra("flag",0);
 
-        branchLocation = (TextView) findViewById(R.id.track_branch);
-        branchLocation.setText(branch.getBranchName());
+//        branchLocation = (TextView) findViewById(R.id.track_branch);
+//        branchLocation.setText(branch.getBranchName());
         tracksList=branch.getTracks();
+
+        Log.i("before", String.valueOf(tracksList.size()));
+        for (int i =0 ; i<tracksList.size() ; i++){
+            Track track = tracksList.get(i);
+            if (track.getTrackName().equals("")){
+                tracksList.remove(track);
+                i--;
+            }
+
+        }
+        Log.i("after", String.valueOf(tracksList.size()));
+
         recyclerView = (RecyclerView)findViewById(R.id.track_recycler_view);
         tracksAdapter = new TracksAdapter(tracksList, getApplicationContext(),flag);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(tracksAdapter);
+
+
+
+
+
+
 
     }
 

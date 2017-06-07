@@ -48,14 +48,14 @@ public class EditProfileFragment extends Fragment {
     private EditText mobileEt;
     private EditText emailEt;
     private EditText githubEt;
-    private ImageButton githubSearch;
+    private ImageView githubSearch;
     private ImageView githubImg;
     private EditText behanceEt;
-    private ImageButton behanceSearch;
+    private ImageView behanceSearch;
     private ImageView behanceImg;
     private ImageView linkedinBtn;
-    private Button cancelBtn;
-    private Button submitBtn;
+    private ImageView cancelBtn;
+    private ImageView submitBtn;
 
 
 
@@ -115,14 +115,14 @@ public class EditProfileFragment extends Fragment {
         mobileEt = (EditText) view.findViewById(R.id.mobileText);
         emailEt = (EditText) view.findViewById(R.id.emailText);
         githubEt = (EditText) view.findViewById(R.id.gitEdEditId);
-        githubSearch = (ImageButton) view.findViewById(R.id.searchGitBtn);
+        githubSearch = (ImageView) view.findViewById(R.id.searchGitBtn);
         githubImg = (ImageView)  view.findViewById(R.id.gitImgResponse);
         behanceEt= (EditText) view.findViewById(R.id.behanceEdEditId);
-        behanceSearch = (ImageButton) view.findViewById(R.id.searchBehanceBtn);
+        behanceSearch = (ImageView) view.findViewById(R.id.searchBehanceBtn);
         behanceImg = (ImageView)  view.findViewById(R.id.behanceImgResponse);
         linkedinBtn = (ImageView) view.findViewById(R.id.linkedinBtn);
-        cancelBtn = (Button) view.findViewById(R.id.cancelBtnEditId);
-        submitBtn = (Button) view.findViewById(R.id.submitBtnEditId);
+        cancelBtn = (ImageView) view.findViewById(R.id.cancelBtnEditId);
+        submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
 
 
         ///change profile pic
