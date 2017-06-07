@@ -280,7 +280,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onResponse(Response result) {
-
+        loginBtn.setEnabled(true);
         if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
             UserData data = DataSerializer.convert(result.getResponseData(),UserData.class) ;
 //                    UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
@@ -340,6 +340,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onFailure() {
+        loginBtn.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();
 
     }
