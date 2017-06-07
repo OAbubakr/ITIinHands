@@ -140,8 +140,7 @@ public class GuestSideMenu extends AppCompatActivity {
                 switch (groupPosition) {
                     case 0:
                         //replace with about iti fragment
-//                        fragment = new AboutIti();
-                        fragment = new InstructorEvaluationFragment();
+                        fragment = new AboutIti();
                         break;
                     case 1:
                         //tracks fragment
