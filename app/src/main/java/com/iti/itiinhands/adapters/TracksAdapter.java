@@ -86,16 +86,10 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     } else if (flag == 1) {
-
                         Intent i = new Intent(context, StudentsOfTrack.class);
                         i.putExtra("trackId",track.getPlatformIntakeId());
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
-
-
-
-
-
 
                     }
                 }
