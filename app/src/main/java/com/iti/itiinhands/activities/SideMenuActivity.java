@@ -91,6 +91,8 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
+
         FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -166,6 +168,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);

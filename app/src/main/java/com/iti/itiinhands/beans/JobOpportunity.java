@@ -17,6 +17,16 @@ public class JobOpportunity {
     private int subTrackId;
     private String jobDate;
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    private String companyName;
+
     public JobOpportunity(int companyId, String jobCode, String jobTitle, String jobDesc, String experience, String closingDate, String sendTo, int jobNoNeed, int subTrackId, String jobDate) {
         this.companyId = companyId;
         this.jobCode = jobCode;
