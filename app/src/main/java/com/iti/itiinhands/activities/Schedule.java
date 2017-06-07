@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import com.iti.itiinhands.R;
@@ -17,6 +18,10 @@ public class Schedule extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_schedule);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         FragmentManager fM = getSupportFragmentManager();
         FragmentTransaction fragTransaction = fM.beginTransaction();
         ScheduleFragment scheduleFragment = new ScheduleFragment();
@@ -24,5 +29,10 @@ public class Schedule extends AppCompatActivity {
         fragTransaction.replace(R.id.frame,scheduleFragment);
         fragTransaction.commit();
 
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
