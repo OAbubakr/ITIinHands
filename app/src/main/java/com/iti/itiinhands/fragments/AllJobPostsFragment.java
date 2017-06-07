@@ -11,18 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
 import com.iti.itiinhands.adapters.JobsAdapter;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.JobVacancy;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
 
 
-public class AllJobPostsFragment extends Fragment implements NetworkResponse{
+public class AllJobPostsFragment extends Fragment implements NetworkResponse {
 
     private NetworkManager networkManager;
     RecyclerView recyclerView;
@@ -31,10 +34,10 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse{
     ArrayList<JobVacancy> jobVacancies = new ArrayList<>();
 
     ProgressBar spinner;
+
     public AllJobPostsFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -54,13 +57,12 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse{
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         networkManager.getAllJobs(this);
 
         return view;
     }
-
 
 
     @Override
@@ -77,11 +79,15 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse{
 
 
     @Override
-    public void onResponse(Object response) {
-        jobVacancies= (ArrayList<JobVacancy>) response;
-        adapter = new JobsAdapter(jobVacancies,getActivity().getApplicationContext());
-        recyclerView.setAdapter(adapter);
-        spinner.setVisibility(View.GONE);
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            jobVacancies = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<JobVacancy>>(){}.getType());
+
+//            jobVacancies = (ArrayList<JobVacancy>) response.getResponseData();
+            adapter = new JobsAdapter(jobVacancies, getActivity().getApplicationContext());
+            recyclerView.setAdapter(adapter);
+            spinner.setVisibility(View.GONE);
+        }
     }
 
     @Override

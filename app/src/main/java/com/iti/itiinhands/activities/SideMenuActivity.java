@@ -37,6 +37,7 @@ import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.linkedin.platform.LISessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -89,6 +90,8 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
+
         FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -168,6 +171,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
@@ -202,7 +206,6 @@ public class SideMenuActivity extends AppCompatActivity {
                                 //handle grades fragment
                                 fragment = new PermissionFragment();
                                 break;
-
                             case 2:
                                 //handle list of courses fragment
                                 fragment = new StudentCourseList();
@@ -343,5 +346,8 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
-
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//    }
 }

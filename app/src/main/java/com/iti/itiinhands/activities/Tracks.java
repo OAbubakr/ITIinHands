@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.Window;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -37,9 +40,16 @@ public class Tracks extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracks);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         branch = (Branch) getIntent().getSerializableExtra("branchObject");
-        flag = getIntent().getIntExtra("flag",0);
+        toolbar.setTitle(branch.getBranchName());
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        flag = getIntent().getIntExtra("flag",0);
 //        branchLocation = (TextView) findViewById(R.id.track_branch);
 //        branchLocation.setText(branch.getBranchName());
         tracksList=branch.getTracks();
@@ -62,12 +72,17 @@ public class Tracks extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(tracksAdapter);
 
-
-
-
-
-
-
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

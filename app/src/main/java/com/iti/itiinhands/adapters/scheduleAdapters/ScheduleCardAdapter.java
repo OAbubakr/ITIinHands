@@ -62,6 +62,8 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         ScheduleExapandableAdapter exapandableAdapter = new ScheduleExapandableAdapter(context, sessionModels);
 
         holder.expandableListView.setAdapter(exapandableAdapter);
+//        holder.itemView.setMinimumHeight();
+//        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT));
 
     }
 
@@ -74,9 +76,12 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
 
         TextView sessionName;
         ExpandableListView expandableListView;
+        View itemView;
 
         public ScheduleCardViewHolder(View itemView) {
+
             super(itemView);
+            this.itemView = itemView;
             sessionName = (TextView) itemView.findViewById(R.id.dayName);
             expandableListView = (ExpandableListView) itemView.findViewById(R.id.expLstView);
             expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

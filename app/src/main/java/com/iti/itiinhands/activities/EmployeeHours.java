@@ -17,15 +17,20 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.GridAdapterForHours;
 import com.iti.itiinhands.beans.EmpHour;
+import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class EmployeeHours extends Fragment implements NetworkResponse, View.OnClickListener {
@@ -48,6 +53,10 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
         View view = inflater.inflate(R.layout.activity_employee_hours, container, false);
         networkManager = NetworkManager.getInstance(getActivity());
         myRef = this;
@@ -63,31 +72,35 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
     }
 
     @Override
-    public void onResponse(Object response) {
-        empHour = (EmpHour) response;
-        data = new String[]{
-                empHour.getWorkingDays().toString(),
-                empHour.getAbsenceDays().toString(),
-                empHour.getAttendHours().toString(),
-                empHour.getLateDays().toString(),
-                empHour.getMissionHours().toString(),
-                empHour.getPermissionHours().toString(),
-                empHour.getVacationHours().toString()
-        };
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            empHour = DataSerializer.convert(response.getResponseData(),EmpHour.class);
+
+//            empHour = (EmpHour) response.getResponseData();
+            data = new String[]{
+                    empHour.getWorkingDays().toString(),
+                    empHour.getAbsenceDays().toString(),
+                    empHour.getAttendHours().toString(),
+                    empHour.getLateDays().toString(),
+                    empHour.getMissionHours().toString(),
+                    empHour.getPermissionHours().toString(),
+                    empHour.getVacationHours().toString()
+            };
 
 
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getWorkingDays(), Color.parseColor("#56B7F1")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getAbsenceDays(), Color.parseColor("#56B745")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getAttendDays(), Color.parseColor("#56B778")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getAttendHours(), Color.parseColor("#56B712")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getLateDays(), Color.parseColor("#56B7FF")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getMissionHours(), Color.parseColor("#56B7FA")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getPermissionHours(), Color.parseColor("#56B7FB")));
-        pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getVacationHours(), Color.parseColor("#56B7FC")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getWorkingDays(), Color.parseColor("#56B7F1")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getAbsenceDays(), Color.parseColor("#56B745")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getAttendDays(), Color.parseColor("#56B778")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getAttendHours(), Color.parseColor("#56B712")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getLateDays(), Color.parseColor("#56B7FF")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getMissionHours(), Color.parseColor("#56B7FA")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getPermissionHours(), Color.parseColor("#56B7FB")));
+            pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getVacationHours(), Color.parseColor("#56B7FC")));
 
-        pieChart.startAnimation();
-        pieChart.setShowDecimal(true);
-        hoursGrid.setAdapter(new GridAdapterForHours(getContext(), data, images));
+            pieChart.startAnimation();
+            pieChart.setShowDecimal(true);
+            hoursGrid.setAdapter(new GridAdapterForHours(getContext(), data, images));
+        }
     }
 
     @Override
@@ -100,12 +113,12 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.getEmpBtn) {
-            if(!(endDate.getText().toString().isEmpty() || startDate.getText().toString().isEmpty())){
+            if (!(endDate.getText().toString().isEmpty() || startDate.getText().toString().isEmpty())) {
                 System.out.println(startDate.getText().toString());
                 System.out.println(endDate.getText().toString());
-                networkManager.getEmployeeHours(myRef, 1018,startDate.getText().toString(),
+                networkManager.getEmployeeHours(myRef, 1018, startDate.getText().toString(),
                         endDate.getText().toString());
-            }else{
+            } else {
                 Toast.makeText(getActivity(), "please select date firsst", Toast.LENGTH_SHORT).show();
             }
 

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#7f0000</color>
     <color name="colorPrimaryDark">#b71c1c</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#B71C1C</color>
 
 
     <color name="separator_line">#ECECEC</color>

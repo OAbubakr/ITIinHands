@@ -19,8 +19,28 @@ import java.util.List;
  */
 public class UserData implements Serializable {
     //
+
+    private int id;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     //student
+
     private int intakeId;
+    private int platformIntakeId;
+
+    public int getPlatformIntakeId() {
+        return platformIntakeId;
+    }
+
+    public void setPlatformIntakeId(int platformIntakeId) {
+        this.platformIntakeId = platformIntakeId;
+    }
+
     private String branchName;
     private String trackName;
     private String name;
@@ -28,6 +48,8 @@ public class UserData implements Serializable {
     private String gitUrl;
     private String behanceUrl;
     private String linkedInUrl;
+    private String studentEmail;
+    private String studentMobile;
 
     //company
     private int companyID;
@@ -49,6 +71,22 @@ public class UserData implements Serializable {
     private String employeeName;
     private String employeeBranchName;
     private String employeePosition;
+
+    public String getStudentEmail() {
+        return studentEmail;
+    }
+
+    public void setStudentEmail(String studentEmail) {
+        this.studentEmail = studentEmail;
+    }
+
+    public String getStudentMobile() {
+        return studentMobile;
+    }
+
+    public void setStudentMobile(String studentMobile) {
+        this.studentMobile = studentMobile;
+    }
 
     public int getEmployeeBranchId() {
         return employeeBranchId;

@@ -5,7 +5,7 @@
     <string name="title_activity_event_list">EventList</string>
     <string name="login_userName">User Name</string>
     <string name="login_password">Password</string>
-    <string name="loginView_LoginBtn">Login as ...</string>
+    <string name="loginView_LoginBtn">Login</string>
     <string name="loginView_GuestLoginBtn">Continue as a guest</string>
     <string name="networkFaildTxt">No Internet Connection</string>
     <string name="title_activity_side_menu">SideMenuActivity</string>
@@ -38,4 +38,9 @@
     <string name="gitStr">GitHub Url</string>
     <string name="linkedInStr">LinkedIn Url</string>
     <string name="behanceStr">Behance Url</string>
+    <string name="whoStr">Who are you ?</string>
+    <string name="studentUL"><u>Student</u></string>
+    <string name="graduateUL"><u>Graduate</u></string>
+    <string name="staffUL"><u>Staff</u></string>
+    <string name="companyUL"><u>Company</u></string>
 </resources>

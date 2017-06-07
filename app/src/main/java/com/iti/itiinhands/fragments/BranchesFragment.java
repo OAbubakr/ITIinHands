@@ -15,11 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +64,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         prepareBranchData();
         return view;
@@ -88,11 +92,15 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
-        branchesList = (ArrayList<Branch>) response;
-        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
-        recyclerView.setAdapter(branchesAdapter);
-        spinner.setVisibility(View.GONE);
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            branchesList = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<Branch>>(){}.getType());
+
+//            branchesList = (ArrayList<Branch>) response.getResponseData();
+            branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
+            recyclerView.setAdapter(branchesAdapter);
+            spinner.setVisibility(View.GONE);
+        }
 
     }
 

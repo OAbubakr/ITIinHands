@@ -14,52 +14,69 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg2"
         android:orientation="vertical"
-        android:weightSum="5">
+        android:padding="20dp"
+        android:weightSum="5"
+        >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:weightSum="1">
 
-            <ImageView
+            <TextView
                 android:id="@+id/supervisorImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/track_supervisor" />
+                android:text="Track Supervisor"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:layout_above="@+id/supervisorName"
+                android:layout_marginBottom="10dp"/>
 
-            <EditText
+            <TextView
+                android:layout_margin="10dp"
                 android:id="@+id/supervisorName"
-                android:layout_width="190dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.68" />
+               android:layout_centerVertical="true"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentBottom="true"
+                />
 
 
-        </LinearLayout>
+        </RelativeLayout>
         <!-- date    -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            >
 
-            <ImageView
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/per_date" />
+                android:text="Date"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/dateView"
+                android:layout_above="@+id/datePart"
+                android:textSize="18sp"
+                android:layout_marginBottom="10dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_select"
                 android:orientation="horizontal"
-                android:weightSum="4">
+               android:layout_centerVertical="true"
+                android:weightSum="4"
+                android:id="@+id/datePart"
+                >
 
                 <TextView
                     android:layout_width="0dp"
@@ -67,35 +84,52 @@
                     android:layout_gravity="center"
                     android:layout_weight="3.15"
                     android:hint="11/10/2017"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:id="@+id/datedate"
+                    android:textColor="@android:color/darker_gray" />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/per_arrow"
+                    android:layout_gravity="center"
+                    android:id="@+id/date_arrow"/>
 
             </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentBottom="true"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            >
 
             <!-- start time -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
 
-                <ImageView
+                <TextView
                     android:id="@+id/dateImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/start_time" />
+                    android:textColor="@color/colorPrimary"
+                    android:text="Start Time"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="10dp"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -114,38 +148,30 @@
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/start_hour"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:hint="09"
-                            android:textAlignment="textEnd" />
-
-                        <TextView
+                            android:id="@+id/startTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=":" />
-
-                        <TextView
-                            android:id="@+id/start_minute"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:clickable="true"
-                            android:hint="09"
-                            android:textAlignment="textStart" />
+                            android:hint="09:09AM"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray"
+                             />
 
-                        <TextView
-                            android:id="@+id/start_dayORnight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:hint="AM"
-                            android:textAlignment="textStart" />
 
                     </LinearLayout>
+
+
+
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="0.5"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/per_arrow"
+                            android:layout_gravity="center"
+                            android:id="@+id/startTime_button"/>
+
+
+
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -164,14 +190,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
 
-                <ImageView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:src="@drawable/end_time" />
-
+                    android:text="End Time"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="10dp"/>
+"
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,101 +214,86 @@
                         android:layout_gravity="center"
                         android:layout_weight="3.15"
                         android:orientation="horizontal"
+                        android:gravity="center"
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/end_hour"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:hint="09"
-                            android:textAlignment="textEnd" />
-
-                        <TextView
+                            android:id="@+id/endTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=":" />
-
-                        <TextView
-                            android:id="@+id/end_minute"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray"
                             android:clickable="true"
-                            android:hint="09"
-                            android:textAlignment="textStart" />
+                            android:hint="09:09 AM"
+                            />
 
-                        <TextView
-                            android:id="@+id/end_dayORnight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:hint="AM"
-                            android:textAlignment="textStart" />
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <Button
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/per_arrow"
+                        android:layout_gravity="center"
+                        android:id="@+id/endTime_button"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
+               android:layout_alignParentBottom="true"
                 android:background="@android:color/darker_gray" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            >
 
 
-            <ImageView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/cause" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:text="Cause"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="179dp"
-                android:background="@android:color/white"
-                android:hint="type here"
+                android:layout_height="wrap_content"
+                android:id="@+id/permissionCause"
+                android:background="@drawable/myborder"
+                android:hint=" type here"
                 android:inputType="textMultiLine"
-                android:lines="4"
+                android:lines="5"
                 android:textColorHint="@android:color/darker_gray"
-
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
                 />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
 
 
             <Button
-                android:id="@+id/button2"
-                android:layout_width="61dp"
-                android:layout_height="match_parent"
+                android:id="@+id/permissionSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/send_button"
+                android:background="@drawable/send_button_permession"
                 android:gravity="center_vertical"
                 android:textAlignment="center"
+                android:text="SEND"
                 android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:layout_marginTop="15dp"/>
 
 
         </LinearLayout>

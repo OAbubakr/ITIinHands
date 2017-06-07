@@ -3,13 +3,13 @@ package com.iti.itiinhands.beans;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.iti.itiinhands.networkinterfaces.Response;
+//import com.iti.itiinhands.networkinterfaces.Response;
 
 /**
  * Created by Sandra on 5/3/2017.
  */
 
-public class Event implements Response {
+public class Event  {
 
     private int eventId;
     private String title;

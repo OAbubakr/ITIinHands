@@ -6,15 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.AllStudentByTrackIdAdapter;
+import com.iti.itiinhands.model.Instructor;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 5/29/2017.
@@ -32,8 +38,15 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.students_of_track_fragment);
-            Intent intent = getIntent();
+        setContentView(R.layout.students_of_track_fragment);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        Intent intent = getIntent();
         id = intent.getIntExtra("trackId", 0);
 
 
@@ -78,12 +91,16 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
 
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
 
-        students = (ArrayList<StudentDataByTrackId>) response;
-        adapter = new AllStudentByTrackIdAdapter(students,getApplicationContext());
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            students = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<StudentDataByTrackId>>(){}.getType());
 
-        recyclerView.setAdapter(adapter);
+//            students = (ArrayList<StudentDataByTrackId>) response.getResponseData();
+            adapter = new AllStudentByTrackIdAdapter(students, getApplicationContext());
+
+            recyclerView.setAdapter(adapter);
+        }
 
 
     }
@@ -91,5 +108,10 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onFailure() {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
