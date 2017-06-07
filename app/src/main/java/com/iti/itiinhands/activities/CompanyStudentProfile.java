@@ -31,7 +31,7 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         networkManager = NetworkManager.getInstance(getApplicationContext());
-        networkManager.getUserProfileData(this, 1, getIntent().getIntExtra("stuId", 0));
+//        networkManager.getUserProfileData(this, 1, getIntent().getIntExtra("stuId", 0));
 
 
         setContentView(R.layout.activity_company_student_profile);
