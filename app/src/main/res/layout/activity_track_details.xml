@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/activity_track_details"
@@ -9,6 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/untitled1"
     tools:context="com.iti.itiinhands.activities.TrackDetails">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +23,6 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
 
                 android:id="@+id/progressBar" />
@@ -29,27 +30,75 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
+            android:orientation="vertical"
+            android:weightSum="15">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/social"
+                    android:id="@+id/imageView2"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
                 android:text="Instructors"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView" />
+                android:layout_height="match_parent"
+                android:id="@+id/textView"
+                android:textSize="18sp"
+                android:textColor="#7F0000"
+                android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+
+
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="0dp"
+                android:layout_weight="3"
                 android:id="@+id/instructorsRV" />
 
-            <TextView
-                android:text="Courses"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/courses"
+                    android:id="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:text="List of Courses"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView2"
+                    android:textSize="18sp"
+                    android:textColor="#7F0000"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
                 android:id="@+id/coursesRV" />
         </LinearLayout>
 
