@@ -391,10 +391,10 @@ public class SideMenuActivity extends AppCompatActivity {
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
 //    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//    }
 
 //    @Override
 //    public void onBackPressed() {

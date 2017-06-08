@@ -333,7 +333,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             break;
                     }
 
-                    networkManager.getUserProfileData(myRef, userType, token);
+                    networkManager.getUserProfileData(myRef, userType,data.getInt(Constants.USER_ID,0));
 
                     break;
                 case "FAILURE":
