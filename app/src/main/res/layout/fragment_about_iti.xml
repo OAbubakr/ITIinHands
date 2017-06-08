@@ -6,83 +6,277 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/untitled1"
     >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_card_view"
+            android:layout_margin="15dp"
+            android:paddingBottom="15dp"
+            card_view:cardBackgroundColor="#FFFFFF"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="3dp"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true" >
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="About ITI" />
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#bbbbbb"
+                    android:paddingLeft="15dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="25sp"
+                        android:text="About ITI"
+                        android:background="#bbbbbb"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="#FFFFFF"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:textSize="17sp"
+                    android:text="Information Technology Institute is a pioneering national institute with a regional influence and international linkage. Since it was established in 1993, ITI has been devoted to provide a large pool of promising youth with world-class human capacity building programs and empirical learning approach to profoundly scale up the impact of the aspiring Egyptian youth in the ICT workplace. While moving to a future where everyone is acquainted with technology and is capable to contribute in shaping the future of the ICT industry."
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="15dp"
+                        android:background="#7F0000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="34"
+                        android:text="Our Vision"
+                        android:textColor="#7F0000"
+                        android:textSize="17sp"
+                        android:layout_marginLeft="10dp"
+
+                        />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:textSize="17sp"
+                    android:text="Become a leading reference for development the cadres and young professional leaders in information and communication technology sector."
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="15dp"
+                        android:background="#7F0000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="34"
+                        android:text="Our Mission"
+                        android:textColor="#7F0000"
+                        android:textSize="17sp"
+                        android:layout_marginLeft="10dp"
+
+                        />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:textSize="17sp"
+                    android:text="Excellence in developing human cadres and providing specialized consultation services for individuals and entities in the information and communication technology domain. Support designing and developing models and prototypes to meet the socioeconomic technological development requirements. Continuously focusing on staff development and commitment to uphold responsibility toward applying the social values."
+                    />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Information Technology Institute is a pioneering national institute with a regional influence and international linkage. Since it was established in 1993, ITI has been devoted to provide a large pool of promising youth with world-class human capacity building programs and empirical learning approach to profoundly scale up the impact of the aspiring Egyptian youth in the ICT workplace. While moving to a future where everyone is acquainted with technology and is capable to contribute in shaping the future of the ICT industry." />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="15dp"
+                        android:background="#7F0000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="34"
+                        android:text="Our Philosophy"
+                        android:textColor="#7F0000"
+                        android:textSize="17sp"
+                        android:layout_marginLeft="10dp"
+
+                        />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:textSize="17sp"
+                    android:text="The Institute successfully led the shape up of the ICT national human capital development framework through embracing a philosophy that is based on empowering Egypt’s aspiring talents, fulfilling the national needs, responding to the ICT global market indicators, and integrating the ever-growing technologies’ evolution, all through the institute’s dynamic partnerships with the academia, industry and the community."
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="40dp"
+                    android:paddingTop="20dp"
+                    android:gravity="center"
+                    >
+
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/call"
+                        android:src="@drawable/call"
+                        android:adjustViewBounds="true"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitCenter"/>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Our Philosophy" />
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/mail"
+                        android:src="@drawable/msg"
+                        android:adjustViewBounds="true"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitCenter"/>
+
+
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/fb"
+                        android:src="@drawable/facebook"
+                        android:layout_marginRight="10dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"/>
+
+
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/twitter"
+                        android:src="@drawable/twitter"
+                        android:layout_marginRight="10dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"/>
+
+
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:id="@+id/youtube"
+                        android:src="@drawable/youtube"
+                        android:adjustViewBounds="true"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitCenter"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#bbbbbb"
+                    android:paddingBottom="30dp"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:src="@drawable/phone"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#FFFFFF"
+                            android:text="(+202) 353-55656"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:src="@drawable/about_msg"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:text="ITIinfo@iti.gov.eg"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_place_white"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:text="28 Km by Cairo / Alexandria Desert Road - 6 October - Building B148, Egypt"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
 
 
 
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:id="@+id/call"
-                android:src="@drawable/call"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
 
-
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:id="@+id/mail"
-                android:src="@drawable/mail"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-
-
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:id="@+id/fb"
-                android:src="@drawable/fb"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-
-
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:id="@+id/twitter"
-                android:src="@drawable/twitter"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-
-
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:id="@+id/youtube"
-                android:src="@drawable/youtube"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-
-        </LinearLayout>
     </ScrollView>
+
+
 
 </LinearLayout>

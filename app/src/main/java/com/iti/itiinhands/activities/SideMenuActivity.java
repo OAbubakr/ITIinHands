@@ -164,6 +164,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         editor.remove(Constants.TOKEN);
                         editor.remove(Constants.USER_TYPE);
                         editor.remove(Constants.USER_OBJECT);
+                        editor.remove(Constants.USER_ID);
+
                         editor.commit();
 
                         //unsubscribe from topics
@@ -361,8 +363,8 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//    }
 }

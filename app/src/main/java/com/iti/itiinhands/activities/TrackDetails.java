@@ -47,13 +47,15 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         setContentView(R.layout.activity_track_details);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        track = (Track) getIntent().getSerializableExtra("trackObject");
+        toolbar.setTitle(track.getTrackName());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         networkManager = NetworkManager.getInstance(getApplicationContext());
 
-        track = (Track) getIntent().getSerializableExtra("trackObject");
+
 
 
         instructorsRecyclerView = (RecyclerView) findViewById(R.id.instructorsRV);

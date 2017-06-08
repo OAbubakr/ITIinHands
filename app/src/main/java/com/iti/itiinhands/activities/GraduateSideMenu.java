@@ -197,6 +197,7 @@ UserData userData;
                         editor.remove(Constants.TOKEN);
                         editor.remove(Constants.USER_TYPE);
                         editor.remove(Constants.USER_OBJECT);
+                        editor.remove(Constants.USER_ID);
                         editor.commit();
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);

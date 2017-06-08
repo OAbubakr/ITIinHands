@@ -50,7 +50,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN, 0);
+        token = sharedPreferences.getInt(Constants.USER_ID, 0);
 
         networkManager.getStudentsGrades(myRef, token);
         SCourses_RV = (RecyclerView) view.findViewById(R.id.rvStudentCourses);
