@@ -92,7 +92,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
             } else if (announcementBean.getType() == 3) {
                 pic.setImageResource(R.drawable.permission);
             }else if (announcementBean.getType() == 4){
-                pic.setImageResource(R.drawable.permission);
+                pic.setImageResource(R.drawable.job_post);
             }
 
             deleteAnnouncement.setOnClickListener(new View.OnClickListener() {
