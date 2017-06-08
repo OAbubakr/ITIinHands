@@ -12,6 +12,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/untitled1"
     tools:context="com.iti.itiinhands.activities.TrackDetails">
+    <include layout="@layout/toolbar" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

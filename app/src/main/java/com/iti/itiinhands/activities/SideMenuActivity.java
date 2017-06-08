@@ -29,6 +29,7 @@ import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
@@ -90,6 +91,8 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
+
         FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -150,11 +153,7 @@ public class SideMenuActivity extends AppCompatActivity {
                         fragment = new StudentProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 2:
-                        //job posts
-                        fragment = new AllJobPostsFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
+
 
                     case 4:
                         //logout action
@@ -169,6 +168,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
@@ -211,7 +211,22 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                         }
                         break;
-
+                    case 2:
+                        switch (childPosition) {
+                            case 0:
+                                //handle CompaniesProfile
+                                fragment= new CompaniesFragment();
+                                mDrawerLayout.closeDrawer(expListView);
+                                break;
+                            case 1:
+                                //job posts
+                                fragment = new AllJobPostsFragment();
+                                mDrawerLayout.closeDrawer(expListView);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     case 3:
                         switch (childPosition) {
                             case 0:
@@ -275,7 +290,7 @@ public class SideMenuActivity extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("My Track");
-        listDataHeader.add("Job Posts");
+        listDataHeader.add("Companies");
         listDataHeader.add("ITI");
         listDataHeader.add("Logout");
 
@@ -308,6 +323,9 @@ public class SideMenuActivity extends AppCompatActivity {
 
         List<String> logout = new ArrayList<String>();
         List<String> jobposts = new ArrayList<String>();
+
+        jobposts.add("Companies Profiles");
+        jobposts.add("Job Posts");
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data

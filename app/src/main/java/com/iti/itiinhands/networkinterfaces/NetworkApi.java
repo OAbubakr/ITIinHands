@@ -46,8 +46,9 @@ import retrofit2.http.Url;
 
 public interface NetworkApi {
 
-    @POST("login/onLoginAuth")
-    public Call<Response> onLoginAuth(@Body LoginRequest request);
+//    @POST("login/onLoginAuth")
+    @POST("getToken")
+    public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
 
     @GET("getEmpHours")
     public Call<Response> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
@@ -79,7 +80,7 @@ public interface NetworkApi {
     public Call<Response> getJobs();
 
     @GET("profile/onGetUserData")
-    public Call<Response> getUserData(@Query("userType") int userType,@Query("userId") int userId);
+    public Call<Response> getUserData(@Query("token") String token,@Query("userType") int userType);
 
     @POST("profile/onSetUserData")
     public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
@@ -130,5 +131,8 @@ public interface NetworkApi {
 
     @GET("getInstructorEvaluation")
     public Call<Response> getInstructorEvaluation(@Query("instId") int instId);
+
+    @GET("getAllCompanies")
+    public Call<Response> getAllCompanies();
 
 }

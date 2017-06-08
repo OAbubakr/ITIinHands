@@ -23,12 +23,15 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,36 +49,37 @@ public class GraduateSideMenu extends AppCompatActivity {
     List<String> listDataHeader;
     int[] images = {R.drawable.social, R.drawable.home_512,R.drawable.home_512 ,R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
 
-
+UserData userData;
     @Override
     protected void onStart() {
         super.onStart();
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (mDrawerLayout.isDrawerOpen(expListView)) {
-                    mDrawerLayout.closeDrawer(expListView);
-                } else {
-                    mDrawerLayout.openDrawer(expListView);
-                }
-
-            }
-        });
+//        home.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if (mDrawerLayout.isDrawerOpen(expListView)) {
+//                    mDrawerLayout.closeDrawer(expListView);
+//                } else {
+//                    mDrawerLayout.openDrawer(expListView);
+//                }
+//
+//            }
+//        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_graduate_side_menu);
+        setContentView(R.layout.activity_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
 
         //subscribe to receive notifications
         FirebaseMessaging.getInstance().subscribeToTopic("events");
+        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -84,25 +88,69 @@ public class GraduateSideMenu extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
 
+        ///
 
-        ////for expandale
-        /////////
+        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
+
+        FirebaseMessaging.getInstance().subscribeToTopic("events");
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         expListView.setGroupIndicator(null);
+
+
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousItem = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousItem)
+                    expListView.collapseGroup(previousItem);
+                previousItem = groupPosition;
+            }
+        });
+
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
 
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
-
+        ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
 
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
-        name.setText("dina");
-        track.setText("web and mobile");
+
+        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+
+        name.setText(userData.getName());
+        track.setText(userData.getTrackName());
+//        if(userData.getImagePath()==null) userData.setImagePath("") ;
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+
+
+        ///
+
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
+
+
+        ////for expandale
+//        /////////
+//        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+//        expListView.setGroupIndicator(null);
+//        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.side_menu_header, expListView, false);
+//
+//
+//        TextView name = (TextView) headerView.findViewById(R.id.name);
+//        TextView track = (TextView) headerView.findViewById(R.id.track_name);
+//
+//
+//        ////////////////////////////////////////////////////////
+//        //set name and track or company of the user
+//        name.setText("dina");
+//        track.setText("web and mobile");
 
         // Add header view to the expandable list
 
@@ -156,6 +204,10 @@ public class GraduateSideMenu extends AppCompatActivity {
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
+
+//                        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
+
 
                         //send user back to login activity
                         finish();
