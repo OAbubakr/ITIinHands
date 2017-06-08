@@ -140,7 +140,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN, 0);
+        token = sharedPreferences.getInt(Constants.USER_ID, 0);
 
         myName = userData.getEmployeeName();
         myId = token + "";

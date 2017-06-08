@@ -332,10 +332,10 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             break;
                     }
 
-                    networkManager.getUserProfileData(myRef, userType, token);
+                    networkManager.getUserProfileData(myRef, userType,data.getInt(Constants.USER_ID,0));
 
                     break;
-                case "FAIL":
+                case "FAILURE":
 
                     passwordCheckTv.setText(error);
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
