@@ -300,10 +300,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             String error = loginResponse.getErrorLogin();
             UserLogin responseDataObj =  loginResponse.getData();
 //            Double idData = (Double) result.getResponseData();
-            String token = responseDataObj.getToken();
+
 
             switch (status) {
                 case "SUCCESS":
+                    String token = responseDataObj.getToken();
                     //save userID and userType in SharedPreferences
                     SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                     SharedPreferences.Editor editor = data.edit();
@@ -334,7 +335,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     networkManager.getUserProfileData(myRef, userType, token);
 
                     break;
-                case "FAILURE":
+                case "FAIL":
 
                     passwordCheckTv.setText(error);
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
