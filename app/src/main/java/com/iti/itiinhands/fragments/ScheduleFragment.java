@@ -132,5 +132,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
 
+        spinner.setVisibility(View.GONE);
+
     }
 }

@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
@@ -67,6 +69,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         if (response.getStatus().equals(Response.SUCCESS)) {
             List<StudentGrade> list = DataSerializer.convert(response.getResponseData(),new TypeToken< List<StudentGrade>>(){}.getType());
 
+            Log.i("courselist","courselist");
 //            List<StudentGrade> list = (List<StudentGrade>) response.getResponseData();
             if (getActivity() != null) {
                 CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
@@ -78,6 +81,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
 }

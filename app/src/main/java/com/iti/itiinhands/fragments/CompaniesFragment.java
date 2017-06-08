@@ -43,7 +43,6 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-
     }
 
     @Override

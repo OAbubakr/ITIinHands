@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
@@ -107,6 +108,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
 
+        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
 
 }
