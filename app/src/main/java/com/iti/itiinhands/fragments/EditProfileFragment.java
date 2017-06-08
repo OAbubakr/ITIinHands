@@ -3,7 +3,10 @@ package com.iti.itiinhands.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -58,20 +61,26 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     private EditText mobileEt;
     private EditText emailEt;
     private EditText githubEt;
-    private ImageButton githubSearch;
+    private ImageView githubSearch;
     private ImageView githubImg;
     private EditText behanceEt;
-    private ImageButton behanceSearch;
+    private ImageView behanceSearch;
     private ImageView behanceImg;
     private ImageView linkedinBtn;
-    private Button cancelBtn;
-    private Button submitBtn;
-    private EditProfileFragment myRef;
+    private ImageView cancelBtn;
+    private ImageView submitBtn;
+//    private EditProfileFragment myRef;
     private String linkedInUrl;
     private String gitUrl;
     private String behanceUrl;
     SharedPreferences sharedPreferences;
+    private static int RESULT_LOAD_IMAGE = 1;
+    NetworkManager networkManager;
+    private NetworkResponse myRef;
+    Uri selectedImage;
+    String picturePath;
 
+    int token;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,21 +98,24 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         mobileEt = (EditText) view.findViewById(R.id.mobileText);
         emailEt = (EditText) view.findViewById(R.id.emailText);
         githubEt = (EditText) view.findViewById(R.id.gitEdEditId);
-        githubSearch = (ImageButton) view.findViewById(R.id.searchGitBtn);
-        githubImg = (ImageView) view.findViewById(R.id.gitImgResponse);
-        behanceEt = (EditText) view.findViewById(R.id.behanceEdEditId);
-        behanceSearch = (ImageButton) view.findViewById(R.id.searchBehanceBtn);
-        behanceImg = (ImageView) view.findViewById(R.id.behanceImgResponse);
+        githubSearch = (ImageView) view.findViewById(R.id.searchGitBtn);
+        githubImg = (ImageView)  view.findViewById(R.id.gitImgResponse);
+        behanceEt= (EditText) view.findViewById(R.id.behanceEdEditId);
+        behanceSearch = (ImageView) view.findViewById(R.id.searchBehanceBtn);
+        behanceImg = (ImageView)  view.findViewById(R.id.behanceImgResponse);
         linkedinBtn = (ImageView) view.findViewById(R.id.linkedinBtn);
-        cancelBtn = (Button) view.findViewById(R.id.cancelBtnEditId);
-        submitBtn = (Button) view.findViewById(R.id.submitBtnEditId);
-        myRef = this;
-        prepareView();
+        cancelBtn = (ImageView) view.findViewById(R.id.cancelBtnEditId);
+        submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
+        networkManager = NetworkManager.getInstance(getContext());
+
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
             }
         });
 
@@ -142,13 +154,18 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 userData.setLinkedInUrl(linkedInUrl);
                 userData.setStudentEmail(emailEt.getText().toString());
                 userData.setStudentMobile(mobileEt.getText().toString());
-                int userId = sharedPreferences.getInt(Constants.TOKEN, 0);
+
+                ///put new image path in url
+                //userData.setImagePath();
+                int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
                 int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                 NetworkManager.getInstance(getActivity().getApplicationContext()).setUserProfileData(myRef, userType, userId, userData);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(userData));
                 editor.commit();
                 redirectFrag();
+
+
             }
         });
 
@@ -281,5 +298,26 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("at the beginning ***************************");
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
+            selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            profilePicIv.setImageURI(selectedImage);
+            networkManager.uploadImage(myRef, picturePath,token);
+
+
+            //edit image path
+        }
+
     }
 }

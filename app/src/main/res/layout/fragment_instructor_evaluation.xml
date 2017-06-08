@@ -3,12 +3,35 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/inst_eval_bg"
+    android:padding="20dp"
     tools:context="com.iti.itiinhands.fragments.InstructorEvaluationFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Evaluation" />
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
+            android:layout_marginLeft="15dp"
+            android:text="Courses Evaluation" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#7f0000"
+            android:textSize="18dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/inst_name"/>
+
+    </LinearLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
