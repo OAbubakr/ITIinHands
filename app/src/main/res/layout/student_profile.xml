@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
     <LinearLayout
         android:id="@+id/layoutProfileViewId"
         android:layout_width="match_parent"
@@ -11,35 +13,35 @@
         android:orientation="vertical"
         android:weightSum="3">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <RelativeLayout
             android:id="@+id/firstView"
-            android:layout_height="match_parent"
-            android:layout_weight="2">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#BDBDBD">
 
             <ImageView
                 android:id="@+id/profile_pic"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:src="@drawable/profile_pic" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="@drawable/profile_bg">
-
-
 
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/tools"
                 android:id="@+id/card_view"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
                 card_view:cardCornerRadius="2dp"
@@ -56,8 +58,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:paddingLeft="20dp"
                         android:paddingBottom="20dp"
+                        android:paddingLeft="20dp"
                         android:paddingTop="20dp"
                         android:text="profile name"
                         android:textColor="#7f0000"
@@ -73,7 +75,7 @@
                         android:paddingLeft="20dp">
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/intake" />
 
@@ -81,10 +83,10 @@
                             android:id="@+id/secondTvProfileViewId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
                             android:layout_alignParentTop="true"
-                            android:textColor="#000000"
-                            android:text="intake 37" />
+                            android:paddingLeft="10dp"
+                            android:text="intake 37"
+                            android:textColor="#000000" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -95,7 +97,7 @@
                         android:paddingLeft="20dp">
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/track" />
 
@@ -104,9 +106,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:layout_alignParentTop="true"
-                            android:textColor="#000000"
-                            android:text="track name is vjfnjvnf" />
+                            android:text="track name is vjfnjvnf"
+                            android:textColor="#000000" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -117,7 +118,7 @@
                         android:paddingLeft="20dp">
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/email" />
 
@@ -126,9 +127,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:layout_alignParentTop="true"
-                            android:textColor="#000000"
-                            android:text="track name is vjfnjvnf" />
+                            android:text="track name is vjfnjvnf"
+                            android:textColor="#000000" />
                     </LinearLayout>
 
 
@@ -140,7 +140,7 @@
                         android:paddingLeft="20dp">
 
                         <ImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/mobile" />
 
@@ -149,38 +149,43 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:layout_alignParentTop="true"
-                            android:textColor="#000000"
-                            android:text="track name is vjfnjvnf" />
+                            android:text="track name is vjfnjvnf"
+                            android:textColor="#000000" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:paddingLeft="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:gravity="center"
                         android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:layout_height="wrap_content">
+                        android:paddingLeft="0dp"
+                        android:weightSum="3">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="20dp"
-                            android:layout_weight="1"
                             android:id="@+id/gitBtnProfileId"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="1"
+                            android:paddingRight="0dp"
                             android:src="@drawable/github" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="20dp"
-                            android:layout_weight="1"
                             android:id="@+id/linkedInBtnProfileId"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="1"
+                            android:paddingRight="0dp"
                             android:src="@drawable/linked_in" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:id="@+id/behanceBtnProfileId"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/behance" />
                     </LinearLayout>
@@ -189,22 +194,22 @@
 
             </android.support.v7.widget.CardView>
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/editBtnProfileViewId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="end|bottom|right"
+                android:layout_marginRight="20dp"
+                android:isScrollContainer="false"
+                app:backgroundTint="#F05545"
+                app:elevation="7dp"
+                app:srcCompat="@drawable/edit_icon" />
 
-        </LinearLayout>
-
-
+        </RelativeLayout>
     </LinearLayout>
 
+</LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/editBtnProfileViewId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/firstView"
-        app:elevation="7dp"
-        app:backgroundTint="#7f0000"
-        android:layout_margin="20dp"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        app:layout_anchorGravity="bottom|right|end" />
-
-</android.support.design.widget.CoordinatorLayout>
