@@ -157,7 +157,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
                 ///put new image path in url
                 //userData.setImagePath();
-                int userId = sharedPreferences.getInt(Constants.TOKEN, 0);
+                int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
                 int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                 NetworkManager.getInstance(getActivity().getApplicationContext()).setUserProfileData(myRef, userType, userId, userData);
                 SharedPreferences.Editor editor = sharedPreferences.edit();

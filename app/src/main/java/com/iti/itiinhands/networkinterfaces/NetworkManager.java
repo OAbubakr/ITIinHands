@@ -16,6 +16,7 @@ import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.GitData;
+import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.EmpHour;
@@ -210,16 +211,16 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<com.iti.itiinhands.model.Response> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
-        call.enqueue(new Callback<Response>() {
+        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+        call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
                 Response loginResponse = response.body();
                 network.onResponse(loginResponse);
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 network.onFailure();
@@ -253,10 +254,10 @@ public class NetworkManager {
     }
 
     //////////////////////////////////getProfile data /////////////
-    public void getUserProfileData(NetworkResponse networkResponse, int userType, int userId) {
+    public void getUserProfileData(NetworkResponse networkResponse, int userType, String token) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.getUserData(userType, userId);
+        Call<Response> call = web.getUserData(token,userType);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -653,4 +654,24 @@ System.out.print(response.body());
         });
     }
 
+    /////////////////////////////Get all Companies////////////////////
+    public void getAllCompaniesData(NetworkResponse networkResponse){
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getAllCompanies();
+
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
 }

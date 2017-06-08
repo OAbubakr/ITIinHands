@@ -15,10 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.model.UserLogin;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
@@ -280,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onResponse(Response result) {
-
+        loginBtn.setEnabled(true);
         if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
             UserData data = DataSerializer.convert(result.getResponseData(),UserData.class) ;
 //                    UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
@@ -289,21 +290,25 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
             editor.putBoolean(Constants.LOGGED_FLAG, true);
+            editor.putInt(Constants.USER_ID,data.getId());
             editor.commit();
             startActivity(navigationIntent);
             finish();
-        } else if (result != null) {
-            String status = result.getStatus();
-            String error = result.getError();
-            Double idData = (Double) result.getResponseData();
-            int userId = Integer.valueOf(idData.intValue());
+        } else if (result != null && result instanceof LoginResponse) {
+            LoginResponse loginResponse = (LoginResponse) result;
+            String status = loginResponse.getStatusLogin();
+            String error = loginResponse.getErrorLogin();
+            UserLogin responseDataObj =  loginResponse.getData();
+//            Double idData = (Double) result.getResponseData();
+            String token = responseDataObj.getToken();
 
             switch (status) {
                 case "SUCCESS":
                     //save userID and userType in SharedPreferences
                     SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                     SharedPreferences.Editor editor = data.edit();
-                    editor.putInt(Constants.TOKEN, userId);
+                    editor.putString(Constants.TOKEN, responseDataObj.getToken());
+                    editor.putString(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.commit();
 
@@ -326,10 +331,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             break;
                     }
 
-                    networkManager.getUserProfileData(myRef, userType, userId);
+                    networkManager.getUserProfileData(myRef, userType, token);
 
                     break;
                 case "FAILURE":
+
                     passwordCheckTv.setText(error);
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                     break;
@@ -340,6 +346,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onFailure() {
+        loginBtn.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();
 
     }

@@ -49,7 +49,7 @@ public class InstructorEvaluationAdapter extends RecyclerView.Adapter<Instructor
     //---------------------------------View Holder ---------------------------------------
     public class InstructorEvaluationViewHolder extends RecyclerView.ViewHolder {
 
-        TextView courseId;
+        TextView courseName;
         ImageView courseEval;
 
         ArrayList<InstructorEvaluation> instEvalList = new ArrayList<>();
@@ -57,14 +57,15 @@ public class InstructorEvaluationAdapter extends RecyclerView.Adapter<Instructor
         public InstructorEvaluationViewHolder(View itemView, ArrayList<InstructorEvaluation> instEvalList) {
             super(itemView);
             this.instEvalList = instEvalList;
-            courseId = (TextView) itemView.findViewById(R.id.course_id);
+            courseName = (TextView) itemView.findViewById(R.id.course_id);
             courseEval = (ImageView) itemView.findViewById(R.id.course_eval);
         }
 
         public void bind(final InstructorEvaluation instEval){
-            courseId.setText(String.valueOf(instEval.getCourseId()));
+            courseName.setText(instEval.getCourseName());
 
             switch (Integer.valueOf(instEval.getEval())){
+                case 0: courseEval.setImageResource(R.drawable.no_star); break;
                 case 1: courseEval.setImageResource(R.drawable.s); break;
                 case 2: courseEval.setImageResource(R.drawable.ss); break;
                 case 3: courseEval.setImageResource(R.drawable.sss); break;

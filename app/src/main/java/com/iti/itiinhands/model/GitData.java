@@ -13,6 +13,7 @@ public class GitData extends Response implements Serializable {
 
 
     public String getAvatar_url() {
+
         return avatar_url;
     }
 
