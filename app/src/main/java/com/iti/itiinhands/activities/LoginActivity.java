@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.iti.itiinhands.beans.Graduate;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Response;

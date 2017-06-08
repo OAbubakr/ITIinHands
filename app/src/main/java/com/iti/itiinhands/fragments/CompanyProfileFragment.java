@@ -76,7 +76,7 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse 
             knowledge.setText(company.getCompanyAreaKnowledge());
         }
 
-//        networkManager.getCompanyProfile(this,4);
+        networkManager.getCompanyProfile(this,4);
 
 
         return view;
