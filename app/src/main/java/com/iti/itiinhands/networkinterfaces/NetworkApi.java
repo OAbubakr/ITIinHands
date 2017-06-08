@@ -80,7 +80,7 @@ public interface NetworkApi {
     public Call<Response> getJobs();
 
     @GET("profile/onGetUserData")
-    public Call<Response> getUserData(@Query("token") String token,@Query("userType") int userType);
+    public Call<Response> getUserData(@Query("token") int token,@Query("userType") int userType);
 
     @POST("profile/onSetUserData")
     public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
