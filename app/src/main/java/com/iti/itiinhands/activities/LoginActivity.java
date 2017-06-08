@@ -10,21 +10,23 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.beans.Graduate;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.model.UserLogin;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
-
 
 
 /**
@@ -42,10 +44,10 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private TextView continueAsGuest;
     private NetworkManager networkManager;
     private NetworkResponse myRef;
-    private Button studentBtn;
-    private Button graduateBtn;
-    private Button staffBtn;
-    private Button companyBtn;
+    private ImageView studentBtn;
+    private ImageView graduateBtn;
+    private ImageView staffBtn;
+    private ImageView companyBtn;
     private int userType = 0;
     private Intent navigationIntent;
     private SharedPreferences data;
@@ -99,10 +101,10 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         networkErrorTv = (LinearLayout) findViewById(R.id.networkFaildLoginViewId);
         networkManager = NetworkManager.getInstance(getApplicationContext());
         continueAsGuest = (TextView) findViewById(R.id.continueAsGuest);
-        studentBtn = (Button) findViewById(R.id.studentBtnId);
-        graduateBtn = (Button) findViewById(R.id.graduateBtnId);
-        staffBtn = (Button) findViewById(R.id.staffBtnId);
-        companyBtn = (Button) findViewById(R.id.companyBtnId);
+        studentBtn = (ImageView) findViewById(R.id.studentBtnId);
+        graduateBtn = (ImageView) findViewById(R.id.graduateBtnId);
+        staffBtn = (ImageView) findViewById(R.id.staffBtnId);
+        companyBtn = (ImageView) findViewById(R.id.companyBtnId);
         studentTxt = (TextView) findViewById(R.id.srudentTxtLoginId);
         staffTxt = (TextView) findViewById(R.id.staffTxtLoginId);
         companyTxt = (TextView) findViewById(R.id.companyTxtLoginId);
@@ -279,66 +281,63 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
 
     @Override
-    public void onResponse(Object response) {
-
-        Response result = (Response) response;
+    public void onResponse(Response result) {
+        loginBtn.setEnabled(true);
         if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
-            LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
-            UserData data = UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
+            UserData data = DataSerializer.convert(result.getResponseData(),UserData.class) ;
+//                    UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
 
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
             editor.putBoolean(Constants.LOGGED_FLAG, true);
+            editor.putInt(Constants.USER_ID,data.getId());
             editor.commit();
             startActivity(navigationIntent);
             finish();
-        } else if(result != null) {
-//            LoginResponse loginResponse = (R) response;
-            String status = result.getStatus();
-            String error = result.getError();
-            Double idData = (Double) result.getResponseData();
-            int userId = Integer.valueOf(idData.intValue());
-            //get data from msg and then check status value if success navigate to next activity
-            //if failed print the error in username or password check textView
+        } else if (result != null && result instanceof LoginResponse) {
+            LoginResponse loginResponse = (LoginResponse) result;
+            String status = loginResponse.getStatusLogin();
+            String error = loginResponse.getErrorLogin();
+            UserLogin responseDataObj =  loginResponse.getData();
+//            Double idData = (Double) result.getResponseData();
+
+
             switch (status) {
-                case "success":
+                case "SUCCESS":
+                    String token = responseDataObj.getToken();
                     //save userID and userType in SharedPreferences
                     SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                     SharedPreferences.Editor editor = data.edit();
-                    editor.putInt(Constants.TOKEN, userId);
+                    editor.putString(Constants.TOKEN, responseDataObj.getToken());
+                    editor.putString(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.commit();
 
                     switch (userType) {
                         case 1://student
                             navigationIntent = new Intent(getApplicationContext(), SideMenuActivity.class);
-//                            networkManager.getUserProfileData(myRef, userType, userId);
+
                             break;
                         case 2://staff
                             navigationIntent = new Intent(getApplicationContext(), StaffSideMenuActivity.class);
-//                            networkManager.getUserProfileData(myRef, userType, userId);
-//                            finish();
+
                             break;
                         case 3://company
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
-//                            networkManager.getUserProfileData(myRef, userType, userId);
-//                            finish();
+
                             break;
                         case 4://guest
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
-//                            startActivity(navigationIntent);
-//                            finish();
+
                             break;
                     }
-                    ///////////////////////////////////////
-                    //get all student data
-                    ///////////////////////////////////////
-                    networkManager.getUserProfileData(myRef, userType, userId);
-//                    startActivity(navigationIntent);
-//                    finish();
+
+                    networkManager.getUserProfileData(myRef, userType, token);
+
                     break;
-                case "fail":
+                case "FAILURE":
+
                     passwordCheckTv.setText(error);
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                     break;
@@ -349,6 +348,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onFailure() {
+        loginBtn.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();
 
     }

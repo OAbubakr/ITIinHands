@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.iti.itiinhands.Manifest;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
@@ -45,6 +47,11 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         networkManager = NetworkManager.getInstance(this);
         myRef = this;
         choose = (Button) findViewById(R.id.choose);
@@ -85,7 +92,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
     }
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
         Toast.makeText(getApplicationContext(), "Response is success", Toast.LENGTH_SHORT).show();
     }
 
@@ -94,7 +101,11 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         Toast.makeText(getApplicationContext(), "Response is failed", Toast.LENGTH_SHORT).show();
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 
 }

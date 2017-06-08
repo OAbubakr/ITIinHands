@@ -1,17 +1,10 @@
 package com.iti.itiinhands.dto;
 
-import android.support.annotation.Nullable;
-
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Mahmoud on 5/28/2017.
  */
-
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  *
@@ -19,8 +12,28 @@ import java.util.List;
  */
 public class UserData implements Serializable {
     //
+
+    private int id;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     //student
+
     private int intakeId;
+    private int platformIntakeId;
+
+    public int getPlatformIntakeId() {
+        return platformIntakeId;
+    }
+
+    public void setPlatformIntakeId(int platformIntakeId) {
+        this.platformIntakeId = platformIntakeId;
+    }
+
     private String branchName;
     private String trackName;
     private String name;
@@ -32,7 +45,6 @@ public class UserData implements Serializable {
     private String studentMobile;
 
     //company
-    private int companyID;
     private String companyName;
     private int companyNoOfEmp;
     private String companyAreaKnowledge;
@@ -51,6 +63,33 @@ public class UserData implements Serializable {
     private String employeeName;
     private String employeeBranchName;
     private String employeePosition;
+    private int employeePlatformIntake;
+    private int employeeSubTrackId;
+    private String employeeSubTrackName;
+
+    public int getEmployeePlatformIntake() {
+        return employeePlatformIntake;
+    }
+
+    public void setEmployeePlatformIntake(int employeePlatformIntake) {
+        this.employeePlatformIntake = employeePlatformIntake;
+    }
+
+    public int getEmployeeSubTrackId() {
+        return employeeSubTrackId;
+    }
+
+    public void setEmployeeSubTrackId(int employeeSubTrackId) {
+        this.employeeSubTrackId = employeeSubTrackId;
+    }
+
+    public String getEmployeeSubTrackName() {
+        return employeeSubTrackName;
+    }
+
+    public void setEmployeeSubTrackName(String employeeSubTrackName) {
+        this.employeeSubTrackName = employeeSubTrackName;
+    }
 
     public String getStudentEmail() {
         return studentEmail;
@@ -100,13 +139,7 @@ public class UserData implements Serializable {
         this.employeePosition = employeePosition;
     }
 
-    public int getCompanyID() {
-        return companyID;
-    }
 
-    public void setCompanyID(int companyID) {
-        this.companyID = companyID;
-    }
 
     public String getCompanyName() {
         return companyName;

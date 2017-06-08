@@ -28,6 +28,8 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
+import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -133,7 +135,7 @@ public class GuestSideMenu extends AppCompatActivity {
 
 //        //////////////////////////sert the dcompany fragment  student schedule
         fragment = new AboutIti();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();

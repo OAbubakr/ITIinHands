@@ -15,11 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
+import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.model.Branch;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +35,6 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     private RecyclerView recyclerView;
     private BranchesAdapter branchesAdapter;
     private NetworkManager networkManager;
-    private TextView branchViewTitle;
     private int flag = 0;
     private ProgressBar spinner;
 
@@ -54,15 +57,14 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_branches, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
-        branchViewTitle = (TextView) view.findViewById(R.id.branch_view_title);
-        branchViewTitle.setText("ITI-BRANCHES");
+
 
         recyclerView = (RecyclerView) view.findViewById(R.id.branch_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         prepareBranchData();
         return view;
@@ -90,11 +92,15 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
-        branchesList = (ArrayList<Branch>) response;
-        branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
-        recyclerView.setAdapter(branchesAdapter);
-        spinner.setVisibility(View.GONE);
+    public void onResponse(Response response) {
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            branchesList = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<Branch>>(){}.getType());
+
+//            branchesList = (ArrayList<Branch>) response.getResponseData();
+            branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
+            recyclerView.setAdapter(branchesAdapter);
+            spinner.setVisibility(View.GONE);
+        }
 
     }
 

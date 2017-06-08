@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.iti.itiinhands.activities.UploadImage">
+    <include layout="@layout/toolbar" />
 
     <Button
         android:id="@+id/upload"

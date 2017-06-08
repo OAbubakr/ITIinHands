@@ -33,6 +33,7 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
@@ -122,10 +123,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
             }
 
         });
-//
-//        /*
-//        *
-//        * */
+
+        /*
+        *
+        * */
     }
 
     @Override
@@ -145,9 +146,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN, 0);
+        token = sharedPreferences.getInt(Constants.USER_ID, 0);
 
-        //myName = userData.getEmployeeName();
+        myName = userData.getEmployeeName();
         myId = token + "";
         int userType = this.userType;
         switch (userType) {
@@ -196,7 +197,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         name.setText(userData.getEmployeeName());
         track.setText(userData.getEmployeeBranchName());
         Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
-//
+
 
         // Add header view to the expandable list
 
@@ -217,7 +218,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
-
                     case 1:
                         fragment = new ChatFragment();
                         Bundle bundle = new Bundle();
@@ -342,7 +342,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle staff evaluation fragment
-                                Toast.makeText(getApplicationContext(), "staff evaluation isa", Toast.LENGTH_LONG).show();
+                                fragment = new InstructorEvaluationFragment();
+                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
                                 //handle scheduale fragment

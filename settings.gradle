@@ -1,2 +1,3 @@
-include ':app', ':sampleapp', ':linkedin-sdk', ':eventsapp'
+include ':app'
 include ':walkthrough'
+include ':linkedin-sdk'

@@ -6,13 +6,14 @@ import java.io.Serializable;
  * Created by Mahmoud on 5/31/2017.
  */
 
-public class GitData implements Serializable {
+public class GitData extends Response implements Serializable {
 
     private String avatar_url;
     private String html_url;
 
 
     public String getAvatar_url() {
+
         return avatar_url;
     }
 

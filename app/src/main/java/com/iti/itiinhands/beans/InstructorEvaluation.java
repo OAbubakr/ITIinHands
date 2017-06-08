@@ -6,76 +6,32 @@ package com.iti.itiinhands.beans;
 
 public class InstructorEvaluation {
 
-    private int classTimeManagement;
-    private int learningInspiration;
-    private int clarityAndPreparation;
-    private int participationAndDiscussion;
-    private int easeOfApproach;
-    private int interestsStimulation;
-    private int respectInTreatment;
-    private int overAllRate;
+    private int courseId;
+    private String courseName;
+    private String eval;
 
-    public int getClassTimeManagement() {
-        return classTimeManagement;
+
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setClassTimeManagement(int classTimeManagement) {
-        this.classTimeManagement = classTimeManagement;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
-    public int getLearningInspiration() {
-        return learningInspiration;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setLearningInspiration(int learningInspiration) {
-        this.learningInspiration = learningInspiration;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public int getClarityAndPreparation() {
-        return clarityAndPreparation;
+    public String getEval() {
+        return eval;
     }
 
-    public void setClarityAndPreparation(int clarityAndPreparation) {
-        this.clarityAndPreparation = clarityAndPreparation;
-    }
-
-    public int getParticipationAndDiscussion() {
-        return participationAndDiscussion;
-    }
-
-    public void setParticipationAndDiscussion(int participationAndDiscussion) {
-        this.participationAndDiscussion = participationAndDiscussion;
-    }
-
-    public int getEaseOfApproach() {
-        return easeOfApproach;
-    }
-
-    public void setEaseOfApproach(int easeOfApproach) {
-        this.easeOfApproach = easeOfApproach;
-    }
-
-    public int getInterestsStimulation() {
-        return interestsStimulation;
-    }
-
-    public void setInterestsStimulation(int interestsStimulation) {
-        this.interestsStimulation = interestsStimulation;
-    }
-
-    public int getRespectInTreatment() {
-        return respectInTreatment;
-    }
-
-    public void setRespectInTreatment(int respectInTreatment) {
-        this.respectInTreatment = respectInTreatment;
-    }
-
-    public int getOverAllRate() {
-        return overAllRate;
-    }
-
-    public void setOverAllRate(int overAllRate) {
-        this.overAllRate = overAllRate;
+    public void setEval(String eval) {
+        this.eval = eval;
     }
 }

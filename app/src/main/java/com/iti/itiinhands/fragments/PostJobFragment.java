@@ -12,8 +12,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.beans.JobOpportunity;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.JobVacancy;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 
 public class PostJobFragment extends Fragment implements NetworkResponse {
@@ -47,8 +53,9 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
             @Override
             public void onClick(View v) {
 
-                SharedPreferences data = getActivity().getSharedPreferences("userData", 0);
-                int companyId = data.getInt("userId", 0);
+                SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                int companyId = data.getInt(Constants.USER_TYPE, 0);
+                UserData userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
                 String code = jobCode.getText().toString();
                 String title = jobTitle.getText().toString();
                 String desc = jobDescription.getText().toString();
@@ -59,9 +66,12 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
                 int subTrackId = Integer.parseInt(jobSubTrack.getText().toString());
                 String date = jobDate.getText().toString();
 
+                JobOpportunity jobOpportunity = new JobOpportunity(companyId, code, title, desc, experience,
+                        closingDate, sendTo, noNeed, subTrackId, date);
+                jobOpportunity.setCompanyName(userData.getCompanyName());
+
                 if (networkManager.isOnline()){
-                    networkManager.postJob(PostJobFragment.this, companyId, code, title, desc, experience,
-                            closingDate, sendTo, noNeed, subTrackId, date);
+                    networkManager.postJob(PostJobFragment.this, jobOpportunity);
                 }
             }
         });
@@ -70,7 +80,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
 
     }
 

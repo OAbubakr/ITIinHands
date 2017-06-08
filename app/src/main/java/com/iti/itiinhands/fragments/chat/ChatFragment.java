@@ -29,16 +29,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.StaffSideMenuActivity;
 import com.iti.itiinhands.adapters.chatAdapters.FriendListAdapter;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Instructor;
+import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.chat.ChatRoom;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.services.FirebaseMessageReceiverService;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
@@ -131,7 +136,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN,0);
+        token = sharedPreferences.getInt(Constants.USER_ID,0);
 
         myName = userData.getName();
         myId = token+"";
@@ -206,16 +211,18 @@ public class ChatFragment extends Fragment implements NetworkResponse {
     }
 
     @Override
-    public void onResponse(Object response) {
+    public void onResponse(Response response) {
 
-        List<Object> data = (List)response;
-        if(data != null){
+//        List<Object> data = (List)response.getResponseData();
+        List<Instructor> instructors = DataSerializer.convert(response.getResponseData(),new TypeToken<List<Instructor>>(){}.getType());
 
-            if(data.get(0) instanceof Instructor){
+        if(instructors != null){
+
+            if(instructors.get(0) instanceof Instructor){
                 progressDialog.hide();
                 switch (receiver_type) {
                     case "staff":
-                        List<Instructor> instructors = (List<Instructor>) response;
+//                        List<Instructor> instructors = (List<Instructor>) response;
                         chatRooms.clear();
 
                         for (Instructor instructor : instructors) {

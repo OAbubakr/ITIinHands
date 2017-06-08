@@ -2,6 +2,7 @@ package com.iti.itiinhands.activities;
 
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +30,7 @@ import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
@@ -66,6 +68,7 @@ public class SideMenuActivity extends AppCompatActivity {
     int[] third={R.drawable.sm_company,R.drawable.sm_job};
 
     UserData userData;
+    boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
@@ -92,6 +95,8 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
+
         FirebaseMessaging.getInstance().subscribeToTopic("events");
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -122,8 +127,6 @@ public class SideMenuActivity extends AppCompatActivity {
         SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
-
-
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -169,10 +172,13 @@ public class SideMenuActivity extends AppCompatActivity {
                         editor.remove(Constants.TOKEN);
                         editor.remove(Constants.USER_TYPE);
                         editor.remove(Constants.USER_OBJECT);
+                        editor.remove(Constants.USER_ID);
+
                         editor.commit();
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
@@ -207,7 +213,6 @@ public class SideMenuActivity extends AppCompatActivity {
                                 //handle grades fragment
                                 fragment = new PermissionFragment();
                                 break;
-
                             case 2:
                                 //handle list of courses fragment
                                 fragment = new StudentCourseList();
@@ -222,7 +227,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         switch (childPosition) {
                             case 0:
                                 //handle companies profile
-                                Toast.makeText(getApplicationContext(),"companies profiles isa ",Toast.LENGTH_SHORT).show();
+                                fragment= new CompaniesFragment();
+
                                 break;
                             case 1:
                                 //handle job posts
@@ -356,7 +362,21 @@ public class SideMenuActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 
@@ -367,8 +387,17 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
     }
+
+//    @Override
+//    public void onBackPressed() {
+//
+//    }
 }

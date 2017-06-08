@@ -1,6 +1,7 @@
 package com.iti.itiinhands.networkinterfaces;
 
 import com.iti.itiinhands.model.LoginResponse;
+import com.iti.itiinhands.model.Response;
 
 /**
  * Created by admin on 5/22/2017.
@@ -17,7 +18,7 @@ public interface NetworkResponse {
 
 
 
-     void onResponse(Object response);
+     void onResponse(Response response);
 
      void onFailure();
 
