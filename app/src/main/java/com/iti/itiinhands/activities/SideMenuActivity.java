@@ -2,6 +2,7 @@ package com.iti.itiinhands.activities;
 
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -65,6 +66,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
     UserData userData;
+    boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
@@ -352,7 +354,21 @@ public class SideMenuActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 
@@ -366,5 +382,14 @@ public class SideMenuActivity extends AppCompatActivity {
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//
 //    }
 }
