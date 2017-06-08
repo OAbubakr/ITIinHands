@@ -154,17 +154,17 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
                     switch (announcementBean.getType()) {
 
                         case 1://events
-                            fragmentManager.beginTransaction().add(R.id.content_frame, new EventListFragment()).commit();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new EventListFragment()).commit();
                             break;
                         case 2://scheduleChange
-                            fragmentManager.beginTransaction().add(R.id.content_frame, new ScheduleFragment()).commit();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduleFragment()).commit();
 
                             break;
                         case 3:
 
                             break;
                         case 4://jonPost
-                            fragmentManager.beginTransaction().add(R.id.content_frame, new AllJobPostsFragment()).commit();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new AllJobPostsFragment()).commit();
                             break;
                     }
 
