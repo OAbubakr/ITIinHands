@@ -64,8 +64,8 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
         public TextView title;
         public TextView body;
         public ImageView pic;
-        public TextView date;
-        public Button deleteAnnouncement;
+       // public TextView date;
+        public ImageView deleteAnnouncement;
 
         ArrayList<Announcement> announcements = new ArrayList<>();
 
@@ -74,9 +74,9 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
             this.announcements = announcements;
             title = (TextView) itemView.findViewById(R.id.announceTitle);
             body = (TextView) itemView.findViewById(R.id.announceBody);
-            date = (TextView) itemView.findViewById(R.id.announceDate);
+        //    date = (TextView) itemView.findViewById(R.id.announceDate);
             pic = (ImageView) itemView.findViewById(R.id.announceType);
-            deleteAnnouncement = (Button) itemView.findViewById(R.id.delete);
+            deleteAnnouncement = (ImageView) itemView.findViewById(R.id.delete);
 
         }
 
@@ -84,13 +84,15 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
             title.setText(announcementBean.getTitle());
             body.setText(announcementBean.getBody());
-            date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString());
+           // date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString());
             if (announcementBean.getType() == 1) {
-                pic.setImageResource(R.drawable.available);
+                pic.setImageResource(R.drawable.event);
             } else if (announcementBean.getType() == 2) {
-                pic.setImageResource(R.drawable.away);
+                pic.setImageResource(R.drawable.schedule_change);
             } else if (announcementBean.getType() == 3) {
-                pic.setImageResource(R.drawable.busy);
+                pic.setImageResource(R.drawable.permission);
+            }else if (announcementBean.getType() == 4){
+                pic.setImageResource(R.drawable.permission);
             }
 
             deleteAnnouncement.setOnClickListener(new View.OnClickListener() {
