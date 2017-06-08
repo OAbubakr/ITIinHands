@@ -54,14 +54,16 @@ public class SideMenuActivity extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social,
-            R.drawable.home_512,
-            R.drawable.forums,
-            R.drawable.forums,
-            R.drawable.info_512,
-            R.drawable.outbox,
+    int[] images = {R.drawable.sm_profile,
+            R.drawable.sm_mytrack,
+            R.drawable.stu_job_post,
+            R.drawable.sm_iti,
+            R.drawable.sm_logout
     };
 
+    int[] myTrackImages={ R.drawable.schedule,R.drawable.permission,R.drawable.course_list};
+    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
+    int[] third={R.drawable.sm_company,R.drawable.sm_job};
 
     UserData userData;
 
@@ -121,6 +123,8 @@ public class SideMenuActivity extends AppCompatActivity {
 
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 
+
+
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
@@ -137,7 +141,7 @@ public class SideMenuActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images ,myTrackImages,itiImages,third, 1);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -150,11 +154,11 @@ public class SideMenuActivity extends AppCompatActivity {
                         fragment = new StudentProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
                         break;
-                    case 2:
-                        //job posts
-                        fragment = new AllJobPostsFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
+//                    case 2:
+//                        //job posts
+//                        fragment = new AllJobPostsFragment();
+//                        mDrawerLayout.closeDrawer(expListView);
+//                        break;
 
                     case 4:
                         //logout action
@@ -208,6 +212,23 @@ public class SideMenuActivity extends AppCompatActivity {
                                 //handle list of courses fragment
                                 fragment = new StudentCourseList();
                                 break;
+                            default:
+                                break;
+                        }
+                        break;
+
+
+                    case 2:
+                        switch (childPosition) {
+                            case 0:
+                                //handle companies profile
+                                Toast.makeText(getApplicationContext(),"companies profiles isa ",Toast.LENGTH_SHORT).show();
+                                break;
+                            case 1:
+                                //handle job posts
+                                fragment = new AllJobPostsFragment();
+                                break;
+
                             default:
                                 break;
                         }
@@ -276,7 +297,7 @@ public class SideMenuActivity extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("My Track");
-        listDataHeader.add("Job Posts");
+        listDataHeader.add("Companies");
         listDataHeader.add("ITI");
         listDataHeader.add("Logout");
 
@@ -308,12 +329,14 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
         List<String> logout = new ArrayList<String>();
-        List<String> jobposts = new ArrayList<String>();
+        List<String> companies = new ArrayList<String>();
+        companies.add("Companies Profiles");
+        companies.add("Job Posts");
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), myTrack);
-        listDataChild.put(listDataHeader.get(2), jobposts);
+        listDataChild.put(listDataHeader.get(2), companies);
         listDataChild.put(listDataHeader.get(3), aboutIti);
         listDataChild.put(listDataHeader.get(4), logout);
 

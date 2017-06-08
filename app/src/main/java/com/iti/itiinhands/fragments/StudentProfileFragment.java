@@ -42,7 +42,7 @@ public class StudentProfileFragment extends Fragment {
     private int flag;
 
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
@@ -51,7 +51,7 @@ public class StudentProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.student_profile, container, false);
+        View view = inflater.inflate(R.layout.student_profile, container, false);
         firstTv =(TextView) view.findViewById(R.id.firstTvProfileViewId);
         secondTv =(TextView) view.findViewById(R.id.secondTvProfileViewId);
         thirdTv =(TextView) view.findViewById(R.id.thirdTvProfileViewId);
@@ -132,8 +132,6 @@ public class StudentProfileFragment extends Fragment {
         startActivity(intent);
 
     }
-
-
 
 
 }

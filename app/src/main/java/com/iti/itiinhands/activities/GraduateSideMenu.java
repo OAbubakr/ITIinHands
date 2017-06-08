@@ -27,7 +27,9 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 
 import java.util.ArrayList;
@@ -44,25 +46,17 @@ public class GraduateSideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512,R.drawable.home_512 ,R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.sm_profile, R.drawable.sm_iti,R.drawable.stu_job_post ,R.drawable.sm_logout};
+    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
 
+    int[] second;
+    int[] third;
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (mDrawerLayout.isDrawerOpen(expListView)) {
-                    mDrawerLayout.closeDrawer(expListView);
-                } else {
-                    mDrawerLayout.openDrawer(expListView);
-                }
-
-            }
-        });
     }
 
     @Override
@@ -114,7 +108,9 @@ public class GraduateSideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
+
+
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images,itiImages,second,third,3);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -135,11 +131,7 @@ public class GraduateSideMenu extends AppCompatActivity {
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
-                    case 4:
-                        fragment = new AnnouncementFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
-                    case 5:
+                    case 3:
                         //logout  fragment
                         //clear data in shared perference
                         //clear data in shared perference
@@ -173,25 +165,8 @@ public class GraduateSideMenu extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
+
                     case 1:
-                        switch (childPosition) {
-                            case 0:
-                                //handle students community fragment
-                                //fragment=new FragmentClass();
-                                break;
-                            case 1:
-                                //handle graduate community fragment
-                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
-                                break;
-                            case 2:
-                                //handle staff community fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
-                                break;
-
-                        }
-                        break;
-
-                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
@@ -202,15 +177,19 @@ public class GraduateSideMenu extends AppCompatActivity {
                                 fragment = new BranchesFragment();                                break;
                             case 2:
                                 //handle events fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
+                                fragment=new EventListFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
-                                fragment = new BranchesFragment();
+                                fragment = new BranchesList();
                                 break;
                             case 4:
                                 //handle bus services fragment
-                                fragment = new BranchesFragment();
+                                //fragment = new BranchesFragment();
+                                break;
+
+                            case 5:
+                                fragment=new AnnouncementFragment();
                                 break;
                             default:
                                 break;
@@ -246,40 +225,42 @@ public class GraduateSideMenu extends AppCompatActivity {
 
         // Adding child data
         listDataHeader.add("Profile");
-        listDataHeader.add("Community");
-        listDataHeader.add("Job posts");
         listDataHeader.add("ITI");
-        listDataHeader.add("Announcement");
+        listDataHeader.add("Job Posts");
         listDataHeader.add("Logout");
 
 
         // Adding child data
-        List<String> profile = new ArrayList<String>();
+        List<String> profile = new ArrayList<>();
+        //profile.add("");
 
-        List<String> community = new ArrayList<String>();
-        community.add("Students");
-        community.add("Graduates");
-        community.add("Staff");
 
-        List<String> jobPosts = new ArrayList<String>();
+        List<String> myTrack = new ArrayList<>();
+        myTrack.add("Schedule");
+        myTrack.add("Permission");
+        myTrack.add("List of Courses");
 
-        List<String> aboutIti = new ArrayList<String>();
+
+
+
+        List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
         aboutIti.add("Tracks");
         aboutIti.add("Events");
         aboutIti.add("Maps");
         aboutIti.add("Bus Services");
+        aboutIti.add("Announcements");
 
-        List<String> annoucment = new ArrayList<String>();
 
         List<String> logout = new ArrayList<String>();
+        List<String> jobposts = new ArrayList<String>();
+
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), community);
-        listDataChild.put(listDataHeader.get(2), jobPosts);
-        listDataChild.put(listDataHeader.get(3), aboutIti);
-        listDataChild.put(listDataHeader.get(4), annoucment);
-        listDataChild.put(listDataHeader.get(5), logout);
+        listDataChild.put(listDataHeader.get(1), aboutIti);
+        listDataChild.put(listDataHeader.get(2), jobposts);
+        listDataChild.put(listDataHeader.get(3), logout);
+
 
 
     }
