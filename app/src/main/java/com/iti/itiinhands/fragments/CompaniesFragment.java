@@ -58,7 +58,7 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
             companiesLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    Toast.makeText(getActivity().getApplicationContext(), companiesList.get(position).getCompanyName(), Toast.LENGTH_LONG).show();
                 }
             });
         }
