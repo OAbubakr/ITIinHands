@@ -13,6 +13,7 @@ import com.iti.itiinhands.activities.EmployeeHours;
 import com.iti.itiinhands.beans.InstructorEvaluation;
 import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.fragments.EditProfileFragment;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
@@ -507,6 +508,10 @@ public class NetworkManager {
     public void getBehanceData(final NetworkResponse networkResponse, String name) {
         String url = "https://api.behance.net/v2/users/";
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
+                .client(new OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
+                        .build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -578,7 +583,10 @@ public class NetworkManager {
     public void getGitData(final NetworkResponse networkResponse, String name) {
         String url = "https://api.github.com/users/";
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
-                .client(getRequestHeader(60, 60))
+                .client(new OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
+                        .build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetworkApi web = retrofit.create(NetworkApi.class);

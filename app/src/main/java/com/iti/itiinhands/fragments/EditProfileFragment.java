@@ -69,7 +69,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     private ImageView linkedinBtn;
     private ImageView cancelBtn;
     private ImageView submitBtn;
-//    private EditProfileFragment myRef;
+    //    private EditProfileFragment myRef;
     private String linkedInUrl;
     private String gitUrl;
     private String behanceUrl;
@@ -79,8 +79,9 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     private NetworkResponse myRef;
     Uri selectedImage;
     String picturePath;
-
+    private String activityResultFlag;
     int token;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,20 +100,20 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         emailEt = (EditText) view.findViewById(R.id.emailText);
         githubEt = (EditText) view.findViewById(R.id.gitEdEditId);
         githubSearch = (ImageView) view.findViewById(R.id.searchGitBtn);
-        githubImg = (ImageView)  view.findViewById(R.id.gitImgResponse);
-        behanceEt= (EditText) view.findViewById(R.id.behanceEdEditId);
+        githubImg = (ImageView) view.findViewById(R.id.gitImgResponse);
+        behanceEt = (EditText) view.findViewById(R.id.behanceEdEditId);
         behanceSearch = (ImageView) view.findViewById(R.id.searchBehanceBtn);
-        behanceImg = (ImageView)  view.findViewById(R.id.behanceImgResponse);
+        behanceImg = (ImageView) view.findViewById(R.id.behanceImgResponse);
         linkedinBtn = (ImageView) view.findViewById(R.id.linkedinBtn);
         cancelBtn = (ImageView) view.findViewById(R.id.cancelBtnEditId);
         submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
         networkManager = NetworkManager.getInstance(getContext());
-
+        myRef=this;
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                activityResultFlag = "uploadPic";
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
@@ -185,7 +186,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
         //LISessionManager object and pass the context, scope(list of member permission), callback method
         // and a boolean value that determines the behaviour when the LinkedIn app is not installed.
-
+        activityResultFlag = "linkedin" ;
         LISessionManager.getInstance(getContext())
                 .init(getActivity(), buildScope(), new AuthListener() {
                     @Override
@@ -274,25 +275,21 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-                if (response instanceof BehanceData) {
+        if ( response instanceof BehanceData && ((BehanceData) response).getUser()!=null) {
+            BehanceData data = (BehanceData) response;
+            behanceUrl = data.getUser().getUrl();
+            HashMap<Integer, String> images = data.getUser().getImages();
+            Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
+        } else if (response instanceof GitData &&((GitData) response).getMessage()!="Not Found") {
+            GitData data = (GitData) response;
+            gitUrl = data.getHtml_url();
+            Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
 
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+        }
 
-                    BehanceData data = (BehanceData) response;
-                    behanceUrl = data.getUser().getUrl();
-                    HashMap<Integer, String> images = data.getUser().getImages();
-                    Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
-                }else
-                if (response instanceof GitData) {
-                    GitData data = (GitData) response;
-                    gitUrl = data.getHtml_url();
-                    Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
-
-                }else {
-                    Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
-                }
-
-            }
-
+    }
 
 
     @Override
@@ -303,21 +300,30 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("at the beginning ***************************");
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
-            selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            profilePicIv.setImageURI(selectedImage);
-            networkManager.uploadImage(myRef, picturePath,token);
+        switch (activityResultFlag) {
+            case "uploadPic":
+            System.out.println("at the beginning ***************************");
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
+                selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                profilePicIv.setImageURI(selectedImage);
+                networkManager.uploadImage(myRef, picturePath, token);
 
 
-            //edit image path
+                //edit image path
+            }
+            break;
+            case "linkedin":
+                LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(),requestCode, resultCode, data);
+                break;
         }
 
     }
+
+
 }
