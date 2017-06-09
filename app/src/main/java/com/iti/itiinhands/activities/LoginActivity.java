@@ -327,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
 
                             break;
-                        case 4://guest
+                        case 4://graduate
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
 
                             break;

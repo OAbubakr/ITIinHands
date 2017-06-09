@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.AnnouncementAdapter;
@@ -31,6 +32,7 @@ public class AnnouncementFragment extends Fragment {
     private AnnouncementAdapter announcementAdapter;
     private ArrayList<Announcement> announcements =new ArrayList<>();
     private DataBase dataBase;
+    TextView noAnnounTV;
 
 
     public AnnouncementFragment() {
@@ -49,6 +51,8 @@ public class AnnouncementFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_announcement, container, false);
         dataBase=DataBase.getInstance(getActivity().getApplicationContext());
+        noAnnounTV = (TextView) view.findViewById(R.id.noAnnounTV);
+        noAnnounTV.setVisibility(View.INVISIBLE);
         recyclerView = (RecyclerView)view.findViewById(R.id.announcements_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL,false));
 
@@ -94,6 +98,9 @@ public class AnnouncementFragment extends Fragment {
 
         }
         announcements=dataBase.getAnnoucements(userName);
+        if(announcements.size() == 0){
+            noAnnounTV.setVisibility(View.VISIBLE);
+        }
         Log.i("size",String.valueOf(announcements.size()));
 
         announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext(),getFragmentManager());
