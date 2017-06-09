@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -45,9 +46,16 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_details);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        track = (Track) getIntent().getSerializableExtra("trackObject");
+        toolbar.setTitle(track.getTrackName());
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         networkManager = NetworkManager.getInstance(getApplicationContext());
 
-        track = (Track) getIntent().getSerializableExtra("trackObject");
+
 
 
         instructorsRecyclerView = (RecyclerView) findViewById(R.id.instructorsRV);
@@ -62,7 +70,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         instructorsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         instructorsRecyclerView.setLayoutManager(instructorsLayoutManager);
 
-        coursesLayoutManager = new GridLayoutManager(this, 3);
+        coursesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
         spinner = (ProgressBar) findViewById(R.id.progressBar);
@@ -104,6 +112,11 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
     @Override
     public void onFailure() {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 

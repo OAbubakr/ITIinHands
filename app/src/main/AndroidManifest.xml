@@ -8,14 +8,13 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" />
+
 
     <application
         android:allowBackup="true"
@@ -24,7 +23,7 @@
         android:roundIcon="@drawable/logo1"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LoginActivity" ></activity>
         <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.TrackDetails" />
@@ -103,8 +102,10 @@
             <!-- </intent-filter> -->
         </activity>
         <!-- <activity android:name=".activities.GraduateSideMenu" /> -->
+        <!--<activity android:name=".activities.Schedule" />-->
+        <activity android:name=".activities.CompanyStudentProfile"></activity>
+        <activity android:name=".activities.CompanyJobPost"></activity>
         <!-- <activity android:name=".activities.Schedule" /> -->
-        <activity android:name=".activities.CompanyStudentProfile" />
         <activity android:name=".activities.GraduatesByTrack"></activity>
     </application>
 

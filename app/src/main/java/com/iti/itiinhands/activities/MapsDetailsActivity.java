@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -29,6 +30,10 @@ public class MapsDetailsActivity extends AppCompatActivity {
         Fresco.initialize(this);
 
         setContentView(R.layout.activity_map);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

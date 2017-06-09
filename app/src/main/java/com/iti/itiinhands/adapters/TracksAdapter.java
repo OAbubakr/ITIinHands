@@ -97,6 +97,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
                         i.putExtra("trackId",track.getPlatformIntakeId());
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
+
                     }
                 }
             });

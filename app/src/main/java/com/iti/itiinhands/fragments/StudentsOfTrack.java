@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.gson.reflect.TypeToken;
@@ -38,6 +39,13 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.students_of_track_fragment);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
         Intent intent = getIntent();
         id = intent.getIntExtra("trackId", 0);
 
@@ -100,5 +108,10 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onFailure() {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

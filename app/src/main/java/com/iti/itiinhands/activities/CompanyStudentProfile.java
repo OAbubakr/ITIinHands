@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -30,11 +31,18 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         networkManager = NetworkManager.getInstance(getApplicationContext());
-        networkManager.getUserProfileData(this, 1, getIntent().getIntExtra("stuId", 0));
+//        networkManager.getUserProfileData(this, 1, getIntent().getIntExtra("stuId", 0));
 
 
         setContentView(R.layout.activity_company_student_profile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
@@ -64,5 +72,11 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
     @Override
     public void onFailure() {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        finish();
+        return true;
     }
 }

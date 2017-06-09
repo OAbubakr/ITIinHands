@@ -33,6 +33,7 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
@@ -56,11 +57,17 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social,
-            R.drawable.home_512,
-            R.drawable.forums,
-            R.drawable.info_512,
-            R.drawable.outbox};
+    int[] images = {R.drawable.sm_mytrack,
+            R.drawable.sm_community,
+            R.drawable.sm_iti,
+            R.drawable.itians,
+            R.drawable.sm_logout};
+
+
+    int[] itians = {R.drawable.students, R.drawable.graduate};
+    int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.event, R.drawable.map, R.drawable.bus, R.drawable.announce};
+
+    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule};
     FragmentManager fragmentManager;
 
 
@@ -139,7 +146,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.TOKEN, 0);
+        token = sharedPreferences.getInt(Constants.USER_ID, 0);
 
         myName = userData.getEmployeeName();
         myId = token + "";
@@ -202,7 +209,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
+
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images, myWork, itiImages, itians, 2);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -215,12 +223,6 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("receiver_type", "staff");
                         fragment.setArguments(bundle);
-                        mDrawerLayout.closeDrawer(expListView);
-
-                        break;
-                    case 3:
-                        //replace with announcment
-                        fragment = new AnnouncementFragment();
                         mDrawerLayout.closeDrawer(expListView);
 
                         break;
@@ -261,7 +263,26 @@ public class StaffSideMenuActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
-                    case 0:
+
+
+                    case 3:
+
+                        switch (childPosition) {
+                            case 0:
+                                //accesss students profile
+                                BranchesFragment temp = new BranchesFragment();
+                                temp.setFlag(1);
+                                fragment = temp;
+                                break;
+                            case 1:
+                                //access graduates profile
+                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                break;
+                        }
+
+                    case 2:
                         switch (childPosition) {
                             case 0:
                                 //handle about ITI Fragment
@@ -279,10 +300,15 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 3:
                                 //handle maps fragment
                                 fragment = new BranchesList();
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();                                break;
+                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                                break;
                             case 4:
                                 //handle bus services fragment
 //                                fragment = new BranchesFragment();
+                                break;
+
+                            case 5:
+                                fragment = new AnnouncementFragment();
                                 break;
                             default:
                                 break;
@@ -312,11 +338,11 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         }
                         break;
 
-                    case 2:
+                    case 0:
                         switch (childPosition) {
                             case 0:
                                 //handle staff evaluation fragment
-
+                                fragment = new InstructorEvaluationFragment();
                                 Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
@@ -360,19 +386,20 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add("ITI");
-        listDataHeader.add("Community");
         listDataHeader.add("My Work");
-        listDataHeader.add("Announcement");
+        listDataHeader.add("Community");
+        listDataHeader.add("ITI");
+        listDataHeader.add("ITIans");
         listDataHeader.add("Logout");
 
         // Adding child data
         List<String> iti = new ArrayList<String>();
         iti.add("About ITI");
-        iti.add("Tracks");
+        iti.add("Branches And Tracks");
         iti.add("Events");
         iti.add("Maps");
         iti.add("Bus Services");
+        iti.add("Announcements");
 
 
         List<String> community = new ArrayList<String>();
@@ -384,17 +411,20 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         myWork.add("Working hours");
 
 
-        List<String> announcement = new ArrayList<String>();
+        List<String> itians = new ArrayList<String>();
+        itians.add("Students");
+        itians.add("Graduates");
 
 
         List<String> logout = new ArrayList<String>();
 
 
-        listDataChild.put(listDataHeader.get(0), iti); // Header, Child data
+        listDataChild.put(listDataHeader.get(0), myWork); // Header, Child data
         listDataChild.put(listDataHeader.get(1), community);
-        listDataChild.put(listDataHeader.get(2), myWork);
-        listDataChild.put(listDataHeader.get(3), announcement);
+        listDataChild.put(listDataHeader.get(2), iti);
+        listDataChild.put(listDataHeader.get(3), itians);
         listDataChild.put(listDataHeader.get(4), logout);
+
 
         //check extras
         if (getIntent().getExtras() != null) {

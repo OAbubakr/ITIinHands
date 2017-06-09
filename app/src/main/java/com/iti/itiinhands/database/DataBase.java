@@ -105,7 +105,7 @@ public class DataBase extends SQLiteOpenHelper {
         while (c.moveToNext()) {
             Announcement announcement = new Announcement();
             announcement.setId(c.getInt(0));
-            announcement.setType(c.getType(1));
+            announcement.setType(c.getInt(1));
             announcement.setTitle(c.getString(2));
             announcement.setBody(c.getString(3));
             announcement.setDate(c.getLong(4));

@@ -3,6 +3,7 @@ package com.iti.itiinhands.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,10 +55,12 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
         public TextView branchLocation;
         ArrayList<Branch> branchesList = new ArrayList<>();
 
-        public MyViewHolder(View itemView, ArrayList<Branch> branchesList) {
+        public MyViewHolder(View itemView, final ArrayList<Branch> branchesList) {
             super(itemView);
             this.branchesList = branchesList;
             branchLocation = (TextView) itemView.findViewById(R.id.branch_list_item);
+
+
         }
 
         public void bind(final Branch branch){
@@ -66,6 +69,8 @@ public class BranchesAdapter extends RecyclerView.Adapter<BranchesAdapter.MyView
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(context, branch.getLocation(), Toast.LENGTH_SHORT).show();
+                    int position = getAdapterPosition();
+                    Log.i("branch","click");
                     Intent tracksView = new Intent(context, Tracks.class);
                     tracksView.putExtra("branchObject",branch);
                     tracksView.putExtra("flag",flag);

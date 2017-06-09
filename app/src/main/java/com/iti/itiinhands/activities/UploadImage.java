@@ -12,13 +12,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +29,7 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 
 
-public class UploadImage extends Fragment implements View.OnClickListener, NetworkResponse {
+public class UploadImage extends AppCompatActivity implements View.OnClickListener, NetworkResponse {
 
     Button choose, upload;
     TextView nameText;
@@ -46,19 +44,22 @@ public class UploadImage extends Fragment implements View.OnClickListener, Netwo
     Uri selectedImage;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_upload_image, container, false);
-//        setContentView(R.layout.activity_upload_image);
-        networkManager = NetworkManager.getInstance(getContext());
+        setContentView(R.layout.activity_upload_image);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        networkManager = NetworkManager.getInstance(this);
         myRef = this;
-        choose = (Button) view.findViewById(R.id.choose);
-        upload = (Button) view.findViewById(R.id.upload);
-        myImage = (ImageView) view.findViewById(R.id.profileImage);
-        nameText = (TextView) view.findViewById(R.id.textView3);
+        choose = (Button) findViewById(R.id.choose);
+        upload = (Button) findViewById(R.id.upload);
+        myImage = (ImageView) findViewById(R.id.profileImage);
+        nameText = (TextView) findViewById(R.id.textView3);
         choose.setOnClickListener(this);
         upload.setOnClickListener(this);
-        return view;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class UploadImage extends Fragment implements View.OnClickListener, Netwo
         if (v.getId() == R.id.choose) {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
+            startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
         } else if (v.getId() == R.id.upload) {
            networkManager.uploadImage(myRef, picturePath,5700);
 
@@ -74,12 +75,12 @@ public class UploadImage extends Fragment implements View.OnClickListener, Netwo
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE &&  null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             picturePath = cursor.getString(columnIndex);
@@ -92,15 +93,19 @@ public class UploadImage extends Fragment implements View.OnClickListener, Netwo
 
     @Override
     public void onResponse(Response response) {
-        Toast.makeText(getActivity().getApplicationContext(), "Response is success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Response is success", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Response is failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Response is failed", Toast.LENGTH_SHORT).show();
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 
 }

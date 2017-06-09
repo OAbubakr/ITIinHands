@@ -1,6 +1,7 @@
 package com.iti.itiinhands.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -11,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.CompanyJobPost;
 import com.iti.itiinhands.model.JobVacancy;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -53,20 +56,22 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
             jobTilte = (TextView)itemView.findViewById(R.id.item_title);
             companyName = (TextView)itemView.findViewById(R.id.item_detail);
-            jobDesc = (TextView)itemView.findViewById(R.id.desc);
-            jobExp = (TextView)itemView.findViewById(R.id.exp);
-            closeDate = (TextView)itemView.findViewById(R.id.close_date);
+
             cvTo = (TextView)itemView.findViewById(R.id.cvto);
-            noNeed = (TextView)itemView.findViewById(R.id.noneed);
+
             companyImage = (ImageView) itemView.findViewById(R.id.img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();
 
-                    Snackbar.make(v, "Click detected on item " + position,
-                            Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+//                    Snackbar.make(v, "Click detected on item " + position,
+//                            Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+                    Intent intent = new Intent(context, CompanyJobPost.class);
+                    intent.putExtra("job post",jobVacancies.get(position));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
 
                 }
             });
@@ -87,10 +92,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.jobTilte.setText("Job Title: "+jobVacancies.get(i).getJobTitle());
-        viewHolder.jobDesc.setText("Job Description: "+jobVacancies.get(i).getJobDesc());
-        viewHolder.jobExp.setText("Years Of Experience: "+jobVacancies.get(i).getJobYearExperience());
-        viewHolder.noNeed.setText("Number OF People Need: "+jobVacancies.get(i).getJobNoNeed()+"");
+        viewHolder.jobTilte.setText(jobVacancies.get(i).getJobTitle());
+
 
         if (jobVacancies.get(i).getCompanyName() == null){
             viewHolder.companyName.setText("NULL");
@@ -109,8 +112,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
                 .load(jobVacancies.get(i).getCompanyLogoPath())
                 .into(viewHolder.companyImage);
 
-        String dateString = DateFormat.format("MM/dd/yyyy", new Date(jobVacancies.get(i).getJobClosingDate())).toString();
-        viewHolder.closeDate.setText("Closing Date: "+dateString);
 
 
 

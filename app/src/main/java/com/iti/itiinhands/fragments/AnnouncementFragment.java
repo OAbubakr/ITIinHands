@@ -95,7 +95,8 @@ public class AnnouncementFragment extends Fragment {
         }
         announcements=dataBase.getAnnoucements(userName);
         Log.i("size",String.valueOf(announcements.size()));
-        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext());
+
+        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext(),getFragmentManager());
         recyclerView.setAdapter(announcementAdapter);
         //announcementAdapter.notifyDataSetChanged();
     }
