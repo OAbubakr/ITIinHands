@@ -21,6 +21,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Mahmoud on 5/28/2017.
@@ -58,6 +59,7 @@ public class StudentProfileFragment extends Fragment {
         fourthTv =(TextView) view.findViewById(R.id.fourthTvProfileViewId);
         fifthTv =(TextView) view.findViewById(R.id.fifthTvProfileViewId);
         gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
+       ImageView profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
         linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
@@ -80,7 +82,8 @@ public class StudentProfileFragment extends Fragment {
         firstTv.setText(userData.getName());
         secondTv.setText("Intake" +new Integer(userData.getIntakeId()).toString()+ userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
-
+        System.out.println("*********"+userData.getImagePath().toString());
+        Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.218:8084/restfulSpring/download/"+userData.getImagePath()).into(profile_pic);
        //SET USER EMAIL
         if(userData.getStudentEmail() != null)
         fourthTv.setText(userData.getStudentEmail());

@@ -1,9 +1,13 @@
 package com.iti.itiinhands.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,6 +47,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,23 +71,31 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     private ImageView linkedinBtn;
     private Button cancelBtn;
     private Button submitBtn;
-    private EditProfileFragment myRef;
+//    private EditProfileFragment myRef;
     private String linkedInUrl;
     private String gitUrl;
     private String behanceUrl;
     SharedPreferences sharedPreferences;
 
+    private static int RESULT_LOAD_IMAGE = 1;
+    NetworkManager networkManager;
+    private NetworkResponse myRef;
+    Uri selectedImage;
+    String picturePath;
+    int token;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new LinkedInLogin(getActivity().getApplicationContext());
         sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        token = sharedPreferences.getInt(Constants.TOKEN,0);
+
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_profile, container, false);
 
         profilePicIv = (ImageView) view.findViewById(R.id.change_Imageview);
@@ -98,11 +111,15 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         cancelBtn = (Button) view.findViewById(R.id.cancelBtnEditId);
         submitBtn = (Button) view.findViewById(R.id.submitBtnEditId);
         myRef = this;
+        networkManager = NetworkManager.getInstance(getContext());
         prepareView();
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
 
             }
         });
@@ -148,6 +165,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(userData));
                 editor.commit();
+
                 redirectFrag();
             }
         });
@@ -250,8 +268,8 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             linkedInUrl = userData.getLinkedInUrl();
         }
 
-        if (userData.getImagePath() != null)
-            Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
+//        if (userData.getImagePath() != null)
+//            Picasso.with(getActivity().getApplicationContext()).load(url+userData.getImagePath()).into(profilePicIv);
     }
 
     @Override
@@ -281,5 +299,26 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("at the beginning ***************************");
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
+            selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            picturePath = cursor.getString(columnIndex);
+            System.out.println(picturePath);
+            cursor.close();
+            profilePicIv.setImageURI(selectedImage);
+            String imageName = picturePath.substring(picturePath.lastIndexOf("/") + 1);
+            System.out.println("image name is ********** " + imageName);
+            networkManager.uploadImage(myRef, picturePath,token);
+        }
+
     }
 }

@@ -99,8 +99,11 @@ public interface NetworkApi {
 
 
 //////////
-@GET("getStudentsByTrackId")
+    @GET("getStudentsByTrackId")
     public Call<Response>getAllStudentsByTracId(@Query("id")int id);
+
+    @GET("gradByIntakeAndTrack")
+    public Call<Response>getAllGraduatesByTracId(@Query("id")int id,@Query("platformId")int platformId);
 
     @GET
     public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
@@ -130,5 +133,8 @@ public interface NetworkApi {
 
     @GET("getInstructorEvaluation")
     public Call<Response> getInstructorEvaluation(@Query("instId") int instId);
+
+    @GET("getIntakes")
+    public Call<Response> getIntakes();
 
 }

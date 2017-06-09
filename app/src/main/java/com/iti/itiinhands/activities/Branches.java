@@ -32,6 +32,7 @@ public class Branches extends AppCompatActivity implements NetworkResponse{
     private TextView branchViewTitle;
     private NetworkManager networkManager;
     private int flag = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
