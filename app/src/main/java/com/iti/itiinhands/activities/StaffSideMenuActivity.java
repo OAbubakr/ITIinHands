@@ -67,7 +67,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     int[] itians = {R.drawable.students, R.drawable.graduate};
     int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.event, R.drawable.map, R.drawable.bus, R.drawable.announce};
 
-    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule};
+    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule, R.drawable.schedule};
     FragmentManager fragmentManager;
 
 
@@ -409,6 +409,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         myWork.add("Evaluation");
         myWork.add("Schedule");
         myWork.add("Working hours");
+        if(userData.getEmployeePlatformIntake()!=0)myWork.add("Notify schedule change");
 
 
         List<String> itians = new ArrayList<String>();

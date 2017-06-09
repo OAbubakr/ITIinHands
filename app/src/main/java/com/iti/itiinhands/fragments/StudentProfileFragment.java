@@ -95,7 +95,7 @@ public class StudentProfileFragment extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new EditProfileFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             }
         });
 
