@@ -50,7 +50,7 @@ public class GraduateSideMenu extends AppCompatActivity {
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
     int[] images = {R.drawable.sm_profile, R.drawable.sm_iti,R.drawable.stu_job_post ,R.drawable.sm_logout};
-    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
+    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.sm_event,R.drawable.map,R.drawable.bus,R.drawable.announce};
 
     int[] second;
     int[] third;

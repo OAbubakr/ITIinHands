@@ -59,7 +59,7 @@ public class CompanySideMenu extends AppCompatActivity {
     int[] itiImages={
             R.drawable.about_ti,
             R.drawable.tracks,
-            R.drawable.event,
+            R.drawable.sm_event,
             R.drawable.map,
             R.drawable.bus,
             R.drawable.announce};
