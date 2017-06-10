@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:weightSum="2"
+    android:background="@drawable/bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <ProgressBar
+    style="?android:attr/progressBarStyle"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/progressBar" />
+    </RelativeLayout>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="3">
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:compactCalendarTargetHeight="250dp"
+    app:compactCalendarTextSize="16sp"
+    app:compactCalendarTextColor="#484848"
+    app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+    app:compactCalendarCurrentDayTextColor="@android:color/white"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/eventcal"
+    android:id="@+id/calenderView"/>
+
+    </FrameLayout>
+
+
+
+    </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+
+        android:background="@drawable/eventcellbackground">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/eventcelledge"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#484848"
+                    android:textSize="18dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/C_event_name"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/C_event_place"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="#7f0000"
+                android:textSize="18dp"
+                android:id="@+id/C_event_date"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>
