@@ -228,10 +228,11 @@ public class CompanySideMenu extends AppCompatActivity {
                                 //handle maps fragment
                                 fragment = new BranchesList();
                                 break;
+
                             case 4:
-                                //handle bus services fragment
-//                                fragment = new BranchesFragment();
+                                fragment= new AnnouncementFragment();
                                 break;
+
                             default:
                                 fragment = new BranchesList();
                                 break;
@@ -295,7 +296,6 @@ public class CompanySideMenu extends AppCompatActivity {
         iti.add("Branches and Tracks");
         iti.add("Events");
         iti.add("Maps");
-        iti.add("Bus Services");
         iti.add("Announcements");
 
 

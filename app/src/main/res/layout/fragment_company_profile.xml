@@ -44,8 +44,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/company_logo"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_menu_camera" />
+                    android:src="@drawable/c_pic" />
 
 
             </RelativeLayout>
