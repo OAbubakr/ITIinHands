@@ -65,7 +65,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
 
     int[] itians = {R.drawable.students, R.drawable.graduate};
-    int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.event, R.drawable.map, R.drawable.bus, R.drawable.announce};
+    int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.sm_event, R.drawable.map, R.drawable.bus, R.drawable.announce};
 
     int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule};
     FragmentManager fragmentManager;

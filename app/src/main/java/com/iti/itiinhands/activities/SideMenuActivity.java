@@ -65,8 +65,8 @@ public class SideMenuActivity extends AppCompatActivity {
             R.drawable.sm_logout
     };
 
-    int[] myTrackImages={ R.drawable.schedule,R.drawable.permission,R.drawable.course_list};
-    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
+    int[] myTrackImages={ R.drawable.schedule,R.drawable.sm_permission,R.drawable.course_list};
+    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.sm_event,R.drawable.map,R.drawable.bus,R.drawable.announce};
     int[] third={R.drawable.sm_company,R.drawable.sm_job};
 
     UserData userData;

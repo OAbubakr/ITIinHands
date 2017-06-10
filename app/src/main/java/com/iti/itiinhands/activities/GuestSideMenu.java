@@ -44,8 +44,8 @@ public class GuestSideMenu extends AppCompatActivity {
     int[] images={
             R.drawable.about_ti,
             R.drawable.tracks,
-            R.drawable.event,
             R.drawable.map,
+            R.drawable.sm_event,
             R.drawable.g_login};
     int[] second;
     int[] third;
@@ -146,14 +146,16 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
                     case 1:
                         //tracks fragment
-                        fragment = new BranchesFragment();                        break;
-                    case 2:
-                        //events fragment
-                        fragment = new EventListFragment();
+                        fragment = new BranchesFragment();
                         break;
-                    case 3:
+                    case 2:
+
                         // maps fragment
                         fragment = new BranchesList();
+                        break;
+                    case 3:
+                        //events fragment
+                        fragment = new EventListFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 
