@@ -54,7 +54,6 @@
         <!-- android:theme="@style/AppTheme_NoActionBar" /> -->
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
-        <activity android:name=".activities.MapsDetailsActivity" />
         <activity android:name=".fragments.StudentsOfTrack" />
 
         <!-- <activity android:name=".activities.LoginActivity" -->
@@ -70,17 +69,6 @@
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
         <activity android:name=".activities.GraduateSideMenu" />
-        <activity
-            android:name=".activities.ChatRoomActivity"
-            android:windowSoftInputMode="stateHidden">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="launch" /> -->
-
-
-            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-            <!-- </intent-filter> -->
-        </activity>
 
         <service
             android:name=".services.FirebaseMessageReceiverService"
@@ -90,6 +78,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <activity android:name=".activities.MapsDetailsActivity" />
 
         <!-- <activity android:name=".activities.GraduateSideMenu" /> -->
         <activity android:name=".activities.Schedule" />
@@ -106,6 +95,16 @@
         <activity android:name=".activities.CompanyJobPost" />
         <!-- <activity android:name=".activities.Schedule" /> -->
         <activity android:name=".activities.GraduatesByTrack" />
+
+        <activity android:name=".activities.ChatRoomActivity"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="launch"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

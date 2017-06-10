@@ -56,6 +56,7 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
 
                     Intent intent = new Intent(context, MapsDetailsActivity.class);
                     intent.putExtra("branchId", branches.get(position).getBranchId());
+                    intent.putExtra("branchName", branches.get(position).getBranchName());
                     context.startActivity(intent);
 
                 }
