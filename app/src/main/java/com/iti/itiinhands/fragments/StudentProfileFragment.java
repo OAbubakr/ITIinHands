@@ -4,12 +4,17 @@ package com.iti.itiinhands.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,18 +78,28 @@ public class StudentProfileFragment extends Fragment {
             userData =(UserData) b.getSerializable("student");
         }
         if(userData != null){
-            if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
-            if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
-            if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+            if(userData.getLinkedInUrl()==null) {
+                linkedInBtn.setEnabled(false);
+                linkedInBtn.setColorFilter(Color.GRAY);
+            }
+            if(userData.getBehanceUrl()==null){
+                behanceBtn.setEnabled(false);
+                behanceBtn.setColorFilter(Color.GRAY);
+            }
+            if(userData.getGitUrl()==null){
+                gitBtn.setEnabled(false);
+                gitBtn.setColorFilter(Color.GRAY);
+            }
         }
 
 
         firstTv.setText(userData.getName());
         secondTv.setText("Intake" +new Integer(userData.getIntakeId()).toString()+ userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
-        System.out.println("*********"+userData.getImagePath().toString());
-        Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.218:8084/restfulSpring/download/"+userData.getImagePath()).into(profile_pic);
-       //SET USER EMAIL
+        if(userData.getImagePath()!=null) {
+            System.out.println("*********" + userData.getImagePath().toString());
+            Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.218:8084/restfulSpring/download/" + userData.getImagePath()).into(profile_pic);
+        }//SET USER EMAIL
         if(userData.getStudentEmail() != null)
         fourthTv.setText(userData.getStudentEmail());
 
@@ -136,5 +151,14 @@ public class StudentProfileFragment extends Fragment {
 
     }
 
+    private void setButtonColorTint(ImageView btn,int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            btn.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        } else {
+            Drawable wrapDrawable = DrawableCompat.wrap(btn.getBackground());
+            DrawableCompat.setTint(wrapDrawable, color);
+            btn.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
+        }
+    }
 
 }

@@ -59,9 +59,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-    private static final String BASEURL = "http://192.168.2.16:9090/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://192.168.2.16:9090/restfulSpring/"; // Omar ITI
 //    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";

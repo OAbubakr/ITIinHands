@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.adapters.EventsPagerAdapter;
+//import com.iti.itiinhands.adapters.EventsPagerAdapter;
 
 /**
  * Created by admin on 6/10/2017.
@@ -44,9 +44,9 @@ public class EventTabFragment extends Fragment {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) view.findViewById(R.id.event_pager);
-        final EventsPagerAdapter adapter = new EventsPagerAdapter(tabLayout.getTabCount(),getActivity().getSupportFragmentManager());
+//        final EventsPagerAdapter adapter = new EventsPagerAdapter(tabLayout.getTabCount(),getActivity().getSupportFragmentManager());
 
-        viewPager.setAdapter(adapter);
+//        viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
