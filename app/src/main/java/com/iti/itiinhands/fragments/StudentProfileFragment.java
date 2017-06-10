@@ -80,15 +80,24 @@ public class StudentProfileFragment extends Fragment {
         if(userData != null){
             if(userData.getLinkedInUrl()==null) {
                 linkedInBtn.setEnabled(false);
-                linkedInBtn.setColorFilter(Color.GRAY);
+                linkedInBtn.setImageResource(R.drawable.group1205);
+            }else{
+                linkedInBtn.setEnabled(true);
+                linkedInBtn.setImageResource(R.drawable.linked_in);
             }
             if(userData.getBehanceUrl()==null){
                 behanceBtn.setEnabled(false);
-                behanceBtn.setColorFilter(Color.GRAY);
+                behanceBtn.setImageResource(R.drawable.group1207);
+            }else{
+                behanceBtn.setEnabled(true);
+                behanceBtn.setImageResource(R.drawable.behance);
             }
             if(userData.getGitUrl()==null){
                 gitBtn.setEnabled(false);
-                gitBtn.setColorFilter(Color.GRAY);
+                gitBtn.setImageResource(R.drawable.githubgray);
+            }else{
+                gitBtn.setEnabled(true);
+                gitBtn.setImageResource(R.drawable.github);
             }
         }
 
@@ -150,15 +159,5 @@ public class StudentProfileFragment extends Fragment {
         startActivity(intent);
 
     }
-
-    private void setButtonColorTint(ImageView btn,int color){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            btn.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        } else {
-            Drawable wrapDrawable = DrawableCompat.wrap(btn.getBackground());
-            DrawableCompat.setTint(wrapDrawable, color);
-            btn.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
-        }
-    }
-
+    
 }
