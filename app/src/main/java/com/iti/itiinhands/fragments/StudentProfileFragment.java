@@ -22,9 +22,15 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.OkHttpDownloader;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -64,11 +70,11 @@ public class StudentProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.student_profile, container, false);
-        firstTv =(TextView) view.findViewById(R.id.firstTvProfileViewId);
-        secondTv =(TextView) view.findViewById(R.id.secondTvProfileViewId);
-        thirdTv =(TextView) view.findViewById(R.id.thirdTvProfileViewId);
-        fourthTv =(TextView) view.findViewById(R.id.fourthTvProfileViewId);
-        fifthTv =(TextView) view.findViewById(R.id.fifthTvProfileViewId);
+        firstTv = (TextView) view.findViewById(R.id.firstTvProfileViewId);
+        secondTv = (TextView) view.findViewById(R.id.secondTvProfileViewId);
+        thirdTv = (TextView) view.findViewById(R.id.thirdTvProfileViewId);
+        fourthTv = (TextView) view.findViewById(R.id.fourthTvProfileViewId);
+        fifthTv = (TextView) view.findViewById(R.id.fifthTvProfileViewId);
         gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
         ImageView profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
         linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
