@@ -8,26 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.model.chat.ChatRoom;
-import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import agency.tango.android.avatarview.IImageLoader;
 import agency.tango.android.avatarview.loader.PicassoLoader;
@@ -36,11 +29,11 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.FriendsViewHolder> {
+public class RecentChatsListAdapter extends RecyclerView.Adapter<RecentChatsListAdapter.FriendsViewHolder> {
 
     private Context context;
-    private List<ChatRoom> chatRooms = new ArrayList<>();
-    private List<ChatRoom> chatRoomsCopy = new ArrayList<>();
+    private List<ChatRoom> recentChatRooms = new ArrayList<>();
+    private List<ChatRoom> recentChatRoomsCopy = new ArrayList<>();
     private int cellToInflate;
  //   private SharedPreferences sharedPreferences;
     private String id;
@@ -58,14 +51,15 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     String myChatId;
 
 
-    private ProgressBar progressBar, h_progressBar;
+
+    private MaterialProgressBar progressBar;
 
 
 
-    public FriendListAdapter(Context context, List<ChatRoom> chatRooms, int cellToInflate, String id) {
+    public RecentChatsListAdapter(Context context, List<ChatRoom> chatRooms, int cellToInflate, String id) {
 
         this.context = context;
-        this.chatRooms = chatRooms;
+        this.recentChatRooms = chatRooms;
         this.cellToInflate = cellToInflate;
         this.id = id;
 
@@ -99,14 +93,14 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     public void filter(String text) {
 
-        chatRooms.clear();
+        recentChatRooms.clear();
         if (text.isEmpty()) {
-            chatRooms.addAll(chatRoomsCopy);
+            recentChatRooms.addAll(recentChatRoomsCopy);
         } else {
             text = text.toLowerCase();
-            for (ChatRoom item : chatRoomsCopy) {
+            for (ChatRoom item : recentChatRoomsCopy) {
                 if (item.getReceiverName().toLowerCase().contains(text) | item.getBranchName().toLowerCase().contains(text)) {
-                    chatRooms.add(item);
+                    recentChatRooms.add(item);
                 }
             }
         }
@@ -118,7 +112,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, final int position) {
 
-        final ChatRoom chatRoom = chatRooms.get(position);
+        final ChatRoom chatRoom = recentChatRooms.get(position);
         holder.getName().setText(chatRoom.getReceiverName());
 
         if (chatRoom.isHasPendingMessages())
@@ -135,15 +129,13 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String roomKey = context.getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE)
-                        .getString(chatRoom.getReceiverId(), null);
-
+                String roomKey = context.getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE).getString(chatRoom.getReceiverId(), null);
+/*
                 boolean isConnected = NetworkManager.getInstance(context).isOnline();
 
                 if(roomKey == null){
                     if(isConnected){
-                        h_progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
                         //check first no chat room exists under my node
                         myRoot.child(myChatId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -163,7 +155,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
                                 chatRoom.setHasPendingMessages(false);
                                 if (roomKey == null) {
-
                                     createChatRoom(chatRoom);
                                     launchChatRoom(chatRoom);
 
@@ -179,7 +170,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                h_progressBar.setVisibility(View.INVISIBLE);
+
                             }
                         });
 
@@ -194,13 +185,22 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                     launchChatRoom(chatRoom);
                     notifyDataSetChanged();
                 }
+                */
+                if(roomKey != null){
+                    chatRoom.setHasPendingMessages(false);
+                    chatRoom.setRoomKey(roomKey);
+                    launchChatRoom(chatRoom);
+                    notifyDataSetChanged();
+                }else{
+                    Toast.makeText(context, "Invalid room key", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
         });
     }
 
-
+/*
     private void createChatRoom(ChatRoom chatRoom) {
 
         //create the chat node
@@ -228,11 +228,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         map.remove(roomKey);
         map.put(roomKey, chatRoom.getReceiverId());
         myNode.updateChildren(map);
-
-
     }
 
-
+*/
     private void launchChatRoom(ChatRoom chatRoom) {
         Intent intent = new Intent(context, ChatRoomActivity.class);
         intent.putExtra("roomKey", chatRoom.getRoomKey());
@@ -241,29 +239,21 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         intent.putExtra("receiverName", chatRoom.getReceiverName());
 
         context.startActivity(intent);
-        h_progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public int getItemCount() {
-        return chatRooms.size();
+        return recentChatRooms.size();
     }
 
-    public void setProgressBar(MaterialProgressBar progressBar, MaterialProgressBar h_progressBar) {
+    public void setProgressBar(MaterialProgressBar progressBar) {
         this.progressBar = progressBar;
-        this.h_progressBar = h_progressBar;
     }
 
-    public ProgressBar getProgressBar() {
+    public MaterialProgressBar getProgressBar() {
         return progressBar;
-
     }
-
-    public ProgressBar getH_ProgressBar() {
-        return h_progressBar;
-
-    }
-
 
     class FriendsViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
@@ -315,11 +305,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
 
     public void updateData(List<ChatRoom> data){
-        this.chatRoomsCopy.clear();
-        this.chatRoomsCopy.addAll(data);
-        progressBar.setVisibility(View.INVISIBLE);
+        this.recentChatRoomsCopy.clear();
+        this.recentChatRoomsCopy.addAll(data);
         notifyDataSetChanged();
-
+        progressBar.setVisibility(View.GONE);
     }
 
 }
