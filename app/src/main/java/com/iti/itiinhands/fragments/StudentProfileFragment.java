@@ -21,7 +21,13 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by Mahmoud on 5/28/2017.
@@ -83,8 +89,16 @@ public class StudentProfileFragment extends Fragment {
         secondTv.setText("Intake" +new Integer(userData.getIntakeId()).toString()+ userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
         System.out.println("*********"+userData.getImagePath().toString());
-        Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.218:8084/restfulSpring/download/"+userData.getImagePath()).into(profile_pic);
-       //SET USER EMAIL
+//        Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.218:8084/restfulSpring/download/"+userData.getImagePath()).into(profile_pic);
+
+
+        Picasso.Builder builder = new Picasso.Builder(getContext());
+        Picasso picasso =  builder.build();
+
+        picasso.load("http://172.16.2.218:8084/restfulSpring/download/"+userData.getImagePath()).into(profile_pic);
+
+
+        //SET USER EMAIL
         if(userData.getStudentEmail() != null)
         fourthTv.setText(userData.getStudentEmail());
 
