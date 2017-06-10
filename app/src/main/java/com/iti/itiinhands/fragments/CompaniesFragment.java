@@ -3,11 +3,15 @@ package com.iti.itiinhands.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.internal.LinkedTreeMap;
@@ -30,21 +34,24 @@ import java.util.List;
 
 public class CompaniesFragment extends Fragment implements NetworkResponse {
 
-    private ListView companiesLv;
+    private RecyclerView companiesLv;
     private List<Company> companiesList = new ArrayList<>();
+    private ProgressBar spinner;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        NetworkManager.getInstance(getActivity().getApplicationContext()).getAllCompaniesData(this);
-    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.companies_list, container, false);
-        companiesLv =(ListView) view.findViewById(R.id.companiesLvId);
+        companiesLv =(RecyclerView) view.findViewById(R.id.companiesLvId);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        companiesLv.setLayoutManager(mLayoutManager);
+        companiesLv.setItemAnimator(new DefaultItemAnimator());
 
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        NetworkManager.getInstance(getActivity().getApplicationContext()).getAllCompaniesData(this);
         return view;
     }
 
@@ -55,17 +62,12 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
             companiesList = data.getCompanies();
             CompaniesListAdapter companiesListAdapter = new CompaniesListAdapter(getContext(),companiesList);
             companiesLv.setAdapter(companiesListAdapter);
-            companiesLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(getActivity().getApplicationContext(), companiesList.get(position).getCompanyName(), Toast.LENGTH_LONG).show();
-                }
-            });
+            spinner.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(getActivity().getApplicationContext(), "Network connection fail", Toast.LENGTH_LONG).show();
     }
 }
