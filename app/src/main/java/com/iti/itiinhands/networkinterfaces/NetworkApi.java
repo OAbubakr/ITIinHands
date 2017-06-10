@@ -141,4 +141,7 @@ public interface NetworkApi {
     @GET("getAllCompanies")
     public Call<Response> getAllCompanies();
 
+    @POST("renewAccessToken")
+    public Call<RenewTokenResponse> renewAccessToken(@Body String refreshToken);
+
 }

@@ -27,7 +27,7 @@ public class JobOpportunity {
 
     private String companyName;
 
-    public JobOpportunity(int companyId, String jobCode, String jobTitle, String jobDesc, String experience, String closingDate, String sendTo, int jobNoNeed, int subTrackId, String jobDate) {
+    public JobOpportunity(int companyId, String jobCode, String jobTitle, String jobDesc, String experience, String closingDate, String sendTo, int jobNoNeed, int subTrackId, String jobDate, String companyName) {
         this.companyId = companyId;
         this.jobCode = jobCode;
         this.jobTitle = jobTitle;
@@ -38,6 +38,7 @@ public class JobOpportunity {
         this.jobNoNeed = jobNoNeed;
         this.subTrackId = subTrackId;
         this.jobDate = jobDate;
+        this.companyName = companyName;
     }
 
     public int getCompanyId() {

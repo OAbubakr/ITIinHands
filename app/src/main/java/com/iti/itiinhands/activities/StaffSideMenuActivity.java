@@ -37,6 +37,7 @@ import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
+import com.iti.itiinhands.fragments.chat.ChatMainFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -219,7 +220,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 1:
-                        fragment = new ChatFragment();
+                        fragment = new ChatMainFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("receiver_type", "staff");
                         fragment.setArguments(bundle);
@@ -323,11 +324,11 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle staff community
-                                fragment = new ChatFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("receiver_type", "staff");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//                                fragment = new ChatFragment();
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("receiver_type", "staff");
+//                                fragment.setArguments(bundle);
+//                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
                                 //handle graduate community

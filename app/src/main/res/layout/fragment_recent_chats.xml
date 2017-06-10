@@ -1,13 +1,46 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iti.itiinhands.fragments.chat.RecentChatsFragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--<me.zhanghai.android.materialprogressbar.MaterialProgressBar-->
+    <!--android:id="@+id/h_progressBar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="5dp"-->
+    <!--android:indeterminate="true"-->
+    <!--app:mpb_progressStyle="horizontal"-->
+    <!--android:visibility="invisible"-->
+    <!--app:mpb_useIntrinsicPadding="false"-->
+    <!--style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />-->
+
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/tagsRecycler"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:fadeScrollbars="false"-->
+    <!--android:scrollbars="horizontal"-->
+    <!--android:scrollbarThumbHorizontal="@android:color/darker_gray"-->
+    <!--android:scrollbarSize="3dp" />-->
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="visible"
+        app:mpb_useIntrinsicPadding="false"
+        android:layout_centerInParent="true"
+        style="@style/Widget.MaterialProgressBar.ProgressBar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chatRooms"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
 
-</FrameLayout>
+
+</RelativeLayout>
