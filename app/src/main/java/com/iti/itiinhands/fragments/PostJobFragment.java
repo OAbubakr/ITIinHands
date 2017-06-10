@@ -58,16 +58,20 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
         final int companyId = data.getInt(Constants.USER_TYPE, 0);
         UserData userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
         final String compName = userData.getCompanyName();
-        final String compImage = userData.getImagePath();
+        final String compImage = userData.getCompanyLogoPath();
+        System.out.println("----------------------------"+ compImage);
 
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         companyName = (TextView) view.findViewById(R.id.comp_name);
         companyName.setText(compName);
 
         companyImage = (ImageView) view.findViewById(R.id.comp_logo);
-        Picasso.with(getActivity().getApplicationContext())
-                .load(compImage)
-                .into(companyImage);
+
+        if(companyImage != null){
+            Picasso.with(getActivity().getApplicationContext())
+                    .load(compImage)
+                    .into(companyImage);
+        }
 
 
         //Edit Text For Input Date
@@ -181,15 +185,12 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
                 if(check){ //All data is valid
 
-                    Toast.makeText(getContext(),"OOOK",Toast.LENGTH_SHORT).show();
                     JobOpportunity jobOpportunity = new JobOpportunity(companyId, "", title, desc, yearNumb,
                         closingDate, email, noNeed, 0, "", compName);
 
                     if (networkManager.isOnline()){
                         networkManager.postJob(PostJobFragment.this, jobOpportunity);
                     }
-                }else{
-                    Toast.makeText(getContext(),"Nooot OOOK",Toast.LENGTH_SHORT).show();
                 }
             }
         });
