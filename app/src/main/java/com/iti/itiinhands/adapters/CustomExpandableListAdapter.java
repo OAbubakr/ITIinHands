@@ -26,15 +26,23 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     private int[] images;
+    private int[] trackImages;
+    private int[] itiImages;
+    private int[] third;
+    private int type;
     //int[] images={R.drawable.social,R.drawable.home_512,R.drawable.forums,R.drawable.info_512,R.drawable.outbox};
 
 
     public CustomExpandableListAdapter(Context context, List<String> listDataHeader,
-                                       HashMap<String, List<String>> listChildData, int[] images) {
+                                       HashMap<String, List<String>> listChildData, int[] images , int[] trackImages , int[] itiImages,int[] third ,int type) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.images=images;
+        this.third=third;
+        this.trackImages=trackImages;
+        this.itiImages=itiImages;
+        this.type=type;
     }
 
     @Override
@@ -64,6 +72,105 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.lblListItem);
 
         txtListChild.setText(childText);
+        ImageView childImage = (ImageView) convertView
+                .findViewById(R.id.child_image);
+
+        switch (type) {
+
+            //student
+            case 1:
+
+                switch (groupPosition)
+                {
+                    case 1:
+                        childImage.setImageResource(trackImages[childPosition]);
+                        break;
+
+                    case 3 :
+                        childImage.setImageResource(itiImages[childPosition]);
+                        break;
+                    case 2:
+                        childImage.setImageResource(third[childPosition]);
+                        break;
+                    default:
+                        break;
+                }
+
+
+            break;
+
+            //staff
+            case 2:
+
+                switch (groupPosition)
+                {
+                    //staff work
+                    case 0:
+                        childImage.setImageResource(trackImages[childPosition]);
+                        break;
+                    //iti
+                    case 2:
+                        childImage.setImageResource(itiImages[childPosition]);
+                        break;
+
+                    //itians
+                    case 3:
+                        childImage.setImageResource(third[childPosition]);
+                        break;
+                    default:
+                        break;
+                }
+
+
+                break;
+
+            //graduate
+            case 3:
+
+                switch (groupPosition)
+                {
+                    case 1:
+                        //for comapanies profile
+                        childImage.setImageResource(trackImages[childPosition]);
+                        break;
+
+                    case 2:
+                        //for job posts
+                        childImage.setImageResource(itiImages[childPosition]);
+                        break;
+                    default:
+                        break;
+                }
+
+
+                break;
+
+
+            case 4:
+
+                switch (groupPosition)
+                {
+                    case 1:
+                        childImage.setImageResource(trackImages[childPosition]);
+                        break;
+                    case 2:
+                        childImage.setImageResource(itiImages[childPosition]);
+                        break;
+                    default:
+                        break;
+                }
+
+
+                break;
+
+
+
+            default:
+                break;
+
+
+
+        }
         return convertView;
     }
 
@@ -118,6 +225,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
+
+
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -133,6 +242,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
         ImageView image=(ImageView)convertView.findViewById(R.id.imageView);
         image.setImageResource(images[groupPosition]);
+
+
+        ImageView arrawImage=(ImageView)convertView.findViewById(R.id.arrow);
+
+
+        if(_listDataChild.get(_listDataHeader.get(groupPosition)).size()>0)
+        {
+            arrawImage.setVisibility(View.VISIBLE);
+        }
+
 
         return convertView;
     }

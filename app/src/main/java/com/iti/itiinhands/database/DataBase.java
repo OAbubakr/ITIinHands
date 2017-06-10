@@ -100,12 +100,12 @@ public class DataBase extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getReadableDatabase();
 
         int i = 0;
-        Cursor c = DB.rawQuery("SELECT * FROM " + AnnouncementTable + " Where "+ AnnouncementUserName + " = ? ", new String[]{userName});
+        Cursor c = DB.rawQuery("SELECT * FROM " + AnnouncementTable + " Where "+ AnnouncementUserName + " = ? order by "+ AnnouncementDate +" Desc", new String[]{userName});
 
         while (c.moveToNext()) {
             Announcement announcement = new Announcement();
             announcement.setId(c.getInt(0));
-            announcement.setType(c.getType(1));
+            announcement.setType(c.getInt(1));
             announcement.setTitle(c.getString(2));
             announcement.setBody(c.getString(3));
             announcement.setDate(c.getLong(4));

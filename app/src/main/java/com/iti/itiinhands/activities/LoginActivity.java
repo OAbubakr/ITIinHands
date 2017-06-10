@@ -8,17 +8,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.iti.itiinhands.beans.Graduate;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.model.UserLogin;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
@@ -53,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private TextView staffTxt;
     private TextView companyTxt;
     private TextView graduateTxt;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         staffTxt = (TextView) findViewById(R.id.staffTxtLoginId);
         companyTxt = (TextView) findViewById(R.id.companyTxtLoginId);
         graduateTxt = (TextView) findViewById(R.id.graduateTxtLoginId);
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+//        spinner.setVisibility(View.GONE);
 
         myRef = this;
         continueAsGuest.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +215,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                         if (userNameEdTxt.length() > 0 && passwordEdTxt.length() > 0) {
                             networkManager.getLoginAuthData(myRef, userType, userNameEdTxt.getText().toString(), passwordEdTxt.getText().toString());
                             loginBtn.setEnabled(false);
+                            
+                            spinner.setVisibility(View.VISIBLE);
                         } else {
                             if (userNameEdTxt.length() == 0) {
                                 userNameCheckTv.setText("Username is empty");
@@ -289,21 +300,28 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
             editor.putBoolean(Constants.LOGGED_FLAG, true);
+            editor.putInt(Constants.USER_ID,data.getId());
             editor.commit();
+
             startActivity(navigationIntent);
+            spinner.setVisibility(View.GONE);
             finish();
-        } else if (result != null) {
-            String status = result.getStatus();
-            String error = result.getError();
-            Double idData = (Double) result.getResponseData();
-            int userId = Integer.valueOf(idData.intValue());
+        } else if (result != null && result instanceof LoginResponse) {
+            LoginResponse loginResponse = (LoginResponse) result;
+            String status = loginResponse.getStatusLogin();
+            String error = loginResponse.getErrorLogin();
+            UserLogin responseDataObj =  loginResponse.getData();
+//            Double idData = (Double) result.getResponseData();
+
 
             switch (status) {
                 case "SUCCESS":
+                    String token = responseDataObj.getToken();
                     //save userID and userType in SharedPreferences
                     SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                     SharedPreferences.Editor editor = data.edit();
-                    editor.putInt(Constants.TOKEN, userId);
+                    editor.putString(Constants.TOKEN, responseDataObj.getToken());
+                    editor.putString(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.commit();
 
@@ -320,16 +338,17 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             navigationIntent = new Intent(getApplicationContext(), CompanySideMenu.class);
 
                             break;
-                        case 4://guest
+                        case 4://graduate
                             navigationIntent = new Intent(getApplicationContext(), GraduateSideMenu.class);
 
                             break;
                     }
 
-                    networkManager.getUserProfileData(myRef, userType, userId);
+                    networkManager.getUserProfileData(myRef, userType,data.getInt(Constants.USER_ID,0));
 
                     break;
                 case "FAILURE":
+                    spinner.setVisibility(View.INVISIBLE);
                     passwordCheckTv.setText(error);
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                     break;
@@ -341,6 +360,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     @Override
     public void onFailure() {
         loginBtn.setEnabled(true);
+        spinner.setVisibility(View.INVISIBLE);
         Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();
 
     }

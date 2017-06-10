@@ -12,4 +12,6 @@ public class Constants {
     public static String USER_TYPE="USER_TYPE";
     public static String LOGGED_FLAG = "LOGGED_FLAG";
     public static String USER_OBJECT ="USER_OBJECT";
+    public static String EXPIRY_DATE ="EXPIRY_DATE";
+    public static String USER_ID = "USER_ID";
 }

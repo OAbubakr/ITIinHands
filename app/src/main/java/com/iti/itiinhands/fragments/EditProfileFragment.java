@@ -3,7 +3,10 @@ package com.iti.itiinhands.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +22,8 @@ import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.GraduateSideMenu;
+import com.iti.itiinhands.activities.SideMenuActivity;
 import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.GitData;
@@ -58,19 +63,30 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     private EditText mobileEt;
     private EditText emailEt;
     private EditText githubEt;
-    private ImageButton githubSearch;
+    private ImageView githubSearch;
     private ImageView githubImg;
     private EditText behanceEt;
-    private ImageButton behanceSearch;
+    private ImageView behanceSearch;
     private ImageView behanceImg;
     private ImageView linkedinBtn;
-    private Button cancelBtn;
-    private Button submitBtn;
-    private EditProfileFragment myRef;
+    private ImageView cancelBtn;
+    private ImageView submitBtn;
+    //    private EditProfileFragment myRef;
     private String linkedInUrl;
     private String gitUrl;
     private String behanceUrl;
     SharedPreferences sharedPreferences;
+    private static int RESULT_LOAD_IMAGE = 1;
+    NetworkManager networkManager;
+    private NetworkResponse myRef;
+    Uri selectedImage;
+    String picturePath;
+    private String activityResultFlag;
+    int token;
+    private SideMenuActivity studentActivity;
+    private GraduateSideMenu graduateActivity;
+    private String behanceImageUrl;
+    private String gitImageUrl;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,21 +105,26 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         mobileEt = (EditText) view.findViewById(R.id.mobileText);
         emailEt = (EditText) view.findViewById(R.id.emailText);
         githubEt = (EditText) view.findViewById(R.id.gitEdEditId);
-        githubSearch = (ImageButton) view.findViewById(R.id.searchGitBtn);
+        githubSearch = (ImageView) view.findViewById(R.id.searchGitBtn);
         githubImg = (ImageView) view.findViewById(R.id.gitImgResponse);
         behanceEt = (EditText) view.findViewById(R.id.behanceEdEditId);
-        behanceSearch = (ImageButton) view.findViewById(R.id.searchBehanceBtn);
+        behanceSearch = (ImageView) view.findViewById(R.id.searchBehanceBtn);
         behanceImg = (ImageView) view.findViewById(R.id.behanceImgResponse);
         linkedinBtn = (ImageView) view.findViewById(R.id.linkedinBtn);
-        cancelBtn = (Button) view.findViewById(R.id.cancelBtnEditId);
-        submitBtn = (Button) view.findViewById(R.id.submitBtnEditId);
-        myRef = this;
+        cancelBtn = (ImageView) view.findViewById(R.id.cancelBtnEditId);
+        submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
+        networkManager = NetworkManager.getInstance(getContext());
+        myRef=this;
         prepareView();
+
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                activityResultFlag = "uploadPic";
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
             }
         });
 
@@ -142,13 +163,18 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 userData.setLinkedInUrl(linkedInUrl);
                 userData.setStudentEmail(emailEt.getText().toString());
                 userData.setStudentMobile(mobileEt.getText().toString());
-                int userId = sharedPreferences.getInt(Constants.TOKEN, 0);
+
+                ///put new image path in url
+                //userData.setImagePath();
+                int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
                 int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                 NetworkManager.getInstance(getActivity().getApplicationContext()).setUserProfileData(myRef, userType, userId, userData);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(userData));
                 editor.commit();
                 redirectFrag();
+
+
             }
         });
 
@@ -168,6 +194,19 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
         //LISessionManager object and pass the context, scope(list of member permission), callback method
         // and a boolean value that determines the behaviour when the LinkedIn app is not installed.
+        final int type = sharedPreferences.getInt(Constants.USER_TYPE,0);
+
+        switch(type){
+            case 1:
+                studentActivity = (SideMenuActivity) getActivity();
+                studentActivity.setLinkedInFlag(true);
+                break;
+            case 4:
+                graduateActivity = (GraduateSideMenu) getActivity();
+                graduateActivity.setLinkedInFlag(true);
+                break;
+        }
+
 
         LISessionManager.getInstance(getContext())
                 .init(getActivity(), buildScope(), new AuthListener() {
@@ -176,6 +215,14 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
                         Log.i("result", "error");
                         fetchPersonalData();
+                        switch(type){
+                            case 1:
+                                studentActivity.setLinkedInFlag(false);
+                                break;
+                            case 4:
+                                graduateActivity.setLinkedInFlag(false);
+                                break;
+                        }
 
                     }
 
@@ -236,14 +283,17 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             emailEt.setText(userData.getStudentEmail());
         if (userData.getStudentMobile() != null)
             mobileEt.setText(userData.getStudentMobile());
+
         if (userData.getBehanceUrl() != null) {
-            behanceEt.setText(userData.getBehanceUrl());
+            behanceEt.setText(prepareUrl(userData.getBehanceUrl()));
             behanceUrl = userData.getBehanceUrl();
+            Picasso.with(getActivity().getApplicationContext()).load(userData.getBehanceImageUrl()).into(behanceImg);
         }
 
         if (userData.getGitUrl() != null) {
-            githubEt.setText(userData.getGitUrl());
+            githubEt.setText(prepareUrl(userData.getGitUrl()));
             gitUrl = userData.getGitUrl();
+            Picasso.with(getActivity().getApplicationContext()).load(userData.getGitImageUrl()).into(githubImg);
         }
 
         if (userData.getLinkedInUrl() != null) {
@@ -254,32 +304,67 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
     }
 
+    private String prepareUrl(String url){
+        String result=null;
+        url = url.trim();
+        String[] data = url.split("/");
+        result=data[data.length-1];
+        return result;
+    }
+
     @Override
     public void onResponse(Response response) {
 
-                if (response instanceof BehanceData) {
+        if ( response instanceof BehanceData && ((BehanceData) response).getUser()!=null) {
+            BehanceData data = (BehanceData) response;
+            behanceUrl = data.getUser().getUrl();
+            HashMap<Integer, String> images = data.getUser().getImages();
+            userData.setBehanceImageUrl(images.get(50));
+            Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
+        } else if (response instanceof GitData &&((GitData) response).getMessage()!="Not Found") {
+            GitData data = (GitData) response;
+            gitUrl = data.getHtml_url();
+            userData.setGitImageUrl(data.getAvatar_url());
+            Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
 
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+        }
 
-                    BehanceData data = (BehanceData) response;
-                    behanceUrl = data.getUser().getUrl();
-                    HashMap<Integer, String> images = data.getUser().getImages();
-                    Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
-                }else
-                if (response instanceof GitData) {
-                    GitData data = (GitData) response;
-                    gitUrl = data.getHtml_url();
-                    Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
-
-                }else {
-                    Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
-                }
-
-            }
-
+    }
 
 
     @Override
     public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (activityResultFlag.equals("uploadPic")){
+
+                System.out.println("at the beginning ***************************");
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
+                selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                profilePicIv.setImageURI(selectedImage);
+                networkManager.uploadImage(myRef, picturePath, token);
+
+
+                //edit image path
+            }
+
+        }
+
+    }
+
+
 }

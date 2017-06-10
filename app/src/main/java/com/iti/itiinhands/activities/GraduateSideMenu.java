@@ -28,9 +28,13 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.CompaniesFragment;
+import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
+import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.linkedin.platform.LISessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ import java.util.List;
 
 public class GraduateSideMenu extends AppCompatActivity {
 
+    private boolean LinkedInFlag=false;
     static DrawerLayout mDrawerLayout;
     ImageView home;
     Fragment fragment = null;
@@ -47,9 +52,14 @@ public class GraduateSideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512,R.drawable.home_512 ,R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.sm_profile, R.drawable.sm_iti, R.drawable.stu_job_post, R.drawable.sm_logout};
+    int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.sm_event, R.drawable.map, R.drawable.announce};
 
-UserData userData;
+    int[] second={R.drawable.sm_company,R.drawable.sm_job};;
+    int[] third;
+
+    UserData userData;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -72,7 +82,7 @@ UserData userData;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_side_menu);
+        setContentView(R.layout.activity_graduate_side_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         home = (ImageView) findViewById(R.id.home);
@@ -88,13 +98,12 @@ UserData userData;
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
 
-        ///
 
-        FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
-
-        FirebaseMessaging.getInstance().subscribeToTopic("events");
-
+        ////for expandale
+        /////////
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         expListView.setGroupIndicator(null);
 
@@ -122,7 +131,7 @@ UserData userData;
 
         SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -162,7 +171,9 @@ UserData userData;
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
+
+
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images, itiImages, second, third, 3);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -178,16 +189,12 @@ UserData userData;
                         break;
 
 
-                    case 2:
-                        fragment=new AllJobPostsFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
+//                    case 2:
+//                        fragment=new AllJobPostsFragment();
+//                        mDrawerLayout.closeDrawer(expListView);
+//                        break;
 
-                    case 4:
-                        fragment = new AnnouncementFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
-                    case 5:
+                    case 3:
                         //logout  fragment
                         //clear data in shared perference
                         //clear data in shared perference
@@ -197,6 +204,7 @@ UserData userData;
                         editor.remove(Constants.TOKEN);
                         editor.remove(Constants.USER_TYPE);
                         editor.remove(Constants.USER_OBJECT);
+                        editor.remove(Constants.USER_ID);
                         editor.commit();
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
@@ -225,25 +233,8 @@ UserData userData;
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
+
                     case 1:
-                        switch (childPosition) {
-                            case 0:
-                                //handle students community fragment
-                                //fragment=new FragmentClass();
-                                break;
-                            case 1:
-                                //handle graduate community fragment
-                                //Toast.makeText(getApplicationContext(), "0,1", Toast.LENGTH_LONG).show();
-                                break;
-                            case 2:
-                                //handle staff community fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
-                                break;
-
-                        }
-                        break;
-
-                    case 3:
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
@@ -251,18 +242,19 @@ UserData userData;
                                 break;
                             case 1:
                                 //handle tracks fragment
-                                fragment = new BranchesFragment();                                break;
+                                fragment = new BranchesFragment();
+                                break;
                             case 2:
                                 //handle events fragment
-                                Toast.makeText(getApplicationContext(), "0,2", Toast.LENGTH_LONG).show();
+                                fragment = new EventListFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
-                                fragment = new BranchesFragment();
+                                fragment = new BranchesList();
                                 break;
+
                             case 4:
-                                //handle bus services fragment
-                                fragment = new BranchesFragment();
+                                fragment = new AnnouncementFragment();
                                 break;
                             default:
                                 break;
@@ -270,6 +262,23 @@ UserData userData;
 
                         break;
 
+
+                    case 2:
+                        switch (childPosition) {
+                            case 0:
+                                //handle companies profile
+                                fragment= new CompaniesFragment();
+
+                                break;
+                            case 1:
+                                //handle job posts
+                                fragment = new AllJobPostsFragment();
+                                break;
+
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -298,40 +307,40 @@ UserData userData;
 
         // Adding child data
         listDataHeader.add("Profile");
-        listDataHeader.add("Community");
-        listDataHeader.add("Job posts");
         listDataHeader.add("ITI");
-        listDataHeader.add("Announcement");
+        listDataHeader.add("Companies");
         listDataHeader.add("Logout");
 
 
         // Adding child data
-        List<String> profile = new ArrayList<String>();
+        List<String> profile = new ArrayList<>();
+        //profile.add("");
 
-        List<String> community = new ArrayList<String>();
-        community.add("Students");
-        community.add("Graduates");
-        community.add("Staff");
 
-        List<String> jobPosts = new ArrayList<String>();
+        List<String> myTrack = new ArrayList<>();
+        myTrack.add("Schedule");
+        myTrack.add("Permission");
+        myTrack.add("List of Courses");
 
-        List<String> aboutIti = new ArrayList<String>();
+
+        List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
         aboutIti.add("Tracks");
         aboutIti.add("Events");
         aboutIti.add("Maps");
-        aboutIti.add("Bus Services");
+        aboutIti.add("Announcements");
 
-        List<String> annoucment = new ArrayList<String>();
 
         List<String> logout = new ArrayList<String>();
+        List<String> company = new ArrayList<String>();
+        company.add("Companies Profiles");
+        company.add("Job Posts");
+
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), community);
-        listDataChild.put(listDataHeader.get(2), jobPosts);
-        listDataChild.put(listDataHeader.get(3), aboutIti);
-        listDataChild.put(listDataHeader.get(4), annoucment);
-        listDataChild.put(listDataHeader.get(5), logout);
+        listDataChild.put(listDataHeader.get(1), aboutIti);
+        listDataChild.put(listDataHeader.get(2), company);
+        listDataChild.put(listDataHeader.get(3), logout);
 
 
     }
@@ -354,5 +363,15 @@ UserData userData;
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if(LinkedInFlag){
+            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+        }
+    }
+
+    public void setLinkedInFlag(boolean linkedInFlag){
+        this.LinkedInFlag=linkedInFlag;
+    }
 }
