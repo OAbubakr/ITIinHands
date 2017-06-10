@@ -82,6 +82,12 @@ public interface NetworkApi {
     @GET("profile/onGetUserData")
     public Call<Response> getUserData(@Query("token") int token,@Query("userType") int userType);
 
+    @GET("profile/onGetUserDataOther")
+    public Call<Response> getUserDataOther(@Query("userId") int userID,@Query("userType") int userType);
+    @GET("sendScheduleChange")
+    public Call<Response> sendScheduleChange(@Query("platformIntakeId") int platformIntakeId);
+
+
     @POST("profile/onSetUserData")
     public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
 

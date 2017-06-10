@@ -19,8 +19,10 @@ import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Mahmoud on 5/28/2017.
@@ -57,11 +59,11 @@ public class StudentProfileFragment extends Fragment {
         thirdTv =(TextView) view.findViewById(R.id.thirdTvProfileViewId);
         fourthTv =(TextView) view.findViewById(R.id.fourthTvProfileViewId);
         fifthTv =(TextView) view.findViewById(R.id.fifthTvProfileViewId);
+        profilePicIv = (ImageView) view.findViewById(R.id.profile_pic);
         gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
         linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
-
 
 
         Bundle b = getArguments(); // company
@@ -74,6 +76,7 @@ public class StudentProfileFragment extends Fragment {
             if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
             if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
             if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+            Picasso.with(getContext()).load(NetworkManager.BASEURL+userData.getImagePath()).into(profilePicIv);
         }
 
 

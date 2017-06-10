@@ -63,10 +63,10 @@ public class NetworkManager {
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Omar ITI
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
+    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -703,4 +703,49 @@ System.out.print(response.body());
             }
         });
     }
+
+    public void getUserProfileDataOther(NetworkResponse networkResponse, int userType, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getUserDataOther(id,userType);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
+    public void sendScheduleChange(NetworkResponse networkResponse, int platformIntakeID) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.sendScheduleChange(platformIntakeID);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
 }

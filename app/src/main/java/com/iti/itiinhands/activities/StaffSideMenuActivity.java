@@ -38,6 +38,7 @@ import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.services.ScheduleChanged;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
@@ -352,6 +353,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 2:
                                 //handle working hours fragment
                                 fragment = new EmployeeHours();
+                                break;
+                            case 3://only if supervisor
+                                Intent intent = new Intent(StaffSideMenuActivity.this, ScheduleChanged.class);
+                                StaffSideMenuActivity.this.startService(intent);
                                 break;
                             default:
                                 break;

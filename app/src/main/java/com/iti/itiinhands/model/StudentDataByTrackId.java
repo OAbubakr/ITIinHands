@@ -1,12 +1,13 @@
 package com.iti.itiinhands.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by admin on 5/29/2017.
  */
 
-public class StudentDataByTrackId {
+public class StudentDataByTrackId implements Serializable {
 
     private int studentId;
     private String englishname;

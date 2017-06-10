@@ -95,9 +95,14 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+
+        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
         FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
 
         FirebaseMessaging.getInstance().subscribeToTopic("events");
+        FirebaseMessaging.getInstance().subscribeToTopic("track_"+userData.getPlatformIntakeId());
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         expListView.setGroupIndicator(null);
@@ -124,9 +129,7 @@ public class SideMenuActivity extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
-        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -179,7 +182,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
-
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
 

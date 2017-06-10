@@ -1,60 +1,74 @@
 package com.iti.itiinhands.services;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.support.annotation.Nullable;
+import android.widget.Toast;
 
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.networkinterfaces.NetworkManager;
+import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions and extra parameters.
- */
-public class ScheduleChanged extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    public static final String ACTION_FOO = "com.iti.itiinhands.services.action.FOO";
-    public static final String ACTION_BAZ = "com.iti.itiinhands.services.action.BAZ";
+public class ScheduleChanged extends IntentService implements NetworkResponse {
 
-    // TODO: Rename parameters
-    public static final String EXTRA_PARAM1 = "com.iti.itiinhands.services.extra.PARAM1";
-    public static final String EXTRA_PARAM2 = "com.iti.itiinhands.services.extra.PARAM2";
 
     public ScheduleChanged() {
-        super("ScheduleChanged");
+        super("");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
-            }
+    protected void onHandleIntent(@Nullable Intent intent) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_SHARED_PREFERENCES,0);
+
+
+        UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT,""));
+
+        NetworkManager networkManager =NetworkManager.getInstance(getApplicationContext());
+        networkManager.sendScheduleChange(this,userData.getEmployeePlatformIntake());
+
+
+
+    }
+
+    @Override
+    public void onResponse(Response response) {
+        if(response!=null && response.getStatus().equals(Response.SUCCESS)){
+
+            Handler handler=new Handler(Looper.getMainLooper());
+            handler.post(new Runnable(){
+                public void run(){
+                    //your operation...
+                    Toast.makeText(getApplicationContext(), "Notification Sent", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+        else {failed();}
+
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionFoo(String param1, String param2) {
-        // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Override
+    public void onFailure() {
+        failed();
     }
 
-    /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionBaz(String param1, String param2) {
-        // TODO: Handle action Baz
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void failed(){
+
+        Handler handler=new Handler(Looper.getMainLooper());
+        handler.post(new Runnable(){
+            public void run(){
+                //your operation...
+                Toast.makeText(getApplicationContext(), "Failed... check you internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
+
