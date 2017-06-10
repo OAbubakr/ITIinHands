@@ -6,13 +6,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.adapters.CompaniesListAdapter;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.CompaniesProfiles;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +50,18 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-
+        if (response != null ) {
+            CompaniesProfiles data = DataSerializer.convert(response.getResponseData(),CompaniesProfiles.class) ;
+            companiesList = data.getCompanies();
+            CompaniesListAdapter companiesListAdapter = new CompaniesListAdapter(getContext(),companiesList);
+            companiesLv.setAdapter(companiesListAdapter);
+            companiesLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(getActivity().getApplicationContext(), companiesList.get(position).getCompanyName(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     @Override
