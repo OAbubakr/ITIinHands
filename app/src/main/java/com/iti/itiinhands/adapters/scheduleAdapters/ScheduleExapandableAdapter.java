@@ -97,11 +97,15 @@ public class ScheduleExapandableAdapter extends BaseExpandableListAdapter {
 
         SessionModel sessionModel = listDataHeader.get(i);
 
-        String temp = sessionModel.getCourseName();
-        temp = temp + "\n" + sessionModel.getSessionTime();
-        temp = temp + "\n" + sessionModel.getSessionPercentage();
-        temp = temp + "\n" + sessionModel.getRoomName();
-        if (sessionModel.getSessionTime() != null) temp = temp + "\n" + sessionModel.getTrackName();
+        String temp = "";
+        if (listDataHeader.get(i).getTypeId()==1) temp  = "Lecture";
+        else if (listDataHeader.get(i).getTypeId()==2) temp = "Lab";
+        else temp = "Soft Skills";
+
+        temp = temp + "\nTime: " + sessionModel.getSessionTime();
+        temp = temp + "\nSession: " + sessionModel.getSessionPercentage();
+        temp = temp + "\nRoom: " + sessionModel.getRoomName();
+        if (sessionModel.getTrackName() != null ) temp = temp + "\nTrack: " + sessionModel.getTrackName();
 
 
         txt.setText(temp);
