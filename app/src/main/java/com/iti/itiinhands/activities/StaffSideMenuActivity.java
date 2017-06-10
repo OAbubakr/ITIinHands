@@ -281,7 +281,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             default:
                                 break;
                         }
-
+                        break;
                     case 2:
                         switch (childPosition) {
                             case 0:

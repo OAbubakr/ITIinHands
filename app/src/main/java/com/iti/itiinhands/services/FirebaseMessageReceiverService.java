@@ -57,10 +57,6 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
             Intent sideMenu = null;
 
             switch (userType) {
-                case 0:
-                    //type 0 -> goes to Guest side menu
-                     sideMenu = new Intent(this, GuestSideMenu.class);
-                    break;
                 case 1:
                     //type 1 -> goes to Student side menu
                     sideMenu = new Intent(this, SideMenuActivity.class);
@@ -77,12 +73,17 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
                     //type 4 -> goes to Graduate side menu
                     sideMenu = new Intent(this, GraduateSideMenu.class);
                     break;
+                default:
+                    sideMenu = new Intent(this, GuestSideMenu.class);
+                    break;
             }
 
 
             sideMenu.putExtra("notificationTitle", notificationTitle);
             sideMenu.putExtra("notificationBody", notificationBody);
             sideMenu.putExtra("notificationType", notificationType);
+            sideMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            sideMenu.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             //getting user name
             SharedPreferences setting = getApplicationContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
@@ -129,7 +130,7 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
                             this,
                             0,
                             sideMenu,
-                            PendingIntent.FLAG_UPDATE_CURRENT
+                            PendingIntent.FLAG_CANCEL_CURRENT
                     );
 
             mBuilder.setContentIntent(resultPendingIntent);

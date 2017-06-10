@@ -32,6 +32,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.EventTabFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
@@ -49,6 +50,7 @@ import java.util.List;
 
 public class SideMenuActivity extends AppCompatActivity {
 
+    private boolean LinkedInFlag=false;
     static DrawerLayout mDrawerLayout;
     ImageView home;
     Fragment fragment = null;
@@ -252,7 +254,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //Events
-                                fragment = new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //Maps
@@ -387,10 +389,17 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(LinkedInFlag){
+            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+        }
+    }
+
+    public void setLinkedInFlag(boolean linkedInFlag){
+        this.LinkedInFlag=linkedInFlag;
+    }
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);

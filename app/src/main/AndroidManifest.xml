@@ -24,6 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.LoginActivity" ></activity>
+        <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.TrackDetails" />
         <!-- <activity android:name=".activities.TrackDetails"></activity> -->
@@ -71,11 +72,13 @@
         <activity
             android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">
-            <!--<intent-filter>-->
-                <!--<action android:name="launch" />-->
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="launch" /> -->
+
+
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <service
@@ -87,7 +90,7 @@
             </intent-filter>
         </service>
 
-        <!--<activity android:name=".activities.GraduateSideMenu" />-->
+        <!-- <activity android:name=".activities.GraduateSideMenu" /> -->
         <activity android:name=".activities.Schedule" />
         <activity android:name=".activities.UploadImage">
             <!--<intent-filter>-->
@@ -100,6 +103,8 @@
         <!--<activity android:name=".activities.Schedule" />-->
         <activity android:name=".activities.CompanyStudentProfile"></activity>
         <activity android:name=".activities.CompanyJobPost"></activity>
+        <!-- <activity android:name=".activities.Schedule" /> -->
+        <activity android:name=".activities.GraduatesByTrack"></activity>
     </application>
 
 </manifest>
