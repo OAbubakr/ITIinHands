@@ -159,5 +159,5 @@ public class StudentProfileFragment extends Fragment {
         startActivity(intent);
 
     }
-    
+
 }
