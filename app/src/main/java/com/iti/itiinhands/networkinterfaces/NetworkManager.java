@@ -13,6 +13,7 @@ import com.iti.itiinhands.activities.EmployeeHours;
 import com.iti.itiinhands.beans.InstructorEvaluation;
 import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.fragments.EditProfileFragment;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Course;
@@ -58,9 +59,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/"; // Ragab ip and url
+//    private static final String BASEURL = "http://192.168.1.10:8084/restfulSpring/"; // Ragab ip and url
+//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Omar ITI
 //    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
@@ -503,10 +508,50 @@ public class NetworkManager {
     }
 
 
+//    ----------------------------------- get all graduates data -----------------------------------
+    public void getAllGraduatesByTracId(final NetworkResponse networkResponse, int intakeid , int platformid) {
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getAllGraduatesByTracId(intakeid,platformid);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                networkResponse.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                networkResponse.onFailure();
+            }
+        });
+    }
+//    -------------------------------------------Get Intakes-----------------------------------------------------
+
+    public void getIntakes(final NetworkResponse networkResponse) {
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getIntakes();
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                networkResponse.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                networkResponse.onFailure();
+            }
+        });
+    }
+
+
+//    ------------------------------------------------------------------------------------------------
+
     ////////////////////get behance data/////////
     public void getBehanceData(final NetworkResponse networkResponse, String name) {
         String url = "https://api.behance.net/v2/users/";
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
+                .client(new OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
+                        .build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -578,7 +623,10 @@ public class NetworkManager {
     public void getGitData(final NetworkResponse networkResponse, String name) {
         String url = "https://api.github.com/users/";
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
-                .client(getRequestHeader(60, 60))
+                .client(new OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
+                        .build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetworkApi web = retrofit.create(NetworkApi.class);

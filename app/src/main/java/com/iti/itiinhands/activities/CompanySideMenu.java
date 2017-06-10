@@ -52,8 +52,18 @@ public class CompanySideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.home_512, R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images = {R.drawable.sm_profile,R.drawable.itians,R.drawable.sm_iti,R.drawable.stu_job_post,R.drawable.sm_logout};
     UserData userData;
+    int[] itians={R.drawable.students,R.drawable.graduate};
+
+    int[] itiImages={
+            R.drawable.about_ti,
+            R.drawable.tracks,
+            R.drawable.event,
+            R.drawable.map,
+            R.drawable.bus,
+            R.drawable.announce};
+    int[] third;
 
     @Override
     protected void onStart() {
@@ -143,7 +153,8 @@ public class CompanySideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images);
+
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild,images,itians,itiImages,third,4);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -162,11 +173,6 @@ public class CompanySideMenu extends AppCompatActivity {
                         mDrawerLayout.closeDrawer(expListView);
                         break;
                     case 4:
-                        //announcment fragment
-                        fragment = new AnnouncementFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
-                    case 5:
                         // handle logout action
                         //clear data in shared perference
                         SharedPreferences setting = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
@@ -204,7 +210,7 @@ public class CompanySideMenu extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 switch (groupPosition) {
-                    case 1:
+                    case 2:
                         switch (childPosition) {
                             case 0:
                                 //handle about iti fragment
@@ -232,7 +238,7 @@ public class CompanySideMenu extends AppCompatActivity {
                         }
                         break;
 
-                    case 2:
+                    case 1:
                         switch (childPosition) {
                             case 0:
                                 //accesss students profile
@@ -242,7 +248,10 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 1:
                                 //access graduates profile
-                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
+                                BranchesFragment temp2 =new BranchesFragment();
+                                temp2.setFlag(3);
+                                fragment = temp2;
+//                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
                                 break;
                             default:
                                 break;
@@ -278,18 +287,19 @@ public class CompanySideMenu extends AppCompatActivity {
 
         // Adding child data
         listDataHeader.add("Profile");
+        listDataHeader.add("ITIians");
         listDataHeader.add("ITI");
-        listDataHeader.add("Itians");
-        listDataHeader.add("post job");
-        listDataHeader.add("Announcement");
+        listDataHeader.add("Add Job post");
         listDataHeader.add("Logout");
 
         // Adding child data
         List<String> iti = new ArrayList<String>();
         iti.add("About ITI");
-        iti.add("Tracks");
+        iti.add("Branches and Tracks");
         iti.add("Events");
         iti.add("Maps");
+        iti.add("Bus Services");
+        iti.add("Announcements");
 
 
         List<String> itians = new ArrayList<String>();
@@ -304,11 +314,10 @@ public class CompanySideMenu extends AppCompatActivity {
 
 
         listDataChild.put(listDataHeader.get(0), profile);
-        listDataChild.put(listDataHeader.get(1), iti); // Header, Child data
-        listDataChild.put(listDataHeader.get(2), itians);
+        listDataChild.put(listDataHeader.get(2), iti); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), itians);
         listDataChild.put(listDataHeader.get(3), postJobs);
-        listDataChild.put(listDataHeader.get(4), announcement);
-        listDataChild.put(listDataHeader.get(5), logout);
+        listDataChild.put(listDataHeader.get(4), logout);
 
         //check extras
         if (getIntent().getExtras() != null) {
