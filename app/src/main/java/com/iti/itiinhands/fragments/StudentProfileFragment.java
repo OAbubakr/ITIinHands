@@ -21,7 +21,13 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by Mahmoud on 5/28/2017.
