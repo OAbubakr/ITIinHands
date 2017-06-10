@@ -33,6 +33,7 @@ import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.linkedin.platform.LISessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import java.util.List;
 
 public class GraduateSideMenu extends AppCompatActivity {
 
+    private boolean LinkedInFlag=false;
     static DrawerLayout mDrawerLayout;
     ImageView home;
     Fragment fragment = null;
@@ -347,5 +349,15 @@ UserData userData;
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if(LinkedInFlag){
+            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+        }
+    }
+
+    public void setLinkedInFlag(boolean linkedInFlag){
+        this.LinkedInFlag=linkedInFlag;
+    }
 }

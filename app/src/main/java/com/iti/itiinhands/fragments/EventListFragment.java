@@ -61,8 +61,8 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
-        dayTitle = (TextView) view.findViewById(R.id.day_title);
-        dateTitle = (TextView) view.findViewById(R.id.date_title);
+      //  dayTitle = (TextView) view.findViewById(R.id.day_title);
+     //   dateTitle = (TextView) view.findViewById(R.id.date_title);
         calendarView = (CompactCalendarView) view.findViewById(R.id.calenderView);
 
         Calendar calendar = Calendar.getInstance();
