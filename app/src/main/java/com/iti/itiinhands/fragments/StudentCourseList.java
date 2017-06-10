@@ -1,6 +1,8 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,7 +62,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         SCourses_RV.setLayoutManager(linearLayoutManager);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         return view;
     }
 

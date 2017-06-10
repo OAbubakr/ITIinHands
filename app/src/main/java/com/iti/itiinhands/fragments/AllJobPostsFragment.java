@@ -1,6 +1,8 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -59,7 +61,7 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         networkManager.getAllJobs(this);
 
         return view;

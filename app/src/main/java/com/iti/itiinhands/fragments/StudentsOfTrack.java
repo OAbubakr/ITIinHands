@@ -1,6 +1,8 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
@@ -34,6 +38,7 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     private RecyclerView recyclerView;
     private AllStudentByTrackIdAdapter adapter;
     int id;
+    ProgressBar spinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,8 +64,11 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         networkManager = NetworkManager.getInstance(getApplicationContext());
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 
         networkManager.getAllStudentsByTrackId(this, id);
+
 
     }
 
@@ -100,6 +108,7 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
             adapter = new AllStudentByTrackIdAdapter(students, getApplicationContext());
 
             recyclerView.setAdapter(adapter);
+            spinner.setVisibility(View.GONE);
         }
 
 
@@ -108,6 +117,8 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onFailure() {
 
+        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
     @Override
     public boolean onSupportNavigateUp() {

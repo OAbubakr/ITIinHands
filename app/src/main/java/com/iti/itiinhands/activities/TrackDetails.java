@@ -1,5 +1,7 @@
 package com.iti.itiinhands.activities;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -74,7 +76,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
         spinner = (ProgressBar) findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         //setting the adapter
 
         prepareCourses();

@@ -2,6 +2,7 @@ package com.iti.itiinhands.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -82,7 +83,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         prepareEventData();
         return view;
     }
