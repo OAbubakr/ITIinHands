@@ -30,6 +30,7 @@ import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
+import com.iti.itiinhands.fragments.PostJobFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -144,7 +145,8 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
                     case 1:
                         //tracks fragment
-                        fragment = new BranchesFragment();                        break;
+                        fragment = new BranchesFragment();
+                        break;
                     case 2:
                         //events fragment
                         fragment = new EventListFragment();
