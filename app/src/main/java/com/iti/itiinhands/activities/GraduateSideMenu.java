@@ -28,6 +28,7 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
@@ -51,13 +52,14 @@ public class GraduateSideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.sm_profile, R.drawable.sm_iti,R.drawable.stu_job_post ,R.drawable.sm_logout};
-    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
+    int[] images = {R.drawable.sm_profile, R.drawable.sm_iti, R.drawable.stu_job_post, R.drawable.sm_logout};
+    int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.sm_event, R.drawable.map, R.drawable.announce};
 
-    int[] second;
+    int[] second={R.drawable.sm_company,R.drawable.sm_job};;
     int[] third;
 
-UserData userData;
+    UserData userData;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -129,7 +131,7 @@ UserData userData;
 
         SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -171,7 +173,7 @@ UserData userData;
         prepareListData();
 
 
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images,itiImages,second,third,3);
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images, itiImages, second, third, 3);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -187,10 +189,10 @@ UserData userData;
                         break;
 
 
-                    case 2:
-                        fragment=new AllJobPostsFragment();
-                        mDrawerLayout.closeDrawer(expListView);
-                        break;
+//                    case 2:
+//                        fragment=new AllJobPostsFragment();
+//                        mDrawerLayout.closeDrawer(expListView);
+//                        break;
 
                     case 3:
                         //logout  fragment
@@ -240,22 +242,19 @@ UserData userData;
                                 break;
                             case 1:
                                 //handle tracks fragment
-                                fragment = new BranchesFragment();                                break;
+                                fragment = new BranchesFragment();
+                                break;
                             case 2:
                                 //handle events fragment
-                                fragment=new EventListFragment();
+                                fragment = new EventListFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
                                 fragment = new BranchesList();
                                 break;
-                            case 4:
-                                //handle bus services fragment
-                                //fragment = new BranchesFragment();
-                                break;
 
-                            case 5:
-                                fragment=new AnnouncementFragment();
+                            case 4:
+                                fragment = new AnnouncementFragment();
                                 break;
                             default:
                                 break;
@@ -263,6 +262,23 @@ UserData userData;
 
                         break;
 
+
+                    case 2:
+                        switch (childPosition) {
+                            case 0:
+                                //handle companies profile
+                                fragment= new CompaniesFragment();
+
+                                break;
+                            case 1:
+                                //handle job posts
+                                fragment = new AllJobPostsFragment();
+                                break;
+
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -292,7 +308,7 @@ UserData userData;
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("ITI");
-        listDataHeader.add("Job Posts");
+        listDataHeader.add("Companies");
         listDataHeader.add("Logout");
 
 
@@ -307,26 +323,24 @@ UserData userData;
         myTrack.add("List of Courses");
 
 
-
-
         List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
         aboutIti.add("Tracks");
         aboutIti.add("Events");
         aboutIti.add("Maps");
-        aboutIti.add("Bus Services");
         aboutIti.add("Announcements");
 
 
         List<String> logout = new ArrayList<String>();
-        List<String> jobposts = new ArrayList<String>();
+        List<String> company = new ArrayList<String>();
+        company.add("Companies Profiles");
+        company.add("Job Posts");
 
 
         listDataChild.put(listDataHeader.get(0), profile); // Header, Child data
         listDataChild.put(listDataHeader.get(1), aboutIti);
-        listDataChild.put(listDataHeader.get(2), jobposts);
+        listDataChild.put(listDataHeader.get(2), company);
         listDataChild.put(listDataHeader.get(3), logout);
-
 
 
     }

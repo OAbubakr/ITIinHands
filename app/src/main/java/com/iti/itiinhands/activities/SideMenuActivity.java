@@ -65,8 +65,8 @@ public class SideMenuActivity extends AppCompatActivity {
             R.drawable.sm_logout
     };
 
-    int[] myTrackImages={ R.drawable.schedule,R.drawable.permission,R.drawable.course_list};
-    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
+    int[] myTrackImages={ R.drawable.schedule,R.drawable.sm_permission,R.drawable.course_list};
+    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.sm_event,R.drawable.map,R.drawable.bus,R.drawable.announce};
     int[] third={R.drawable.sm_company,R.drawable.sm_job};
 
     UserData userData;
@@ -263,7 +263,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 4:
                                 //Bus Services
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "This service is not available at the moment.", Toast.LENGTH_LONG).show();
                                 break;
                             case 5:
                                 //Announcements

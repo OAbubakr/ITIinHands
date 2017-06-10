@@ -356,7 +356,8 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 picturePath = cursor.getString(columnIndex);
                 cursor.close();
                 profilePicIv.setImageURI(selectedImage);
-                networkManager.uploadImage(myRef, picturePath, token);
+                int id = sharedPreferences.getInt(Constants.USER_ID,0);
+                networkManager.uploadImage(myRef, picturePath, id);
 
 
                 //edit image path

@@ -42,7 +42,6 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_student_course_list);
         View view = inflater.inflate(R.layout.activity_student_course_list, container, false);
         networkManager = NetworkManager.getInstance(getActivity());
         myRef = this;
@@ -66,8 +65,6 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
     public void onResponse(Response response) {
         if (response.getStatus().equals(Response.SUCCESS)) {
             List<StudentGrade> list = DataSerializer.convert(response.getResponseData(),new TypeToken< List<StudentGrade>>(){}.getType());
-
-//            List<StudentGrade> list = (List<StudentGrade>) response.getResponseData();
             if (getActivity() != null) {
                 CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
                 SCourses_RV.setAdapter(courseAdapter);
