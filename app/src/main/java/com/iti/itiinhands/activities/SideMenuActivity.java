@@ -32,6 +32,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.EventTabFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
@@ -253,7 +254,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //Events
-                                fragment = new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //Maps

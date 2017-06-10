@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.GraduatesByTrack;
 import com.iti.itiinhands.activities.Schedule;
 import com.iti.itiinhands.activities.TrackDetails;
 import com.iti.itiinhands.fragments.StudentsOfTrack;
@@ -87,6 +88,12 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.MyViewHold
                         context.startActivity(i);
                     } else if (flag == 1) {
                         Intent i = new Intent(context, StudentsOfTrack.class);
+                        i.putExtra("trackId",track.getPlatformIntakeId());
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }else if (flag == 3) {
+                        Toast.makeText(context ,"graduates here" , Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(context, GraduatesByTrack.class);
                         i.putExtra("trackId",track.getPlatformIntakeId());
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
