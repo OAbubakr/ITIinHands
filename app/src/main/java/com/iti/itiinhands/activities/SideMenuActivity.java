@@ -265,7 +265,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 4:
                                 //Bus Services
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "This service is not available at the moment.", Toast.LENGTH_LONG).show();
                                 break;
                             case 5:
                                 //Announcements

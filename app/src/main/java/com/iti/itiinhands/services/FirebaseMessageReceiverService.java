@@ -33,6 +33,7 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
 
     public static final String MESSAGE_RECEIVED_ACTION = "MESSAGE_RECEIVED";
     private SharedPreferences sharedPreferences;
+    private static int notificationCount = 1;
 
     public FirebaseMessageReceiverService() {
     }
@@ -137,7 +138,7 @@ public class FirebaseMessageReceiverService extends FirebaseMessagingService {
             mBuilder.setAutoCancel(true);
 
 // Sets an ID for the notification
-            int mNotificationId = 001;
+            int mNotificationId = ++notificationCount;
 // Gets an instance of the NotificationManager service
             NotificationManager mNotifyMgr =
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
