@@ -9,6 +9,7 @@ public class Constants {
 
     public static String USER_SHARED_PREFERENCES = "USER_SHARED_PREFERENCES";
     public static String TOKEN = "TOKEN";
+    public static String REFRESH_TOKEN = "REFRESH_TOKEN";
     public static String USER_TYPE="USER_TYPE";
     public static String LOGGED_FLAG = "LOGGED_FLAG";
     public static String USER_OBJECT ="USER_OBJECT";

@@ -29,26 +29,24 @@ public class MapsDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
 
+        int branchId = getIntent().getIntExtra("branchId", -1);
+        String branchName = getIntent().getStringExtra("branchName");
+
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(branchName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        setTitleColor(android.R.color.white);
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-//        Uri imageUri = Uri.parse("res:/" + R.drawable.ground_floor_model);
-//        SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.sdvImage);
-//        draweeView.setImageURI(imageUri);
-
-//        mDemoSlider = (SliderLayout) findViewById(R.id.slider);
-
-        int branchId = getIntent().getIntExtra("branchId", -1);
 
         switch (branchId) {
             case 1:
-                mapTitle.add(new MapTitle(R.drawable.basement_floor, "Basement Floor"));
                 mapTitle.add(new MapTitle(R.drawable.ground_floor_model, "Ground Floor"));
+                mapTitle.add(new MapTitle(R.drawable.first_floor_model, "First Floor"));
+                mapTitle.add(new MapTitle(R.drawable.second_floor_model, "Second Floor"));
+                mapTitle.add(new MapTitle(R.drawable.third_floor_model, "Third Floor"));
                 break;
             case 7:
                 break;
@@ -62,7 +60,7 @@ public class MapsDetailsActivity extends AppCompatActivity {
                 break;
         }
 
-        ImageViewer imageViewer = new ImageViewer.Builder<>(this, mapTitle).setFormatter(new ImageViewer.Formatter<MapTitle>() {
+        new ImageViewer.Builder<>(this, mapTitle).setFormatter(new ImageViewer.Formatter<MapTitle>() {
             @Override
             public String format(MapTitle mapTitle) {
                 return mapTitle.getUrl();

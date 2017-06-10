@@ -20,6 +20,7 @@ import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
+import com.iti.itiinhands.model.RenewTokenResponse;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
@@ -62,8 +63,8 @@ public class NetworkManager {
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-//    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
-    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/";
+    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/";
 
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
@@ -731,6 +732,26 @@ System.out.print(response.body());
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
+
+    public void renewAccessToken(NetworkResponse networkResponse, String refreshToken){
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<RenewTokenResponse> call = web.renewAccessToken(refreshToken);
+
+        call.enqueue(new Callback<RenewTokenResponse>() {
+            @Override
+            public void onResponse(Call<RenewTokenResponse> call, retrofit2.Response<RenewTokenResponse> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RenewTokenResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 network.onFailure();
