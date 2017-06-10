@@ -504,6 +504,42 @@ public class NetworkManager {
     }
 
 
+//    ----------------------------------- get all graduates data -----------------------------------
+    public void getAllGraduatesByTracId(final NetworkResponse networkResponse, int intakeid , int platformid) {
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getAllGraduatesByTracId(intakeid,platformid);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                networkResponse.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                networkResponse.onFailure();
+            }
+        });
+    }
+//    -------------------------------------------Get Intakes-----------------------------------------------------
+
+    public void getIntakes(final NetworkResponse networkResponse) {
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getIntakes();
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                networkResponse.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                networkResponse.onFailure();
+            }
+        });
+    }
+
+
+//    ------------------------------------------------------------------------------------------------
+
     ////////////////////get behance data/////////
     public void getBehanceData(final NetworkResponse networkResponse, String name) {
         String url = "https://api.behance.net/v2/users/";
