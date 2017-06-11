@@ -4,8 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -48,6 +53,8 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
         super.onViewCreated(view, savedInstanceState);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
+        setHasOptionsMenu(true);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.event_tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Events"));
@@ -128,4 +135,5 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
     }
 
-}
+
+    }
