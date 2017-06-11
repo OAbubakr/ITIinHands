@@ -1,7 +1,8 @@
 package com.iti.itiinhands.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,11 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.BranchesAdapter;
-import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
@@ -26,7 +27,6 @@ import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class BranchesFragment extends Fragment implements NetworkResponse {
@@ -65,7 +65,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         prepareBranchData();
         return view;
     }
@@ -107,6 +107,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
 
+        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
 
 }
