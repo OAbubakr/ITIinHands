@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,6 @@ public class CompanyJobPost extends AppCompatActivity {
         companyImage = (ImageView) findViewById(R.id.img);
         Intent intent = getIntent();
         final JobVacancy jobVacancy = (JobVacancy) intent.getSerializableExtra("job post");
-
 
 
 

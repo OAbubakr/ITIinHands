@@ -73,6 +73,7 @@ public class CompanyProfileFragment extends Fragment  {
 
 
 
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             int flag = bundle.getInt("flag",1);
@@ -109,6 +110,9 @@ public class CompanyProfileFragment extends Fragment  {
             email.setText(company.getCompanyEmail());
             numberOfEmployees.setText(String.valueOf(company.getCompanyNoOfEmp())+"Employees");
             knowledge.setText(company.getCompanyAreaKnowledge());
+            Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).into(companyLogo);
+
+
 
             if(company.getCompanyLogoPath()!=null) {
                 Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
@@ -214,6 +218,20 @@ public class CompanyProfileFragment extends Fragment  {
 //
 //    }
 
+//        if (response.getStatus().equals(Response.SUCCESS)) {
+//            company = DataSerializer.convert(response.getResponseData(),UserData.class);
+//
+////            company = (UserData) response.getResponseData();
+//            name.setText(company.getCompanyName());
+//            mobile.setText(company.getCompanyMobile());
+//            address.setText(company.getCompanyAddress());
+//            phone.setText(company.getCompanyPhone());
+//            website.setText(company.getCompanyWebSite());
+//            email.setText(company.getCompanyEmail());
+//            numberOfEmployees.setText(String.valueOf(company.getCompanyNoOfEmp()+"Employess"));
+//            knowledge.setText(company.getCompanyAreaKnowledge());
+//        }
+    }
 
 
-}
+

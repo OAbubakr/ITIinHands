@@ -75,7 +75,7 @@ public class CompaniesListAdapter extends RecyclerView.Adapter<CompaniesListAdap
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,company.getCompanyName(),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context,company.getCompanyName(),Toast.LENGTH_SHORT).show();
 
 //                    Fragment fragment = new CompanyProfileFragment();
 //                    Bundle bundle = new Bundle();

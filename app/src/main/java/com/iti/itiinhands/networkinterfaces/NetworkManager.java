@@ -40,13 +40,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-    //private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/"; // Ragab ip and url
-    private static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/"; // salma
-//    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
+//    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
+
+//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Omar ITI
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
+    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -83,8 +84,6 @@ public class NetworkManager {
 
                 .build();
 
-//        okHttpClient.interceptors().add(new AddHeaderInterceptor());
-//        okHttpClient.interceptors().add(new ForbiddenInterceptor());
         return okHttpClient;
     }
 
@@ -94,9 +93,9 @@ public class NetworkManager {
         public okhttp3.Response intercept(Chain chain) throws IOException {
 
             SharedPreferences data = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-            String token = data.getString(Constants.TOKEN,"");
+            String token = data.getString(Constants.TOKEN, "");
             Request request = chain.request();
-            request = request.newBuilder().addHeader("Authorization",token ).build();
+            request = request.newBuilder().addHeader("Authorization", token).build();
             okhttp3.Response response = chain.proceed(request);
             ResponseBody responseBody = response.body();
             String s = responseBody.string();
@@ -111,7 +110,9 @@ public class NetworkManager {
                 }
             }
 */
-            return chain.proceed(request);
+             return response.newBuilder()
+                    .body(ResponseBody.create(response.body().contentType(), s))
+                    .build();
         }
     }
 
@@ -147,8 +148,9 @@ public class NetworkManager {
             }
         });
     }
+
     //    ----------------------- upload  images -----------------------------------------------------
-    public void uploadImage(NetworkResponse networkResponse,String imagePath ,int id) {
+    public void uploadImage(NetworkResponse networkResponse, String imagePath, int id) {
         final NetworkResponse network = networkResponse;
         System.out.println("##########################################");
         File file = new File(imagePath);
@@ -156,12 +158,12 @@ public class NetworkManager {
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
 
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.uploadImage(fileToUpload,id);
+        Call<Response> call = web.uploadImage(fileToUpload, id);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 //                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
-                System.out.println("********************* "+response.body());
+                System.out.println("********************* " + response.body());
             }
 
             @Override
@@ -173,6 +175,7 @@ public class NetworkManager {
         });
 
     }
+
     //    -----------------------get employee hours-----------------------------------------------------
     public void getEmployeeHours(NetworkResponse networkResponse, int id, String start, String end) {
         final NetworkResponse network = networkResponse;
@@ -199,7 +202,7 @@ public class NetworkManager {
     //--------------------------------GET LOGIN AUTH DATA-------------------------------------------
 
 
-    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID){
+    public void getInstructorsByBranch(final NetworkResponse networkResponse, int branchId, int excludeID) {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.getInstructorByBranch(branchId, excludeID);
         call.enqueue(new Callback<Response>() {
@@ -288,7 +291,7 @@ public class NetworkManager {
     public void getUserProfileData(NetworkResponse networkResponse, int userType, int id) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.getUserData(id,userType);
+        Call<Response> call = web.getUserData(id, userType);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -306,11 +309,12 @@ public class NetworkManager {
 
 
     }
+
     ///////////////////setProfile data///////////////
     public void setUserProfileData(NetworkResponse networkResponse, int userType, int userId, UserData userdata) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.setUserData(userType, userId,userdata);
+        Call<Response> call = web.setUserData(userType, userId, userdata);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -388,6 +392,7 @@ public class NetworkManager {
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 network.onResponse(response.body());
             }
+
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
 
@@ -514,16 +519,17 @@ public class NetworkManager {
     }
 
 
-//    ----------------------------------- get all graduates data -----------------------------------
-    public void getAllGraduatesByTracId(final NetworkResponse networkResponse, int intakeid , int platformid) {
+    //    ----------------------------------- get all graduates data -----------------------------------
+    public void getAllGraduatesByTracId(final NetworkResponse networkResponse, int intakeid, int platformid) {
 
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<Response> call = web.getAllGraduatesByTracId(intakeid,platformid);
+        Call<Response> call = web.getAllGraduatesByTracId(intakeid, platformid);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 networkResponse.onResponse(response.body());
             }
+
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 networkResponse.onFailure();
@@ -540,6 +546,7 @@ public class NetworkManager {
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 networkResponse.onResponse(response.body());
             }
+
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 networkResponse.onFailure();
@@ -577,9 +584,9 @@ public class NetworkManager {
         });
     }
 
-    public void getCompanyProfile(NetworkResponse networkResponse,int id){
-        final NetworkResponse network=networkResponse;
-        NetworkApi web =retrofit.create(NetworkApi.class);
+    public void getCompanyProfile(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.getCompanyProfile(id);
         call.enqueue(new Callback<Response>() {
             @Override
@@ -592,7 +599,7 @@ public class NetworkManager {
             public void onFailure(Call<Response> call, Throwable t) {
 
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
             }
         });
@@ -600,9 +607,9 @@ public class NetworkManager {
     }
 
 
-    public void getAllJobs(NetworkResponse networkResponse){
-        final NetworkResponse network=networkResponse;
-        NetworkApi web =retrofit.create(NetworkApi.class);
+    public void getAllJobs(NetworkResponse networkResponse) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.getJobs();
         call.enqueue(new Callback<Response>() {
 
@@ -617,7 +624,7 @@ public class NetworkManager {
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 t.printStackTrace();
-                Log.e("network",t.toString());
+                Log.e("network", t.toString());
                 network.onFailure();
 
             }
@@ -651,8 +658,9 @@ public class NetworkManager {
             }
         });
     }
-///////////get supervisor
-    public void getSupervisor(final NetworkResponse networkResponse , int id){
+
+    ///////////get supervisor
+    public void getSupervisor(final NetworkResponse networkResponse, int id) {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.getSupervisor(id);
         call.enqueue(new Callback<Response>() {
@@ -672,37 +680,31 @@ public class NetworkManager {
         });
 
 
-
     }
 
 
-public void sendPermission(NetworkResponse networkResponse , Permission permission){
-    NetworkApi web = retrofit.create(NetworkApi.class);
+    public void sendPermission(final NetworkResponse networkResponse, Permission permission) {
+        NetworkApi web = retrofit.create(NetworkApi.class);
 
-    Call<Response>call = web.sendPermission(permission);
+        Call<Response> call = web.sendPermission(permission);
 
-    call.enqueue(new Callback<Response>() {
-        @Override
+        call.enqueue(new Callback<Response>() {
+            @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                networkResponse.onResponse(response.body());
+                System.out.print(response.body());
+            }
 
-System.out.print(response.body());
-        }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                System.out.print(t.toString());
+                networkResponse.onFailure();
 
-        @Override
-        public void onFailure(Call<Response> call, Throwable t) {
-            System.out.print(t.toString());
-
-
-
-        }
-    });
-
+            }
+        });
 
 
-}
-
-
-
+    }
 
 
     //------------------------------------GET Instructor Evaluation------------------------------------------------
@@ -729,7 +731,7 @@ System.out.print(response.body());
     }
 
     /////////////////////////////Get all Companies////////////////////
-    public void getAllCompaniesData(NetworkResponse networkResponse){
+    public void getAllCompaniesData(NetworkResponse networkResponse) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.getAllCompanies();
@@ -749,7 +751,52 @@ System.out.print(response.body());
         });
     }
 
-    public void renewAccessToken(NetworkResponse networkResponse, String refreshToken){
+    public void getUserProfileDataOther(NetworkResponse networkResponse, int userType, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getUserDataOther(id, userType);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
+    public void sendScheduleChange(NetworkResponse networkResponse, int platformIntakeID) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.sendScheduleChange(platformIntakeID);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
+
+    public void renewAccessToken(NetworkResponse networkResponse, String refreshToken) {
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<RenewTokenResponse> call = web.renewAccessToken(refreshToken);

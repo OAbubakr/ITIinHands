@@ -94,9 +94,14 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+
+        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
         FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
 
         FirebaseMessaging.getInstance().subscribeToTopic("events");
+        FirebaseMessaging.getInstance().subscribeToTopic("track_"+userData.getPlatformIntakeId());
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         expListView.setGroupIndicator(null);
@@ -123,9 +128,7 @@ public class SideMenuActivity extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
-        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
@@ -156,12 +159,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
-//                    case 2:
-//                        //job posts
-//                        fragment = new AllJobPostsFragment();
-//                        mDrawerLayout.closeDrawer(expListView);
-//                        break;
 
                     case 4:
                         //logout action
@@ -179,7 +178,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
-
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
 
@@ -192,7 +190,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 
                 return false;
@@ -212,6 +209,7 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 1:
                                 //handle grades fragment
                                 fragment = new PermissionFragment();
+
                                 break;
                             case 2:
                                 //handle list of courses fragment
