@@ -47,7 +47,7 @@ public class NetworkManager {
 //    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Omar ITI
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
+//    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";

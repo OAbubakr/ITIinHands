@@ -174,14 +174,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="15">
+
                     <ImageView
+                        android:id="@+id/githubLogo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/github"
-                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        />
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/github" />
 
                     <EditText
                         android:layout_width="0dp"
@@ -217,14 +218,15 @@
                     android:layout_height="wrap_content"
                     android:weightSum="15"
                     android:orientation="horizontal">
+
                     <ImageView
+                        android:id="@+id/behanceLogo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/behance"
-                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        />
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/behance" />
 
                     <EditText
                         android:id="@+id/behanceEdEditId"
