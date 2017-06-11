@@ -93,8 +93,8 @@ public class CompanyJobPost extends AppCompatActivity {
 
         Picasso.with(getApplicationContext())
                 .load(jobVacancy.getCompanyLogoPath())
-                .placeholder(R.id.company_logo)
-                .error(R.id.company_logo)
+                .placeholder(R.drawable.c_pic)
+                .error(R.drawable.c_pic)
                 .into(companyImage);
 
 
