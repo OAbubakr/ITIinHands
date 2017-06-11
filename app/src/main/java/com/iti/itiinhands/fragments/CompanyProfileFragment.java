@@ -94,6 +94,11 @@ public class CompanyProfileFragment extends Fragment {
                 email.setText(companyStudent.getCompanyEmail());
                 knowledge.setText(companyStudent.getCompanyAreaKnowledge());
 
+                if(companyStudent.getCompanyLogoPath()!=null) {
+                    Picasso.with(getActivity().getApplicationContext()).load(companyStudent.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
+                            .error(R.drawable.c_pic)
+                            .into(companyLogo);
+                }
             }else if (flag == 2){
                 Log.i("flag","from shared pref");
                 SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
@@ -113,6 +118,12 @@ public class CompanyProfileFragment extends Fragment {
 
 
 
+            if(company.getCompanyLogoPath()!=null) {
+                Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
+                        .error(R.drawable.c_pic)
+                        .into(companyLogo);
+            }
+        }
                     if (company.getCompanyLogoPath() != null) {
                         Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
                                 .error(R.drawable.c_pic)
@@ -208,7 +219,7 @@ public class CompanyProfileFragment extends Fragment {
             });
 
 
-
+        return view;
 
         }
 
@@ -216,8 +227,8 @@ public class CompanyProfileFragment extends Fragment {
 
 
 
-        return view;
-    }
+
+
 
 
     @Override

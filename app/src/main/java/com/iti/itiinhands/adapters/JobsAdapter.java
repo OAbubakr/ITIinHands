@@ -112,8 +112,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
         Picasso.with(context)
                 .load(jobVacancies.get(i).getCompanyLogoPath())
-                .placeholder(R.id.company_logo)
-                .error(R.id.company_logo)
+                .placeholder(R.drawable.c_pic)
+                .error(R.drawable.c_pic)
                 .into(viewHolder.companyImage);
 
 
