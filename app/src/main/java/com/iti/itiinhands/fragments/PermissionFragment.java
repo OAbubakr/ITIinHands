@@ -219,6 +219,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
             if (response.getStatus().equals(Response.SUCCESS)) {
 
+
                 Supervisor supervisor = DataSerializer.convert(response.getResponseData(), Supervisor.class);
                 supervisorName.setText(supervisor.getName());
                 permission.setEmpID(supervisor.getId());
