@@ -97,7 +97,7 @@ public class StudentProfileFragment extends Fragment {
             if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
             if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
             if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
-            Picasso.with(getContext()).load(NetworkManager.BASEURL + userData.getImagePath()).into(profilePicIv);
+//            Picasso.with(getContext()).load(NetworkManager.BASEURL + userData.getImagePath()).into(profilePicIv);
         }
 
 
