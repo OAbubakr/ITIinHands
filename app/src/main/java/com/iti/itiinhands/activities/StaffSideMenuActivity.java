@@ -40,6 +40,7 @@ import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatMainFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.services.ScheduleChanged;
 import com.iti.itiinhands.utilities.Constants;
@@ -75,7 +76,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     int[] itians = {R.drawable.students, R.drawable.graduate};
     int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.sm_event, R.drawable.map, R.drawable.bus, R.drawable.announce};
 
-    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule, R.drawable.schedule};
+    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule, R.drawable.send_notification};
     FragmentManager fragmentManager;
 
 
@@ -202,7 +203,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         //set name and track or company of the user
         name.setText(userData.getEmployeeName());
         track.setText(userData.getEmployeeBranchName());
-        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.instructor_avatar).into(avatar);
 
 
         // Add header view to the expandable list
@@ -301,7 +302,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle events fragment
-                                fragment = new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //handle maps fragment

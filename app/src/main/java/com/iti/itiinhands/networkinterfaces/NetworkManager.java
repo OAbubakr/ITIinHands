@@ -47,12 +47,15 @@ import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_
 public class NetworkManager {
 
 
-    //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+//    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
+
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
     public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
 //    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/";
 
+//    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
+    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";

@@ -298,6 +298,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setButtonColorTint(Color.parseColor("#7F0000"));
+    }
 
     @Override
     public void onResponse(Response result) {
