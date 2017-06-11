@@ -152,7 +152,9 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         endMinuteCheck = timeCheckEnd.get(Calendar.MINUTE);
         endHourCheck = timeCheckEnd.get(Calendar.HOUR);
 
-        permission.setPermissionDate(yearCheck + "/" + monthCheck + "/" + dayCheck + " 00:00:00");
+        int temp = monthCheck + 1;
+
+        permission.setPermissionDate(dayCheck  + "/" + temp  + "/" + yearCheck );
         permission.setFromMin(startMinuteCheck);
         permission.setFromH(startHourCheck);
         permission.setToH(endHourCheck);
@@ -177,7 +179,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                         date.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
 
                         if (checkDate(selectedyear, selectedmonth - 1, selectedday)) {
-                            permission.setPermissionDate(selectedyear + "-" + selectedmonth + "-" + selectedday + " 00:00:00");
+                            permission.setPermissionDate( selectedday  + "/" + selectedmonth + "/" + selectedyear );
                             errorMessageDate.setText("");
                             errorMessageDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                             dateFlag = true;
