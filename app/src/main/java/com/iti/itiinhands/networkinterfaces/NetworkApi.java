@@ -141,4 +141,5 @@ public interface NetworkApi {
     @GET("getAllCompanies")
     public Call<Response> getAllCompanies();
 
+
 }
