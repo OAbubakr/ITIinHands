@@ -404,6 +404,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     send.setBackgroundColor(R.color.colorPrimary);
 
 
+
                 } else {
 
                   if(getActivity()!=null)  Toast.makeText(getActivity(), "Your Permission has been sent successfully", Toast.LENGTH_SHORT).show();
