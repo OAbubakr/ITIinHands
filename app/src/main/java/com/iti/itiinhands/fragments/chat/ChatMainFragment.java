@@ -131,11 +131,8 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.USER_ID, 0);
-
+        myId = String.valueOf(userData.getId());
         myName = userData.getName();
-        myId = token + "";
-        int userType = this.userType;
         switch (userType) {
             case 1:
                 myType = "student";
@@ -144,7 +141,6 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
                 myType = "staff";
                 break;
         }
-
         myChatId = myType + "_" + myId;
 
         viewPager = (ViewPager) view.findViewById(R.id.pager);
@@ -194,7 +190,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
                     for (ChatRoom chatRoom : chatRooms) {
                         if (chatRoom.getReceiverId().equals(receiverId)) {
 
-                            chatRoom.setHasPendingMessages(true);
+                            chatRoom.setPendingMessagesCount(chatRoom.getPendingMessagesCount() + 1);
 
                             chatRooms.remove(chatRoom);
                             chatRooms.add(0, chatRoom);

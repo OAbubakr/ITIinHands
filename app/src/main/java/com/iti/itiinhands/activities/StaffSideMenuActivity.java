@@ -55,6 +55,7 @@ import java.util.Map;
 
 import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
 import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.createAlarm;
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class StaffSideMenuActivity extends AppCompatActivity {
 
@@ -114,9 +115,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                     myRoot.child(myChatId).setValue("");
                 else if (val instanceof HashMap) {
                     HashMap<String, String> usersRoomsMap = (HashMap) val;
-                    Map<String, ?> all = sharedPreferences.getAll();
+                    Map<String, ?> all = getSharedPreferences(SP_NAME, MODE_PRIVATE).getAll();
                     //update the stored keys
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    SharedPreferences.Editor editor = getSharedPreferences(SP_NAME, MODE_PRIVATE).edit();
                     for (String key : usersRoomsMap.keySet()) {
                         editor.putString(usersRoomsMap.get(key), key);
                     }

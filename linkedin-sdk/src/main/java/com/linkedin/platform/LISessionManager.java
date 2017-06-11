@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.linkedin.android.mobilesdk.R;
 import com.linkedin.platform.errors.LIAppErrorCode;
 import com.linkedin.platform.errors.LIAuthError;
 import com.linkedin.platform.internals.AppStore;

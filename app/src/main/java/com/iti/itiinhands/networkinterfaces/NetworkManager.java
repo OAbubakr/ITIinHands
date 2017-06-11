@@ -52,10 +52,10 @@ public class NetworkManager {
 
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
     public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
-//    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/";
+//    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
+//    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -119,7 +119,6 @@ public class NetworkManager {
                         NetworkManager.getInstance(context).renewAccessToken(refreshToken, RENEW_INTERCEPTOR);
                     }
                 }
-
             }
 
             return response.newBuilder()
@@ -816,7 +815,7 @@ public class NetworkManager {
                              SharedPreferences.Editor editor = sharedPreferences.edit();
                              editor.putString(Constants.TOKEN, access_token);
                              editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
-                             editor.apply();
+                             editor.commit();
                          } else if (flag == RENEW_ALARM_MANAGER) {
                              Response response1 = response.body();
                              if (response1 != null) {
