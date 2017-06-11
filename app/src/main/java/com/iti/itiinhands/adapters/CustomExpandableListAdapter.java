@@ -247,7 +247,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView arrawImage=(ImageView)convertView.findViewById(R.id.arrow);
 
 
-        if(_listDataChild.get(_listDataHeader.get(groupPosition)).size()>0)
+        if((_listDataChild.get(_listDataHeader.get(groupPosition))).size()>0)
         {
             arrawImage.setVisibility(View.VISIBLE);
         }

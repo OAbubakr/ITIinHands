@@ -117,6 +117,7 @@ public class CompanySideMenu extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
+
         SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
@@ -125,7 +126,7 @@ public class CompanySideMenu extends AppCompatActivity {
             name.setText(userData.getCompanyName());
             track.setText("");
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
-            Picasso.with(getApplicationContext()).load(userData.getCompanyLogoPath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+            Picasso.with(getApplicationContext()).load(userData.getCompanyLogoPath()).placeholder(R.drawable.c_pic).into(avatar);
         }
 
         // Add header view to the expandable list
@@ -161,6 +162,9 @@ public class CompanySideMenu extends AppCompatActivity {
 
                     case 0:
                         fragment = new CompanyProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("flag",2);
+                        fragment.setArguments(bundle);
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 

@@ -79,8 +79,9 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     int token;
     private SideMenuActivity studentActivity;
     private GraduateSideMenu graduateActivity;
-    private String behanceImageUrl;
-    private String gitImageUrl;
+//    private String behanceImageUrl;
+//    private String gitImageUrl;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
         networkManager = NetworkManager.getInstance(getContext());
         myRef=this;
+
         prepareView();
 
         ///change profile pic
@@ -152,8 +154,16 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userData.setGitUrl(gitUrl);
-                userData.setBehanceUrl(behanceUrl);
+                int x = githubEt.getText().length();
+                if(githubEt.getText().toString()!=null || githubEt.getText().length()>0)
+                    userData.setGitUrl(gitUrl);
+                else
+                    userData.setGitUrl(null);
+                if(behanceEt.getText().toString()!=null || behanceEt.getText().length()>0)
+                    userData.setBehanceUrl(behanceUrl);
+                else
+                    userData.setBehanceUrl(null);
+
                 userData.setLinkedInUrl(linkedInUrl);
                 userData.setStudentEmail(emailEt.getText().toString());
                 userData.setStudentMobile(mobileEt.getText().toString());

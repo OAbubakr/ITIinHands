@@ -58,7 +58,7 @@ public class UpdateAccessTokens extends BroadcastReceiver {
 
                         if (remainingTime <= DELTA) {
                             String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                            networkManager.renewAccessToken(null, refreshToken);
+                            networkManager.renewAccessToken(refreshToken, NetworkManager.RENEW_ALARM_MANAGER);
                         }
 
                     }

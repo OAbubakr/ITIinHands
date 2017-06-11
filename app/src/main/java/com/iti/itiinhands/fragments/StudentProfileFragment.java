@@ -4,12 +4,17 @@ package com.iti.itiinhands.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.OkHttpDownloader;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.OkHttpDownloader;
@@ -30,7 +36,10 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -57,6 +66,7 @@ public class StudentProfileFragment extends Fragment {
     private ImageView behanceBtn;
     private FloatingActionButton editBtn;
     private ImageView profilePicIv;
+    private ImageView profile_pic;
     private int flag;
 
     @Override
@@ -82,34 +92,76 @@ public class StudentProfileFragment extends Fragment {
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
 
 
-
         Bundle b = getArguments(); // company
         if (b != null) flag = b.getInt("flag", 0);
-        if (flag == 1){
+        if (flag == 1) {
             editBtn.setVisibility(View.GONE);
-            userData =(UserData) b.getSerializable("student");
+            userData = (UserData) b.getSerializable("student");
         }
         if(userData != null){
-            if(userData.getLinkedInUrl()==null) linkedInBtn.setEnabled(false);
-            if(userData.getBehanceUrl()==null) behanceBtn.setEnabled(false);
-            if(userData.getGitUrl()==null) gitBtn.setEnabled(false);
+            if(userData.getLinkedInUrl()==null) {
+                linkedInBtn.setEnabled(false);
+                linkedInBtn.setImageResource(R.drawable.group1205);
+            }else{
+                linkedInBtn.setEnabled(true);
+                linkedInBtn.setImageResource(R.drawable.linked_in);
+            }
+            if(userData.getBehanceUrl()==null){
+                behanceBtn.setEnabled(false);
+                behanceBtn.setImageResource(R.drawable.group1207);
+            }else{
+                behanceBtn.setEnabled(true);
+                behanceBtn.setImageResource(R.drawable.behance);
+            }
+            if(userData.getGitUrl()==null){
+                gitBtn.setEnabled(false);
+                gitBtn.setImageResource(R.drawable.githubgray);
+            }else{
+                gitBtn.setEnabled(true);
+                gitBtn.setImageResource(R.drawable.github);
+            }
         }
 
 
         firstTv.setText(userData.getName());
-        secondTv.setText("Intake " +new Integer(userData.getIntakeId()).toString()+ userData.getBranchName());
+        secondTv.setText("Intake" + new Integer(userData.getIntakeId()).toString() + userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
-        if(userData.getImagePath() != null){
-            System.out.println("*********"+userData.getImagePath().toString());
-            Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.224:8084/restfulSpring/download/"+userData.getImagePath()).into(profile_pic);
-        }
-       //SET USER EMAIL
-        if(userData.getStudentEmail() != null)
-        fourthTv.setText(userData.getStudentEmail());
+//        System.out.println("*********"+userData.getImagePath().toString());
+
+        /**********/
+
+
+        SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        final String token = data.getString(Constants.TOKEN, "");
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+
+                        Request newRequest = chain.request().newBuilder()
+                                .addHeader("Authorization", token)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+
+        Picasso picasso = new Picasso.Builder(getActivity().getApplicationContext())
+                .downloader(new OkHttp3Downloader(client))
+                .build();
+        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).fit().placeholder(R.drawable.profile_pic)
+                .error(R.drawable.profile_pic).into(profile_pic);
+
+        /**********/
+
+        //  Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.40:8085/restfulSpring/download/"+userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(profile_pic);
+        //SET USER EMAIL
+        if (userData.getStudentEmail() != null)
+            fourthTv.setText(userData.getStudentEmail());
 
         //SET USER PHONE
-        if(userData.getStudentMobile() != null)
-        fifthTv.setText(userData.getStudentMobile());
+        if (userData.getStudentMobile() != null)
+            fifthTv.setText(userData.getStudentMobile());
 
 
         editBtn.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +169,7 @@ public class StudentProfileFragment extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new EditProfileFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             }
         });
 

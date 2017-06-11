@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by HP on 28/05/2017.
@@ -66,7 +68,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
         public TextView title;
         public TextView body;
         public ImageView pic;
-       // public TextView date;
+        public TextView date;
         public ImageView deleteAnnouncement;
 
         ArrayList<Announcement> announcements = new ArrayList<>();
@@ -76,7 +78,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
             this.announcements = announcements;
             title = (TextView) itemView.findViewById(R.id.announceTitle);
             body = (TextView) itemView.findViewById(R.id.announceBody);
-        //    date = (TextView) itemView.findViewById(R.id.announceDate);
+            date = (TextView) itemView.findViewById(R.id.announceDate);
             pic = (ImageView) itemView.findViewById(R.id.announceType);
             deleteAnnouncement = (ImageView) itemView.findViewById(R.id.delete);
 
@@ -86,7 +88,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
             title.setText(announcementBean.getTitle());
             body.setText(announcementBean.getBody());
-           // date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString());
+            date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString());
             if (announcementBean.getType() == 1) {
                 pic.setImageResource(R.drawable.event);
             } else if (announcementBean.getType() == 2) {
