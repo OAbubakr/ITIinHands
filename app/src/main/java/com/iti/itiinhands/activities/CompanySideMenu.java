@@ -29,6 +29,7 @@ import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -222,7 +223,7 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle events fragment
-                                fragment=new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //handle maps fragment

@@ -15,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class StudentProfileFragment extends Fragment {
         fourthTv = (TextView) view.findViewById(R.id.fourthTvProfileViewId);
         fifthTv = (TextView) view.findViewById(R.id.fifthTvProfileViewId);
         gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
-        ImageView profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
+        profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
         linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
@@ -124,11 +125,21 @@ public class StudentProfileFragment extends Fragment {
 
 
         firstTv.setText(userData.getName());
-        secondTv.setText("Intake" + new Integer(userData.getIntakeId()).toString() + userData.getBranchName());
+        secondTv.setText("Intake" + new Integer(userData.getIntakeId()).toString() + " - "+ userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
 //        System.out.println("*********"+userData.getImagePath().toString());
 
-        /**********/
+        //********** get width and height of screeen/
+
+         DisplayMetrics displayMetrics=new DisplayMetrics();
+         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+         int width=displayMetrics.widthPixels;
+         int height=displayMetrics.heightPixels;
+
+
+
+        //************************************/
 
 
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
@@ -149,7 +160,8 @@ public class StudentProfileFragment extends Fragment {
         Picasso picasso = new Picasso.Builder(getActivity().getApplicationContext())
                 .downloader(new OkHttp3Downloader(client))
                 .build();
-        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).fit().placeholder(R.drawable.profile_pic)
+        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
+                .resize(width,height/3)
                 .error(R.drawable.profile_pic).into(profile_pic);
 
         /**********/

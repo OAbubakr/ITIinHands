@@ -22,12 +22,11 @@
             android:background="#BDBDBD">
 
             <ImageView
-                android:id="@+id/profile_pic"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/profile_pic"
                 android:layout_gravity="center"
                 android:src="@drawable/profile_pic" />
 

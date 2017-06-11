@@ -22,6 +22,9 @@ import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
+import org.eazegraph.lib.utils.Utils;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -88,7 +91,9 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
             title.setText(announcementBean.getTitle());
             body.setText(announcementBean.getBody());
-            date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString());
+            SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+            String time = localDateFormat.format(new Date(announcementBean.getDate()).getTime());
+            date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString()+"-"+time);
             if (announcementBean.getType() == 1) {
                 pic.setImageResource(R.drawable.event);
             } else if (announcementBean.getType() == 2) {

@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
@@ -28,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CompanyProfileFragment extends Fragment  {
+public class CompanyProfileFragment extends Fragment {
 
     TextView name;
     TextView email;
@@ -41,6 +43,8 @@ public class CompanyProfileFragment extends Fragment  {
     ImageView companyLogo;
     private NetworkManager networkManager;
     UserData company;
+    Company companyStudent;
+    int flag;
 
     public CompanyProfileFragment() {
         // Required empty public constructor
@@ -76,22 +80,22 @@ public class CompanyProfileFragment extends Fragment  {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            int flag = bundle.getInt("flag",1);
+            flag = bundle.getInt("flag", 1);
 
 
-            if (flag == 1){
-                Log.i("flag","from all companies");
-                Company company = (Company) bundle.getSerializable("company");
-                name.setText(company.getCompanyName());
-                mobile.setText(company.getCompanyMobile());
-                address.setText(company.getCompanyAddress());
-                phone.setText(company.getCompanyPhone());
-                website.setText(company.getCompanyWebSite());
-                email.setText(company.getCompanyEmail());
-                knowledge.setText(company.getCompanyAreaKnowledge());
+            if (flag == 1) {
+                Log.i("flag", "from all companies");
+                companyStudent = (Company) bundle.getSerializable("company");
+                name.setText(companyStudent.getCompanyName());
+                mobile.setText(companyStudent.getCompanyMobile());
+                address.setText(companyStudent.getCompanyAddress());
+                phone.setText(companyStudent.getCompanyPhone());
+                website.setText(companyStudent.getCompanyWebSite());
+                email.setText(companyStudent.getCompanyEmail());
+                knowledge.setText(companyStudent.getCompanyAreaKnowledge());
 
-                if(company.getCompanyLogoPath()!=null) {
-                    Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
+                if(companyStudent.getCompanyLogoPath()!=null) {
+                    Picasso.with(getActivity().getApplicationContext()).load(companyStudent.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
                             .error(R.drawable.c_pic)
                             .into(companyLogo);
                 }
@@ -120,59 +124,102 @@ public class CompanyProfileFragment extends Fragment  {
                         .into(companyLogo);
             }
         }
+                    if (company.getCompanyLogoPath() != null) {
+                        Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
+                                .error(R.drawable.c_pic)
+                                .into(companyLogo);
+                    }
+                }
             }
 
         //**********************************************website action***************************
 
-        website.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(company.getCompanyWebSite()));
-                startActivity(i);
-            }
-        });
+            website.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        //******************************************comapny's email action ********************
+                    String webSite;
+                    if (flag == 1) {
 
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject of email");
-                intent.putExtra(Intent.EXTRA_TEXT, "Body of email");
-                intent.setData(Uri.parse("mailto:"+company.getCompanyEmail())); // or just "mailto:" for blank
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
-                startActivity(intent);
-            }
-        });
+                        webSite=companyStudent.getCompanyWebSite();
+                    } else {
 
-        //**************************************** company phone action ********************************
+                        webSite=company.getCompanyWebSite();
 
-        phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    }
+                    if(webSite!=null&&webSite.length()>0) {
+                        if (Patterns.WEB_URL.matcher(webSite).matches()) {
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(webSite));
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(getActivity().getApplicationContext(), "Invalid website", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+            });
+
+            //******************************************comapny's email action ********************
+
+            email.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Subject of email");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Body of email");
+                    if (flag == 1) {
+                        intent.setData(Uri.parse("mailto:" + companyStudent.getCompanyEmail())); // or just "mailto:" for blank
+
+                    } else {
+                        intent.setData(Uri.parse("mailto:" + company.getCompanyEmail())); // or just "mailto:" for blank
+                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
+                    startActivity(intent);
+
+                }
+            });
+
+            //**************************************** company phone action ********************************
+
+            phone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent callIntent;
+                    if (flag == 1) {
+                        callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + companyStudent.getCompanyPhone()));
+                    } else {
+                        callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + company.getCompanyPhone()));
+
+                    }
+                    startActivity(callIntent);
+
+                }
+            });
+
+            //**************************************** company's mobile action ********************************
+
+            mobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent callIntent;
+                    if (flag == 1) {
+                        callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + companyStudent.getCompanyMobile()));
+                    } else {
+                        callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + company.getCompanyMobile()));
+
+                    }
+                    startActivity(callIntent);
+
+                }
+            });
 
 
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+company.getCompanyPhone()));
-                startActivity(callIntent);
-            }
-        });
-
-        //**************************************** company's mobile action ********************************
-
-        mobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+company.getCompanyMobile()));
-                startActivity(callIntent);
-            }
-        });
-
-
-
+        return view;
 
         }
 
@@ -180,8 +227,8 @@ public class CompanyProfileFragment extends Fragment  {
 
 
 
-        return view;
-    }
+
+
 
 
     @Override

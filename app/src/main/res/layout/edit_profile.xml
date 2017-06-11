@@ -108,7 +108,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/mobileText"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"
+                        android:inputType="phone" />
 
                 </LinearLayout>
 
@@ -138,7 +139,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/emailText"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"
+                        android:inputType="textEmailAddress" />
 
                 </LinearLayout>
             </LinearLayout>

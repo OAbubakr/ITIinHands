@@ -103,7 +103,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
         datePart = (LinearLayout) view.findViewById(R.id.datePart);
         startTimePart = (LinearLayout) view.findViewById(R.id.startTimePart);
-        endTimePart = (LinearLayout) view.findViewById(R.id.);
+        endTimePart = (LinearLayout) view.findViewById(R.id.endTimePart);
         date = (TextView) view.findViewById(R.id.datedate);
         networkManager = NetworkManager.getInstance(getActivity());
         if (networkManager.isOnline()) {
@@ -159,6 +159,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         permission.setToMin(endMinuteCheck);
 
         send.setEnabled(false);
+        send.setBackgroundColor(Color.GRAY);
 
         datePart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,6 +401,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     supervisorName.setText(supervisor.getName());
                     permission.setEmpID(supervisor.getId());
                     if(send!=null)   send.setEnabled(true);
+                    send.setBackgroundColor(R.color.colorPrimary);
 
 
                 } else {
@@ -408,7 +410,9 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
                     cause.setText("");
 
-                if(send!=null)    send.setEnabled(true);
+                    if(send!=null)    send.setEnabled(true);
+                    send.setBackgroundColor(R.color.colorPrimary);
+
 
 
                 }
@@ -457,11 +461,13 @@ onFail();
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
             if(send!=null)    send.setEnabled(false);
             send.setBackgroundColor(Color.GRAY);
+
         }else{
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
             if(send!=null)   send.setEnabled(true);
-            if(send!=null)   send.setEnabled(true);
+            send.setBackgroundColor(R.color.colorPrimary);
+
         }
 
     }
