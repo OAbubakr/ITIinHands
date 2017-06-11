@@ -14,7 +14,6 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo1"
@@ -25,44 +24,17 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.Branches" />
         <activity android:name=".activities.Tracks" />
-        <activity android:name=".activities.TrackDetails" />
-        <!-- <activity android:name=".activities.TrackDetails"></activity> -->
-        <!-- <activity android:name=".activities.StudentCourseList"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <!-- <activity -->
-        <!-- android:name=".activities.EventList"></activity> -->
-        <!-- android:label="@string/title_activity_event_list" -->
-        <!-- android:theme="@style/AppTheme_NoActionBar" /> -->
-        <!-- <activity android:name=".activities.StudentCourseList" /> -->
-
         <activity android:name=".activities.OurWalkthrough">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity -->
-        <!-- android:name=".activities.EventList"></activity> -->
-        <!-- android:label="@string/title_activity_event_list" -->
-        <!-- android:theme="@style/AppTheme_NoActionBar" /> -->
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
         <activity android:name=".fragments.StudentsOfTrack" />
 
-        <!-- <activity android:name=".activities.LoginActivity" -->
-        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
         <activity android:name=".activities.StaffSideMenuActivity" />
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
@@ -80,9 +52,7 @@
 
         <activity android:name=".activities.Schedule" />
         <activity android:name=".activities.UploadImage">
-
         </activity>
-
         <activity android:name=".activities.CompanyStudentProfile" />
         <activity android:name=".activities.CompanyJobPost" />
 
@@ -90,12 +60,7 @@
             android:name=".services.ScheduleChanged"
             android:exported="false"></service>
         <activity android:name=".activities.GraduatesByTrack"></activity>
-        <!-- <activity android:name=".activities.Schedule" /> -->
-        <!--<activity android:name=".activities.GraduatesByTrack" />-->
         <activity android:name=".activities.CompanyProfileActivity"></activity>
-        <!-- <activity android:name=".activities.Schedule" /> -->
-
-
         <activity android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -103,8 +68,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>
