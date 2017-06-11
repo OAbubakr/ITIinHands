@@ -57,6 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:paddingTop="7dp"
                         android:src="@drawable/job_email"/>
 
                     <LinearLayout
@@ -93,6 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:paddingTop="7dp"
                         android:src="@drawable/job_title"/>
 
                     <LinearLayout
@@ -129,6 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:paddingTop="5dp"
                         android:src="@drawable/job_desc"/>
 
                     <LinearLayout
@@ -165,6 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:paddingTop="5dp"
                         android:src="@drawable/job_yexp"/>
 
                     <LinearLayout
@@ -202,6 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:paddingTop="5dp"
                         android:src="@drawable/job_close_date"/>
 
                     <LinearLayout
@@ -239,6 +244,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:paddingTop="5dp"
                         android:src="@drawable/job_need"/>
 
                     <LinearLayout

@@ -1,35 +1,16 @@
 package com.iti.itiinhands.networkinterfaces;
 
-import com.iti.itiinhands.beans.*;
-import com.iti.itiinhands.beans.InstructorEvaluation;
 import com.iti.itiinhands.beans.JobOpportunity;
-import com.iti.itiinhands.model.Branch;
-import com.iti.itiinhands.model.Company;
-import com.iti.itiinhands.model.Course;
-import com.iti.itiinhands.beans.EmpHour;
-import com.iti.itiinhands.beans.Event;
-import com.iti.itiinhands.beans.StudentGrade;
-import com.iti.itiinhands.model.JobVacancy;
-import com.iti.itiinhands.model.Branch;
-import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
-import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.*;
 import com.iti.itiinhands.model.behance.BehanceData;
-import com.iti.itiinhands.model.schedule.SessionModel;
-
-import java.util.ArrayList;
 
 import com.iti.itiinhands.model.Response;
-import com.iti.itiinhands.model.schedule.Supervisor;
-
-import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -81,6 +62,12 @@ public interface NetworkApi {
 
     @GET("profile/onGetUserData")
     public Call<Response> getUserData(@Query("token") int token,@Query("userType") int userType);
+
+    @GET("profile/onGetUserDataOther")
+    public Call<Response> getUserDataOther(@Query("userId") int userID,@Query("userType") int userType);
+    @GET("sendScheduleChange")
+    public Call<Response> sendScheduleChange(@Query("platformIntakeId") int platformIntakeId);
+
 
     @POST("profile/onSetUserData")
     public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);

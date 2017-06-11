@@ -14,17 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.GraduateSideMenu;
 import com.iti.itiinhands.activities.SideMenuActivity;
-import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.Response;
@@ -33,7 +29,6 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.services.LinkedInLogin;
 import com.iti.itiinhands.utilities.Constants;
-import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
@@ -48,7 +43,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -85,8 +79,9 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     int token;
     private SideMenuActivity studentActivity;
     private GraduateSideMenu graduateActivity;
-    private String behanceImageUrl;
-    private String gitImageUrl;
+//    private String behanceImageUrl;
+//    private String gitImageUrl;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +110,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
         networkManager = NetworkManager.getInstance(getContext());
         myRef=this;
+
         prepareView();
 
         ///change profile pic
@@ -158,8 +154,16 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userData.setGitUrl(gitUrl);
-                userData.setBehanceUrl(behanceUrl);
+                int x = githubEt.getText().length();
+                if(githubEt.getText().toString()!=null || githubEt.getText().length()>0)
+                    userData.setGitUrl(gitUrl);
+                else
+                    userData.setGitUrl(null);
+                if(behanceEt.getText().toString()!=null || behanceEt.getText().length()>0)
+                    userData.setBehanceUrl(behanceUrl);
+                else
+                    userData.setBehanceUrl(null);
+
                 userData.setLinkedInUrl(linkedInUrl);
                 userData.setStudentEmail(emailEt.getText().toString());
                 userData.setStudentMobile(mobileEt.getText().toString());
