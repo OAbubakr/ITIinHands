@@ -91,7 +91,7 @@
             android:exported="false"></service>
         <activity android:name=".activities.GraduatesByTrack"></activity>
         <!-- <activity android:name=".activities.Schedule" /> -->
-        <activity android:name=".activities.GraduatesByTrack" />
+        <!--<activity android:name=".activities.GraduatesByTrack" />-->
         <activity android:name=".activities.CompanyProfileActivity"></activity>
         <!-- <activity android:name=".activities.Schedule" /> -->
 

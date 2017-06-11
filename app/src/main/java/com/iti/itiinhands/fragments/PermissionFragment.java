@@ -347,7 +347,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
                     } else {
 
-                        send.setEnabled(false);
+                        if(send!=null)   send.setEnabled(false);
                         errorMessageComment.setText("");
                         errorMessageComment.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         permission.setComment(cause.getText().toString());
@@ -399,16 +399,16 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     Supervisor supervisor = DataSerializer.convert(response.getResponseData(), Supervisor.class);
                     supervisorName.setText(supervisor.getName());
                     permission.setEmpID(supervisor.getId());
-                    send.setEnabled(true);
+                    if(send!=null)   send.setEnabled(true);
 
 
                 } else {
 
-                    Toast.makeText(getActivity(), "Your Permission has been sent successfully", Toast.LENGTH_SHORT).show();
+                  if(getActivity()!=null)  Toast.makeText(getActivity(), "Your Permission has been sent successfully", Toast.LENGTH_SHORT).show();
 
                     cause.setText("");
 
-                    send.setEnabled(true);
+                if(send!=null)    send.setEnabled(true);
 
 
                 }
@@ -455,11 +455,12 @@ onFail();
         if(permission.getEmpID()==0){
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
-            send.setEnabled(false);
+            if(send!=null)    send.setEnabled(false);
         }else{
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
-            send.setEnabled(true);
+            if(send!=null)   send.setEnabled(true);
+            if(send!=null)   send.setEnabled(true);
         }
 
     }
