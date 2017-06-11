@@ -10,6 +10,7 @@ public class UserLogin implements Serializable {
     private String token;
     private String expiryDate;
     private String tokenType;
+    private String refreshToken;
 
     public String getRefreshToken() {
         return refreshToken;
@@ -18,8 +19,6 @@ public class UserLogin implements Serializable {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
-
-    private String refreshToken;
 
     public String getToken() {
         return token;

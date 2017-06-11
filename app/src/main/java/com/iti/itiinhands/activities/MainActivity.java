@@ -1,18 +1,9 @@
 package com.iti.itiinhands.activities;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.beans.Event;
-import com.iti.itiinhands.beans.InstructorEvaluation;
-import com.iti.itiinhands.beans.Notification;
-import com.iti.itiinhands.beans.StudentCourse;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

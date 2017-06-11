@@ -1,127 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:weightSum="2"
-    android:background="@drawable/bg">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
-    <ProgressBar
-    style="?android:attr/progressBarStyle"
-    android:layout_width="100dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_centerHorizontal="true"
-    android:id="@+id/progressBar" />
-    </RelativeLayout>
+    android:padding="16dp">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-    <FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="3">
-
-    <com.github.sundeepk.compactcalendarview.CompactCalendarView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:compactCalendarTargetHeight="250dp"
-    app:compactCalendarTextSize="16sp"
-    app:compactCalendarTextColor="#484848"
-    app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
-    app:compactCalendarCurrentDayTextColor="@android:color/white"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:background="@drawable/eventcal"
-    android:id="@+id/calenderView"/>
-
-    </FrameLayout>
-
-
-
-    </LinearLayout>
-
-
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-
-        android:background="@drawable/eventcellbackground">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/eventcelledge"/>
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#484848"
-                    android:textSize="18dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="10dp"
-                    android:id="@+id/C_event_name"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="18dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="10dp"
-                    android:id="@+id/C_event_place"/>
-            </LinearLayout>
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:id="@+id/month"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textColor="#7f0000"
-                android:textSize="18dp"
-                android:id="@+id/C_event_date"/>
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=", "
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
         </LinearLayout>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:paddingTop="8dp">
+
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/calenderView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+                app:compactCalendarCurrentDayTextColor="@android:color/white"
+                app:compactCalendarTargetHeight="270dp"
+                app:compactCalendarTextColor="#484848"
+                app:compactCalendarTextSize="16sp" />
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/event_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
 
+</ScrollView>
 
 
+    <!----><!--<RelativeLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="0dp"--><!--android:layout_weight="1">-->
+
+    <!--<RelativeLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:gravity="center">-->
+
+    <!--<ProgressBar--><!--android:id="@+id/progressBar"--><!--style="?android:attr/progressBarStyle"--><!--android:layout_width="100dp"--><!--android:layout_height="wrap_content"--><!--android:layout_centerHorizontal="true"--><!--android:layout_gravity="center" />--><!--</RelativeLayout>-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:orientation="vertical">-->
 
 
+    <!--<FrameLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="0dp"--><!--android:layout_weight="3">-->
 
-</LinearLayout>
+    <!----><!--</FrameLayout>-->
+
+
+    <!--</LinearLayout>-->
+
+
+    <!--</RelativeLayout>-->
+
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_marginTop="20dp"--><!--android:background="@drawable/eventcellbackground"--><!--android:orientation="horizontal"--><!--android:paddingBottom="5dp"-->
+
+    <!--android:paddingTop="5dp">-->
+
+    <!--<ImageView--><!--android:layout_width="wrap_content"--><!--android:layout_height="match_parent"--><!--android:background="@drawable/eventcelledge" />-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:orientation="horizontal"--><!--android:weightSum="3">-->
+
+    <!--<LinearLayout--><!--android:layout_width="0dp"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="2"--><!--android:orientation="vertical">-->
+
+    <!--<TextView--><!--android:id="@+id/C_event_name"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:paddingLeft="20dp"--><!--android:paddingRight="10dp"--><!--android:textColor="#484848"--><!--android:textSize="18dp" />-->
+
+    <!--<TextView--><!--android:id="@+id/C_event_place"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:paddingLeft="20dp"--><!--android:paddingRight="10dp"--><!--android:textColor="@android:color/darker_gray"--><!--android:textSize="18dp" />--><!--</LinearLayout>-->
+
+    <!--<TextView--><!--android:id="@+id/C_event_date"--><!--android:layout_width="0dp"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center_vertical"--><!--android:layout_weight="1"--><!--android:textColor="#7f0000"--><!--android:textSize="18dp" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+
