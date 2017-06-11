@@ -80,7 +80,7 @@ public interface NetworkApi {
     public Call<Response> getJobs();
 
     @GET("profile/onGetUserData")
-    public Call<Response> getUserData(@Query("token") String token,@Query("userType") int userType);
+    public Call<Response> getUserData(@Query("token") int token,@Query("userType") int userType);
 
     @POST("profile/onSetUserData")
     public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
@@ -100,8 +100,11 @@ public interface NetworkApi {
 
 
 //////////
-@GET("getStudentsByTrackId")
+    @GET("getStudentsByTrackId")
     public Call<Response>getAllStudentsByTracId(@Query("id")int id);
+
+    @GET("gradByIntakeAndTrack")
+    public Call<Response>getAllGraduatesByTracId(@Query("id")int id,@Query("platformId")int platformId);
 
     @GET
     public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
@@ -131,6 +134,9 @@ public interface NetworkApi {
 
     @GET("getInstructorEvaluation")
     public Call<Response> getInstructorEvaluation(@Query("instId") int instId);
+
+    @GET("getIntakes")
+    public Call<Response> getIntakes();
 
     @GET("getAllCompanies")
     public Call<Response> getAllCompanies();

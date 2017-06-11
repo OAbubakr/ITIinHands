@@ -4,19 +4,21 @@
     android:layout_height="match_parent"
     >
     <include layout="@layout/toolbar" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/trackName"
-        android:textColor="@color/colorPrimary"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:id="@+id/trackName"-->
+        <!--android:textColor="@color/colorPrimary"/>-->
 
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_below="@+id/trackName"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentBottom="true"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_height="wrap_content"
         android:id="@+id/studentsList"
         >
@@ -35,4 +37,5 @@
 
             android:id="@+id/progressBar" />
     </RelativeLayout>
+
 </LinearLayout>

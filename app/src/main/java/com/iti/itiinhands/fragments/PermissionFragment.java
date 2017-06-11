@@ -222,22 +222,27 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
+        if(response !=null) {
 
-        if (response.getStatus().equals(Response.SUCCESS)) {
+            if (response.getStatus().equals(Response.SUCCESS)) {
 
-            Supervisor supervisor = DataSerializer.convert(response.getResponseData(),Supervisor.class);
-            supervisorName.setText(supervisor.getName());
-            permission.setEmpID(supervisor.getId());
+                Supervisor supervisor = DataSerializer.convert(response.getResponseData(), Supervisor.class);
+                supervisorName.setText(supervisor.getName());
+                permission.setEmpID(supervisor.getId());
+            }
+
             spinner.setVisibility(View.GONE);
         }
 
+        }
 
-    }
 
     @Override
     public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
         spinner.setVisibility(View.GONE);
+
+
 
     }
 }

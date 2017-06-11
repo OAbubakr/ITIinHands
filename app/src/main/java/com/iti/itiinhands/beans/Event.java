@@ -18,6 +18,9 @@ public class Event  {
     private long eventEnd;
 
 
+
+
+
     public int getEventId() {
         return eventId;
     }
@@ -57,4 +60,5 @@ public class Event  {
     public void setEventEnd(long eventEnd) {
         this.eventEnd = eventEnd;
     }
+
 }

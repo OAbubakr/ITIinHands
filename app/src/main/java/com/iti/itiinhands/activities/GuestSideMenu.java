@@ -1,14 +1,12 @@
 package com.iti.itiinhands.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +17,6 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
@@ -28,12 +25,7 @@ import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
-import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
-import com.iti.itiinhands.utilities.Constants;
-import com.iti.itiinhands.utilities.UserDataSerializer;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +41,15 @@ public class GuestSideMenu extends AppCompatActivity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int[] images = {R.drawable.social, R.drawable.home_512, R.drawable.forums, R.drawable.info_512, R.drawable.outbox};
+    int[] images={
+            R.drawable.about_ti,
+            R.drawable.tracks,
+            R.drawable.event,
+            R.drawable.map,
+            R.drawable.g_login};
+    int[] second;
+    int[] third;
+    int[] forth;
 
 
     @Override
@@ -101,7 +101,8 @@ public class GuestSideMenu extends AppCompatActivity {
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
         TextView track = (TextView) headerView.findViewById(R.id.track_name);
-        name.setVisibility(View.GONE);
+        name.setText("Guest");
+        //name.setVisibility(View.GONE);
         track.setVisibility(View.GONE);
 
         ImageView avatar = (ImageView) headerView.findViewById(R.id.imageView);
@@ -130,7 +131,8 @@ public class GuestSideMenu extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 //        /////////////////////
         prepareListData();
-        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images);
+
+        listAdapter = new CustomExpandableListAdapter(this, listDataHeader, listDataChild, images,second,third,forth,5);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -206,9 +208,10 @@ public class GuestSideMenu extends AppCompatActivity {
 
         // Adding child data
         listDataHeader.add("About ITI");
-        listDataHeader.add("Tracks");
-        listDataHeader.add("Events");
+        listDataHeader.add("Branches and Tracks");
         listDataHeader.add("Maps");
+        listDataHeader.add("Events");
+
         listDataHeader.add("Login");
 
         // Adding child data
@@ -228,7 +231,7 @@ public class GuestSideMenu extends AppCompatActivity {
         //check extras
         if(getIntent().getExtras() != null){
 
-            Fragment announcementFragment = new AnnouncementFragment();
+            Fragment announcementFragment = new EventListFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, announcementFragment).commit();
         }
 

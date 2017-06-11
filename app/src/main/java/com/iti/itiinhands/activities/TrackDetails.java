@@ -72,7 +72,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         instructorsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         instructorsRecyclerView.setLayoutManager(instructorsLayoutManager);
 
-        coursesLayoutManager = new GridLayoutManager(this, 3);
+        coursesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
         spinner = (ProgressBar) findViewById(R.id.progressBar);
