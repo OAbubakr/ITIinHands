@@ -44,6 +44,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
     String email, yearNumb, closingDate;
     int noNeed;
     Boolean check = true, closeDateF = true;
+    String compName = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,21 +55,25 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_post_job, container, false);
 
+        networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
+        companyName = (TextView) view.findViewById(R.id.comp_name);
+        companyImage = (ImageView) view.findViewById(R.id.comp_logo);
+
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         final int companyId = data.getInt(Constants.USER_TYPE, 0);
         UserData userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
-        final String compName = userData.getCompanyName();
-        final String compImage = userData.getImagePath();
 
-        networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
-        companyName = (TextView) view.findViewById(R.id.comp_name);
-        companyName.setText(compName);
+        if(userData != null){
+            compName = userData.getCompanyName();
+            String compImage = userData.getCompanyLogoPath();
+            System.out.println("----------------------------"+ compImage);
 
-        companyImage = (ImageView) view.findViewById(R.id.comp_logo);
-        Picasso.with(getActivity().getApplicationContext())
-                .load(compImage)
-                .into(companyImage);
-
+            companyName.setText(compName);
+            Picasso.with(getActivity().getApplicationContext())
+                    .load(compImage)
+                    .placeholder(R.drawable.comp_logo)
+                    .into(companyImage);
+        }
 
         //Edit Text For Input Date
         jobTitle = (EditText) view.findViewById(R.id.jobTitle);
@@ -171,25 +176,22 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
                 }
 
                 //----------------------------------CLOSING DATE------------------------------------
-                String closingDate = jobClosingDate.getText().toString();
                 if(!closeDateF || closingDate.isEmpty()){
                     checkCloseDate.setText("Please enter valid closing date");
                     checkCloseDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                     check = false;
                 }
-                System.out.println("Check " + check + "- closing date " + closeDateF);
 
                 if(check){ //All data is valid
 
-                    Toast.makeText(getContext(),"OOOK",Toast.LENGTH_SHORT).show();
                     JobOpportunity jobOpportunity = new JobOpportunity(companyId, "", title, desc, yearNumb,
                         closingDate, email, noNeed, 0, "", compName);
+                    System.out.println("--------------------------"+ companyId + title + desc + yearNumb
+                    + closingDate + email + noNeed + compName);
 
                     if (networkManager.isOnline()){
                         networkManager.postJob(PostJobFragment.this, jobOpportunity);
                     }
-                }else{
-                    Toast.makeText(getContext(),"Nooot OOOK",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -214,6 +216,8 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
     @Override
     public void onResponse(Response response) {
+        System.out.println(response.getError());
+        Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
     }
 
     @Override

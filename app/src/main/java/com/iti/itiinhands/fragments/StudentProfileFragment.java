@@ -24,7 +24,17 @@ import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.OkHttpDownloader;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -70,9 +80,8 @@ public class StudentProfileFragment extends Fragment {
         thirdTv = (TextView) view.findViewById(R.id.thirdTvProfileViewId);
         fourthTv = (TextView) view.findViewById(R.id.fourthTvProfileViewId);
         fifthTv = (TextView) view.findViewById(R.id.fifthTvProfileViewId);
-        profilePicIv = (ImageView) view.findViewById(R.id.profile_pic);
         gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
-         profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
+        ImageView profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
         linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);

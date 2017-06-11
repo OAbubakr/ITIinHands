@@ -32,11 +32,10 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
-import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
-import com.iti.itiinhands.fragments.chat.ChatFragment;
+import com.iti.itiinhands.fragments.chat.ChatMainFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.services.ScheduleChanged;
 import com.iti.itiinhands.utilities.Constants;
@@ -220,7 +219,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 1:
-                        fragment = new ChatFragment();
+                        fragment = new ChatMainFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("receiver_type", "staff");
                         fragment.setArguments(bundle);
@@ -324,11 +323,11 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle staff community
-                                fragment = new ChatFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("receiver_type", "staff");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//                                fragment = new ChatFragment();
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("receiver_type", "staff");
+//                                fragment.setArguments(bundle);
+//                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
                                 //handle graduate community

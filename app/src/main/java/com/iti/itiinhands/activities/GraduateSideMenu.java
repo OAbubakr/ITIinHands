@@ -18,7 +18,6 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
@@ -29,7 +28,7 @@ import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.utilities.Constants;

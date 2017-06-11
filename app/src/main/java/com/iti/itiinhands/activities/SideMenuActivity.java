@@ -23,16 +23,13 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
-import com.iti.itiinhands.beans.Announcement;
-import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.EventTabFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
@@ -136,7 +133,8 @@ public class SideMenuActivity extends AppCompatActivity {
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
-        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).
+                placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
 
 
         // Add header view to the expandable list

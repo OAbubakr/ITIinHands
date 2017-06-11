@@ -1,4 +1,4 @@
-package com.iti.itiinhands.beans;
+package com.iti.itiinhands.model;
 
 
 import com.google.gson.annotations.Expose;

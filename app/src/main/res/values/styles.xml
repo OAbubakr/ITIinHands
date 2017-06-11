@@ -10,5 +10,7 @@
     <style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">#7f0000</item>
     </style>
-
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 </resources>

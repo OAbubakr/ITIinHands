@@ -22,9 +22,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
