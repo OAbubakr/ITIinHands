@@ -28,6 +28,7 @@ import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
+import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
@@ -307,7 +308,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("ITI");
-        listDataHeader.add("Companies");
+        listDataHeader.add("Job Posts");
         listDataHeader.add("Logout");
 
 

@@ -118,18 +118,22 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null) {
+            if (response.getStatus().equals(Response.SUCCESS)) {
 
-            ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<SessionModel>>(){}.getType());
-            ScheduleAdapter adapter = new ScheduleAdapter(sessions);
-            List<String> groups = adapter.getGroups();
-            HashMap<String, List<SessionModel>> details = adapter.getDetails();
-            if (getContext() != null) {
-                ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
-                recyclerView.setAdapter(scheduleCardAdapter);
+                ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<SessionModel>>() {
+                }.getType());
+                ScheduleAdapter adapter = new ScheduleAdapter(sessions);
+                List<String> groups = adapter.getGroups();
+                HashMap<String, List<SessionModel>> details = adapter.getDetails();
+                if (getContext() != null) {
+                    ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
+                    recyclerView.setAdapter(scheduleCardAdapter);
+                }
             }
-            spinner.setVisibility(View.GONE);
         }
+        spinner.setVisibility(View.GONE);
+
     }
 
     @Override

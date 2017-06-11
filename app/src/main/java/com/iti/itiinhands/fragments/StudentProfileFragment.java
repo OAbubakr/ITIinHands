@@ -4,12 +4,17 @@ package com.iti.itiinhands.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,10 +99,28 @@ public class StudentProfileFragment extends Fragment {
             editBtn.setVisibility(View.GONE);
             userData = (UserData) b.getSerializable("student");
         }
-        if (userData != null) {
-            if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
-            if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
-            if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
+        if(userData != null){
+            if(userData.getLinkedInUrl()==null) {
+                linkedInBtn.setEnabled(false);
+                linkedInBtn.setImageResource(R.drawable.group1205);
+            }else{
+                linkedInBtn.setEnabled(true);
+                linkedInBtn.setImageResource(R.drawable.linked_in);
+            }
+            if(userData.getBehanceUrl()==null){
+                behanceBtn.setEnabled(false);
+                behanceBtn.setImageResource(R.drawable.group1207);
+            }else{
+                behanceBtn.setEnabled(true);
+                behanceBtn.setImageResource(R.drawable.behance);
+            }
+            if(userData.getGitUrl()==null){
+                gitBtn.setEnabled(false);
+                gitBtn.setImageResource(R.drawable.githubgray);
+            }else{
+                gitBtn.setEnabled(true);
+                gitBtn.setImageResource(R.drawable.github);
+            }
         }
 
 

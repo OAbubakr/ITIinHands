@@ -34,6 +34,7 @@ public class UserData implements Serializable {
         this.platformIntakeId = platformIntakeId;
     }
 
+    private String intakeName;
     private String branchName;
     private String trackName;
     private String name;
@@ -68,6 +69,14 @@ public class UserData implements Serializable {
     private int employeePlatformIntake;
     private int employeeSubTrackId;
     private String employeeSubTrackName;
+
+    public String getIntakeName() {
+        return intakeName;
+    }
+
+    public void setIntakeName(String intakeName) {
+        this.intakeName = intakeName;
+    }
 
     public String getGitImageUrl() {
         return gitImageUrl;
