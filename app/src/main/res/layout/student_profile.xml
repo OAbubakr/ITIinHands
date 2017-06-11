@@ -85,7 +85,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:paddingLeft="10dp"
-                            android:text="intake 37"
+                            android:text=""
                             android:textColor="#000000" />
                     </LinearLayout>
 
@@ -106,7 +106,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="track name is vjfnjvnf"
+                            android:text=""
                             android:textColor="#000000" />
                     </LinearLayout>
 
@@ -120,14 +120,14 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/email" />
+                            android:src="@drawable/s_email" />
 
                         <TextView
                             android:id="@+id/fourthTvProfileViewId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="track name is vjfnjvnf"
+                            android:text=""
                             android:textColor="#000000" />
                     </LinearLayout>
 
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="track name is vjfnjvnf"
+                            android:text=""
                             android:textColor="#000000" />
                     </LinearLayout>
 

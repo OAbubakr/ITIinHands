@@ -124,12 +124,19 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
                 break;
 
+            //graduate
             case 3:
 
                 switch (groupPosition)
                 {
                     case 1:
+                        //for comapanies profile
                         childImage.setImageResource(trackImages[childPosition]);
+                        break;
+
+                    case 2:
+                        //for job posts
+                        childImage.setImageResource(itiImages[childPosition]);
                         break;
                     default:
                         break;
@@ -240,7 +247,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView arrawImage=(ImageView)convertView.findViewById(R.id.arrow);
 
 
-        if(_listDataChild.get(_listDataHeader.get(groupPosition)).size()>1)
+        if(_listDataChild.get(_listDataHeader.get(groupPosition)).size()>0)
         {
             arrawImage.setVisibility(View.VISIBLE);
         }

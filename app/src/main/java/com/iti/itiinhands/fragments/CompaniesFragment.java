@@ -62,10 +62,12 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
     public void onResponse(Response response) {
         if (response != null ) {
             CompaniesProfiles data = DataSerializer.convert(response.getResponseData(),CompaniesProfiles.class) ;
-            companiesList = data.getCompanies();
-            CompaniesListAdapter companiesListAdapter = new CompaniesListAdapter(getContext(),companiesList);
-            companiesLv.setAdapter(companiesListAdapter);
-            spinner.setVisibility(View.GONE);
+            if(data != null){
+                companiesList = data.getCompanies();
+                CompaniesListAdapter companiesListAdapter = new CompaniesListAdapter(getContext(),companiesList);
+                companiesLv.setAdapter(companiesListAdapter);
+                spinner.setVisibility(View.GONE);
+            }
         }
     }
 

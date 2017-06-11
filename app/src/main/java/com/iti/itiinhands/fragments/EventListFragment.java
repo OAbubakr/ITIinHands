@@ -20,9 +20,10 @@ import android.widget.Toast;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.adapters.EventAdapter;
-import com.iti.itiinhands.beans.Event;
+
+import com.iti.itiinhands.adapters.events.EventAdapter;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Event;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;

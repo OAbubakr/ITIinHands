@@ -23,16 +23,13 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
-import com.iti.itiinhands.beans.Announcement;
-import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.EventTabFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
@@ -65,8 +62,8 @@ public class SideMenuActivity extends AppCompatActivity {
             R.drawable.sm_logout
     };
 
-    int[] myTrackImages={ R.drawable.schedule,R.drawable.permission,R.drawable.course_list};
-    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.event,R.drawable.map,R.drawable.bus,R.drawable.announce};
+    int[] myTrackImages={ R.drawable.schedule,R.drawable.sm_permission,R.drawable.course_list};
+    int[] itiImages={R.drawable.about_ti,R.drawable.tracks,R.drawable.sm_event,R.drawable.map,R.drawable.bus,R.drawable.announce};
     int[] third={R.drawable.sm_company,R.drawable.sm_job};
 
     UserData userData;
@@ -133,7 +130,8 @@ public class SideMenuActivity extends AppCompatActivity {
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
-        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).
+                placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
 
 
         // Add header view to the expandable list
@@ -263,7 +261,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 4:
                                 //Bus Services
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "This service is not available at the moment.", Toast.LENGTH_LONG).show();
                                 break;
                             case 5:
                                 //Announcements
