@@ -110,7 +110,7 @@ public class GuestSideMenu extends AppCompatActivity {
         //set name and track or company of the user
 
 
-        avatar.setImageResource(R.drawable.logo1);
+        avatar.setImageResource(R.drawable.instructor_avatar);
 
 //        Picasso.with(getApplicationContext()).load(R.d).into(avatar);
 

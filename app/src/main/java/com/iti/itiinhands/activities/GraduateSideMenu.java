@@ -135,7 +135,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
-        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.instructor_avatar).into(avatar);
 
 
         ///

@@ -134,7 +134,7 @@ public class SideMenuActivity extends AppCompatActivity {
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
         Picasso.with(getApplicationContext()).load(userData.getImagePath()).
-                placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+                placeholder(R.drawable.student_avatar).into(avatar);
 
 
         // Add header view to the expandable list
