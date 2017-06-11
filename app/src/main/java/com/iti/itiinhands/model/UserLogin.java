@@ -11,6 +11,16 @@ public class UserLogin implements Serializable {
     private String expiryDate;
     private String tokenType;
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    private String refreshToken;
+
     public String getToken() {
         return token;
     }

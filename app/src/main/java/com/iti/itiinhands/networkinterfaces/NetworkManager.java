@@ -20,6 +20,7 @@ import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
+import com.iti.itiinhands.model.RenewTokenResponse;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.beans.Event;
@@ -731,6 +732,26 @@ System.out.print(response.body());
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
+
+    public void renewAccessToken(NetworkResponse networkResponse, String refreshToken){
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<RenewTokenResponse> call = web.renewAccessToken(refreshToken);
+
+        call.enqueue(new Callback<RenewTokenResponse>() {
+            @Override
+            public void onResponse(Call<RenewTokenResponse> call, retrofit2.Response<RenewTokenResponse> response) {
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RenewTokenResponse> call, Throwable t) {
                 t.printStackTrace();
                 Log.e("network", t.toString());
                 network.onFailure();

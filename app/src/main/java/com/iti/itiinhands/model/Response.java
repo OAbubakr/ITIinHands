@@ -16,6 +16,12 @@ public class Response implements Serializable {
     public static String SUCCESS = "SUCCESS";
     public static String FAILURE = "FAILURE";
 
+    //authintication error codes
+    public static final String INVALID_ACCESS_TOKEN = "INVALID_ACCESS_TOKEN";
+    public static final String EXPIRED_ACCESS_TOKEN = "EXPIRED_ACCESS_TOKEN";
+    public static final String INVALID_REFRESH_TOKEN = "INVALID_REFRESH_TOKEN";
+    public static final String EXPIRED_REFRESH_TOKEN = "EXPIRED_REFRESH_TOKEN";
+
 
     public Object getResponseData() {
         return responseData;
