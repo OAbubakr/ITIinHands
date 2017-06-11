@@ -64,6 +64,8 @@ public class StudentProfileFragment extends Fragment {
     private ImageView profile_pic;
     private int flag;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,7 @@ public class StudentProfileFragment extends Fragment {
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
 
 
+
         Bundle b = getArguments(); // company
         if (b != null) flag = b.getInt("flag", 0);
         if (flag == 1) {
@@ -97,7 +100,7 @@ public class StudentProfileFragment extends Fragment {
             if (userData.getLinkedInUrl() == null) linkedInBtn.setEnabled(false);
             if (userData.getBehanceUrl() == null) behanceBtn.setEnabled(false);
             if (userData.getGitUrl() == null) gitBtn.setEnabled(false);
-            Picasso.with(getContext()).load(NetworkManager.BASEURL + userData.getImagePath()).into(profilePicIv);
+//            Picasso.with(getContext()).load(NetworkManager.BASEURL + userData.getImagePath()).into(profile_pic);
         }
 
 
