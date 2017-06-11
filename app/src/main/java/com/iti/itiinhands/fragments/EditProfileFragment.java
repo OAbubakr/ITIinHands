@@ -113,6 +113,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
         prepareView();
 
+
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +126,9 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         });
 
         ///search for github account
+
+
+
         githubSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,8 +308,8 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             linkedInUrl = userData.getLinkedInUrl();
         }
 
-        if (userData.getImagePath() != null)
-            Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
+//        if (userData.getImagePath() != null)
+//            Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
     }
 
     private String prepareUrl(String url){

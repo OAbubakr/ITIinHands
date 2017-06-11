@@ -36,6 +36,7 @@ import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
 import com.iti.itiinhands.fragments.chat.ChatMainFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.services.ScheduleChanged;
 import com.iti.itiinhands.utilities.Constants;
@@ -295,7 +296,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle events fragment
-                                fragment = new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
