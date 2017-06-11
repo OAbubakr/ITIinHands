@@ -61,6 +61,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
             companyImage = (ImageView) itemView.findViewById(R.id.img);
 
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();
@@ -110,6 +112,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
 
         Picasso.with(context)
                 .load(jobVacancies.get(i).getCompanyLogoPath())
+                .placeholder(R.id.company_logo)
+                .error(R.id.company_logo)
                 .into(viewHolder.companyImage);
 
 
