@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CompanyProfileFragment extends Fragment  {
+public class CompanyProfileFragment extends Fragment {
 
     TextView name;
     TextView email;
@@ -121,7 +121,7 @@ public class CompanyProfileFragment extends Fragment  {
                 }
             }
 
-            //**********************************************website action***************************
+        //**********************************************website action***************************
 
             website.setOnClickListener(new View.OnClickListener() {
                 @Override
