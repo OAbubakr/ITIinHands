@@ -4,6 +4,10 @@
         "source": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
     },
     {
+        "merged": "E:\\ITI\\Graduation Project\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "E:\\ITI\\Graduation Project\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
         "merged": "E:\\GraduationProject\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\ic_launcher.png",
         "source": "E:\\GraduationProject\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
     }
