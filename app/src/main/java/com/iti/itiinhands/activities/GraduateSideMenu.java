@@ -28,7 +28,6 @@ import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;

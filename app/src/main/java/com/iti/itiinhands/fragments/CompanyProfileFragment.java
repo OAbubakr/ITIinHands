@@ -229,4 +229,4 @@ public class CompanyProfileFragment extends Fragment  {
     }
 
 
-}
+
