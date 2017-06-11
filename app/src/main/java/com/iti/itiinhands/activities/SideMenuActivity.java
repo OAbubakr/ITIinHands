@@ -209,6 +209,7 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 1:
                                 //handle grades fragment
                                 fragment = new PermissionFragment();
+
                                 break;
                             case 2:
                                 //handle list of courses fragment

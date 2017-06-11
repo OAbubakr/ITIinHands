@@ -124,7 +124,7 @@ public class StudentProfileFragment extends Fragment {
 
 
         firstTv.setText(userData.getName());
-        secondTv.setText("Intake" +new Integer(userData.getIntakeId()).toString()+ userData.getBranchName());
+        secondTv.setText("Intake" + new Integer(userData.getIntakeId()).toString() + userData.getBranchName());
         thirdTv.setText(userData.getTrackName());
 //        System.out.println("*********"+userData.getImagePath().toString());
 
@@ -206,5 +206,6 @@ public class StudentProfileFragment extends Fragment {
         startActivity(intent);
 
     }
+
 
 }
