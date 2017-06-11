@@ -161,12 +161,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
-//                    case 2:
-//                        //job posts
-//                        fragment = new AllJobPostsFragment();
-//                        mDrawerLayout.closeDrawer(expListView);
-//                        break;
 
                     case 4:
                         //logout action
@@ -196,7 +192,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 
                 return false;
@@ -391,13 +386,13 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(LinkedInFlag){
-            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if(LinkedInFlag){
+//            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//        }
+//    }
 
     public void setLinkedInFlag(boolean linkedInFlag){
         this.LinkedInFlag=linkedInFlag;
