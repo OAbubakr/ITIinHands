@@ -1,5 +1,8 @@
 package com.iti.itiinhands.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
@@ -28,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
@@ -42,9 +46,13 @@ import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
+import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.createAlarm;
 
 public class StaffSideMenuActivity extends AppCompatActivity {
 
@@ -123,10 +131,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         });
 
-        /*
-        *
-        * */
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

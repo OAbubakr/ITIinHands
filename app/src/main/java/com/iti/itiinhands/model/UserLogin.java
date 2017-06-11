@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class UserLogin implements Serializable {
     private String token;
-    private String expiryDate;
+    private long expiryDate;
     private String tokenType;
     private String refreshToken;
 
@@ -28,11 +28,11 @@ public class UserLogin implements Serializable {
         this.token = token;
     }
 
-    public String getExpiryDate() {
+    public long getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(long expiryDate) {
         this.expiryDate = expiryDate;
     }
 

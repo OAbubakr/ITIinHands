@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.beans.Graduate;
+import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Response;
@@ -30,6 +31,8 @@ import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
+
+import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
 
 
 /**
@@ -303,6 +306,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             editor.putInt(Constants.USER_ID,data.getId());
             editor.commit();
 
+            /*
+            * starting the access-token update alarm
+            * */
+        //    UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
+
             startActivity(navigationIntent);
             spinner.setVisibility(View.GONE);
             finish();
@@ -322,7 +330,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putString(Constants.TOKEN, responseDataObj.getToken());
                     editor.putString(Constants.REFRESH_TOKEN, responseDataObj.getRefreshToken());
-                    editor.putString(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
+                    editor.putLong(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.commit();
 

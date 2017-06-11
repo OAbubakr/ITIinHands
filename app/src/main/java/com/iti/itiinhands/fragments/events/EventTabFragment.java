@@ -136,4 +136,4 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
     }
 
 
-    }
+}
