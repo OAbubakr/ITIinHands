@@ -108,7 +108,9 @@ public class NetworkManager {
                 }
             }
 */
-            return chain.proceed(request);
+             return response.newBuilder()
+                    .body(ResponseBody.create(response.body().contentType(), s))
+                    .build();
         }
     }
 
