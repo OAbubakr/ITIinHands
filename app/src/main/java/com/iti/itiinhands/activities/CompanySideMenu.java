@@ -161,6 +161,9 @@ public class CompanySideMenu extends AppCompatActivity {
 
                     case 0:
                         fragment = new CompanyProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("flag",2);
+                        fragment.setArguments(bundle);
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
