@@ -22,9 +22,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
@@ -44,8 +43,8 @@ public class GuestSideMenu extends AppCompatActivity {
     int[] images={
             R.drawable.about_ti,
             R.drawable.tracks,
-            R.drawable.event,
             R.drawable.map,
+            R.drawable.sm_event,
             R.drawable.g_login};
     int[] second;
     int[] third;
@@ -146,14 +145,16 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
                     case 1:
                         //tracks fragment
-                        fragment = new BranchesFragment();                        break;
-                    case 2:
-                        //events fragment
-                        fragment = new EventListFragment();
+                        fragment = new BranchesFragment();
                         break;
-                    case 3:
+                    case 2:
+
                         // maps fragment
                         fragment = new BranchesList();
+                        break;
+                    case 3:
+                        //events fragment
+                        fragment = new EventListFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 

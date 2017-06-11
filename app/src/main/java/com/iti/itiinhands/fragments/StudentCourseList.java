@@ -1,15 +1,19 @@
 package com.iti.itiinhands.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
@@ -58,7 +62,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         SCourses_RV.setLayoutManager(linearLayoutManager);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         return view;
     }
 
@@ -67,6 +71,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         if (response.getStatus().equals(Response.SUCCESS)) {
             List<StudentGrade> list = DataSerializer.convert(response.getResponseData(),new TypeToken< List<StudentGrade>>(){}.getType());
 
+            Log.i("courselist","courselist");
 //            List<StudentGrade> list = (List<StudentGrade>) response.getResponseData();
             if (getActivity() != null) {
                 CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
@@ -78,6 +83,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
 }

@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -76,6 +79,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
     int endHourCheck;
 
 
+    ProgressBar spinner;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -372,6 +376,8 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         });
 
 
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
@@ -407,6 +413,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
                 }
 
+            spinner.setVisibility(View.GONE);
             }
         }
 
@@ -414,7 +421,8 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
 
 onFail();
 

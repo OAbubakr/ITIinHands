@@ -18,23 +18,19 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompanyProfileFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.fragments.maps.BranchesList;
-import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
 
@@ -59,7 +55,7 @@ public class CompanySideMenu extends AppCompatActivity {
     int[] itiImages={
             R.drawable.about_ti,
             R.drawable.tracks,
-            R.drawable.event,
+            R.drawable.sm_event,
             R.drawable.map,
             R.drawable.bus,
             R.drawable.announce};
@@ -165,6 +161,9 @@ public class CompanySideMenu extends AppCompatActivity {
 
                     case 0:
                         fragment = new CompanyProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("flag",2);
+                        fragment.setArguments(bundle);
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
@@ -228,10 +227,11 @@ public class CompanySideMenu extends AppCompatActivity {
                                 //handle maps fragment
                                 fragment = new BranchesList();
                                 break;
+
                             case 4:
-                                //handle bus services fragment
-//                                fragment = new BranchesFragment();
+                                fragment= new AnnouncementFragment();
                                 break;
+
                             default:
                                 fragment = new BranchesList();
                                 break;
@@ -298,7 +298,6 @@ public class CompanySideMenu extends AppCompatActivity {
         iti.add("Branches and Tracks");
         iti.add("Events");
         iti.add("Maps");
-        iti.add("Bus Services");
         iti.add("Announcements");
 
 

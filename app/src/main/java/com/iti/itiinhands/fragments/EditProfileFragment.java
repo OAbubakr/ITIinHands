@@ -14,17 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.GraduateSideMenu;
 import com.iti.itiinhands.activities.SideMenuActivity;
-import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.Response;
@@ -33,7 +29,6 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.services.LinkedInLogin;
 import com.iti.itiinhands.utilities.Constants;
-import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
@@ -48,7 +43,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -356,7 +350,8 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 picturePath = cursor.getString(columnIndex);
                 cursor.close();
                 profilePicIv.setImageURI(selectedImage);
-                networkManager.uploadImage(myRef, picturePath, token);
+                int id = sharedPreferences.getInt(Constants.USER_ID,0);
+                networkManager.uploadImage(myRef, picturePath, id);
 
 
                 //edit image path

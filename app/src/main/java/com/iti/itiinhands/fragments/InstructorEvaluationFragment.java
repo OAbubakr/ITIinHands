@@ -2,6 +2,8 @@ package com.iti.itiinhands.fragments;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
     private NetworkManager networkManager;
     private TextView instName;
     private UserData userData;
+    ProgressBar spinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,8 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         instName = (TextView) view.findViewById(R.id.inst_name);
         instName.setText(userData.getEmployeeName()+"`");
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         prepareInstEvalData();
         return view;
     }
@@ -82,11 +88,13 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 //            instEvalList = (ArrayList<InstructorEvaluation>) response.getResponseData();
             instEvalAdapter = new InstructorEvaluationAdapter(instEvalList, getActivity().getApplicationContext());
             recyclerView.setAdapter(instEvalAdapter);
+            spinner.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
 }
