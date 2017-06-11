@@ -106,7 +106,6 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         endTimePart = (LinearLayout) view.findViewById(R.id.endTimePart);
         date = (TextView) view.findViewById(R.id.datedate);
         networkManager = NetworkManager.getInstance(getActivity());
-        send.setEnabled(false);
         if (networkManager.isOnline()) {
             networkManager.getSupervisor(this, userData.getPlatformIntakeId());
         } else {
@@ -159,6 +158,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         permission.setToH(endHourCheck);
         permission.setToMin(endMinuteCheck);
 
+        send.setEnabled(false);
 
         datePart.setOnClickListener(new View.OnClickListener() {
             @Override
