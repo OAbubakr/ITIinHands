@@ -1,44 +1,24 @@
 package com.iti.itiinhands.networkinterfaces;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.iti.itiinhands.activities.EmployeeHours;
-import com.iti.itiinhands.beans.InstructorEvaluation;
 import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.dto.UserData;
-import com.iti.itiinhands.fragments.EditProfileFragment;
-import com.iti.itiinhands.model.Branch;
-import com.iti.itiinhands.model.Company;
-import com.iti.itiinhands.model.Course;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
 import com.iti.itiinhands.model.RenewTokenResponse;
 import com.iti.itiinhands.model.Response;
-import com.iti.itiinhands.beans.EmpHour;
-import com.iti.itiinhands.beans.Event;
-import com.iti.itiinhands.beans.StudentGrade;
-import com.iti.itiinhands.model.JobVacancy;
-import com.iti.itiinhands.model.Branch;
-import com.iti.itiinhands.model.Instructor;
 import com.iti.itiinhands.model.LoginRequest;
-import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.model.behance.BehanceData;
-import com.iti.itiinhands.model.schedule.SessionModel;
-import com.iti.itiinhands.model.schedule.Supervisor;
 import com.iti.itiinhands.utilities.Constants;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -62,10 +42,12 @@ public class NetworkManager {
 
 //    private static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
-//    private static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/";
 
+//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
+//    private static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/"; // Omar ITI
+
+//    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
+    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -98,7 +80,8 @@ public class NetworkManager {
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(readTime, TimeUnit.SECONDS)
-                .connectTimeout(connectTime, TimeUnit.SECONDS).addNetworkInterceptor(new AddHeaderInterceptor())
+                .connectTimeout(connectTime, TimeUnit.SECONDS).addInterceptor(new AddHeaderInterceptor())
+
                 .build();
 
         return okHttpClient;
@@ -113,9 +96,35 @@ public class NetworkManager {
             String token = data.getString(Constants.TOKEN,"");
             Request request = chain.request();
             request = request.newBuilder().addHeader("Authorization",token ).build();
+            okhttp3.Response response = chain.proceed(request);
+            ResponseBody responseBody = response.body();
+            String s = responseBody.string();
+/*
+            Response response2 = new Gson().fromJson(s, Response.class);
+            if(response2.getError() != null){
+                String error = response2.getError();
+                if(error.equals(Response.EXPIRED_ACCESS_TOKEN)){
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                    String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                 //   NetworkManager.getInstance(context).renewAccessToken(this, refreshToken);
+                }
+            }
+*/
             return chain.proceed(request);
         }
     }
+
+    public static final class ForbiddenInterceptor implements Interceptor {
+
+        @Override
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+
+            okhttp3.Response response = chain.proceed(request);
+            return response;
+        }
+    }
+
 
     public void getStudentsGrades(NetworkResponse networkResponse, int id) {
         final NetworkResponse network = networkResponse;
@@ -738,6 +747,51 @@ System.out.print(response.body());
             }
         });
     }
+
+    public void getUserProfileDataOther(NetworkResponse networkResponse, int userType, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getUserDataOther(id,userType);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
+    public void sendScheduleChange(NetworkResponse networkResponse, int platformIntakeID) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.sendScheduleChange(platformIntakeID);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+
+
+    }
+
 
     public void renewAccessToken(NetworkResponse networkResponse, String refreshToken){
         final NetworkResponse network = networkResponse;

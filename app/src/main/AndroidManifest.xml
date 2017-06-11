@@ -13,9 +13,7 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" />
+
 
     <application
         android:allowBackup="true"
@@ -43,9 +41,9 @@
 
         <activity android:name=".activities.OurWalkthrough">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- <activity -->
@@ -80,21 +78,23 @@
         </service>
         <activity android:name=".activities.MapsDetailsActivity" />
 
-        <!-- <activity android:name=".activities.GraduateSideMenu" /> -->
         <activity android:name=".activities.Schedule" />
         <activity android:name=".activities.UploadImage">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
-        <!-- <activity android:name=".activities.GraduateSideMenu" /> -->
-        <!-- <activity android:name=".activities.Schedule" /> -->
+
         <activity android:name=".activities.CompanyStudentProfile" />
         <activity android:name=".activities.CompanyJobPost" />
+
+        <service
+            android:name=".services.ScheduleChanged"
+            android:exported="false"></service>
+        <activity android:name=".activities.GraduatesByTrack"></activity>
         <!-- <activity android:name=".activities.Schedule" /> -->
         <activity android:name=".activities.GraduatesByTrack" />
+        <activity android:name=".activities.CompanyProfileActivity"></activity>
+        <!-- <activity android:name=".activities.Schedule" /> -->
+
 
         <activity android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">

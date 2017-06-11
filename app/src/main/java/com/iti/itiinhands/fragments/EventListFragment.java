@@ -2,6 +2,7 @@ package com.iti.itiinhands.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,9 +20,10 @@ import android.widget.Toast;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.adapters.EventAdapter;
-import com.iti.itiinhands.beans.Event;
+
+import com.iti.itiinhands.adapters.events.EventAdapter;
 import com.iti.itiinhands.beans.StudentGrade;
+import com.iti.itiinhands.model.Event;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
@@ -82,7 +84,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         prepareEventData();
         return view;
     }
@@ -134,6 +136,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
     }
 
     public void onButtonPressed(Uri uri) {

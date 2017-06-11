@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CompanyProfileFragment extends Fragment implements NetworkResponse {
+public class CompanyProfileFragment extends Fragment  {
 
     TextView name;
     TextView email;
@@ -71,7 +72,26 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse 
 
 
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            int flag = bundle.getInt("flag",1);
+
+
+            if (flag == 1){
+                Log.i("flag","from all companies");
+                Company company = (Company) bundle.getSerializable("company");
+                name.setText(company.getCompanyName());
+                mobile.setText(company.getCompanyMobile());
+                address.setText(company.getCompanyAddress());
+                phone.setText(company.getCompanyPhone());
+                website.setText(company.getCompanyWebSite());
+                email.setText(company.getCompanyEmail());
+                knowledge.setText(company.getCompanyAreaKnowledge());
+
+            }else if (flag == 2){
+                Log.i("flag","from shared pref");
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 //        userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         company = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
         if (company != null) {
@@ -91,6 +111,7 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse 
                         .into(companyLogo);
             }
         }
+            }
 
         //**********************************************website action***************************
 
@@ -144,7 +165,10 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse 
 
 
 
-        networkManager.getCompanyProfile(this,4);
+        }
+
+
+
 
 
         return view;
@@ -163,31 +187,28 @@ public class CompanyProfileFragment extends Fragment implements NetworkResponse 
 
     }
 
-    @Override
-    public void onResponse(Response response) {
+//    @Override
+//    public void onResponse(Response response) {
+//
+//        if (response.getStatus().equals(Response.SUCCESS)) {
+//            company = DataSerializer.convert(response.getResponseData(),UserData.class);
+//
+////            company = (UserData) response.getResponseData();
+//            name.setText(company.getCompanyName());
+//            mobile.setText(company.getCompanyMobile());
+//            address.setText(company.getCompanyAddress());
+//            phone.setText(company.getCompanyPhone());
+//            website.setText(company.getCompanyWebSite());
+//            email.setText(company.getCompanyEmail());
+//            knowledge.setText(company.getCompanyAreaKnowledge());
+//        }
+//    }
+//
+//    @Override
+//    public void onFailure() {
+//
+//    }
 
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            company = DataSerializer.convert(response.getResponseData(),UserData.class);
-
-//            company = (UserData) response.getResponseData();
-            name.setText(company.getCompanyName());
-            mobile.setText(company.getCompanyMobile());
-            address.setText(company.getCompanyAddress());
-            phone.setText(company.getCompanyPhone());
-            website.setText(company.getCompanyWebSite());
-            email.setText(company.getCompanyEmail());
-            numberOfEmployees.setText(String.valueOf(company.getCompanyNoOfEmp()+"Employess"));
-            knowledge.setText(company.getCompanyAreaKnowledge());
-        }
-    }
-
-    @Override
-    public void onFailure() {
-
-    }
 
 
-    public interface OnFragmentInteractionListener {
-
-    }
 }
