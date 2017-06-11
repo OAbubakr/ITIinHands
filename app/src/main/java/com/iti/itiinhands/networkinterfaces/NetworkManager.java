@@ -103,8 +103,14 @@ public class NetworkManager {
             ResponseBody responseBody = response.body();
             String s = responseBody.string();
 
-            Response jsonResponce = new Gson().fromJson(s, Response.class);
+            Response jsonResponse = new Gson().fromJson(s, Response.class);
+            if(jsonResponse.getStatus().equals(Response.FAILURE)){
 
+                if(jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)){
+
+                }
+
+            }
 
             return response.newBuilder()
                     .body(ResponseBody.create(response.body().contentType(), s))
