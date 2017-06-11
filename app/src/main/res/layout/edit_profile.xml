@@ -174,7 +174,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="15">
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -185,8 +186,9 @@
                         />
 
                     <EditText
-                        android:layout_width="160dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="10"
                         android:layout_marginTop="20dp"
                         android:id="@+id/gitEdEditId"
                         android:hint="Github Username"
@@ -194,16 +196,18 @@
                         android:layout_marginRight="5dp"/>
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="2"
                         android:id="@+id/searchGitBtn"
                         android:layout_marginTop="30dp"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/send"/>
                     <ImageView
 
-                        android:layout_width="40dp"
+                        android:layout_width="0dp"
                         android:layout_height="40dp"
+                        android:layout_weight="3"
                         android:layout_marginRight="10dp"
                         android:id="@+id/gitImgResponse"
                         android:layout_marginTop="20dp"
@@ -213,7 +217,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:weightSum="15"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="40dp"
@@ -226,8 +230,9 @@
 
                     <EditText
                         android:id="@+id/behanceEdEditId"
-                        android:layout_width="160dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="10"
                         android:hint="Behance Username"
                         android:layout_marginTop="20dp"
                         android:textSize="16sp"
@@ -235,8 +240,9 @@
 
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="2"
                         android:id="@+id/searchBehanceBtn"
                         android:layout_marginTop="30dp"
                         android:layout_marginRight="10dp"
@@ -244,8 +250,9 @@
 
                     <ImageView
 
-                        android:layout_width="40dp"
+                        android:layout_width="0dp"
                         android:layout_height="40dp"
+                        android:layout_weight="3"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="20dp"
                         android:id="@+id/behanceImgResponse"

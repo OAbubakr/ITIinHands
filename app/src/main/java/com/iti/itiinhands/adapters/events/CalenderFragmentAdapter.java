@@ -1,4 +1,4 @@
-package com.iti.itiinhands.adapters;
+package com.iti.itiinhands.adapters.events;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,22 +9,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.beans.Event;
+import com.iti.itiinhands.model.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by omari on 5/9/2017.
  */
 
-public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+public class CalenderFragmentAdapter extends RecyclerView.Adapter<CalenderFragmentAdapter.EventViewHolder> {
 
-    private ArrayList<Event> eventsList = new ArrayList<>();
+    private List<com.github.sundeepk.compactcalendarview.domain.Event> eventsList = new ArrayList<>();
     private Context context;
 
-    public EventAdapter(ArrayList<Event> eventsList, Context context) {
+    public CalenderFragmentAdapter(List<com.github.sundeepk.compactcalendarview.domain.Event> eventsList, Context context) {
         this.eventsList = eventsList;
         this.context = context;
     }
@@ -38,13 +39,6 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.EventViewHo
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-//        Event event = eventList.get(position);
-//
-//        holder.eventName.setText(event.getEventDescription());
-//        String dateString = new SimpleDateFormat("dd/MM/yyyy").format(new Date(event.getStartTime()));
-//        holder.eventTime.setText(dateString);
-//        Picasso.with(context).load(event.getImageURL()).into(holder.eventImage);
-
         holder.bind(eventsList.get(position));
     }
 
@@ -59,21 +53,22 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.EventViewHo
         TextView eventTitle;
         TextView eventLocation;
         TextView eventDate;
-        ArrayList<Event> eventsList = new ArrayList<>();
+        List<com.github.sundeepk.compactcalendarview.domain.Event> eventsList = new ArrayList<>();
 
-        public EventViewHolder(View itemView, ArrayList<Event> eventsList) {
+        public EventViewHolder(View itemView, List<com.github.sundeepk.compactcalendarview.domain.Event> eventsList) {
             super(itemView);
             this.eventsList = eventsList;
             eventTitle = (TextView) itemView.findViewById(R.id.event_name);
-            eventLocation = (TextView) itemView.findViewById(R.id.event_place);
+//            eventLocation = (TextView) itemView.findViewById(R.id.event_place);
             eventDate = (TextView) itemView.findViewById(R.id.event_date);
         }
 
-        public void bind(final Event event){
+        public void bind(final com.github.sundeepk.compactcalendarview.domain.Event sundeebkEvent){
+            final Event event = (Event) sundeebkEvent.getData();
             eventTitle.setText(event.getTitle());
-            eventLocation.setText(event.getDescription());
+//            eventLocation.setText(event.getDescription());
 
-            SimpleDateFormat dayFormat = new SimpleDateFormat("MMMM d", Locale.US);
+            SimpleDateFormat dayFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
             eventDate.setText(dayFormat.format(event.getEventStart()));
 
             itemView.setOnClickListener(new View.OnClickListener() {

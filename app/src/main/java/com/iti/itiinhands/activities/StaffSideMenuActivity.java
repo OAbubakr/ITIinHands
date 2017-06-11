@@ -32,13 +32,12 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
-import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
-import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.fragments.chat.ChatMainFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.services.ScheduleChanged;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
@@ -68,7 +67,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     int[] itians = {R.drawable.students, R.drawable.graduate};
     int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.sm_event, R.drawable.map, R.drawable.bus, R.drawable.announce};
 
-    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule};
+    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule, R.drawable.schedule};
     FragmentManager fragmentManager;
 
 
@@ -354,6 +353,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 //handle working hours fragment
                                 fragment = new EmployeeHours();
                                 break;
+                            case 3://only if supervisor
+                                Intent intent = new Intent(StaffSideMenuActivity.this, ScheduleChanged.class);
+                                StaffSideMenuActivity.this.startService(intent);
+                                break;
                             default:
                                 break;
                         }
@@ -410,6 +413,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         myWork.add("Evaluation");
         myWork.add("Schedule");
         myWork.add("Working hours");
+        if(userData.getEmployeePlatformIntake()!=0)myWork.add("Notify schedule change");
 
 
         List<String> itians = new ArrayList<String>();
