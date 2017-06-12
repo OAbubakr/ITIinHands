@@ -11,10 +11,9 @@ public class WalkthroughItem {
     private int mSubTitleColorID = android.R.color.darker_gray;
     private int mSkipColorID = android.R.color.black;
 
-    public WalkthroughItem(int id, String title, String subTitle) {
+    public WalkthroughItem(int id) {
         mImageID = id;
-        mTitle = title;
-        mSubTitle = subTitle;
+
     }
 
     public String getTitle() {

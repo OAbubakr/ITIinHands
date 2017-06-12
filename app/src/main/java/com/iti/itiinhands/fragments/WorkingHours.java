@@ -2,6 +2,7 @@ package com.iti.itiinhands.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,14 +26,19 @@ import com.iti.itiinhands.adapters.GridAdapterForHours;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
+import com.iti.itiinhands.utilities.DataSerializer;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import org.eazegraph.lib.models.PieModel;
 
 import java.util.Calendar;
 
 
-public class WorkingHours extends AppCompatActivity implements com.iti.itiinhands.networkinterfaces.NetworkResponse,
+public class WorkingHours extends Fragment implements com.iti.itiinhands.networkinterfaces.NetworkResponse,
         View.OnClickListener {
 
+    public final String days = "Days";
+    public final String hours = "Hours";
     NetworkManager networkManager;
     private com.iti.itiinhands.networkinterfaces.NetworkResponse myRef;
     private SlidingUpPanelLayout mLayout;
@@ -41,29 +47,35 @@ public class WorkingHours extends AppCompatActivity implements com.iti.itiinhand
     int[] images = {R.drawable.path3150, R.drawable.path, R.drawable.path3141, R.drawable.group2009,
             R.drawable.group2013, R.drawable.group2011, R.drawable.group2018, R.drawable.path3159};
     String[] data = new String[]{
-            "Working hours", "Absence", "Permissions", "Mission hours", "Late days",
-            "Attend days", "Attend hours", "Vacation"
+            "Working Days", "Absence", "Permissions", "Mission hours", "Late days",
+            "Attend days", "Attend hours", "Vacation hours"
     };
     GridView hoursGrid;
     EditText startDate, endDate;
     private int mYear, mMonth, mDay;
     EmpHour empHour;
-    private int flag = 0;
+    private int flag = 0 ,secondFlag = 0;
+    TextView numberText,wordtext;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_working_hours);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        networkManager = NetworkManager.getInstance(this);
-        hoursGrid = (GridView) findViewById(R.id.HoursGridView);
-        startDate = (EditText) findViewById(R.id.startDateTv);
-        endDate = (EditText) findViewById(R.id.endDateTv);
-        hoursGrid.setAdapter(new GridAdapterForHours(this, data, images));
+        View view = inflater.inflate(R.layout.fragment_working_hours, container, false);
+//        setContentView(R.layout.fragment_working_hours);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        getActivity().setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        networkManager = NetworkManager.getInstance(getContext());
+        hoursGrid = (GridView) view.findViewById(R.id.HoursGridView);
+        mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+        numberText =(TextView)view.findViewById(R.id.resultText);
+         wordtext =(TextView)view.findViewById(R.id.result2Text);
+        startDate = (EditText) view.findViewById(R.id.startDateTv);
+        endDate = (EditText) view.findViewById(R.id.endDateTv);
+        hoursGrid.setAdapter(new GridAdapterForHours(getContext(), data, images));
         startDate.setOnClickListener(this);
         endDate.setOnClickListener(this);
         myRef = this;
@@ -72,30 +84,63 @@ public class WorkingHours extends AppCompatActivity implements com.iti.itiinhand
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(WorkingHours.this, "You Clicked at " + position, Toast.LENGTH_SHORT).show();
+                if(secondFlag == 1){
+                    switch (position){
+                        case 0:
+                            numberText.setText(empHour.getWorkingDays().toString());
+                            wordtext.setText(days);
+                            break;
+                        case 1:
+                            numberText.setText(empHour.getAbsenceDays().toString());
+                            wordtext.setText(days);
+                            break;
+                        case 2:
+                            numberText.setText(empHour.getPermissionHours().toString());
+                            wordtext.setText(hours);
+                            break;
+                        case 3:
+                            numberText.setText(empHour.getMissionHours().toString());
+                            wordtext.setText(hours);
+                            break;
+                        case 4:
+                            numberText.setText(empHour.getLateDays().toString());
+                            wordtext.setText(days);
+                            break;
+                        case 5:
+                            numberText.setText(empHour.getAttendDays().toString());
+                            wordtext.setText(days);
+                            break;
+                        case 6:
+                            numberText.setText(empHour.getAttendHours().toString());
+                            wordtext.setText(hours);
+                            break;
+                        case 7:
+                            numberText.setText(empHour.getVacationHours().toString());
+                            wordtext.setText(hours);
+                            break;
+                    }
+                }
 
             }
         });
 
-        init();
+
         panelListener();
+        return view;
     }
 
     @Override
     public void onResponse(Response response) {
-
+        if (response.getStatus().equals(Response.SUCCESS)) {
+            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            empHour = DataSerializer.convert(response.getResponseData(),EmpHour.class);
+        }
     }
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
     }
-
-    public void init() {
-
-        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-    }
-
 
     public void panelListener() {
 
@@ -131,36 +176,23 @@ public class WorkingHours extends AppCompatActivity implements com.iti.itiinhand
         });
     }
 
-
-    @Override
     public void onBackPressed() {
         if (mLayout != null &&
                 (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            super.onBackPressed();
+            super.getActivity().onBackPressed();
         }
     }
 
     @Override
     public void onClick(View v) {
-//        if (v.getId() == R.id.getEmpBtn) {
-//            if (!(endDate.getText().toString().isEmpty() || startDate.getText().toString().isEmpty())) {
-//                System.out.println(startDate.getText().toString());
-//                System.out.println(endDate.getText().toString());
-//
-//            } else {
-//                Toast.makeText(this, "please select date firsst", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        } else
-
         if (v.getId() == R.id.startDateTv) {
             final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -173,20 +205,21 @@ public class WorkingHours extends AppCompatActivity implements com.iti.itiinhand
             System.out.println("***********Start Date");
         } else if (v.getId() == R.id.endDateTv) {
             if(flag !=1){
-                Toast.makeText(this, "Choose Start Date First", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Choose Start Date First", Toast.LENGTH_SHORT).show();
             }else{
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
                                 endDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                                 networkManager.getEmployeeHours(myRef, 1018, startDate.getText().toString(),
                                     endDate.getText().toString());
-
+                                secondFlag = 1;
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
