@@ -42,17 +42,17 @@ public class WalkthroughPagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.walkthrough_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        TextView title = (TextView) itemView.findViewById(R.id.walkthrough_title);
-        TextView details = (TextView) itemView.findViewById(R.id.walkthrough_details);
+//        TextView title = (TextView) itemView.findViewById(R.id.walkthrough_title);
+//        TextView details = (TextView) itemView.findViewById(R.id.walkthrough_details);
 
         WalkthroughItem currentWalkthroughItem = mItems.get(position);
 
         imageView.setImageResource(currentWalkthroughItem.getImageID());
         itemView.setBackgroundColor(mContext.getResources().getColor(currentWalkthroughItem.getBackgroundColorID()));
-        title.setText(currentWalkthroughItem.getTitle());
-        title.setTextColor(mContext.getResources().getColor(currentWalkthroughItem.getTitleColorID()));
-        details.setText(currentWalkthroughItem.getSubTitle());
-        details.setTextColor(mContext.getResources().getColor(currentWalkthroughItem.getSubTitleColorID()));
+//        title.setText(currentWalkthroughItem.getTitle());
+//        title.setTextColor(mContext.getResources().getColor(currentWalkthroughItem.getTitleColorID()));
+//        details.setText(currentWalkthroughItem.getSubTitle());
+//        details.setTextColor(mContext.getResources().getColor(currentWalkthroughItem.getSubTitleColorID()));
 
         container.addView(itemView);
 
