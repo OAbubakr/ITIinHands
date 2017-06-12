@@ -134,7 +134,7 @@ public class SideMenuActivity extends AppCompatActivity {
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
         Picasso.with(getApplicationContext()).load(userData.getImagePath()).
-                placeholder(R.drawable.student_avatar).into(avatar);
+                placeholder(R.drawable.instructor_avatar).into(avatar);
 
 
         // Add header view to the expandable list
@@ -385,13 +385,13 @@ public class SideMenuActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(LinkedInFlag){
-            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if(LinkedInFlag){
+//            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//        }
+//    }
 
     public void setLinkedInFlag(boolean linkedInFlag){
         this.LinkedInFlag=linkedInFlag;

@@ -16,7 +16,6 @@ import com.stfalcon.frescoimageviewer.ImageViewer;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MapsDetailsActivity extends AppCompatActivity {
 
     private List<MapTitle> mapTitle = new ArrayList<>();

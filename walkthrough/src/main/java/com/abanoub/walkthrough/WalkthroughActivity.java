@@ -86,17 +86,17 @@ public class WalkthroughActivity extends AppCompatActivity {
                 mProgressBar.setProgress((mCurrentPosition + 1) * (100 / mAdapter.getCount()));
                 if (position < mAdapter.getCount() - 1) {
                     mNextBtn.setText(getString(R.string.next));
-                    mSkipBtn.setVisibility(View.VISIBLE);
+
                 } else {
-                    mNextBtn.setText(getString(R.string.enjoy));
-                    mSkipBtn.setVisibility(View.GONE);
+                    mNextBtn.setText("Start");
+
                 }
                 for (int i = 0; i < dotsCount; i++) {
                     dots[i].setImageDrawable(mNormalDot);
                 }
                 dots[position].setImageDrawable(mSelectedDot);
 
-                mSkipBtn.setTextColor(getResources().getColor(mAdapter.getItemAtPosition(position).getSkipColorID()));
+
             }
 
             @Override
@@ -120,13 +120,7 @@ public class WalkthroughActivity extends AppCompatActivity {
             }
         });
 
-        mSkipBtn = (TextView) findViewById(R.id.walkthrough_skip);
-        mSkipBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onFinish();
-            }
-        });
+
     }
 
     public void updateProgress() {
@@ -147,12 +141,12 @@ public class WalkthroughActivity extends AppCompatActivity {
         dots[0].setImageDrawable(mSelectedDot);
         if (dotsCount == 1) {
             mNextBtn.setText(getString(R.string.enjoy));
-            mSkipBtn.setVisibility(View.GONE);
+
         } else {
             mNextBtn.setText(getString(R.string.next));
-            mSkipBtn.setVisibility(View.VISIBLE);
+
         }
-        mSkipBtn.setTextColor(getResources().getColor(mAdapter.getItemAtPosition(0).getSkipColorID()));
+
     }
 
     public void setProgressType(int progressType) {
@@ -207,9 +201,7 @@ public class WalkthroughActivity extends AppCompatActivity {
         updateProgress();
     }
 
-    public void hideSkipButton() {
-        mSkipBtn.setVisibility(View.GONE);
-    }
+
 
     public void setProgressBarColor(int color) {
         Drawable drawable = mProgressBar.getProgressDrawable();
