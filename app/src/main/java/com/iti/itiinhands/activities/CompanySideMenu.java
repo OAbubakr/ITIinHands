@@ -18,23 +18,20 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompanyProfileFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.PostJobFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.fragments.maps.BranchesList;
-import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
 
@@ -121,6 +118,7 @@ public class CompanySideMenu extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
+
         SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
@@ -129,7 +127,7 @@ public class CompanySideMenu extends AppCompatActivity {
             name.setText(userData.getCompanyName());
             track.setText("");
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
-            Picasso.with(getApplicationContext()).load(userData.getCompanyLogoPath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+            Picasso.with(getApplicationContext()).load(userData.getCompanyLogoPath()).placeholder(R.drawable.c_pic).into(avatar);
         }
 
         // Add header view to the expandable list
@@ -165,6 +163,9 @@ public class CompanySideMenu extends AppCompatActivity {
 
                     case 0:
                         fragment = new CompanyProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("flag",2);
+                        fragment.setArguments(bundle);
                         mDrawerLayout.closeDrawer(expListView);
                         break;
 
@@ -222,7 +223,7 @@ public class CompanySideMenu extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle events fragment
-                                fragment=new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //handle maps fragment

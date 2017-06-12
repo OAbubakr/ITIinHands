@@ -23,16 +23,13 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
-import com.iti.itiinhands.beans.Announcement;
-import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.EventTabFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
@@ -97,9 +94,14 @@ public class SideMenuActivity extends AppCompatActivity {
         /////////
 
         //subscribe to receive notifications
+
+        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
         FirebaseMessaging.getInstance().subscribeToTopic("jobPosts");
 
         FirebaseMessaging.getInstance().subscribeToTopic("events");
+        FirebaseMessaging.getInstance().subscribeToTopic("track_"+userData.getPlatformIntakeId());
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         expListView.setGroupIndicator(null);
@@ -126,15 +128,13 @@ public class SideMenuActivity extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
-        SharedPreferences data = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
         Picasso.with(getApplicationContext()).load(userData.getImagePath()).
-                placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+                placeholder(R.drawable.student_avatar).into(avatar);
 
 
         // Add header view to the expandable list
@@ -159,12 +159,8 @@ public class SideMenuActivity extends AppCompatActivity {
                         //replace with profile fragment
                         fragment = new StudentProfileFragment();
                         mDrawerLayout.closeDrawer(expListView);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
-//                    case 2:
-//                        //job posts
-//                        fragment = new AllJobPostsFragment();
-//                        mDrawerLayout.closeDrawer(expListView);
-//                        break;
 
                     case 4:
                         //logout action
@@ -182,7 +178,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
-
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
 
@@ -195,7 +190,6 @@ public class SideMenuActivity extends AppCompatActivity {
                         break;
 
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 
                 return false;
@@ -215,6 +209,7 @@ public class SideMenuActivity extends AppCompatActivity {
                             case 1:
                                 //handle grades fragment
                                 fragment = new PermissionFragment();
+
                                 break;
                             case 2:
                                 //handle list of courses fragment

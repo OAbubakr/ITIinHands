@@ -8,8 +8,9 @@ import java.io.Serializable;
 
 public class UserLogin implements Serializable {
     private String token;
-    private String expiryDate;
+    private long expiryDate;
     private String tokenType;
+//    private String refreshToken;
 
     public String getRefreshToken() {
         return refreshToken;
@@ -18,6 +19,14 @@ public class UserLogin implements Serializable {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+//    public String getRefreshToken() {
+//        return refreshToken;
+//    }
+//
+//    public void setRefreshToken(String refreshToken) {
+//        this.refreshToken = refreshToken;
+//    }
 
     private String refreshToken;
 
@@ -29,11 +38,11 @@ public class UserLogin implements Serializable {
         this.token = token;
     }
 
-    public String getExpiryDate() {
+    public long getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(long expiryDate) {
         this.expiryDate = expiryDate;
     }
 

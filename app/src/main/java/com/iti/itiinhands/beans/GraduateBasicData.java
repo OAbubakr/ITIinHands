@@ -1,12 +1,13 @@
 package com.iti.itiinhands.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by engra on 6/7/2017.
  */
 
-public class GraduateBasicData {
+public class GraduateBasicData implements Serializable{
 
     private int graduateId;
     private String englishname;

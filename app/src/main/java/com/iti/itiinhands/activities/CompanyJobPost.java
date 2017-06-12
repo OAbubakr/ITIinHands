@@ -1,11 +1,16 @@
 package com.iti.itiinhands.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +25,6 @@ public class CompanyJobPost extends AppCompatActivity {
 
     CardView cardView;
 
-
     TextView jobTilte;
     TextView jobDesc;
     TextView jobExp;
@@ -33,6 +37,15 @@ public class CompanyJobPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_job_post);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Job Post");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
         cardView = (CardView) findViewById(R.id.detail_card_view);
         cvTo = (TextView) findViewById(R.id.cvtowho);
         jobTilte = (TextView) findViewById(R.id.item_title);
@@ -80,8 +93,8 @@ public class CompanyJobPost extends AppCompatActivity {
 
         Picasso.with(getApplicationContext())
                 .load(jobVacancy.getCompanyLogoPath())
-                .placeholder(R.id.company_logo)
-                .error(R.id.company_logo)
+                .placeholder(R.drawable.c_pic)
+                .error(R.drawable.c_pic)
                 .into(companyImage);
 
 
@@ -91,5 +104,32 @@ public class CompanyJobPost extends AppCompatActivity {
         closeDate.setText(dateString);
 
 
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

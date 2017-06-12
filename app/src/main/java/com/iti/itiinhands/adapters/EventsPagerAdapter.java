@@ -4,8 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.iti.itiinhands.fragments.EventCalendarFragment;
+//import com.iti.itiinhands.fragments.EventCalendarFragment;
 import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventCalendarFragment;
 
 /**
  * Created by admin on 6/10/2017.

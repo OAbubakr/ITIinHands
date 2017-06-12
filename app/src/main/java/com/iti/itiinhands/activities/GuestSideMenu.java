@@ -22,9 +22,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AboutIti;
-import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class GuestSideMenu extends AppCompatActivity {
         //set name and track or company of the user
 
 
-        avatar.setImageResource(R.drawable.logo1);
+        avatar.setImageResource(R.drawable.instructor_avatar);
 
 //        Picasso.with(getApplicationContext()).load(R.d).into(avatar);
 
@@ -155,7 +155,7 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
                     case 3:
                         //events fragment
-                        fragment = new EventListFragment();
+                        fragment = new EventTabFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 

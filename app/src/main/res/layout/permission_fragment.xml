@@ -9,6 +9,19 @@
     android:background="@drawable/bg1"
     >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+
+            android:id="@+id/progressBar" />
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp" />
+                android:layout_margin="6dp" />
 
 
 
@@ -62,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/datePart"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="Date"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
@@ -74,6 +87,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/bg_select"
                 android:orientation="horizontal"
+                android:clickable="true"
                 android:weightSum="3">
 
                 <TextView
@@ -81,22 +95,29 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="2.4"
+                    android:layout_weight="2.15"
                     android:hint="11/10/2017"
                     android:textAlignment="center"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp" />
+                    android:textSize="11sp" />
 
-                <Button
+                <ImageView
                     android:id="@+id/date_arrow"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/per_arrow" />
+                    android:src="@drawable/per_arrow" />
 
             </LinearLayout>
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/error_message_permission_Date"
+                android:textSize="12sp"
+                android:textColor="#B71C1C"/>
 
 
         </LinearLayout>
@@ -112,27 +133,31 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_gravity="right"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <!-- start time -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/dateImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:text="Start Time"
-                    android:layout_marginTop="10dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
                 <LinearLayout
+                    android:id="@+id/startTimePart"
+                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_select"
@@ -152,38 +177,48 @@
                         android:textSize="12sp"  />
 
 
-                    <Button
+                    <ImageView
                         android:id="@+id/startTime_button"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/per_arrow"
+                        android:src="@drawable/per_arrow"
                         android:elevation="1dp" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/error_message_permission_StartTime"
+                    android:textSize="12sp"
+                    android:textColor="#B71C1C"/>
 
             </LinearLayout>
 
             <!-- end time -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_weight="1"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:text="End Time"
-                    android:layout_marginTop="10dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
 
                 <LinearLayout
+                    android:id="@+id/endTimePart"
+                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_select"
@@ -196,25 +231,34 @@
                         android:id="@+id/endTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="2.15"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:clickable="true"
                         android:hint="09:09 AM"
+                        android:textAlignment="center"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"  />
 
 
 
 
-                    <Button
+                    <ImageView
                         android:id="@+id/endTime_button"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/per_arrow" />
+                        android:src="@drawable/per_arrow" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/error_message_permission_EndTime"
+                    android:textSize="12sp"
+                    android:textColor="#B71C1C"/>
+
 
             </LinearLayout>
 
@@ -255,12 +299,20 @@
                 android:gravity="top"
                 android:hint=" type here"
                 android:inputType="textMultiLine"
-                android:lines="5"
+                android:lines="3"
                 android:textColorHint="@android:color/darker_gray"
                 android:padding="5dp"
                 android:textSize="12sp" />
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/error_message_permission_Cause"
+                android:textSize="12sp"
+                android:textColor="#B71C1C"/>
             <Button
                 android:id="@+id/permissionSend"
                 android:layout_width="wrap_content"

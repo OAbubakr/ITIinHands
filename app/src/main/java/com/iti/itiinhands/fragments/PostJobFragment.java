@@ -193,15 +193,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
                     if (networkManager.isOnline()){
                         networkManager.postJob(PostJobFragment.this, jobOpportunity);
-
-//                        //-------------------------Move to About ITI Fragment---------------------------
-//                        Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
-//                        Fragment fragment = new AboutIti();
-//                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                        fragmentTransaction.replace(R.id.content_frame, fragment);
-//                        fragmentTransaction.addToBackStack(null);
-//                        fragmentTransaction.commit();
+                        postButton.setEnabled(false);
                     }
                 }
             }
@@ -227,6 +219,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
     @Override
     public void onResponse(Response response) {
+        postButton.setEnabled(true);
         if(response.getStatus().equals("SUCCESS")){
             //-------------------------Move to About ITI Fragment---------------------------
             Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
@@ -243,6 +236,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
     @Override
     public void onFailure() {
+        postButton.setEnabled(true);
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
     }
 

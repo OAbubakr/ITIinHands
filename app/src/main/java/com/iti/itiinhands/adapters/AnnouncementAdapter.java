@@ -9,22 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.beans.Announcement;
 import com.iti.itiinhands.database.DataBase;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
-import com.iti.itiinhands.fragments.PostJobFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
+import org.eazegraph.lib.utils.Utils;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -71,7 +71,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
         public TextView title;
         public TextView body;
         public ImageView pic;
-       // public TextView date;
+        public TextView date;
         public ImageView deleteAnnouncement;
 
         ArrayList<Announcement> announcements = new ArrayList<>();
@@ -81,7 +81,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
             this.announcements = announcements;
             title = (TextView) itemView.findViewById(R.id.announceTitle);
             body = (TextView) itemView.findViewById(R.id.announceBody);
-        //    date = (TextView) itemView.findViewById(R.id.announceDate);
+            date = (TextView) itemView.findViewById(R.id.announceDate);
             pic = (ImageView) itemView.findViewById(R.id.announceType);
             deleteAnnouncement = (ImageView) itemView.findViewById(R.id.delete);
 
@@ -91,7 +91,9 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
             title.setText(announcementBean.getTitle());
             body.setText(announcementBean.getBody());
-           // date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString());
+            SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+            String time = localDateFormat.format(new Date(announcementBean.getDate()).getTime());
+            date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString()+"-"+time);
             if (announcementBean.getType() == 1) {
                 pic.setImageResource(R.drawable.event);
             } else if (announcementBean.getType() == 2) {
