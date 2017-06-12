@@ -1,18 +1,18 @@
 package com.iti.itiinhands.adapters.chatAdapters;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,19 +20,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
+import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.model.chat.ChatRoom;
+import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import agency.tango.android.avatarview.IImageLoader;
 import agency.tango.android.avatarview.loader.PicassoLoader;
 import agency.tango.android.avatarview.views.AvatarView;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.FriendsViewHolder> {
 
@@ -40,7 +45,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     private List<ChatRoom> chatRooms = new ArrayList<>();
     private List<ChatRoom> chatRoomsCopy = new ArrayList<>();
     private int cellToInflate;
-    private SharedPreferences sharedPreferences;
+ //   private SharedPreferences sharedPreferences;
     private String id;
 
     //firebase references
@@ -56,6 +61,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     String myChatId;
 
 
+    private ProgressBar progressBar, h_progressBar;
+
 
 
     public FriendListAdapter(Context context, List<ChatRoom> chatRooms, int cellToInflate, String id) {
@@ -66,10 +73,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         this.id = id;
 
 
-        sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-
-        int userType = sharedPreferences.getInt(Constants.USER_TYPE, -1);
-        switch (userType){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+        UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        myId = String.valueOf(userData.getId());
+        switch (userType) {
             case 1:
                 myType = "student";
                 break;
@@ -77,12 +85,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                 myType = "staff";
                 break;
         }
-
-        myRoot = firebaseDatabase.getReference("users").child(myType);
-
-        myId = sharedPreferences.getString("myId", null);
         myChatId = myType + "_" + myId;
 
+        myRoot = firebaseDatabase.getReference("users").child(myType);
     }
 
     @Override
@@ -102,7 +107,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         } else {
             text = text.toLowerCase();
             for (ChatRoom item : chatRoomsCopy) {
-                if (item.getReceiverName().toLowerCase().contains(text)) {
+                if (item.getReceiverName().toLowerCase().contains(text) | item.getBranchName().toLowerCase().contains(text)) {
                     chatRooms.add(item);
                 }
             }
@@ -118,8 +123,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         final ChatRoom chatRoom = chatRooms.get(position);
         holder.getName().setText(chatRoom.getReceiverName());
 
-        if (chatRoom.isHasPendingMessages())
+        if (chatRoom.getPendingMessagesCount() > 0) {
+            holder.getMessage_image().setText(String.valueOf(chatRoom.getPendingMessagesCount()));
             holder.getMessage_image().setVisibility(View.VISIBLE);
+        }
         else
             holder.getMessage_image().setVisibility(View.INVISIBLE);
 
@@ -132,26 +139,15 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String roomKey = sharedPreferences.getString(chatRoom.getReceiverId(), null);
 
-                //check network status
-                ConnectivityManager cm =
-                        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                String roomKey = context.getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE)
+                        .getString(chatRoom.getReceiverId(), null);
 
-                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                boolean isConnected = activeNetwork != null &&
-                        activeNetwork.isConnectedOrConnecting();
-
+                boolean isConnected = NetworkManager.getInstance(context).isOnline();
 
                 if(roomKey == null){
-
-
                     if(isConnected){
-
-                        final ProgressDialog progressDialog = new ProgressDialog(context);
-                        progressDialog.setMessage("Loading...");
-                        progressDialog.show();
-
+                        h_progressBar.setVisibility(View.VISIBLE);
                         //check first no chat room exists under my node
                         myRoot.child(myChatId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -169,20 +165,17 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                                 }
 
 
-                                chatRoom.setHasPendingMessages(false);
+                                chatRoom.setPendingMessagesCount(0);
                                 if (roomKey == null) {
+
                                     createChatRoom(chatRoom);
-                                    if(progressDialog.isShowing()) {
-                                        progressDialog.hide();
-                                        launchChatRoom(chatRoom);
-                                    }
+                                    launchChatRoom(chatRoom);
+
                                 } else {
                                     chatRoom.setRoomKey(roomKey);
-                                    sharedPreferences.edit().putString(chatRoom.getReceiverId(), roomKey).apply();
-                                    if(progressDialog.isShowing()) {
-                                        progressDialog.hide();
-                                        launchChatRoom(chatRoom);
-                                    }
+                                    context.getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE).edit().putString(chatRoom.getReceiverId(), roomKey).apply();
+                                    launchChatRoom(chatRoom);
+
                                 }
                                 notifyDataSetChanged();
 
@@ -190,7 +183,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-
+                                h_progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
 
@@ -200,7 +193,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                     }
 
                 }else{
-                    chatRoom.setHasPendingMessages(false);
+                    chatRoom.setPendingMessagesCount(0);
                     chatRoom.setRoomKey(roomKey);
                     launchChatRoom(chatRoom);
                     notifyDataSetChanged();
@@ -220,7 +213,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         oneToOneRoot.child(roomKey).setValue("");
 
         chatRoom.setRoomKey(roomKey);
-        sharedPreferences.edit().putString(chatRoom.getReceiverId(), roomKey).apply();
+        context.getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE).edit().putString(chatRoom.getReceiverId(), roomKey).apply();
 
         //create the chat node map
         Map<String, Object> map = new HashMap<>();
@@ -239,6 +232,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         map.remove(roomKey);
         map.put(roomKey, chatRoom.getReceiverId());
         myNode.updateChildren(map);
+
+
     }
 
 
@@ -250,7 +245,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         intent.putExtra("receiverName", chatRoom.getReceiverName());
 
         context.startActivity(intent);
-
+        h_progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -258,11 +253,26 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         return chatRooms.size();
     }
 
+    public void setProgressBar(ProgressBar progressBar, MaterialProgressBar h_progressBar) {
+        this.progressBar = progressBar;
+        this.h_progressBar = h_progressBar;
+    }
+
+    public ProgressBar getProgressBar() {
+        return progressBar;
+
+    }
+
+    public ProgressBar getH_ProgressBar() {
+        return h_progressBar;
+
+    }
+
 
     class FriendsViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView branchName;
-        private ImageView message_image;
+        private Button message_image;
         private View view;
         private AvatarView avatarView;
         private IImageLoader imageLoader;
@@ -271,7 +281,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.friend_name);
             this.view = itemView.findViewById(R.id.cell);;
-            this.message_image = (ImageView) itemView.findViewById(R.id.message_image);
+            this.message_image = (Button) itemView.findViewById(R.id.message_image);
             this.avatarView = (AvatarView) itemView.findViewById(R.id.avatar);
             this.imageLoader = new PicassoLoader();
             this.branchName = (TextView) itemView.findViewById(R.id.branch_name_text);
@@ -285,7 +295,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             return view;
         }
 
-        ImageView getMessage_image() {
+        Button getMessage_image() {
             return message_image;
         }
 
@@ -308,10 +318,12 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     }
 
 
-    public void updateData(){
+    public void updateData(List<ChatRoom> data){
         this.chatRoomsCopy.clear();
-        this.chatRoomsCopy.addAll(chatRooms);
+        this.chatRoomsCopy.addAll(data);
+        progressBar.setVisibility(View.INVISIBLE);
         notifyDataSetChanged();
 
     }
+
 }

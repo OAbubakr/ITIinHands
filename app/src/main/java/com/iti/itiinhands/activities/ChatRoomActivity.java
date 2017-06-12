@@ -5,22 +5,25 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.chatAdapters.ChatRoomAdapter;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.chat.ChatMessage;
+import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
@@ -30,12 +33,11 @@ import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class ChatRoomActivity extends AppCompatActivity {
 
-    private FloatingActionButton sendMessage;
+    private ImageButton sendMessage;
     private EditText message;
     private RecyclerView messagesRecyclerView;
     private ChatRoomAdapter adapter;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private SharedPreferences sharedPreferences;
     private DatabaseReference roomNode;
     private String roomKey;
     private String senderId;
@@ -67,24 +69,31 @@ public class ChatRoomActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitleColor(android.R.color.white);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         roomKey = getIntent().getStringExtra("roomKey");
         senderId = getIntent().getStringExtra("senderId");
         receiverId = getIntent().getStringExtra("receiverId");
         receiverName = getIntent().getStringExtra("receiverName");
 
-        sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+        setTitle(receiverName);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
+        UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+
+        myName = userData.getEmployeeName();
+
         getApplicationContext().getSharedPreferences(SP_NAME, MODE_PRIVATE)
                 .edit().putString("chatRoomActive", receiverId).apply();
 
-
-        myName = sharedPreferences.getString("myName", null);
-
-        setTitle(receiverName);
-
         roomNode = firebaseDatabase.getReference().getRoot().child("oneToOne").child(roomKey);
 
-        sendMessage = (FloatingActionButton) findViewById(R.id.chatSendButton);
+        sendMessage = (ImageButton) findViewById(R.id.chatSendButton);
         message = (EditText) findViewById(R.id.messageEdit);
         messagesRecyclerView = (RecyclerView) findViewById(R.id.messagesContainer);
 
@@ -134,7 +143,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                 R.layout.chat_bubble,
                 ChatRoomAdapter.MyViewHolder.class,
                 firebaseDatabase.getReference().getRoot().child("oneToOne").child(roomKey),
-                senderId);
+                senderId, progressBar);
 
         messagesRecyclerView.setHasFixedSize(true);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

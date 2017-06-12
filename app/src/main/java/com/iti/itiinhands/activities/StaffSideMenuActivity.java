@@ -1,5 +1,8 @@
 package com.iti.itiinhands.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
@@ -28,24 +31,31 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
+import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
-import com.iti.itiinhands.fragments.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
-import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
-import com.iti.itiinhands.fragments.chat.ChatFragment;
+import com.iti.itiinhands.fragments.chat.ChatMainFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.services.ScheduleChanged;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
+import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.createAlarm;
+import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class StaffSideMenuActivity extends AppCompatActivity {
 
@@ -67,7 +77,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     int[] itians = {R.drawable.students, R.drawable.graduate};
     int[] itiImages = {R.drawable.about_ti, R.drawable.tracks, R.drawable.sm_event, R.drawable.map, R.drawable.bus, R.drawable.announce};
 
-    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule};
+    int[] myWork = {R.drawable.sm_eval, R.drawable.sm_working, R.drawable.schedule, R.drawable.send_notification};
     FragmentManager fragmentManager;
 
 
@@ -105,9 +115,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                     myRoot.child(myChatId).setValue("");
                 else if (val instanceof HashMap) {
                     HashMap<String, String> usersRoomsMap = (HashMap) val;
-                    Map<String, ?> all = sharedPreferences.getAll();
+                    Map<String, ?> all = getSharedPreferences(SP_NAME, MODE_PRIVATE).getAll();
                     //update the stored keys
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    SharedPreferences.Editor editor = getSharedPreferences(SP_NAME, MODE_PRIVATE).edit();
                     for (String key : usersRoomsMap.keySet()) {
                         editor.putString(usersRoomsMap.get(key), key);
                     }
@@ -124,10 +134,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
 
         });
 
-        /*
-        *
-        * */
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,7 +204,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         //set name and track or company of the user
         name.setText(userData.getEmployeeName());
         track.setText(userData.getEmployeeBranchName());
-        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(avatar);
+        Picasso.with(getApplicationContext()).load(userData.getImagePath()).placeholder(R.drawable.instructor_avatar).into(avatar);
 
 
         // Add header view to the expandable list
@@ -219,7 +227,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                 Log.d("onGroupClick:", "worked");
                 switch (groupPosition) {
                     case 1:
-                        fragment = new ChatFragment();
+                        fragment = new ChatMainFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("receiver_type", "staff");
                         fragment.setArguments(bundle);
@@ -295,7 +303,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle events fragment
-                                fragment = new EventListFragment();
+                                fragment = new EventTabFragment();
                                 break;
                             case 3:
                                 //handle maps fragment
@@ -323,11 +331,11 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle staff community
-                                fragment = new ChatFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("receiver_type", "staff");
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//                                fragment = new ChatFragment();
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("receiver_type", "staff");
+//                                fragment.setArguments(bundle);
+//                                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                                 break;
                             case 2:
                                 //handle graduate community
@@ -352,6 +360,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 2:
                                 //handle working hours fragment
                                 fragment = new EmployeeHours();
+                                break;
+                            case 3://only if supervisor
+                                Intent intent = new Intent(StaffSideMenuActivity.this, ScheduleChanged.class);
+                                StaffSideMenuActivity.this.startService(intent);
                                 break;
                             default:
                                 break;
@@ -409,6 +421,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         myWork.add("Evaluation");
         myWork.add("Schedule");
         myWork.add("Working hours");
+        if(userData.getEmployeePlatformIntake()!=0)myWork.add("Notify schedule change");
 
 
         List<String> itians = new ArrayList<String>();

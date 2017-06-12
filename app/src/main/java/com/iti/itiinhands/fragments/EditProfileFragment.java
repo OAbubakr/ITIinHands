@@ -14,17 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.GraduateSideMenu;
 import com.iti.itiinhands.activities.SideMenuActivity;
-import com.iti.itiinhands.beans.Event;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.Response;
@@ -33,7 +29,6 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.services.LinkedInLogin;
 import com.iti.itiinhands.utilities.Constants;
-import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
@@ -48,7 +43,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -85,8 +79,11 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
     int token;
     private SideMenuActivity studentActivity;
     private GraduateSideMenu graduateActivity;
-    private String behanceImageUrl;
-    private String gitImageUrl;
+//    private String behanceImageUrl;
+//    private String gitImageUrl;
+    private ImageView behanceLogo;
+    private ImageView githubLogo;
+    private ImageView linkedInLogo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,7 +112,11 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         submitBtn = (ImageView) view.findViewById(R.id.submitBtnEditId);
         networkManager = NetworkManager.getInstance(getContext());
         myRef=this;
+        behanceLogo = (ImageView) view.findViewById(R.id.behanceLogo);
+        githubLogo = (ImageView) view.findViewById(R.id.githubLogo);
+
         prepareView();
+
 
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +130,9 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         });
 
         ///search for github account
+
+
+
         githubSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,8 +162,17 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userData.setGitUrl(gitUrl);
-                userData.setBehanceUrl(behanceUrl);
+                int x = githubEt.getText().length();
+                int y = behanceEt.getText().length();
+                if(githubEt.getText().length()>0)
+                    userData.setGitUrl(gitUrl);
+                else
+                    userData.setGitUrl(null);
+                if(behanceEt.getText().length()>0)
+                    userData.setBehanceUrl(behanceUrl);
+                else
+                    userData.setBehanceUrl(null);
+
                 userData.setLinkedInUrl(linkedInUrl);
                 userData.setStudentEmail(emailEt.getText().toString());
                 userData.setStudentMobile(mobileEt.getText().toString());
@@ -247,7 +260,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 JSONObject jsonObject = apiResponse.getResponseDataAsJson();
                 try {
                     linkedInUrl = jsonObject.getString("publicProfileUrl");
-
+                    linkedinBtn.setImageResource(R.drawable.linked_in);
                     Log.i("profile url =", linkedInUrl + " and id: " + jsonObject.getString("id"));
                     Toast.makeText(getActivity().getApplicationContext(), "sync done", Toast.LENGTH_LONG).show();
 
@@ -287,21 +300,30 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
         if (userData.getBehanceUrl() != null) {
             behanceEt.setText(prepareUrl(userData.getBehanceUrl()));
             behanceUrl = userData.getBehanceUrl();
+            behanceLogo.setImageResource(R.drawable.behance);
             Picasso.with(getActivity().getApplicationContext()).load(userData.getBehanceImageUrl()).into(behanceImg);
+        }else{
+            behanceLogo.setImageResource(R.drawable.group1207);
         }
 
         if (userData.getGitUrl() != null) {
             githubEt.setText(prepareUrl(userData.getGitUrl()));
             gitUrl = userData.getGitUrl();
+            githubLogo.setImageResource(R.drawable.github);
             Picasso.with(getActivity().getApplicationContext()).load(userData.getGitImageUrl()).into(githubImg);
+        }else{
+            githubLogo.setImageResource(R.drawable.githubgray);
         }
 
         if (userData.getLinkedInUrl() != null) {
             linkedInUrl = userData.getLinkedInUrl();
+            linkedinBtn.setImageResource(R.drawable.linked_in);
+        }else{
+            linkedinBtn.setImageResource(R.drawable.group1205);
         }
 
-        if (userData.getImagePath() != null)
-            Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
+//        if (userData.getImagePath() != null)
+//            Picasso.with(getActivity().getApplicationContext()).load(userData.getImagePath()).into(profilePicIv);
     }
 
     private String prepareUrl(String url){
@@ -321,12 +343,13 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
             HashMap<Integer, String> images = data.getUser().getImages();
             userData.setBehanceImageUrl(images.get(50));
             Picasso.with(getActivity().getApplicationContext()).load(images.get(50)).into(behanceImg);
+            behanceLogo.setImageResource(R.drawable.behance);
         } else if (response instanceof GitData &&((GitData) response).getMessage()!="Not Found") {
             GitData data = (GitData) response;
             gitUrl = data.getHtml_url();
             userData.setGitImageUrl(data.getAvatar_url());
             Picasso.with(getActivity().getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
-
+            githubLogo.setImageResource(R.drawable.github);
         } else {
             Toast.makeText(getActivity().getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
         }

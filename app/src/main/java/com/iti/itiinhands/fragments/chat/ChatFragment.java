@@ -1,86 +1,55 @@
 package com.iti.itiinhands.fragments.chat;
 
-
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
-import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
-import com.iti.itiinhands.activities.StaffSideMenuActivity;
 import com.iti.itiinhands.adapters.chatAdapters.FriendListAdapter;
-import com.iti.itiinhands.dto.UserData;
-import com.iti.itiinhands.model.Branch;
-import com.iti.itiinhands.model.Instructor;
-import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.chat.ChatRoom;
-import com.iti.itiinhands.networkinterfaces.NetworkManager;
-import com.iti.itiinhands.networkinterfaces.NetworkResponse;
-import com.iti.itiinhands.services.FirebaseMessageReceiverService;
-import com.iti.itiinhands.utilities.Constants;
-import com.iti.itiinhands.utilities.DataSerializer;
-import com.iti.itiinhands.utilities.UserDataSerializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatFragment extends Fragment implements NetworkResponse {
+public class ChatFragment extends Fragment {
 
     public static final String SP_NAME = "chatRoomsKeys";
-    private String receiver_type;
-//    private boolean namesDownloaded = false;
-
-    String myName;
-    String myType;
-    String myId;
-    String myChatId;
-    SharedPreferences sharedPreferences;
+//    private String receiver_type;
+//    private String myName;
+//    private String myType;
+//    private String myId;
+//    private String myChatId;
+    private SharedPreferences sharedPreferences;
     private RecyclerView chatRoomsRecyclerView;
     private FriendListAdapter friendListAdapter;
-    private BroadcastReceiver receiver;
-    List<ChatRoom> chatRooms = new ArrayList<>();
-    int userType;
-    int token;
-    UserData userData;
+    private List<ChatRoom> allChatRooms, chatRooms;
 
-    private ProgressDialog progressDialog;
+
+    //    private int userType;
+//    private int token;
+//    private UserData userData;
+    private MaterialProgressBar  h_progressBar;
+    private ProgressBar progressBar;
+  //  private BranchesTagsAdapter branchesTagsAdapter;
+//    private RecyclerView branchesTagsRecyclerView;
+//    private List<BranchTag> branches = new ArrayList<>();
+    private BroadcastReceiver receiver;
 
     public ChatFragment() {
-        // Required empty public constructor
     }
 
-
-    @Override
+   /* @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
         this.receiver_type = args.getString("receiver_type");
@@ -114,34 +83,51 @@ public class ChatFragment extends Fragment implements NetworkResponse {
                 edit().putString("friendListActivityActive", "false").apply();
     }
 
+*/
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        System.out.println();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
-        ((StaffSideMenuActivity)getActivity()).setSupportActionBar(tb);
-        setHasOptionsMenu(true);
-//        ActionBar ab = ((MainActivity2)getActivity()).getSupportActionBar();
-//        ab.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-//        ab.setDisplayHomeAsUpEnabled(true);
+
+        View view = inflater.inflate(R.layout.fragment_chat_friends, container, false);
+
+//        setHasOptionsMenu(true);
 
 
         chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
 
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        h_progressBar = (MaterialProgressBar) view.findViewById(R.id.h_progressBar);
+        friendListAdapter.setProgressBar(progressBar, h_progressBar);
+        chatRoomsRecyclerView.setAdapter(friendListAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
+
+/*
         sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.USER_ID,0);
+        token = sharedPreferences.getInt(Constants.TOKEN, 0);
 
         myName = userData.getName();
-        myId = token+"";
+        myId = token + "";
         int userType = this.userType;
-        switch (userType){
+        switch (userType) {
             case 1:
                 myType = "student";
                 break;
@@ -151,61 +137,78 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         }
 
         myChatId = myType + "_" + myId;
+*/
 
         //configure the recycler view
-        friendListAdapter = new FriendListAdapter(getActivity(), chatRooms, R.layout.friends_list_cell, myId);
-        chatRoomsRecyclerView.setAdapter(friendListAdapter);
+//        friendListAdapter = new FriendListAdapter(getActivity(), chatRooms, R.layout.friends_list_cell, myId, topProgressBar);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
+   //     getActivity().setTitle(myName);
 
-        progressDialog = new ProgressDialog(getActivity());
+/*
+        branchesTagsRecyclerView = (RecyclerView) view.findViewById(R.id.tagsRecycler);
+        //render the brands recycler view
+        branchesTagsRecyclerView = (RecyclerView) view.findViewById(R.id.tagsRecycler);
+        branchesTagsAdapter = new BranchesTagsAdapter(getActivity(),
+                branches, R.layout.branch_tag_view, this, myId);
 
+        branchesTagsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        branchesTagsRecyclerView.setAdapter(branchesTagsAdapter);
+*/
+
+     //   NetworkManager.getInstance(getActivity()).getBranchesNames(this);
+
+  //      downloadList("", -1, Integer.parseInt(myId));
+/*
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                String receiverId = intent.getStringExtra("receiverId");
+                if (chatRooms != null) {
+                    String receiverId = intent.getStringExtra("receiverId");
 
-                for (ChatRoom chatRoom : chatRooms) {
-                    if (chatRoom.getReceiverId().equals(receiverId)) {
-                        chatRoom.setHasPendingMessages(true);
+                    for (ChatRoom chatRoom : chatRooms) {
+                        if (chatRoom.getReceiverId().equals(receiverId)) {
+                            chatRoom.setHasPendingMessages(true);
 
-                        chatRooms.remove(chatRoom);
-                        chatRooms.add(0, chatRoom);
-                        break;
+                            chatRooms.remove(chatRoom);
+                            chatRooms.add(0, chatRoom);
+                            break;
+                        }
                     }
+                    friendListAdapter.notifyDataSetChanged();
                 }
-                friendListAdapter.notifyDataSetChanged();
+
             }
         };
-
-        getActivity().setTitle(myName);
-
-        downloadList(-1, Integer.parseInt(myId));
+*/
 
         return view;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        System.out.println("");
-//        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentFriendsList).commit();
-//        getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentRecentChats).commit();
+
+    public void setDataList(List<ChatRoom> chatRooms){
+        this.chatRooms = chatRooms;
     }
 
-    private void downloadList(int id, int excludeId){
+    public void setListAdapter(FriendListAdapter friendListAdapter){
+        this.friendListAdapter = friendListAdapter;
+    //    chatRoomsRecyclerView.setAdapter(friendListAdapter);
+    }
 
+
+    public void setAllDataList(List<ChatRoom> chatRooms) {
+        this.allChatRooms = chatRooms;
+    }
+
+
+
+    /*
+    public void downloadList(String token, int id, int excludeId) {
+
+        topProgressBar.setVisibility(View.VISIBLE);
         switch (receiver_type) {
             case "staff":
-                NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, id, excludeId);
-
-                progressDialog.setMessage("Loading...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                break;
-
+                NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, token, id, excludeId);
         }
 
     }
@@ -213,16 +216,17 @@ public class ChatFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-//        List<Object> data = (List)response.getResponseData();
-        List<Instructor> instructors = DataSerializer.convert(response.getResponseData(),new TypeToken<List<Instructor>>(){}.getType());
+        if (response != null) {
+            if(response.getStatus().equals(Response.SUCCESS)){
+                LinkedTreeMap linkedTreeMap = (LinkedTreeMap) response.getResponseData();
+//                List<Instructor> instructorss= linkedTreeMap.get("responseData");
 
-        if(instructors != null){
 
-            if(instructors.get(0) instanceof Instructor){
-                progressDialog.hide();
+
                 switch (receiver_type) {
                     case "staff":
-//                        List<Instructor> instructors = (List<Instructor>) response;
+                        List<Instructor> instructors = DataSerializer.convert(linkedTreeMap.get("responseData"),
+                                new TypeToken<List<Instructor>>(){}.getType());
                         chatRooms.clear();
 
                         for (Instructor instructor : instructors) {
@@ -245,22 +249,28 @@ public class ChatFragment extends Fragment implements NetworkResponse {
 
                             chatRooms.add(chatRoom);
                         }
+
+                        topProgressBar.setVisibility(View.GONE);
+                        //      branchesTagsAdapter.notifyDataSetChanged();
                         friendListAdapter.updateData();
                         break;
                 }
             }
+
+
+        }else{
+            topProgressBar.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
     public void onFailure() {
-        progressDialog.hide();
+        topProgressBar.setVisibility(View.GONE);
         Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
         System.out.println("error");
     }
-
+*/
+    /*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -268,6 +278,7 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         inflater.inflate(R.menu.search_action_button, menu);
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setQueryHint("Search for friends or branches...");
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -283,112 +294,58 @@ public class ChatFragment extends Fragment implements NetworkResponse {
         });
 
 
+    }*/
+
+/*
+    public class BranchTag {
+
+        private Branch branch;
+        private boolean pressed;
+
+        public Branch getBranch() {
+            return branch;
+        }
+
+        public void setBranch(Branch branch) {
+            this.branch = branch;
+        }
+
+        public boolean isPressed() {
+            return pressed;
+        }
+
+        public void setPressed(boolean pressed) {
+            this.pressed = pressed;
+        }
+
+        public BranchTag(Branch branch, boolean pressed) {
+            this.branch = branch;
+            this.pressed = pressed;
+        }
     }
 
+*/
 
 }
 
-/*
-        chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
+//    List<Object> data = (List) response;
+            /*if (data.get(0) instanceof Branch) {
+                List<Branch> branchesList = (List<Branch>) response;
+                if (branchesList.size() > 0) {
+                    for (Branch branch : branchesList) {
+                        branches.add(new ChatFragment.BranchTag(branch, false));
+                    }
 
-        //configure the recycler view
-        friendListAdapter = new FriendListAdapter(getActivity(),
-                chatRooms, R.layout.friends_list_cell, myId);
-        chatRoomsRecyclerView.setAdapter(friendListAdapter);
+                    if (branches.get(0).getBranch().getBranchName().toLowerCase().contains("smart village")) {
+                        if (branches.get(1) != null) {
+                            ChatFragment.BranchTag branch = branches.remove(1);
+                            branches.add(0, branch);
+                        }
+                    }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        chatRoomsRecyclerView.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatRoomsRecyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        chatRoomsRecyclerView.addItemDecoration(dividerItemDecoration);
+                    branches.get(0).setPressed(true);
+                    branchesTagsAdapter.notifyDataSetChanged();
+                    downloadList(branches.get(0).getBranch().getBranchId(), Integer.parseInt(myId));
 
-*/
-//    branchesNamesList = new ArrayList<>();
-//    branchesNamesList.add("Branches");
-//    Spinner spinner = (Spinner) view.findViewById(R.id.branches_spinner);
-
-        /*
-        branchesNamesAdapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_spinner_item, branchesNamesList){
-            @Override
-            public boolean isEnabled(int position){
-                if(position == 0 & !namesDownloaded)
-                {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
                 }
-                else
-                {
-                    return true;
-                }
-            }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0 & !namesDownloaded){
-                    // Set the hint text color gray
-                    tv.setTextColor(Color.GRAY);
-                }
-                else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-        };
-*/
-        /*
-
-        branchesNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(branchesNamesAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position){
-                    case 0://smart
-                        downloadList(1);
-                        break;
-                    case 1://alex
-                        downloadList(7);
-                        break;
-                    case 2://assuit
-                        downloadList(8);
-                        break;
-                    case 3://mansoura
-                        downloadList(9);
-                        break;
-                    case 4://ismailia
-                        downloadList(10);
-                        break;
-                    case 5://elnozha
-                        downloadList(11);
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-*/
-//        NetworkManager.getInstance(getActivity()).getBranchesNames(this);
-
-
-
-/*
-            if(data.get(0) instanceof Branch){
-                namesDownloaded = true;
-                List<Branch> branchesNames = (List<Branch>) response;
-                branchesNamesList.clear();
-                for(Branch branch : branchesNames){
-                    branchesNamesList.add(branch.getBranchName());
-                }
-
-                branchesNamesAdapter.notifyDataSetChanged();
-
-            }else */
+            } */

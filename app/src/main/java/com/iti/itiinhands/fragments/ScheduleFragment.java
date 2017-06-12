@@ -2,6 +2,8 @@ package com.iti.itiinhands.fragments;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -89,7 +92,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
 
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -115,22 +118,29 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null) {
+            if (response.getStatus().equals(Response.SUCCESS)) {
 
-            ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<SessionModel>>(){}.getType());
-            ScheduleAdapter adapter = new ScheduleAdapter(sessions);
-            List<String> groups = adapter.getGroups();
-            HashMap<String, List<SessionModel>> details = adapter.getDetails();
-            if (getContext() != null) {
-                ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
-                recyclerView.setAdapter(scheduleCardAdapter);
+                ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<SessionModel>>() {
+                }.getType());
+                ScheduleAdapter adapter = new ScheduleAdapter(sessions);
+                List<String> groups = adapter.getGroups();
+                HashMap<String, List<SessionModel>> details = adapter.getDetails();
+                if (getContext() != null) {
+                    ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
+                    recyclerView.setAdapter(scheduleCardAdapter);
+                }
             }
-            spinner.setVisibility(View.GONE);
         }
+        spinner.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onFailure() {
+
+        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        spinner.setVisibility(View.GONE);
 
     }
 }

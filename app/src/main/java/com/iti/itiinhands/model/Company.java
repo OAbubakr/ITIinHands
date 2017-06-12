@@ -1,10 +1,12 @@
 package com.iti.itiinhands.model;
 
+import java.io.Serializable;
+
 /**
  * Created by salma on 28/05/2017.
  */
 
-public class Company {
+public class Company implements Serializable {
 
     int companyID;
     String companyName;
