@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         companyTxt = (TextView) findViewById(R.id.companyTxtLoginId);
         graduateTxt = (TextView) findViewById(R.id.graduateTxtLoginId);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 //        spinner.setVisibility(View.GONE);
         context = getApplicationContext();
         myRef = this;
