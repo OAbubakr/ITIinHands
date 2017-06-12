@@ -94,7 +94,7 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+      if(getActivity()!=null)  Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
         spinner.setVisibility(View.GONE);
     }
 }

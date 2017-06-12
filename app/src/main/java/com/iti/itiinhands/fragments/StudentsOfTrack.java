@@ -73,33 +73,7 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
 
         networkManager.getAllStudentsByTrackId(this, id);
 
-
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//
-//        Intent intent = getActivity().getIntent();
-//
-//        return inflater.inflate(R.layout.students_of_track_fragment, container, false);
-//
-//
-//    }
-
-
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//
-//
-//
-//    }
-//
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//    }
 
 
     @Override
@@ -108,16 +82,13 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         if (response.getStatus().equals(Response.SUCCESS)) {
             students = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<StudentDataByTrackId>>(){}.getType());
 
-//            students = (ArrayList<StudentDataByTrackId>) response.getResponseData();
             adapter = new AllStudentByTrackIdAdapter(students, getApplicationContext());
 
             recyclerView.setAdapter(adapter);
             spinner.setVisibility(View.GONE);
         }
 
-
     }
-
     @Override
     public void onFailure() {
 
@@ -130,10 +101,15 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

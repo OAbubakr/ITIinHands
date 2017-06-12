@@ -41,10 +41,10 @@ public class NetworkManager {
 
 
 //    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
+    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
 //    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
-    public static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
+//    public static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/";
 
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
@@ -53,6 +53,10 @@ public class NetworkManager {
     private static Context context;
 
     //ur activity must implements NetworkResponse
+
+    public Retrofit getRetrofit(){
+        return retrofit;
+    }
 
     private NetworkManager(Context context) {
         this.context = context;
@@ -237,13 +241,13 @@ public class NetworkManager {
     }
 
 
-    public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
+    public void getLoginAuthData(NetworkResponse networkResponse,Call<LoginResponse> call) {
 
         final NetworkResponse network = networkResponse;
-        NetworkApi web = retrofit.create(NetworkApi.class);
+
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
