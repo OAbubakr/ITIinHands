@@ -161,6 +161,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         permission.setToMin(endMinuteCheck);
 
         send.setEnabled(false);
+        send.setBackgroundColor(Color.GRAY);
 
         datePart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +217,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                 TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), R.style.DatePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
-                        timeCheckStart.set(Calendar.HOUR, selectedHour);
+                        timeCheckStart.set(Calendar.HOUR_OF_DAY, selectedHour);
                         timeCheckStart.set(Calendar.MINUTE, selectedMinute);
 
                         String am_pm = "AM";
@@ -281,7 +282,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                 TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), R.style.DatePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
-                        timeCheckEnd.set(Calendar.HOUR, selectedHour);
+                        timeCheckEnd.set(Calendar.HOUR_OF_DAY, selectedHour);
                         timeCheckEnd.set(Calendar.MINUTE, selectedMinute);
 
                         String am_pm = "AM";
@@ -402,6 +403,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     supervisorName.setText(supervisor.getName());
                     permission.setEmpID(supervisor.getId());
                     if(send!=null)   send.setEnabled(true);
+                    send.setBackgroundColor(R.color.colorPrimary);
 
 
                 } else {
@@ -410,7 +412,9 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
                     cause.setText("");
 
-                if(send!=null)    send.setEnabled(true);
+                    if(send!=null)    send.setEnabled(true);
+                    send.setBackgroundColor(R.color.colorPrimary);
+
 
 
                 }
@@ -458,11 +462,14 @@ onFail();
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
             if(send!=null)    send.setEnabled(false);
+            send.setBackgroundColor(Color.GRAY);
+
         }else{
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
             if(send!=null)   send.setEnabled(true);
-            if(send!=null)   send.setEnabled(true);
+            send.setBackgroundColor(R.color.colorPrimary);
+
         }
 
     }
