@@ -29,8 +29,6 @@ import com.iti.itiinhands.adapters.chatAdapters.FriendListAdapter;
 import com.iti.itiinhands.adapters.chatAdapters.RecentChatsListAdapter;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Instructor;
-import com.iti.itiinhands.model.RenewAccessTokenObject;
-import com.iti.itiinhands.model.RenewTokenResponse;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.chat.ChatRoom;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
@@ -257,17 +255,6 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
         if (response != null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
 
-                if (response instanceof RenewTokenResponse) {
-                    RenewTokenResponse renewTokenResponse = (RenewTokenResponse) response;
-                    RenewAccessTokenObject renewAccessTokenObject = renewTokenResponse.getData();
-                    String accessToken = renewAccessTokenObject.getAccessToken();
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                    sharedPreferences.edit().putString(Constants.TOKEN, accessToken).apply();
-
-                    //resend the request
-                    downloadList(-1, Integer.parseInt(myId));
-
-                } else {
                 //    LinkedTreeMap linkedTreeMap = (LinkedTreeMap) response.getResponseData();
 
                     switch (receiver_type) {
@@ -316,16 +303,12 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
                             friendListAdapter.updateData(chatRooms);
                             recentChatsAdapter.updateData(recentChatRooms);
                             break;
-                    }
+
                 }
             } else if (response.getStatus().equals(Response.FAILURE)) {
 
                 if (response.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
-
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                    String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                    NetworkManager.getInstance(getActivity()).renewAccessToken(this, refreshToken);
-
+                    downloadList(-1, Integer.parseInt(myId));
                 } else if (response.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
 
                 } else if (response.getError().equals(Response.INVALID_ACCESS_TOKEN)) {
