@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class RecentChatsListAdapter extends RecyclerView.Adapter<RecentChatsList
 
 
 
-    private MaterialProgressBar progressBar;
+    private ProgressBar progressBar;
 
 
 
@@ -251,11 +252,11 @@ public class RecentChatsListAdapter extends RecyclerView.Adapter<RecentChatsList
         return recentChatRooms.size();
     }
 
-    public void setProgressBar(MaterialProgressBar progressBar) {
+    public void setProgressBar(ProgressBar progressBar) {
         this.progressBar = progressBar;
     }
 
-    public MaterialProgressBar getProgressBar() {
+    public ProgressBar getProgressBar() {
         return progressBar;
     }
 
