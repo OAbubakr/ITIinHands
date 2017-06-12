@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             /*
             * starting the access-token update alarm
             * */
-       //     UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
+            UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
 
             setButtonColorTint(Color.parseColor("#7F0000"));
             startActivity(navigationIntent);

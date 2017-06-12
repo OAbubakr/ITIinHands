@@ -7,9 +7,11 @@ import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import android.os.Build;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Permission;
@@ -159,7 +161,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         permission.setToMin(endMinuteCheck);
 
         send.setEnabled(false);
-        send.setBackgroundColor(Color.GRAY);
+        setButtonColorTint(Color.GRAY);
 
         datePart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -349,6 +351,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     } else {
 
                         if(send!=null)   send.setEnabled(false);
+                        setButtonColorTint(Color.GRAY);
                         errorMessageComment.setText("");
                         errorMessageComment.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         permission.setComment(cause.getText().toString());
@@ -401,7 +404,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     supervisorName.setText(supervisor.getName());
                     permission.setEmpID(supervisor.getId());
                     if(send!=null)   send.setEnabled(true);
-                    send.setBackgroundColor(R.color.colorPrimary);
+                    setButtonColorTint(Color.parseColor("#7F0000"));
 
 
 
@@ -412,7 +415,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     cause.setText("");
 
                     if(send!=null)    send.setEnabled(true);
-                    send.setBackgroundColor(R.color.colorPrimary);
+                    setButtonColorTint(Color.parseColor("#7F0000"));
 
 
 
@@ -461,19 +464,29 @@ onFail();
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
             if(send!=null)    send.setEnabled(false);
-            send.setBackgroundColor(Color.GRAY);
+            setButtonColorTint(Color.GRAY);
 
         }else{
 
             Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
             if(send!=null)   send.setEnabled(true);
-            send.setBackgroundColor(R.color.colorPrimary);
+            setButtonColorTint(Color.parseColor("#7F0000"));
+//            send.setBackgroundColor(R.color.colorPrimary);
+
 
         }
 
     }
 
-
+    private void setButtonColorTint(int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            send.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        } else {
+            Drawable wrapDrawable = DrawableCompat.wrap(send.getBackground());
+            DrawableCompat.setTint(wrapDrawable, color);
+            send.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
+        }
+    }
 
 
 }

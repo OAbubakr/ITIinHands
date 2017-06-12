@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,10 +20,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.activities.ChatRoomActivity;
+import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.model.chat.ChatRoom;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
+import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,10 +72,12 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         this.cellToInflate = cellToInflate;
         this.id = id;
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
-        int userType = sharedPreferences.getInt(Constants.USER_TYPE, -1);
-        switch (userType){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+        int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+        UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        myId = String.valueOf(userData.getId());
+        switch (userType) {
             case 1:
                 myType = "student";
                 break;
@@ -80,12 +85,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                 myType = "staff";
                 break;
         }
-
-        myRoot = firebaseDatabase.getReference("users").child(myType);
-
-        myId = sharedPreferences.getString("myId", null);
         myChatId = myType + "_" + myId;
 
+        myRoot = firebaseDatabase.getReference("users").child(myType);
     }
 
     @Override
@@ -121,8 +123,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         final ChatRoom chatRoom = chatRooms.get(position);
         holder.getName().setText(chatRoom.getReceiverName());
 
-        if (chatRoom.isHasPendingMessages())
+        if (chatRoom.getPendingMessagesCount() > 0) {
+            holder.getMessage_image().setText(String.valueOf(chatRoom.getPendingMessagesCount()));
             holder.getMessage_image().setVisibility(View.VISIBLE);
+        }
         else
             holder.getMessage_image().setVisibility(View.INVISIBLE);
 
@@ -161,7 +165,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                                 }
 
 
-                                chatRoom.setHasPendingMessages(false);
+                                chatRoom.setPendingMessagesCount(0);
                                 if (roomKey == null) {
 
                                     createChatRoom(chatRoom);
@@ -189,7 +193,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                     }
 
                 }else{
-                    chatRoom.setHasPendingMessages(false);
+                    chatRoom.setPendingMessagesCount(0);
                     chatRoom.setRoomKey(roomKey);
                     launchChatRoom(chatRoom);
                     notifyDataSetChanged();
@@ -249,7 +253,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         return chatRooms.size();
     }
 
-    public void setProgressBar(MaterialProgressBar progressBar, MaterialProgressBar h_progressBar) {
+    public void setProgressBar(ProgressBar progressBar, MaterialProgressBar h_progressBar) {
         this.progressBar = progressBar;
         this.h_progressBar = h_progressBar;
     }
@@ -268,7 +272,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     class FriendsViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView branchName;
-        private ImageView message_image;
+        private Button message_image;
         private View view;
         private AvatarView avatarView;
         private IImageLoader imageLoader;
@@ -277,7 +281,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.friend_name);
             this.view = itemView.findViewById(R.id.cell);;
-            this.message_image = (ImageView) itemView.findViewById(R.id.message_image);
+            this.message_image = (Button) itemView.findViewById(R.id.message_image);
             this.avatarView = (AvatarView) itemView.findViewById(R.id.avatar);
             this.imageLoader = new PicassoLoader();
             this.branchName = (TextView) itemView.findViewById(R.id.branch_name_text);
@@ -291,7 +295,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             return view;
         }
 
-        ImageView getMessage_image() {
+        Button getMessage_image() {
             return message_image;
         }
 

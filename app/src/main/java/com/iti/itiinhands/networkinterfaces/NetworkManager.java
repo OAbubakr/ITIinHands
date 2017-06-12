@@ -119,7 +119,6 @@ public class NetworkManager {
                         NetworkManager.getInstance(context).renewAccessToken(refreshToken, RENEW_INTERCEPTOR);
                     }
                 }
-
             }
 
             return response.newBuilder()
@@ -816,7 +815,7 @@ public class NetworkManager {
                              SharedPreferences.Editor editor = sharedPreferences.edit();
                              editor.putString(Constants.TOKEN, access_token);
                              editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
-                             editor.apply();
+                             editor.commit();
                          } else if (flag == RENEW_ALARM_MANAGER) {
                              Response response1 = response.body();
                              if (response1 != null) {

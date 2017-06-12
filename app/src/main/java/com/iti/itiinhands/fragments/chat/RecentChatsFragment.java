@@ -26,8 +26,6 @@ import static android.content.Context.MODE_PRIVATE;
  * A simple {@link Fragment} subclass.
  */
 public class RecentChatsFragment extends Fragment {
-
-    public static final String SP_NAME = "chatRoomsKeys";
     //    private String receiver_type;
 //    private String myName;
 //    private String myType;
