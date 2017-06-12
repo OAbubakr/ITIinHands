@@ -26,9 +26,9 @@
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.OurWalkthrough">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
@@ -48,7 +48,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <activity android:name=".activities.MapsDetailsActivity" />
 
         <activity android:name=".activities.Schedule" />
@@ -62,13 +61,7 @@
             android:exported="false"></service>
         <activity android:name=".activities.GraduatesByTrack"></activity>
         <activity android:name=".activities.CompanyProfileActivity"></activity>
-
-        <!-- <activity android:name=".activities.Schedule" /> -->
-
-        <!-- <activity android:name=".activities.Schedule" /> -->
-
-        <activity
-            android:name=".activities.ChatRoomActivity"
+        <activity android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="launch" />
@@ -76,6 +69,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".broadcast_receiver.UpdateAccessTokens"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_FINISHED" />
+                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.UPDATE_ACCESS_TOKEN_ALARM" />
+            </intent-filter>
+
+        </receiver>
+
+
         <activity android:name=".activities.CompanyGraduateProfile"></activity>
     </application>
 

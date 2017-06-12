@@ -1,17 +1,26 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.iti.itiinhands.activities.LoginActivity;
 import com.iti.itiinhands.beans.JobOpportunity;
+import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
-import com.iti.itiinhands.model.RenewTokenResponse;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.behance.BehanceData;
@@ -19,6 +28,7 @@ import com.iti.itiinhands.utilities.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -32,6 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_FINISHED;
 
 /**
  * Created by admin on 5/22/2017.
@@ -51,7 +63,8 @@ public class NetworkManager {
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
     //    private NetworkResponse network;
     private static Context context;
-
+    public static final int RENEW_INTERCEPTOR = 0;
+    public static final int RENEW_ALARM_MANAGER = 1;
     //ur activity must implements NetworkResponse
 
     private NetworkManager(Context context) {
@@ -90,38 +103,48 @@ public class NetworkManager {
         @Override
         public okhttp3.Response intercept(Chain chain) throws IOException {
 
-            SharedPreferences data = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-            String token = data.getString(Constants.TOKEN, "");
+            final SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+            String token = sharedPreferences.getString(Constants.TOKEN, "");
             Request request = chain.request();
             request = request.newBuilder().addHeader("Authorization", token).build();
             okhttp3.Response response = chain.proceed(request);
             ResponseBody responseBody = response.body();
-            String s = responseBody.string();
-/*
-            Response response2 = new Gson().fromJson(s, Response.class);
-            if(response2.getError() != null){
-                String error = response2.getError();
-                if(error.equals(Response.EXPIRED_ACCESS_TOKEN)){
-                    SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+            String responseAsString = responseBody.string();
+
+            Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
+
+            if (jsonResponse.getStatus().equals(Response.FAILURE)) {
+
+                if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
                     String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                 //   NetworkManager.getInstance(context).renewAccessToken(this, refreshToken);
+                    if (!refreshToken.isEmpty()) {
+                        NetworkManager.getInstance(context).renewAccessToken(refreshToken, RENEW_INTERCEPTOR);
+                    }
+
+                } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
+                    SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                    if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
+                        editor.apply();
+
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        ComponentName cn = intent.getComponent();
+                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                        context.startActivity(mainIntent);
+
+                    }
+
                 }
             }
-*/
-             return response.newBuilder()
-                    .body(ResponseBody.create(response.body().contentType(), s))
+
+            return response.newBuilder()
+                    .body(ResponseBody.create(response.body().contentType(), responseAsString))
                     .build();
-        }
-    }
 
-    public static final class ForbiddenInterceptor implements Interceptor {
-
-        @Override
-        public okhttp3.Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-
-            okhttp3.Response response = chain.proceed(request);
-            return response;
         }
     }
 
@@ -333,7 +356,7 @@ public class NetworkManager {
 
     ////////////////////////////////////////////
     //-------------------------------------POST JOB-------------------------------------------------
-    public void postJob(NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
+    public void postJob(final NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -342,13 +365,12 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-
+                networkResponse.onResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-                t.printStackTrace();
-                Log.e("network", t.toString());
+
                 network.onFailure();
             }
         });
@@ -794,23 +816,55 @@ public class NetworkManager {
     }
 
 
-    public void renewAccessToken(NetworkResponse networkResponse, String refreshToken) {
-        final NetworkResponse network = networkResponse;
+    public void renewAccessToken(String refreshToken, final int flag) {
         NetworkApi web = retrofit.create(NetworkApi.class);
-        Call<RenewTokenResponse> call = web.renewAccessToken(refreshToken);
+        Call<Response> call = web.renewAccessToken(refreshToken);
+        call.enqueue(new Callback<Response>() {
+             @Override
+             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                 if (response != null) {
+                     if (response.body().getStatus().equals(Response.SUCCESS)) {
+                         if (flag == RENEW_INTERCEPTOR) {
 
-        call.enqueue(new Callback<RenewTokenResponse>() {
-            @Override
-            public void onResponse(Call<RenewTokenResponse> call, retrofit2.Response<RenewTokenResponse> response) {
-                network.onResponse(response.body());
-            }
+                             Log.v("ITI_Test", "access token saved");
 
-            @Override
-            public void onFailure(Call<RenewTokenResponse> call, Throwable t) {
-                t.printStackTrace();
-                Log.e("network", t.toString());
-                network.onFailure();
-            }
-        });
+                             LinkedTreeMap<String, Object> linkedTreeMap =
+                                     (LinkedTreeMap<String, Object>) response.body().getResponseData();
+                             String access_token = (String) linkedTreeMap.get("access_token");
+                             double expiry_date = (double) linkedTreeMap.get("expiry_date");
+
+                             SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                             SharedPreferences.Editor editor = sharedPreferences.edit();
+                             editor.putString(Constants.TOKEN, access_token);
+                             editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
+                             editor.apply();
+
+                         } else if (flag == RENEW_ALARM_MANAGER) {
+
+                             Response response1 = response.body();
+                             if (response1 != null) {
+                                 Intent intent = new Intent(context, UpdateAccessTokens.class);
+                                 intent.setAction(DOWNLOAD_FINISHED);
+                                 intent.putExtra("response", response1);
+                                 context.sendBroadcast(intent);
+                             }
+
+                         }
+
+
+                     }
+
+                 }
+
+             }
+
+             @Override
+             public void onFailure(Call<Response> call, Throwable t) {
+                 t.printStackTrace();
+                 Log.e("network", t.toString());
+             }
+         }
+
+        );
     }
 }

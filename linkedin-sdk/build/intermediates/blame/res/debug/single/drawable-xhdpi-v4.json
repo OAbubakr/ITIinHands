@@ -1,6 +1,14 @@
 [
     {
-        "merged": "C:\\Users\\salma\\AndroidStudioProjects\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
-        "source": "C:\\Users\\salma\\AndroidStudioProjects\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+        "merged": "D:\\ITI_GRADUATION\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "D:\\ITI_GRADUATION\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\GraduationProject\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "E:\\GraduationProject\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\ITI course materials\\GP\\new\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "E:\\ITI course materials\\GP\\new\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
     }
 ]

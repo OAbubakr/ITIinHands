@@ -2,6 +2,7 @@ package com.iti.itiinhands.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,15 +35,15 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
 
     public CustomExpandableListAdapter(Context context, List<String> listDataHeader,
-                                       HashMap<String, List<String>> listChildData, int[] images , int[] trackImages , int[] itiImages,int[] third ,int type) {
+                                       HashMap<String, List<String>> listChildData, int[] images, int[] trackImages, int[] itiImages, int[] third, int type) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this.images=images;
-        this.third=third;
-        this.trackImages=trackImages;
-        this.itiImages=itiImages;
-        this.type=type;
+        this.images = images;
+        this.third = third;
+        this.trackImages = trackImages;
+        this.itiImages = itiImages;
+        this.type = type;
     }
 
     @Override
@@ -80,13 +81,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             //student
             case 1:
 
-                switch (groupPosition)
-                {
+                switch (groupPosition) {
                     case 1:
                         childImage.setImageResource(trackImages[childPosition]);
                         break;
 
-                    case 3 :
+                    case 3:
                         childImage.setImageResource(itiImages[childPosition]);
                         break;
                     case 2:
@@ -97,13 +97,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 }
 
 
-            break;
+                break;
 
             //staff
             case 2:
 
-                switch (groupPosition)
-                {
+                switch (groupPosition) {
                     //staff work
                     case 0:
                         childImage.setImageResource(trackImages[childPosition]);
@@ -127,8 +126,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             //graduate
             case 3:
 
-                switch (groupPosition)
-                {
+                switch (groupPosition) {
                     case 1:
                         //for comapanies profile
                         childImage.setImageResource(trackImages[childPosition]);
@@ -148,8 +146,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
             case 4:
 
-                switch (groupPosition)
-                {
+                switch (groupPosition) {
                     case 1:
                         childImage.setImageResource(trackImages[childPosition]);
                         break;
@@ -164,10 +161,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 break;
 
 
-
             default:
                 break;
-
 
 
         }
@@ -178,12 +173,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public int getChildrenCount(int groupPosition) {
 
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                       .size();
+                .size();
         //int type=1;
         //switch (type) {
 
-           // case 0:
-                //zero for student type
+        // case 0:
+        //zero for student type
 //            if (groupPosition == 0 || groupPosition == 4) {
 //                return 0;
 //            } else {
@@ -240,18 +235,30 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         lblListHeader.setText(headerTitle);
 
 
-        ImageView image=(ImageView)convertView.findViewById(R.id.imageView);
+        ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
         image.setImageResource(images[groupPosition]);
 
 
-        ImageView arrawImage=(ImageView)convertView.findViewById(R.id.arrow);
+        ImageView arrawImage = (ImageView) convertView.findViewById(R.id.arrow);
 
+//        int visibleArrow=_listDataChild.get(_listDataHeader.get(groupPosition)).size();
+//        Log.i("test",String.valueOf(visibleArrow));
+//        Log.i("group position", _listDataHeader.get(groupPosition)+String.valueOf(groupPosition));
+//        if(visibleArrow>0)
+//        {
+//            arrawImage.setVisibility(View.VISIBLE);
+//        }
 
-        if((_listDataChild.get(_listDataHeader.get(groupPosition))).size()>0)
-        {
+        if (getChildrenCount(groupPosition) == 0) {
+            arrawImage.setVisibility(View.INVISIBLE);
+        } else {
             arrawImage.setVisibility(View.VISIBLE);
+            if(isExpanded) {
+                arrawImage.setImageResource(R.drawable.per_arrow_top);
+            }else{
+                arrawImage.setImageResource(R.drawable.per_arrow);
+            }
         }
-
 
         return convertView;
     }
@@ -260,8 +267,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean hasStableIds() {
         return false;
     }
-
-
 
 
     @Override

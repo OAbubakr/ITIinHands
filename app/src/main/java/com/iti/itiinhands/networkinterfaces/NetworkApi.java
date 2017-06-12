@@ -129,6 +129,6 @@ public interface NetworkApi {
     public Call<Response> getAllCompanies();
 
     @POST("renewAccessToken")
-    public Call<RenewTokenResponse> renewAccessToken(@Body String refreshToken);
+    public Call<Response> renewAccessToken(@Body String refreshToken);
 
 }

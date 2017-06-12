@@ -46,7 +46,7 @@ public class ChatRoomAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatRo
         setAlignment(viewHolder, isMe);
 
         viewHolder.getTxtMessage().setText(model.getMessage());
-        viewHolder.getTxtInfo().setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+        viewHolder.getTxtInfo().setText(DateFormat.format("dd-MM-yyyy (HH:mm)",
                 model.getDate()));
 
     }
