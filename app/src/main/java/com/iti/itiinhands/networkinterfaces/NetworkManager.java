@@ -344,7 +344,7 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-
+		 network.onResponse(response.body());
             }
 
             @Override
