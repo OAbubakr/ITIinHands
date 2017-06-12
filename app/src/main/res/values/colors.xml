@@ -2,11 +2,12 @@
 <resources>
     <color name="colorPrimary">#7f0000</color>
     <color name="colorPrimaryDark">#b71c1c</color>
-    <color name="colorAccent">#B71C1C</color>
+    <color name="colorAccent">#b71c1c</color>
 
 
     <color name="separator_line">#ECECEC</color>
     <color name="title">#222222</color>
     <color name="subtitle">#999999</color>
+    <color name="bb">#7f0000</color>
 
 </resources>

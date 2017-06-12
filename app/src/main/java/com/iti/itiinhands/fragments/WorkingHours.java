@@ -1,109 +1,197 @@
 package com.iti.itiinhands.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.adapters.GridAdapterForHours;
+import com.iti.itiinhands.beans.EmpHour;
+import com.iti.itiinhands.model.Response;
+import com.iti.itiinhands.networkinterfaces.NetworkManager;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link WorkingHours.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link WorkingHours#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class WorkingHours extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.Calendar;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+public class WorkingHours extends AppCompatActivity implements com.iti.itiinhands.networkinterfaces.NetworkResponse,
+        View.OnClickListener {
 
-    public WorkingHours() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WorkingHours.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static WorkingHours newInstance(String param1, String param2) {
-        WorkingHours fragment = new WorkingHours();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    NetworkManager networkManager;
+    private com.iti.itiinhands.networkinterfaces.NetworkResponse myRef;
+    private SlidingUpPanelLayout mLayout;
+    private static final String TAG = "MainAcitvity";
+    TextView textView;
+    int[] images = {R.drawable.path3150, R.drawable.path, R.drawable.path3141, R.drawable.group2009,
+            R.drawable.group2013, R.drawable.group2011, R.drawable.group2018, R.drawable.path3159};
+    String[] data = new String[]{
+            "Working hours", "Absence", "Permissions", "Mission hours", "Late days",
+            "Attend days", "Attend hours", "Vacation"
+    };
+    GridView hoursGrid;
+    EditText startDate, endDate;
+    private int mYear, mMonth, mDay;
+    EmpHour empHour;
+    private int flag = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        setContentView(R.layout.fragment_working_hours);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        networkManager = NetworkManager.getInstance(this);
+        hoursGrid = (GridView) findViewById(R.id.HoursGridView);
+        startDate = (EditText) findViewById(R.id.startDateTv);
+        endDate = (EditText) findViewById(R.id.endDateTv);
+        hoursGrid.setAdapter(new GridAdapterForHours(this, data, images));
+        startDate.setOnClickListener(this);
+        endDate.setOnClickListener(this);
+        myRef = this;
+        hoursGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(WorkingHours.this, "You Clicked at " + position, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        init();
+        panelListener();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_working_hours, container, false);
-    }
+    public void onResponse(Response response) {
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+    public void onFailure() {
+
+    }
+
+    public void init() {
+
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+    }
+
+
+    public void panelListener() {
+
+        mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+
+            // During the transition of expand and collapse onPanelSlide function will be called.
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.e(TAG, "onPanelSlide, offset " + slideOffset);
+            }
+
+            // This method will be call after slide up layout
+            @Override
+            public void onPanelExpanded(View panel) {
+                Log.e(TAG, "onPanelExpanded");
+
+            }
+            // This method will be call after slide down layout.
+            @Override
+            public void onPanelCollapsed(View panel) {
+                Log.e(TAG, "onPanelCollapsed");
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+                Log.e(TAG, "onPanelAnchored");
+            }
+
+            @Override
+            public void onPanelHidden(View panel) {
+                Log.e(TAG, "onPanelHidden");
+            }
+        });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (mLayout != null &&
+                (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            super.onBackPressed();
         }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+    public void onClick(View v) {
+//        if (v.getId() == R.id.getEmpBtn) {
+//            if (!(endDate.getText().toString().isEmpty() || startDate.getText().toString().isEmpty())) {
+//                System.out.println(startDate.getText().toString());
+//                System.out.println(endDate.getText().toString());
+//
+//            } else {
+//                Toast.makeText(this, "please select date firsst", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        } else
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        if (v.getId() == R.id.startDateTv) {
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            startDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
+                            flag = 1;
+                            System.out.println("Flag is :" +flag);
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+            System.out.println("***********Start Date");
+        } else if (v.getId() == R.id.endDateTv) {
+            if(flag !=1){
+                Toast.makeText(this, "Choose Start Date First", Toast.LENGTH_SHORT).show();
+            }else{
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                endDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
+                                networkManager.getEmployeeHours(myRef, 1018, startDate.getText().toString(),
+                                    endDate.getText().toString());
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+
+        }
     }
 }

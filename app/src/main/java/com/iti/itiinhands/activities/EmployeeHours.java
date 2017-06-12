@@ -54,9 +54,6 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         View view = inflater.inflate(R.layout.activity_employee_hours, container, false);
         networkManager = NetworkManager.getInstance(getActivity());
         myRef = this;
