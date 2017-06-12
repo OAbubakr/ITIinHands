@@ -24,6 +24,7 @@ import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class GuestSideMenu extends AppCompatActivity {
                         break;
                     case 3:
                         //events fragment
-                        fragment = new EventListFragment();
+                        fragment = new EventTabFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 

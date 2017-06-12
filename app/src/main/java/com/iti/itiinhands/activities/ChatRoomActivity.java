@@ -38,7 +38,6 @@ public class ChatRoomActivity extends AppCompatActivity {
     private RecyclerView messagesRecyclerView;
     private ChatRoomAdapter adapter;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//    private SharedPreferences sharedPreferences;
     private DatabaseReference roomNode;
     private String roomKey;
     private String senderId;

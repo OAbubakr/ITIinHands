@@ -34,7 +34,7 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
         <activity android:name=".fragments.StudentsOfTrack" />
-
+<activity android:name=".activities.TrackDetails"/>
         <activity android:name=".activities.StaffSideMenuActivity" />
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
@@ -64,10 +64,26 @@
         <activity android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
-                <action android:name="launch"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="launch" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".broadcast_receiver.UpdateAccessTokens"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_FINISHED" />
+                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.UPDATE_ACCESS_TOKEN_ALARM" />
+            </intent-filter>
+
+        </receiver>
+
+
+        <activity android:name=".activities.CompanyGraduateProfile"></activity>
     </application>
 
 </manifest>
