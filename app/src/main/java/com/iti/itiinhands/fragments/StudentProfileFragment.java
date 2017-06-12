@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,25 +100,25 @@ public class StudentProfileFragment extends Fragment {
             editBtn.setVisibility(View.GONE);
             userData = (UserData) b.getSerializable("student");
         }
-        if(userData != null){
-            if(userData.getLinkedInUrl()==null) {
+        if (userData != null) {
+            if (userData.getLinkedInUrl() == null) {
                 linkedInBtn.setEnabled(false);
                 linkedInBtn.setImageResource(R.drawable.group1205);
-            }else{
+            } else {
                 linkedInBtn.setEnabled(true);
                 linkedInBtn.setImageResource(R.drawable.linked_in);
             }
-            if(userData.getBehanceUrl()==null){
+            if (userData.getBehanceUrl() == null) {
                 behanceBtn.setEnabled(false);
                 behanceBtn.setImageResource(R.drawable.group1207);
-            }else{
+            } else {
                 behanceBtn.setEnabled(true);
                 behanceBtn.setImageResource(R.drawable.behance);
             }
-            if(userData.getGitUrl()==null){
+            if (userData.getGitUrl() == null) {
                 gitBtn.setEnabled(false);
                 gitBtn.setImageResource(R.drawable.githubgray);
-            }else{
+            } else {
                 gitBtn.setEnabled(true);
                 gitBtn.setImageResource(R.drawable.github);
             }
@@ -131,12 +132,11 @@ public class StudentProfileFragment extends Fragment {
 
         //********** get width and height of screeen/
 
-         DisplayMetrics displayMetrics=new DisplayMetrics();
-         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-         int width=displayMetrics.widthPixels;
-         int height=displayMetrics.heightPixels;
-
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
 
 
         //************************************/
@@ -161,20 +161,21 @@ public class StudentProfileFragment extends Fragment {
                 .downloader(new OkHttp3Downloader(client))
                 .build();
         picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
-                .resize(width,height/3)
+                .resize(width, height / 3)
                 .error(R.drawable.profile_pic).into(profile_pic);
 
         /**********/
 
         //  Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.40:8085/restfulSpring/download/"+userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(profile_pic);
         //SET USER EMAIL
-        if (userData.getStudentEmail() != null)
+        if (userData.getStudentEmail() != null) {
             fourthTv.setText(userData.getStudentEmail());
 
+        }
         //SET USER PHONE
-        if (userData.getStudentMobile() != null)
+        if (userData.getStudentMobile() != null) {
             fifthTv.setText(userData.getStudentMobile());
-
+        }
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
