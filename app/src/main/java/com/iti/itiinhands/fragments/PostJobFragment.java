@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,7 +43,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
     private ImageView companyImage;
     private Button postButton;
     private NetworkManager networkManager;
-    String email, yearNumb, closingDate;
+    String email, yearNumb, closingDate = "";
     int noNeed;
     Boolean check = true, closeDateF = true;
     String compName = "";
@@ -191,6 +193,15 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
                     if (networkManager.isOnline()){
                         networkManager.postJob(PostJobFragment.this, jobOpportunity);
+
+//                        //-------------------------Move to About ITI Fragment---------------------------
+//                        Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
+//                        Fragment fragment = new AboutIti();
+//                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.content_frame, fragment);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
                     }
                 }
             }
@@ -216,8 +227,18 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
 
     @Override
     public void onResponse(Response response) {
-        System.out.println(response.getError());
-        Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
+        if(response.getStatus().equals("SUCCESS")){
+            //-------------------------Move to About ITI Fragment---------------------------
+            Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
+            Fragment fragment = new AboutIti();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(), "NETWORK ERROR", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
