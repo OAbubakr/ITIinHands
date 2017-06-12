@@ -59,7 +59,7 @@ public class NetworkManager {
     public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
 //    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
 
-    //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
+//    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
 //    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
@@ -69,7 +69,6 @@ public class NetworkManager {
     public static final int RENEW_INTERCEPTOR = 0;
     public static final int RENEW_ALARM_MANAGER = 1;
     //ur activity must implements NetworkResponse
-
 
     private NetworkManager(Context context) {
         this.context = context;
