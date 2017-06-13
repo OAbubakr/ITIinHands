@@ -113,65 +113,68 @@ public class NetworkManager {
             ResponseBody responseBody = response.body();
             String responseAsString = responseBody.string();
 
+            try {
+                Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
 
-            Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
+                if (jsonResponse.getStatus().equals(Response.FAILURE)) {
 
-            if (jsonResponse.getStatus().equals(Response.FAILURE)) {
-
-                if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
-                    String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                    if (!refreshToken.isEmpty() & !IS_UPDATING_ACCESS_TOKEN) {
-                        NetworkManager.getInstance(context).renewAccessToken(refreshToken);
-                    }
-
-                } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
-                    SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                    if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
-
-                        SharedPreferences.Editor editor = setting.edit();
-                        editor.remove(Constants.LOGGED_FLAG);
-                        editor.remove(Constants.TOKEN);
-                        editor.remove(Constants.USER_TYPE);
-                        editor.remove(Constants.USER_OBJECT);
-                        editor.apply();
-
-                        //un subscribe from topics
-
-                        int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
-                        UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-                        String myId = String.valueOf(userData.getId());
-                        String myType = "";
-                        switch (userType) {
-                            case 1:
-                                myType = "student";
-                                break;
-                            case 2:
-                                myType = "staff";
-                                break;
+                    if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
+                        String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                        if (!refreshToken.isEmpty() & !IS_UPDATING_ACCESS_TOKEN) {
+                            NetworkManager.getInstance(context).renewAccessToken(refreshToken);
                         }
-                        String myChatId = myType + "_" + myId;
 
-                        //unsubscribe from topics
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
+                    } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
+                        SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                        if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
 
-                        //stop the service
-                        boolean stopped = context.stopService(new Intent(context, UpdateAccessToken.class));
+                            SharedPreferences.Editor editor = setting.edit();
+                            editor.remove(Constants.LOGGED_FLAG);
+                            editor.remove(Constants.TOKEN);
+                            editor.remove(Constants.USER_TYPE);
+                            editor.remove(Constants.USER_OBJECT);
+                            editor.apply();
+
+                            //un subscribe from topics
+
+                            int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+                            UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+                            String myId = String.valueOf(userData.getId());
+                            String myType = "";
+                            switch (userType) {
+                                case 1:
+                                    myType = "student";
+                                    break;
+                                case 2:
+                                    myType = "staff";
+                                    break;
+                            }
+                            String myChatId = myType + "_" + myId;
+
+                            //unsubscribe from topics
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
+
+                            //stop the service
+                            boolean stopped = context.stopService(new Intent(context, UpdateAccessToken.class));
 
 
-                        Toast.makeText(context, "Expired session", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Expired session", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        ComponentName cn = intent.getComponent();
-                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
-                        context.startActivity(mainIntent);
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            ComponentName cn = intent.getComponent();
+                            Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                            context.startActivity(mainIntent);
+
+                        }
 
                     }
-
                 }
-            }
+            } catch (Exception e) {
+                    e.printStackTrace();
 
+            }
             return response.newBuilder()
                     .body(ResponseBody.create(response.body().contentType(), responseAsString))
                     .build();
@@ -291,7 +294,7 @@ public class NetworkManager {
     }
 
 
-    public void getLoginAuthData(NetworkResponse networkResponse,Call<LoginResponse> call) {
+    public void getLoginAuthData(NetworkResponse networkResponse, Call<LoginResponse> call) {
 
         final NetworkResponse network = networkResponse;
 
@@ -904,35 +907,35 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
-             @Override
-             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                 if (response != null) {
-                     IS_UPDATING_ACCESS_TOKEN = false;
-                     if (response.body().getStatus().equals(Response.SUCCESS)) {
-                         LinkedTreeMap<String, Object> linkedTreeMap =
-                                 (LinkedTreeMap<String, Object>) response.body().getResponseData();
-                         String access_token = (String) linkedTreeMap.get("access_token");
-                         double expiry_date = (double) linkedTreeMap.get("expiry_date");
+                         @Override
+                         public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                             if (response != null) {
+                                 IS_UPDATING_ACCESS_TOKEN = false;
+                                 if (response.body().getStatus().equals(Response.SUCCESS)) {
+                                     LinkedTreeMap<String, Object> linkedTreeMap =
+                                             (LinkedTreeMap<String, Object>) response.body().getResponseData();
+                                     String access_token = (String) linkedTreeMap.get("access_token");
+                                     double expiry_date = (double) linkedTreeMap.get("expiry_date");
 
-                         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                         editor.putString(Constants.TOKEN, access_token);
-                         editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
-                         editor.apply();
+                                     SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                                     editor.putString(Constants.TOKEN, access_token);
+                                     editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
+                                     editor.apply();
 
+                                 }
+
+                             }
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<Response> call, Throwable t) {
+                             IS_UPDATING_ACCESS_TOKEN = false;
+                             t.printStackTrace();
+                             Log.e("network", t.toString());
+                         }
                      }
-
-                 }
-
-             }
-
-             @Override
-             public void onFailure(Call<Response> call, Throwable t) {
-                 IS_UPDATING_ACCESS_TOKEN = false;
-                 t.printStackTrace();
-                 Log.e("network", t.toString());
-             }
-         }
 
         );
     }
