@@ -26,10 +26,13 @@ import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.services.UpdateAccessToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.iti.itiinhands.networkinterfaces.NetworkManager.AUTHINTICATION_REQUIRED;
 
 public class GuestSideMenu extends AppCompatActivity {
 

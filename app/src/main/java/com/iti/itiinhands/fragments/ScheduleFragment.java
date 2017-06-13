@@ -28,6 +28,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.schedule.SessionModel;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -68,24 +69,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-        token = sharedPreferences.getInt(Constants.USER_ID,0);
-
-
-        Bundle b = getArguments();
-        if (b != null) flag = b.getInt("flag", 0);
-
-        if (userType == 1) {
-            networkManager.getStudentSchedule(this, token);
-
-        } else if (userType == 2) {
-            if (flag == 0)
-                networkManager.getInstructorSchedule(this, token);
-            else {
-                int trackId = b.getInt("trackId");
-                networkManager.getTrackSchedule(this, trackId);
-            }
-        }
-
+        token = sharedPreferences.getInt(Constants.USER_ID, 0);
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.day);
@@ -98,6 +82,26 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        if (networkManager.isOnline()) {
+            Bundle b = getArguments();
+            if (b != null) flag = b.getInt("flag", 0);
+
+            if (userType == 1) {
+                networkManager.getStudentSchedule(this, token);
+
+            } else if (userType == 2) {
+                if (flag == 0)
+                    networkManager.getInstructorSchedule(this, token);
+                else {
+                    int trackId = b.getInt("trackId");
+                    networkManager.getTrackSchedule(this, trackId);
+                }
+            }
+        } else {
+            onFailure();
+        }
+
 
         ////////////////////////////////////////////////////
 
@@ -119,20 +123,21 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null) {
-            if (response.getStatus().equals(Response.SUCCESS)) {
 
-                ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<SessionModel>>() {
-                }.getType());
-                ScheduleAdapter adapter = new ScheduleAdapter(sessions);
-                List<String> groups = adapter.getGroups();
-                HashMap<String, List<SessionModel>> details = adapter.getDetails();
-                if (getContext() != null) {
-                    ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
-                    recyclerView.setAdapter(scheduleCardAdapter);
-                }
+        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+
+            ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<SessionModel>>() {
+            }.getType());
+            ScheduleAdapter adapter = new ScheduleAdapter(sessions);
+            List<String> groups = adapter.getGroups();
+            HashMap<String, List<SessionModel>> details = adapter.getDetails();
+            if (getContext() != null) {
+                ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
+                recyclerView.setAdapter(scheduleCardAdapter);
             }
         }
+        else onFailure();
+
         spinner.setVisibility(View.GONE);
 
     }
@@ -140,7 +145,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
 
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getActivity());
         spinner.setVisibility(View.GONE);
 
     }

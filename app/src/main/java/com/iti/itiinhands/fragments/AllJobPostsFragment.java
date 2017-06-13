@@ -24,6 +24,7 @@ import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
@@ -65,7 +66,12 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
         recyclerView.setLayoutManager(layoutManager);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
-        networkManager.getAllJobs(this);
+        if (networkManager.isOnline()) {
+            networkManager.getAllJobs(this);
+        } else {
+            new NetworkUtilities().networkFailure(getContext());
+            spinner.setVisibility(View.GONE);
+        }
 
         return view;
     }
@@ -86,8 +92,10 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            jobVacancies = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<JobVacancy>>(){}.getType());
+        if (response != null) {
+            if (response.getStatus().equals(Response.SUCCESS)) {
+                jobVacancies = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<JobVacancy>>() {
+                }.getType());
 
             ArrayList<JobVacancy> jobs = new ArrayList<>();
 
@@ -101,12 +109,14 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
             recyclerView.setAdapter(adapter);
             spinner.setVisibility(View.GONE);
         }
+            else onFailure();
+
     }
 
     @Override
     public void onFailure() {
 
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getContext());
         spinner.setVisibility(View.GONE);
     }
 }

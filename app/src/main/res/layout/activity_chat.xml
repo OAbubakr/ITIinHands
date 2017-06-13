@@ -35,10 +35,9 @@
             android:orientation="horizontal"
             android:layout_alignParentBottom="true">
 
-
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:layout_weight="1"

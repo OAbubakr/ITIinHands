@@ -64,7 +64,7 @@ public class NetworkManager {
     public static final int RENEW_ALARM_MANAGER = 1;
     //ur activity must implements NetworkResponse
     private static boolean IS_UPDATING_ACCESS_TOKEN = false;
-
+    public static boolean AUTHINTICATION_REQUIRED = false;
     public Retrofit getRetrofit(){
         return retrofit;
     }
@@ -113,71 +113,81 @@ public class NetworkManager {
             ResponseBody responseBody = response.body();
             String responseAsString = responseBody.string();
 
+            try {
+                Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
 
-            Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
+                if (jsonResponse.getStatus().equals(Response.FAILURE)) {
 
-            if (jsonResponse.getStatus().equals(Response.FAILURE)) {
+                    if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
 
-                if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
-                    String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                    if (!refreshToken.isEmpty() & !IS_UPDATING_ACCESS_TOKEN) {
-                        NetworkManager.getInstance(context).renewAccessToken(refreshToken);
-                    }
 
-                } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
-                    SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                    if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
+                        if(AUTHINTICATION_REQUIRED){
 
-                        SharedPreferences.Editor editor = setting.edit();
-                        editor.remove(Constants.LOGGED_FLAG);
-                        editor.remove(Constants.TOKEN);
-                        editor.remove(Constants.USER_TYPE);
-                        editor.remove(Constants.USER_OBJECT);
-                        editor.apply();
+                            SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                            if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
+                                //un subscribe from topics
 
-                        //un subscribe from topics
+                                int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+                                UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+                                String myId = String.valueOf(userData.getId());
+                                String myType = "";
+                                switch (userType) {
+                                    case 1:
+                                        myType = "student";
+                                        break;
+                                    case 2:
+                                        myType = "staff";
+                                        break;
+                                }
+                                String myChatId = myType + "_" + myId;
 
-                        int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
-                        UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
-                        String myId = String.valueOf(userData.getId());
-                        String myType = "";
-                        switch (userType) {
-                            case 1:
-                                myType = "student";
-                                break;
-                            case 2:
-                                myType = "staff";
-                                break;
+                                //unsubscribe from topics
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
+
+                                SharedPreferences.Editor editor = setting.edit();
+                                editor.remove(Constants.LOGGED_FLAG);
+                                editor.remove(Constants.TOKEN);
+                                editor.remove(Constants.USER_TYPE);
+                                editor.remove(Constants.USER_OBJECT);
+                                editor.apply();
+
+                                //stop the service
+                                boolean stopped = context.stopService(new Intent(context, UpdateAccessToken.class));
+
+                      //          Toast.makeText(context, "Expired session", Toast.LENGTH_SHORT).show();
+
+                                AUTHINTICATION_REQUIRED = false;
+
+                                Intent intent = new Intent(context, LoginActivity.class);
+                                ComponentName cn = intent.getComponent();
+                                Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                                context.startActivity(mainIntent);
+
+                            }
+
+
                         }
-                        String myChatId = myType + "_" + myId;
 
-                        //unsubscribe from topics
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
+                        String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                        if (!refreshToken.isEmpty() & !IS_UPDATING_ACCESS_TOKEN) {
+                            NetworkManager.getInstance(context).renewAccessToken(refreshToken);
+                        }
 
-                        //stop the service
-                        boolean stopped = context.stopService(new Intent(context, UpdateAccessToken.class));
-
-
-                        Toast.makeText(context, "Expired session", Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        ComponentName cn = intent.getComponent();
-                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
-                        context.startActivity(mainIntent);
-
+                    } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
+                        AUTHINTICATION_REQUIRED = true;
                     }
-
                 }
-            }
+            } catch (Exception e) {
+                    e.printStackTrace();
 
+            }
             return response.newBuilder()
                     .body(ResponseBody.create(response.body().contentType(), responseAsString))
                     .build();
 
         }
-
     }
 
 
@@ -217,6 +227,38 @@ public class NetworkManager {
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 //                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
                 System.out.println("********************* " + response.body());
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                System.out.println("********************* failed");
+                System.out.println(t.toString());
+
+            }
+        });
+
+    }
+
+
+//    -------------------------------------Upload image for graduates-------------------------------------------------
+
+    public void uploadImageGraduates(NetworkResponse networkResponse, String imagePath, int id) {
+        final NetworkResponse network = networkResponse;
+        System.out.println("##########################################");
+        File file = new File(imagePath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.uploadImageGraduates(fileToUpload, id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
+                System.out.println("********************* " + response.body());
+                network.onResponse(response.body());
+
             }
 
             @Override
@@ -292,7 +334,7 @@ public class NetworkManager {
     }
 
 
-    public void getLoginAuthData(NetworkResponse networkResponse,Call<LoginResponse> call) {
+    public void getLoginAuthData(NetworkResponse networkResponse, Call<LoginResponse> call) {
 
         final NetworkResponse network = networkResponse;
 
@@ -397,7 +439,7 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                networkResponse.onResponse(response.body());
+                network.onResponse(response.body());
             }
 
             @Override
@@ -905,6 +947,7 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
+
              @Override
              public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                  if (response != null) {
@@ -915,11 +958,11 @@ public class NetworkManager {
                          String access_token = (String) linkedTreeMap.get("access_token");
                          double expiry_date = (double) linkedTreeMap.get("expiry_date");
 
-                         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                         editor.putString(Constants.TOKEN, access_token);
-                         editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
-                         editor.apply();
+                                     SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                                     editor.putString(Constants.TOKEN, access_token);
+                                     editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
+                                     editor.apply();
 
                      }
 

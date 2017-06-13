@@ -84,7 +84,15 @@ public class StudentProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+
+        Bundle b = getArguments();
+       if(b== null ) userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        else {
+
+           userData = (UserData) b.getSerializable("student");
+       }
+
+
         if(userData != null){
             if(userData.getLinkedInUrl()!=null && userData.getLinkedInUrl().length()>0) {
                 linkedInBtn.setEnabled(true);

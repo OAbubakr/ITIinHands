@@ -14,6 +14,7 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
@@ -45,8 +46,7 @@ public class ScheduleChanged extends IntentService implements NetworkResponse {
             Handler handler=new Handler(Looper.getMainLooper());
             handler.post(new Runnable(){
                 public void run(){
-                    //your operation...
-                    Toast.makeText(getApplicationContext(), "Notification Sent", Toast.LENGTH_SHORT).show();
+                   if(getApplicationContext()!=null) Toast.makeText(getApplicationContext(), "Notification Sent", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -64,8 +64,8 @@ public class ScheduleChanged extends IntentService implements NetworkResponse {
         Handler handler=new Handler(Looper.getMainLooper());
         handler.post(new Runnable(){
             public void run(){
-                //your operation...
-                Toast.makeText(getApplicationContext(), "Failed... check you internet connection", Toast.LENGTH_SHORT).show();
+
+                new NetworkUtilities().networkFailure(getApplicationContext());
             }
         });
 
