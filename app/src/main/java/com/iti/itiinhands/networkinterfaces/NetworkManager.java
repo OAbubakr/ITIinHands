@@ -68,6 +68,10 @@ public class NetworkManager {
     //ur activity must implements NetworkResponse
     private static boolean IS_UPDATING_ACCESS_TOKEN = false;
 
+    public Retrofit getRetrofit(){
+        return retrofit;
+    }
+
     private NetworkManager(Context context) {
         this.context = context;
     }
@@ -291,13 +295,13 @@ public class NetworkManager {
     }
 
 
-    public void getLoginAuthData(NetworkResponse networkResponse, int userId, String userName, String password) {
+    public void getLoginAuthData(NetworkResponse networkResponse,Call<LoginResponse> call) {
 
         final NetworkResponse network = networkResponse;
-        NetworkApi web = retrofit.create(NetworkApi.class);
+
 
 //        Call<LoginResponse> call = web.onLoginAuth(userId,userName,password);
-        Call<LoginResponse> call = web.onLoginAuth(new LoginRequest(userId, userName, password));
+
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
@@ -370,15 +374,15 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-//                Response result = response.body();
-//                network.onResponse(result);
+                Response result = response.body();
+                network.onResponse(result);
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-//                t.printStackTrace();
-//                Log.e("network", t.toString());
-//                network.onFailure();
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
             }
         });
 
