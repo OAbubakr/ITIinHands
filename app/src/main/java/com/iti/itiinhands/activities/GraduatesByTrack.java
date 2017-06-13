@@ -102,7 +102,7 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
 
     @Override
     public void onResponse(Response response) {
-        if (response != null) {
+        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
             if (flag == 0) {
                 System.out.println("*H*H*H*H*H*H*H*H*");
                 if (response.getStatus().equals(Response.SUCCESS)) {
