@@ -33,6 +33,7 @@ import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.linkedin.platform.LISessionManager;
@@ -64,6 +65,7 @@ public class GraduateSideMenu extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        startService(new Intent(this, UpdateAccessToken.class));
 
 //        home.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -38,7 +38,7 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
     private RecyclerView recyclerView;
     private InstructorEvaluationAdapter instEvalAdapter;
     private NetworkManager networkManager;
-    private TextView instName;
+    private TextView instName, noEval;
     private UserData userData;
     ProgressBar spinner;
 
@@ -55,6 +55,8 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         View view = inflater.inflate(R.layout.fragment_instructor_evaluation, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+        getActivity().setTitle("Evaluation");
+
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 
@@ -64,6 +66,8 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         instName = (TextView) view.findViewById(R.id.inst_name);
         instName.setText(userData.getEmployeeName()+"`");
+
+        noEval = (TextView) view.findViewById(R.id.noEval);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         prepareInstEvalData();
@@ -77,6 +81,8 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 
         if (networkManager.isOnline()) {
             networkManager.getInstructorEvaluation(this, instId);
+        }else {
+            Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -85,16 +91,20 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         if (response.getStatus().equals(Response.SUCCESS)) {
             instEvalList = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<InstructorEvaluation>>(){}.getType());
 
-//            instEvalList = (ArrayList<InstructorEvaluation>) response.getResponseData();
-            instEvalAdapter = new InstructorEvaluationAdapter(instEvalList, getActivity().getApplicationContext());
-            recyclerView.setAdapter(instEvalAdapter);
-            spinner.setVisibility(View.GONE);
+            if(instEvalList == null || instEvalList.isEmpty()){
+                noEval.setText("No courses evaluation available");
+            }else {
+                noEval.setHeight(0);
+                instEvalAdapter = new InstructorEvaluationAdapter(instEvalList, getActivity().getApplicationContext());
+                recyclerView.setAdapter(instEvalAdapter);
+                spinner.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+      if(getActivity()!=null)  Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
         spinner.setVisibility(View.GONE);
     }
 }
