@@ -30,8 +30,8 @@ public class StaffSchedule extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_staff_schedule, container, false);
 
-        getActivity().setTitle("Schedule");
 
+//        ((Toolbar)view.findViewById(R.id.toolbar)).setTitle("");
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("My Schedules"));
         tabLayout.addTab(tabLayout.newTab().setText("Branches"));
@@ -58,6 +58,8 @@ public class StaffSchedule extends Fragment {
 
             }
         });
+
+        getActivity().setTitle("Schedule");
 
         return view;
     }

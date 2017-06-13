@@ -43,6 +43,8 @@ import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import retrofit2.Call;
+
+
 /**
  * Created by Mahmoud on 5/21/2017.
  */
@@ -416,6 +418,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     @Override
     protected void onPause() {
         super.onPause();
-        if(call!= null)call.cancel();
+        if(call != null)
+            call.cancel();
     }
 }

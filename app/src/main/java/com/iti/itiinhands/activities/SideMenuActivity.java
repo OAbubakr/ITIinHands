@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.iti.itiinhands.networkinterfaces.NetworkManager.AUTHINTICATION_REQUIRED;
+
 
 public class SideMenuActivity extends AppCompatActivity {
 
@@ -135,8 +137,6 @@ public class SideMenuActivity extends AppCompatActivity {
         ////////////////////////////////////////////////////////
         //set name and track or company of the user
 
-
-
         name.setText(userData.getName());
         track.setText(userData.getTrackName());
 //        if(userData.getImagePath()==null) userData.setImagePath("") ;
@@ -145,7 +145,6 @@ public class SideMenuActivity extends AppCompatActivity {
 
 
         // Add header view to the expandable list
-
         expListView.addHeaderView(headerView);
 
 //        //////////////////////////sert the default fragment  student schedule
@@ -181,6 +180,9 @@ public class SideMenuActivity extends AppCompatActivity {
                         editor.remove(Constants.USER_ID);
 
                         editor.commit();
+
+                        stopService(new Intent(SideMenuActivity.this, UpdateAccessToken.class));
+                        AUTHINTICATION_REQUIRED = false;
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
