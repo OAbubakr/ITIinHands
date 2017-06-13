@@ -51,7 +51,7 @@ public class NetworkManager {
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-    public static final String BASEURL = "http://172.16.2.224:8084/restfulSpring/"; // Omar ITI
+    public static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
 //    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";

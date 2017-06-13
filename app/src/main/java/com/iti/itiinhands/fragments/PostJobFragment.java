@@ -194,6 +194,8 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
                     if (networkManager.isOnline()){
                         networkManager.postJob(PostJobFragment.this, jobOpportunity);
                         postButton.setEnabled(false);
+                    }else{
+                        Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection", Toast.LENGTH_LONG).show();
                     }
                 }
             }
