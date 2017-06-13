@@ -48,7 +48,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
     private com.iti.itiinhands.networkinterfaces.NetworkResponse myRef;
     private SlidingUpPanelLayout mLayout;
     private static final String TAG = "MainAcitvity";
-    TextView textView,t1,t2;
+    TextView textView, t1, t2;
     int[] images = {R.drawable.path3150, R.drawable.path, R.drawable.path3141, R.drawable.group2009,
             R.drawable.group2013, R.drawable.group2011, R.drawable.group2018, R.drawable.path3159};
     String[] data = new String[]{
@@ -60,10 +60,11 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
     EditText startDate, endDate;
     private int mYear, mMonth, mDay;
     EmpHour empHour;
-    private int flag = 0 ,secondFlag = 0;
-    TextView numberText,wordtext;
+    private int flag = 0, secondFlag = 0;
+    TextView numberText, wordtext;
     UserData userData;
     int id;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,10 +79,10 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
         networkManager = NetworkManager.getInstance(getContext());
         hoursGrid = (GridView) view.findViewById(R.id.HoursGridView);
         mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
-        numberText =(TextView)view.findViewById(R.id.resultText);
-         wordtext =(TextView)view.findViewById(R.id.result2Text);
-         t1 =(TextView)view.findViewById(R.id.t1);
-         t2 =(TextView)view.findViewById(R.id.t2);
+        numberText = (TextView) view.findViewById(R.id.resultText);
+        wordtext = (TextView) view.findViewById(R.id.result2Text);
+        t1 = (TextView) view.findViewById(R.id.t1);
+        t2 = (TextView) view.findViewById(R.id.t2);
         startDate = (EditText) view.findViewById(R.id.startDateTv);
         endDate = (EditText) view.findViewById(R.id.endDateTv);
         hoursGrid.setAdapter(new GridAdapterForHours(getContext(), data, images));
@@ -96,8 +97,8 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if(secondFlag == 1){
-                    switch (position){
+                if (secondFlag == 1) {
+                    switch (position) {
                         case 0:
                             numberText.setText(empHour.getWorkingDays().toString());
                             wordtext.setText(days);
@@ -139,7 +140,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
                             onBackPressed();
                             break;
                     }
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "Select date first", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 }
@@ -153,13 +154,13 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
     @Override
     public void onResponse(Response response) {
         if (response.getStatus().equals(Response.SUCCESS)) {
-            empHour = DataSerializer.convert(response.getResponseData(),EmpHour.class);
+            empHour = DataSerializer.convert(response.getResponseData(), EmpHour.class);
         }
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "No Network Connection", Toast.LENGTH_SHORT).show();
     }
 
     public void panelListener() {
@@ -178,6 +179,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
                 Log.e(TAG, "onPanelExpanded");
 
             }
+
             // This method will be call after slide down layout.
             @Override
             public void onPanelCollapsed(View panel) {
@@ -210,7 +212,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
         if (v.getId() == R.id.startDateTv) {
 
             final Calendar current = Calendar.getInstance();
-             c1 = Calendar.getInstance();
+            c1 = Calendar.getInstance();
             mYear = c1.get(Calendar.YEAR);
             mMonth = c1.get(Calendar.MONTH);
             mDay = c1.get(Calendar.DAY_OF_MONTH);
@@ -221,17 +223,21 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
                             c1.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
                             if (c1.compareTo(current) >= 0) {
                                 //The set Date/Time already passed
-                              t1.setVisibility(View.VISIBLE);
+                                t1.setVisibility(View.VISIBLE);
                                 startDate.setText("");
-                                flag =0;
-                            } else {
+                                flag = 0;
+                            } else if (networkManager.isOnline()) {
                                 startDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                                 flag = 1;
                                 networkManager.getEmployeeHours(myRef, id, startDate.getText().toString(),
                                         endDate.getText().toString());
                                 secondFlag = 1;
-                                System.out.println("Flag is :" +flag);
+                                System.out.println("Flag is :" + flag);
                                 t1.setVisibility(View.INVISIBLE);
+
+
+                            } else {
+                                onFailure();
                             }
 
                         }
@@ -239,11 +245,11 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
             datePickerDialog.show();
             System.out.println("*********** Start Date");
         } else if (v.getId() == R.id.endDateTv) {
-            if(flag !=1){
+            if (flag != 1) {
 //                Toast.makeText(getContext(), "Choose Start Date First", Toast.LENGTH_SHORT).show();
                 t2.setText("Choose Start Date First");
                 t2.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 final Calendar current = Calendar.getInstance();
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
@@ -260,18 +266,19 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
                                     t2.setText("This date is not available");
                                     endDate.setText("");
                                     secondFlag = 0;
-                                } else if(c.compareTo(c1) <= 0) {
+                                } else if (c.compareTo(c1) <= 0) {
                                     endDate.setText("");
                                     t2.setVisibility(View.VISIBLE);
                                     t2.setText("This date is not available");
                                     secondFlag = 0;
-                                }
-                                else{
+                                }  else if (networkManager.isOnline()){
                                     endDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                                     networkManager.getEmployeeHours(myRef, id, startDate.getText().toString(),
                                             endDate.getText().toString());
                                     secondFlag = 1;
                                     t2.setVisibility(View.INVISIBLE);
+                                }else{
+                                    onFailure();
                                 }
                             }
                         }, mYear, mMonth, mDay);
@@ -280,7 +287,6 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
 
         }
     }
-
 
 
     public void getCurrentDate(View view) {
