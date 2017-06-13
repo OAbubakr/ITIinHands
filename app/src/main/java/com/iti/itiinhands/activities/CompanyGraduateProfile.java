@@ -14,11 +14,13 @@ import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
-public class CompanyGraduateProfile extends AppCompatActivity implements NetworkResponse{
+public class CompanyGraduateProfile extends AppCompatActivity implements NetworkResponse {
 
     NetworkManager networkManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,6 @@ public class CompanyGraduateProfile extends AppCompatActivity implements Network
     }
 
 
-
     @Override
     public void onResponse(Response response) {
 
@@ -64,7 +65,7 @@ public class CompanyGraduateProfile extends AppCompatActivity implements Network
 
     @Override
     public void onFailure() {
-
+        new NetworkUtilities().networkFailure(getApplicationContext());
     }
 
     @Override
