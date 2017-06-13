@@ -279,7 +279,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     @Override
                     public void onAuthError(LIAuthError error) {
                         Log.i("error", error.toString());
-                        Toast.makeText(getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Failed, please check you internet connection.", Toast.LENGTH_LONG).show();
                     }
                 }, true);
     }
