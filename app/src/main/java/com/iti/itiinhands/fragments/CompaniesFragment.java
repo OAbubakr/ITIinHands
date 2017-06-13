@@ -70,7 +70,7 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
             CompaniesProfiles data = DataSerializer.convert(response.getResponseData(),CompaniesProfiles.class) ;
             if(data != null){
                 companiesList = data.getCompanies();

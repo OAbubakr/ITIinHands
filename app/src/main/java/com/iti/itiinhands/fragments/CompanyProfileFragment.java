@@ -96,7 +96,6 @@ public class CompanyProfileFragment extends Fragment {
                 email.setText(companyStudent.getCompanyEmail());
                 knowledge.setText(companyStudent.getCompanyAreaKnowledge());
                 numberOfEmployees.setText(String.valueOf(companyStudent.getCompanyNoOfEmp())+" Employees");
-
                 if(companyStudent.getCompanyLogoPath()!=null) {
                     Picasso.with(getActivity().getApplicationContext()).load(companyStudent.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
                             .error(R.drawable.c_pic)

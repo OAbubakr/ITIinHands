@@ -76,7 +76,7 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
             List<StudentGrade> list = DataSerializer.convert(response.getResponseData(), new TypeToken<List<StudentGrade>>() {
             }.getType());
 

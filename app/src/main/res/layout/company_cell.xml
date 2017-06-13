@@ -31,7 +31,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/c_pic"
-                    android:id="@+id/img"
+                    android:id="@+id/cimg"
 
                     />
 
@@ -44,7 +44,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/item_detail"
+                        android:id="@+id/cName"
                         android:textSize="25sp"
                         android:textColor="#000000"
 
@@ -62,7 +62,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/cvto"
+                            android:id="@+id/cEmail"
 
                             android:textSize="17sp"
                             />

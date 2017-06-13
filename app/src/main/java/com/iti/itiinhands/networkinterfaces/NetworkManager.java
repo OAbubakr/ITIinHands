@@ -948,16 +948,15 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
-
-             @Override
-             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                 if (response != null) {
-                     IS_UPDATING_ACCESS_TOKEN = false;
-                     if (response.body().getStatus().equals(Response.SUCCESS)) {
-                         LinkedTreeMap<String, Object> linkedTreeMap =
-                                 (LinkedTreeMap<String, Object>) response.body().getResponseData();
-                         String access_token = (String) linkedTreeMap.get("access_token");
-                         double expiry_date = (double) linkedTreeMap.get("expiry_date");
+                         @Override
+                         public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                             if (response != null && context!=null) {
+                                 IS_UPDATING_ACCESS_TOKEN = false;
+                                 if (response.body().getStatus().equals(Response.SUCCESS)) {
+                                     LinkedTreeMap<String, Object> linkedTreeMap =
+                                             (LinkedTreeMap<String, Object>) response.body().getResponseData();
+                                     String access_token = (String) linkedTreeMap.get("access_token");
+                                     double expiry_date = (double) linkedTreeMap.get("expiry_date");
 
                                      SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                                      SharedPreferences.Editor editor = sharedPreferences.edit();

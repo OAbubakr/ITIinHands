@@ -228,7 +228,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
     @Override
     public void onResponse(Response response) {
         postButton.setEnabled(true);
-        if(response!=null && response.getStatus().equals(Response.SUCCESS)){
+        if(response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)){
             //-------------------------Move to About ITI Fragment---------------------------
             Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
             Fragment fragment = new AboutIti();

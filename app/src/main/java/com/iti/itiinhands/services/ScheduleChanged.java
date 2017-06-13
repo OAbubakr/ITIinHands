@@ -41,7 +41,7 @@ public class ScheduleChanged extends IntentService implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if(response!=null && response.getStatus().equals(Response.SUCCESS)){
+        if(response!=null && getApplicationContext()!=null&& response.getStatus().equals(Response.SUCCESS)){
 
             Handler handler=new Handler(Looper.getMainLooper());
             handler.post(new Runnable(){

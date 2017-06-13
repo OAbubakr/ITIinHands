@@ -116,7 +116,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
             eventsList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Event>>() {
             }.getType());
 

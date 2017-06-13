@@ -260,7 +260,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-        if (response != null) {
+        if (response != null && getActivity()!=null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
                 Log.v("ITI_Test", "data downloaded");
                 dummy++;
