@@ -24,6 +24,7 @@
         android:id="@+id/lvExp"
         android:divider="#A04242"
         android:dividerHeight="1px"
+         android:groupIndicator="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="left"

@@ -25,7 +25,7 @@ public class GridAdapterForHours extends BaseAdapter{
     public GridAdapterForHours(Context context, String[] prgmNameList, int[] prgmImages) {
         result = prgmNameList;
         this.context = context;
-        imageId=prgmImages;
+        imageId = prgmImages;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override

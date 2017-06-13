@@ -39,12 +39,6 @@ public class OurWalkthrough extends WalkthroughActivity {
         WalkthroughItem page3 =new WalkthroughItem(R.drawable.androidmobile_4);
         setProgressType(DOTS_TYPE);
       //  setProgressBarColor(R.color.colorPrimary);
-        page1.setTitleColorID(R.color.colorPrimary);
-        page1.setSubTitleColorID(R.color.colorPrimary);
-        page2.setTitleColorID(R.color.colorPrimary);
-        page2.setSubTitleColorID(R.color.colorPrimary);
-        page3.setTitleColorID(R.color.colorPrimary);
-        page3.setSubTitleColorID(R.color.colorPrimary);
 
 
         addPage(page1);

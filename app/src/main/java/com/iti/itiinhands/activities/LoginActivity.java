@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         userNameCheckTv = (TextView) findViewById(R.id.userNameCheckLoginViewId);
         passwordCheckTv = (TextView) findViewById(R.id.passwordCheckLoginViewId);
         networkErrorTv = (LinearLayout) findViewById(R.id.networkFaildLoginViewId);
-        networkManager = NetworkManager.getInstance(getApplicationContext());
+        networkManager = NetworkManager.getInstance(this);
         continueAsGuest = (TextView) findViewById(R.id.continueAsGuest);
         studentBtn = (ImageView) findViewById(R.id.studentBtnId);
         graduateBtn = (ImageView) findViewById(R.id.graduateBtnId);
@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         companyTxt = (TextView) findViewById(R.id.companyTxtLoginId);
         graduateTxt = (TextView) findViewById(R.id.graduateTxtLoginId);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 //        spinner.setVisibility(View.GONE);
         context = getApplicationContext();
         myRef = this;
@@ -332,7 +332,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             /*
             * starting the access-token update alarm
             * */
-            UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
+   //         UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
 
             setButtonColorTint(Color.parseColor("#7F0000"));
             startActivity(navigationIntent);
@@ -343,7 +343,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             String status = loginResponse.getStatus();
             String error = loginResponse.getError();
             UserLogin responseDataObj =  loginResponse.getData();
-//            Double idData = (Double) result.getResponseData();
 
 
             switch (status) {

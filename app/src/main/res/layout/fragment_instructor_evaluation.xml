@@ -44,6 +44,14 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#B71C1C"
+        android:textSize="18dp"
+        android:paddingTop="15dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/noEval"/>
 
 
     <android.support.v7.widget.RecyclerView

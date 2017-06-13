@@ -62,9 +62,12 @@ public class InstructorEvaluationAdapter extends RecyclerView.Adapter<Instructor
         }
 
         public void bind(final InstructorEvaluation instEval){
-            courseName.setText(instEval.getCourseName());
+            if(instEval.getCourseName() != null){
+                courseName.setText(instEval.getCourseName());
+            }
 
-            switch (Integer.valueOf(instEval.getEval())){
+            Double d = new Double(Double.valueOf(instEval.getEval()));
+            switch (d.intValue()){
                 case 0: courseEval.setImageResource(R.drawable.no_star); break;
                 case 1: courseEval.setImageResource(R.drawable.s); break;
                 case 2: courseEval.setImageResource(R.drawable.ss); break;

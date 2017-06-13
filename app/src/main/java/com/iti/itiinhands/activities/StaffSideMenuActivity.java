@@ -36,6 +36,7 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.WorkingHours;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
@@ -359,7 +360,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle working hours fragment
-                                fragment = new EmployeeHours();
+                                fragment = new WorkingHours();
                                 break;
                             case 3://only if supervisor
                                 Intent intent = new Intent(StaffSideMenuActivity.this, ScheduleChanged.class);
