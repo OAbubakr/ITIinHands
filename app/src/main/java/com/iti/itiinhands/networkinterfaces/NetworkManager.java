@@ -49,15 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-//    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
-//    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-
-    //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
-//    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
-
-    //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-//    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
+    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -908,6 +900,7 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
+
              @Override
              public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                  if (response != null) {

@@ -85,20 +85,23 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
+        spinner.setVisibility(View.GONE);
         if (response.getStatus().equals(Response.SUCCESS)) {
             jobVacancies = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<JobVacancy>>(){}.getType());
 
 //            jobVacancies = (ArrayList<JobVacancy>) response.getResponseData();
             adapter = new JobsAdapter(jobVacancies, getActivity().getApplicationContext());
             recyclerView.setAdapter(adapter);
-            spinner.setVisibility(View.GONE);
+   //         spinner.setVisibility(View.GONE);
         }
     }
 
+
     @Override
     public void onFailure() {
-
         Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
         spinner.setVisibility(View.GONE);
     }
+
+
 }

@@ -148,9 +148,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
         home = (ImageView) findViewById(R.id.home);
 
 
-        /*
-        * chat part
-        * */
+
         sharedPreferences = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
 
         userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
