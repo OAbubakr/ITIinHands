@@ -24,6 +24,7 @@ import com.iti.itiinhands.model.Event;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
+        getActivity().setTitle("Events");
+
         setHasOptionsMenu(true);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.event_tab_layout);
@@ -67,7 +70,7 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
 
         eventCalendarFragment = new EventCalendarFragment();
 
-    //    tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        //    tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) view.findViewById(R.id.event_pager);
         final EventsPagerAdapter adapter = new EventsPagerAdapter(
@@ -107,32 +110,29 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-        if (response != null) {
-            if (response.getStatus().equals(Response.SUCCESS)) {
 
-                ArrayList<Event> result = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Event>>() {
-                }.getType());
-                eventsList.addAll(result);
+        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
 
-                progressBar.setVisibility(View.GONE);
+            ArrayList<Event> result = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Event>>() {
+            }.getType());
+            eventsList.addAll(result);
 
-                eventsAdapter.notifyDataSetChanged();
-                eventCalendarFragment.setAllEvents(eventsList);
-//                eventListFragment.setEventsList(eventsList);
+            progressBar.setVisibility(View.GONE);
 
-//                  for (Event e : eventsList) {
-
-                //       com.github.sundeepk.compactcalendarview.domain.Event ev = new com.github.sundeepk.compactcalendarview.domain.Event(Color.parseColor("#7F0000"), e.getEventStart());
-                //        calendarView.addEvent(ev);
-            }
+            eventsAdapter.notifyDataSetChanged();
+            eventCalendarFragment.setAllEvents(eventsList);
 
         }
+        else
+            onFailure();
+
+
     }
 
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getActivity());
     }
 
 

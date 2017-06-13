@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.chatAdapters.RecentChatsListAdapter;
@@ -39,7 +40,7 @@ public class RecentChatsFragment extends Fragment {
     //    private int userType;
 //    private int token;
 //    private UserData userData;
-    private MaterialProgressBar progressBar;
+    private ProgressBar progressBar;
     //  private BranchesTagsAdapter branchesTagsAdapter;
 //    private RecyclerView branchesTagsRecyclerView;
 //    private List<BranchTag> branches = new ArrayList<>();
@@ -127,7 +128,7 @@ public class RecentChatsFragment extends Fragment {
         chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
         chatRoomsRecyclerView.setAdapter(recentChatsListAdapter);
 
-        progressBar = (MaterialProgressBar) view.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         recentChatsListAdapter.setProgressBar(progressBar);
 /*        topProgressBar = (MaterialProgressBar) view.findViewById(R.id.h_progressBar);
 

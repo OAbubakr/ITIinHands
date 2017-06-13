@@ -22,6 +22,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
@@ -71,57 +72,33 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 
+        if (networkManager.isOnline())
         networkManager.getAllStudentsByTrackId(this, id);
-
+        else
+            onFailure();
 
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//
-//        Intent intent = getActivity().getIntent();
-//
-//        return inflater.inflate(R.layout.students_of_track_fragment, container, false);
-//
-//
-//    }
-
-
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//
-//
-//
-//    }
-//
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//    }
 
 
     @Override
     public void onResponse(Response response) {
 
-        if (response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null && response.getStatus().equals(Response.SUCCESS)) {
             students = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<StudentDataByTrackId>>(){}.getType());
 
-//            students = (ArrayList<StudentDataByTrackId>) response.getResponseData();
             adapter = new AllStudentByTrackIdAdapter(students, getApplicationContext());
 
             recyclerView.setAdapter(adapter);
             spinner.setVisibility(View.GONE);
         }
-
+        else
+            onFailure();
 
     }
-
     @Override
     public void onFailure() {
 
-        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
     @Override
@@ -130,10 +107,15 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

@@ -24,23 +24,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.beans.Graduate;
-import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.UserLogin;
+import com.iti.itiinhands.networkinterfaces.NetworkApi;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
+import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
-import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
-
-
+import retrofit2.Call;
 /**
  * Created by Mahmoud on 5/21/2017.
  */
@@ -51,6 +53,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private EditText passwordEdTxt;
     private Button loginBtn;
     private TextView userNameCheckTv;
+
+
     private TextView passwordCheckTv;
     private LinearLayout networkErrorTv;
     private TextView continueAsGuest;
@@ -69,6 +73,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     private TextView graduateTxt;
     private ProgressBar spinner;
     private Context context;
+    private Call<LoginResponse> call;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,7 +229,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                         userNameCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         if (userNameEdTxt.length() > 0 && passwordEdTxt.length() > 0) {
-                            networkManager.getLoginAuthData(myRef, userType, userNameEdTxt.getText().toString(), passwordEdTxt.getText().toString());
+                            NetworkApi web = networkManager.getRetrofit().create(NetworkApi.class);
+                            call = web.onLoginAuth(new LoginRequest(userType, userNameEdTxt.getText().toString(), passwordEdTxt.getText().toString()));
+                            networkManager.getLoginAuthData(myRef, call);
                             loginBtn.setEnabled(false);
                             setButtonColorTint(Color.GRAY);
                             spinner.setVisibility(View.VISIBLE);
@@ -309,20 +317,16 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
         loginBtn.setEnabled(true);
 
         if (result != null && result.getResponseData() instanceof LinkedTreeMap) {
-            UserData data = DataSerializer.convert(result.getResponseData(),UserData.class) ;
+            UserData data = DataSerializer.convert(result.getResponseData(), UserData.class);
 //                    UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
 
             SharedPreferences userData = getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
             SharedPreferences.Editor editor = userData.edit();
             editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(data));
             editor.putBoolean(Constants.LOGGED_FLAG, true);
-            editor.putInt(Constants.USER_ID,data.getId());
+            editor.putInt(Constants.USER_ID, data.getId());
             editor.commit();
 
-            /*
-            * starting the access-token update alarm
-            * */
-   //         UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
 
             setButtonColorTint(Color.parseColor("#7F0000"));
             startActivity(navigationIntent);
@@ -332,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             LoginResponse loginResponse = (LoginResponse) result;
             String status = loginResponse.getStatus();
             String error = loginResponse.getError();
-            UserLogin responseDataObj =  loginResponse.getData();
+            UserLogin responseDataObj = loginResponse.getData();
 
 
             switch (status) {
@@ -343,7 +347,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putString(Constants.TOKEN, responseDataObj.getToken());
                     editor.putString(Constants.REFRESH_TOKEN, responseDataObj.getRefreshToken());
-                    editor.putLong(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
+                    editor.putLong(Constants.EXPIRY_DATE, responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.apply();
 
@@ -366,7 +370,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                             break;
                     }
 
-                    networkManager.getUserProfileData(myRef, userType,data.getInt(Constants.USER_ID,0));
+                    networkManager.getUserProfileData(myRef, userType, data.getInt(Constants.USER_ID, 0));
 
                     break;
                 case "FAILURE":
@@ -376,7 +380,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     passwordCheckTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                     break;
             }
-        }else{
+        } else {
             spinner.setVisibility(View.INVISIBLE);
             setButtonColorTint(Color.parseColor("#7F0000"));
             Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();
@@ -386,15 +390,17 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onFailure() {
-        loginBtn.setEnabled(true);
-        setButtonColorTint(Color.parseColor("#7F0000"));
-        loginBtn.setBackgroundResource(R.drawable.rectangle_17);
-        spinner.setVisibility(View.INVISIBLE);
-        Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();
+        if (!call.isCanceled()) {
+            loginBtn.setEnabled(true);
+            setButtonColorTint(Color.parseColor("#7F0000"));
+            loginBtn.setBackgroundResource(R.drawable.rectangle_17);
+            spinner.setVisibility(View.INVISIBLE);
+            new NetworkUtilities().networkFailure(getApplicationContext());
+        }
 
     }
 
-    private void setButtonColorTint(int color){
+    private void setButtonColorTint(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             loginBtn.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         } else {
@@ -402,5 +408,14 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             DrawableCompat.setTint(wrapDrawable, color);
             loginBtn.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
         }
+    }
+
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        call.cancel();
     }
 }

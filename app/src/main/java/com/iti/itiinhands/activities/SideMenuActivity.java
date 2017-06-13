@@ -35,6 +35,7 @@ import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.linkedin.platform.LISessionManager;
@@ -69,6 +70,12 @@ public class SideMenuActivity extends AppCompatActivity {
     UserData userData;
     boolean doubleBackToExitPressedOnce = false;
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(new Intent(this, UpdateAccessToken.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

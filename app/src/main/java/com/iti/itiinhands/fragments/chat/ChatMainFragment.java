@@ -35,6 +35,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.chat.ChatRoom;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.services.FirebaseMessageReceiverService;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
@@ -53,7 +54,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
 
     private int dummy = 0;
 
-    private String receiver_type;
+    private String receiver_type = "staff";
     private String myName;
     private String myType;
     private String myId;
@@ -79,13 +80,13 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
     public ChatMainFragment() {
         // Required empty public constructor
     }
-
+/*
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
         this.receiver_type = args.getString("receiver_type");
     }
-
+*/
     @Override
     public void onStart() {
         super.onStart();
@@ -243,7 +244,15 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
 
         switch (receiver_type) {
             case "staff":
-                NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, id, excludeId);
+                if (NetworkManager.getInstance(getActivity()).isOnline())
+                    NetworkManager.getInstance(getActivity()).getInstructorsByBranch(this, id, excludeId);
+                else {
+                    //  friendListAdapter.getProgressBar().setVisibility(View.GONE);
+                    //   recentChatsAdapter.getProgressBar().setVisibility(View.GONE);
+
+                    new NetworkUtilities().networkFailure(getActivity());
+                }
+
         }
 
     }
@@ -309,9 +318,10 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().finish();
                 } else if (response.getError().equals(Response.INVALID_ACCESS_TOKEN)) {
+                    onFailure();
 
                 } else if (response.getError().equals(Response.INVALID_REFRESH_TOKEN)) {
-
+                    onFailure();
                 }
 
 
@@ -339,10 +349,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
                 }
             } */
 
-        } else {
-            friendListAdapter.getProgressBar().setVisibility(View.GONE);
-            recentChatsAdapter.getProgressBar().setVisibility(View.GONE);
-        }
+        } else onFailure();
     }
 
     @Override
@@ -350,8 +357,8 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
         friendListAdapter.getProgressBar().setVisibility(View.GONE);
         recentChatsAdapter.getProgressBar().setVisibility(View.GONE);
 
-        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
-        System.out.println("error");
+        new NetworkUtilities().networkFailure(getActivity());
+//        System.out.println("error");
     }
 
     @Override

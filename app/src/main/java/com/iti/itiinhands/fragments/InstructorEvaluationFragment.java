@@ -25,6 +25,7 @@ import com.iti.itiinhands.model.JobVacancy;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -38,7 +39,7 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
     private RecyclerView recyclerView;
     private InstructorEvaluationAdapter instEvalAdapter;
     private NetworkManager networkManager;
-    private TextView instName;
+    private TextView instName, noEval;
     private UserData userData;
     ProgressBar spinner;
 
@@ -55,15 +56,19 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         View view = inflater.inflate(R.layout.fragment_instructor_evaluation, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+        getActivity().setTitle("Evaluation");
+
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+        userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT, ""));
 
         recyclerView = (RecyclerView) view.findViewById(R.id.inst_eval_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         instName = (TextView) view.findViewById(R.id.inst_name);
-        instName.setText(userData.getEmployeeName()+"`");
+        instName.setText(userData.getEmployeeName() + "`");
+
+        noEval = (TextView) view.findViewById(R.id.noEval);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         prepareInstEvalData();
@@ -77,24 +82,32 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 
         if (networkManager.isOnline()) {
             networkManager.getInstructorEvaluation(this, instId);
+        } else {
+            onFailure();
         }
     }
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            instEvalList = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<InstructorEvaluation>>(){}.getType());
+        if (response!=null &&response.getStatus().equals(Response.SUCCESS)) {
+            instEvalList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<InstructorEvaluation>>() {
+            }.getType());
 
-//            instEvalList = (ArrayList<InstructorEvaluation>) response.getResponseData();
-            instEvalAdapter = new InstructorEvaluationAdapter(instEvalList, getActivity().getApplicationContext());
-            recyclerView.setAdapter(instEvalAdapter);
-            spinner.setVisibility(View.GONE);
+            if (instEvalList == null || instEvalList.isEmpty()) {
+                noEval.setText("No courses evaluation available");
+            } else {
+                noEval.setHeight(0);
+                instEvalAdapter = new InstructorEvaluationAdapter(instEvalList, getActivity().getApplicationContext());
+                recyclerView.setAdapter(instEvalAdapter);
+                spinner.setVisibility(View.GONE);
+            }
         }
+        else onFailure();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+       new NetworkUtilities().networkFailure(getActivity().getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
 }

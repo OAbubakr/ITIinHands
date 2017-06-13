@@ -55,6 +55,9 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
         super.onCreate(savedInstanceState);
 
         View view = inflater.inflate(R.layout.activity_employee_hours, container, false);
+
+        getActivity().setTitle("Working hours");
+
         networkManager = NetworkManager.getInstance(getActivity());
         myRef = this;
         startDate = (EditText) view.findViewById(R.id.startDateTv);
@@ -65,6 +68,9 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
         getHours_Button.setOnClickListener(this);
         startDate.setOnClickListener(this);
         endDate.setOnClickListener(this);
+
+
+
         return view;
     }
 

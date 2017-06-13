@@ -33,6 +33,8 @@ public class AboutIti extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_about_iti, container, false);
+        getActivity().setTitle("About ITI");
+
         callIcon=(ImageView)view.findViewById(R.id.call);
         callIcon.setOnClickListener(new View.OnClickListener() {
             @Override
