@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.iti.itiinhands.networkinterfaces.NetworkManager.AUTHINTICATION_REQUIRED;
+
 public class CompanySideMenu extends AppCompatActivity {
 
     static DrawerLayout mDrawerLayout;
@@ -189,6 +191,8 @@ public class CompanySideMenu extends AppCompatActivity {
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
+                        stopService(new Intent(CompanySideMenu.this, UpdateAccessToken.class));
+                        AUTHINTICATION_REQUIRED = false;
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);

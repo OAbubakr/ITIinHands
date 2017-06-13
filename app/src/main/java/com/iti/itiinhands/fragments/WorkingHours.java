@@ -75,6 +75,14 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
 
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_working_hours, container, false);
+
+        getActivity().setTitle("Working hours");
+
+//        setContentView(R.layout.fragment_working_hours);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        getActivity().setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
         networkManager = NetworkManager.getInstance(getContext());
         hoursGrid = (GridView) view.findViewById(R.id.HoursGridView);
         mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);

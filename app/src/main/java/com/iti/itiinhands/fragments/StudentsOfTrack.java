@@ -59,7 +59,6 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-
         recyclerView = (RecyclerView) findViewById(R.id.studentsList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -73,7 +72,7 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 
         if (networkManager.isOnline())
-        networkManager.getAllStudentsByTrackId(this, id);
+            networkManager.getAllStudentsByTrackId(this, id);
         else
             onFailure();
 
@@ -83,30 +82,33 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onResponse(Response response) {
 
-        if (response!=null && response.getStatus().equals(Response.SUCCESS)) {
-            students = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<StudentDataByTrackId>>(){}.getType());
+        if (response != null && getApplicationContext() != null && response.getStatus().equals(Response.SUCCESS)) {
+            students = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<StudentDataByTrackId>>() {
+            }.getType());
 
             adapter = new AllStudentByTrackIdAdapter(students, getApplicationContext());
 
             recyclerView.setAdapter(adapter);
             spinner.setVisibility(View.GONE);
-        }
-        else
+        } else
             onFailure();
 
     }
+
     @Override
     public void onFailure() {
 
         new NetworkUtilities().networkFailure(getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

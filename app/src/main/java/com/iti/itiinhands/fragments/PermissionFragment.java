@@ -83,6 +83,15 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
     int endHourCheck;
 
 
+    ///check
+
+    int selectedDay;
+    int selectedMonth;
+    int selectedYear;
+    int timeSelectedHour;
+    int timeSelectedMinute;
+
+
     ProgressBar spinner;
 
     @Override
@@ -113,6 +122,11 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         endTimePart = (LinearLayout) view.findViewById(R.id.endTimePart);
         date = (TextView) view.findViewById(R.id.datedate);
         networkManager = NetworkManager.getInstance(getActivity());
+        Calendar nowCalender = Calendar.getInstance();
+        selectedYear = nowCalender.get(Calendar.YEAR);
+        selectedMonth = nowCalender.get(Calendar.MONTH);
+        selectedDay = nowCalender.get(Calendar.DAY_OF_MONTH);
+
         if (networkManager.isOnline()) {
             networkManager.getSupervisor(this, userData.getPlatformIntakeId());
         } else {
@@ -183,17 +197,27 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                 DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), R.style.DatePickerTheme, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
 
+                        selectedDay = selectedday;
+                        selectedMonth = selectedmonth;
+                        selectedYear = selectedyear;
+
+
                         selectedmonth = selectedmonth + 1;
                         date.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
+
+
 
                         if (checkDate(selectedyear, selectedmonth - 1, selectedday)) {
                             permission.setPermissionDate(selectedday + "/" + selectedmonth + "/" + selectedyear);
                             errorMessageDate.setText("");
                             errorMessageDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                             dateFlag = true;
+                            errorMessageStart.setText("");
+                            errorMessageStart.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                             if (dateFlag && startFlag && endFlag) {
                                 errorMessageComment.setText("");
                                 errorMessageComment.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
                             }
 
                         } else {
@@ -224,6 +248,9 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                 TimePickerDialog mTimePicker = new TimePickerDialog(getActivity(), R.style.DatePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
+
+                        timeSelectedHour = selectedHour;
+                        timeSelectedMinute = selectedMinute;
                         timeCheckStart.set(Calendar.HOUR_OF_DAY, selectedHour);
                         timeCheckStart.set(Calendar.MINUTE, selectedMinute);
 
@@ -243,8 +270,11 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
                         startTime.setText(time);
 
-                        if (timeCheckStart.getTimeInMillis() > mcurrentTime.getTimeInMillis()) {
-//
+                        Calendar c = Calendar.getInstance();
+                        c.set(selectedYear,selectedMonth,selectedDay,timeSelectedHour,timeSelectedMinute);
+
+                        Calendar newCalender = Calendar.getInstance();
+                        if (c.getTimeInMillis() > newCalender.getTimeInMillis()){
                             //permisson
                             permission.setFromH(selectedHour);
 
@@ -254,17 +284,33 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                             errorMessageStart.setText("");
                             errorMessageStart.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
-                            if (dateFlag && startFlag && endFlag) {
-                                errorMessageComment.setText("");
-                                errorMessageComment.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                            }
-
-
-                        } else {
+                        }else {
                             errorMessageStart.setText("Invalid Time");
                             errorMessageStart.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                             startFlag = false;
                         }
+//                        if (timeCheckStart.getTimeInMillis() > mcurrentTime.getTimeInMillis()) {
+//
+//                            //permisson
+//                            permission.setFromH(selectedHour);
+//
+//                            permission.setFromMin(selectedMinute);
+//
+//                            startFlag = true;
+//                            errorMessageStart.setText("");
+//                            errorMessageStart.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//
+//                            if (dateFlag && startFlag && endFlag) {
+//                                errorMessageComment.setText("");
+//                                errorMessageComment.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//                            }
+//
+//
+//                        } else {
+//                            errorMessageStart.setText("Invalid Time");
+//                            errorMessageStart.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
+//                            startFlag = false;
+//                        }
 
 
                     }
@@ -404,7 +450,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
 
 
-            if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+            if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
 
                 if (response.getResponseData() != null) {
 

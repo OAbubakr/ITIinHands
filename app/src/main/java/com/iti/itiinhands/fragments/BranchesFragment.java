@@ -59,7 +59,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.fragment_branches, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
-        getActivity().setTitle("Branches");
+        if(flag != 2)
+            getActivity().setTitle("Branches");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.branch_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -102,7 +103,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null) {
+        if (response!=null&&getActivity()!=null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
                 branchesList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Branch>>() {
                 }.getType());

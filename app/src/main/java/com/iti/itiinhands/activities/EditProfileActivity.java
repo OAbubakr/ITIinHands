@@ -455,7 +455,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
     @Override
     public void onResponse(Response response) {
-        if (response != null) {
+        if (response!=null&&getApplicationContext()!=null) {
             switch (responseType) {
                 case "gitHub":
                     if (response instanceof GitData && ((GitData) response).getMessage() != "Not Found") {
