@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.iti.itiinhands.networkinterfaces.NetworkManager.AUTHINTICATION_REQUIRED;
+
 public class GraduateSideMenu extends AppCompatActivity {
 
     private boolean LinkedInFlag=false;
@@ -209,6 +211,9 @@ public class GraduateSideMenu extends AppCompatActivity {
                         editor.remove(Constants.USER_OBJECT);
                         editor.remove(Constants.USER_ID);
                         editor.commit();
+
+                        stopService(new Intent(GraduateSideMenu.this, UpdateAccessToken.class));
+                        AUTHINTICATION_REQUIRED = false;
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);

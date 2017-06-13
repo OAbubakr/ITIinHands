@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.iti.itiinhands.networkinterfaces.NetworkManager.AUTHINTICATION_REQUIRED;
+
 
 public class SideMenuActivity extends AppCompatActivity {
 
@@ -178,6 +180,9 @@ public class SideMenuActivity extends AppCompatActivity {
                         editor.remove(Constants.USER_ID);
 
                         editor.commit();
+
+                        stopService(new Intent(SideMenuActivity.this, UpdateAccessToken.class));
+                        AUTHINTICATION_REQUIRED = false;
 
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");

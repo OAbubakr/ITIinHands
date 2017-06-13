@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
+import static com.iti.itiinhands.networkinterfaces.NetworkManager.AUTHINTICATION_REQUIRED;
 
 public class StaffSideMenuActivity extends AppCompatActivity {
 
@@ -248,6 +249,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
+
+                        stopService(new Intent(StaffSideMenuActivity.this, UpdateAccessToken.class));
+                        AUTHINTICATION_REQUIRED = false;
 
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);

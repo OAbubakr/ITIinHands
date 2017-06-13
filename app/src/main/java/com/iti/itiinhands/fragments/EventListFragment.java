@@ -27,6 +27,7 @@ import com.iti.itiinhands.model.Event;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.text.SimpleDateFormat;
@@ -63,8 +64,8 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
-      //  dayTitle = (TextView) view.findViewById(R.id.day_title);
-     //   dateTitle = (TextView) view.findViewById(R.id.date_title);
+        //  dayTitle = (TextView) view.findViewById(R.id.day_title);
+        //   dateTitle = (TextView) view.findViewById(R.id.date_title);
         calendarView = (CompactCalendarView) view.findViewById(R.id.calenderView);
 
         Calendar calendar = Calendar.getInstance();
@@ -85,6 +86,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
+
         prepareEventData();
         return view;
     }
@@ -93,7 +95,7 @@ public class EventListFragment extends Fragment implements NetworkResponse {
 
         if (networkManager.isOnline()) {
             networkManager.getEvents(this);
-        }
+        } else onFailure();
     }
 
     private String getDayOfMonthSuffix(final int n) {
@@ -114,8 +116,9 @@ public class EventListFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            eventsList = DataSerializer.convert(response.getResponseData(),new TypeToken< ArrayList<Event>>(){}.getType());
+        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+            eventsList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Event>>() {
+            }.getType());
 
 //            eventsList = (ArrayList<Event>) response.getResponseData();
             if (eventsList != null) {
@@ -130,12 +133,12 @@ public class EventListFragment extends Fragment implements NetworkResponse {
                 }
             }
             spinner.setVisibility(View.GONE);
-        }
+        } else onFailure();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getActivity().getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
 
