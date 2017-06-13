@@ -95,7 +95,7 @@ public class CompanyProfileFragment extends Fragment {
                 website.setText(companyStudent.getCompanyWebSite());
                 email.setText(companyStudent.getCompanyEmail());
                 knowledge.setText(companyStudent.getCompanyAreaKnowledge());
-
+                numberOfEmployees.setText(String.valueOf(companyStudent.getCompanyNoOfEmp())+" Employees");
                 if(companyStudent.getCompanyLogoPath()!=null) {
                     Picasso.with(getActivity().getApplicationContext()).load(companyStudent.getCompanyLogoPath()).placeholder(R.drawable.c_pic)
                             .error(R.drawable.c_pic)
@@ -114,7 +114,7 @@ public class CompanyProfileFragment extends Fragment {
             phone.setText(company.getCompanyPhone());
             website.setText(company.getCompanyWebSite());
             email.setText(company.getCompanyEmail());
-            numberOfEmployees.setText(String.valueOf(company.getCompanyNoOfEmp())+"Employees");
+            numberOfEmployees.setText(String.valueOf(company.getCompanyNoOfEmp())+" Employees");
             knowledge.setText(company.getCompanyAreaKnowledge());
             Picasso.with(getActivity().getApplicationContext()).load(company.getCompanyLogoPath()).into(companyLogo);
 

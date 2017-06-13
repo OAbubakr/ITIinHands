@@ -1,8 +1,11 @@
 package com.iti.itiinhands.services;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
@@ -10,8 +13,9 @@ import com.iti.itiinhands.utilities.Constants;
 
 public class UpdateAccessToken extends IntentService {
 
-    private static final long SLEEP_FOR = 1000 * 60 * 30;
-    private static final long FREQUENCY = 1000 * 60 * 20;
+    private static final long SLEEP_FOR = 1000 * 60 * 20;
+    private static final long FREQUENCY = 1000 * 60 * 30;
+    private static boolean REFRESH = true;
 
     public UpdateAccessToken() {
         super("UpdateAccessToken");
@@ -25,7 +29,7 @@ public class UpdateAccessToken extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            while(true) {
+            while(REFRESH) {
                 try {
                     Thread.sleep(SLEEP_FOR);   //sleep for 30 mins
                     NetworkManager networkManager = NetworkManager.getInstance(getApplicationContext());
@@ -50,6 +54,12 @@ public class UpdateAccessToken extends IntentService {
             }
 
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        REFRESH = false;
+        super.onDestroy();
     }
 
 }
