@@ -140,7 +140,7 @@ public class WalkthroughActivity extends AppCompatActivity {
         }
         dots[0].setImageDrawable(mSelectedDot);
         if (dotsCount == 1) {
-            mNextBtn.setText(getString(R.string.enjoy));
+            mNextBtn.setText("Start");
 
         } else {
             mNextBtn.setText(getString(R.string.next));

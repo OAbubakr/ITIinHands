@@ -10,5 +10,9 @@
     {
         "merged": "D:\\ITI_GRADUATION\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
         "source": "D:\\ITI_GRADUATION\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\ITI\\Graduation Project\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "E:\\ITI\\Graduation Project\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     }
 ]
