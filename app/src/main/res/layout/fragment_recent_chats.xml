@@ -26,15 +26,13 @@
     <!--android:scrollbarThumbHorizontal="@android:color/darker_gray"-->
     <!--android:scrollbarSize="3dp" />-->
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+    <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="visible"
-        app:mpb_useIntrinsicPadding="false"
-        android:layout_centerInParent="true"
-        style="@style/Widget.MaterialProgressBar.ProgressBar" />
+        android:layout_centerInParent="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chatRooms"

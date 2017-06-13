@@ -56,6 +56,7 @@ public class AnnouncementFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.announcements_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL,false));
 
+        getActivity().setTitle("Announcements");
 
 //        announcements=dataBase.getAnnoucements();
 //        announcementAdapter =new AnnouncementAdapter(announcements,getActivity().getApplicationContext());

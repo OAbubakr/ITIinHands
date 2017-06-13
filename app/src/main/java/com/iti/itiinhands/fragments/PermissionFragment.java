@@ -106,6 +106,8 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
 
+        getActivity().setTitle("Permissions");
+
         datePart = (LinearLayout) view.findViewById(R.id.datePart);
         startTimePart = (LinearLayout) view.findViewById(R.id.startTimePart);
         endTimePart = (LinearLayout) view.findViewById(R.id.endTimePart);

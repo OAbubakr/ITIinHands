@@ -74,6 +74,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.day);
 
+        getActivity().setTitle("Schedule");
 
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);

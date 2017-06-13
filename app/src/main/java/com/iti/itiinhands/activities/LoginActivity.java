@@ -24,9 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.beans.Graduate;
-import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.LoginRequest;
 import com.iti.itiinhands.model.LoginResponse;
@@ -37,6 +37,7 @@ import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
 import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
+import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -330,10 +331,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             editor.putInt(Constants.USER_ID, data.getId());
             editor.commit();
 
-            /*
-            * starting the access-token update alarm
-            * */
-            //         UpdateAccessTokens.createAlarm(this, System.currentTimeMillis() + REFRESH_FREQUENCY_LONG, 0);
 
             setButtonColorTint(Color.parseColor("#7F0000"));
             startActivity(navigationIntent);
@@ -416,6 +413,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             loginBtn.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
         }
     }
+
+
+
 
     @Override
     protected void onPause() {

@@ -59,6 +59,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.fragment_branches, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+        getActivity().setTitle("Branches");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.branch_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());

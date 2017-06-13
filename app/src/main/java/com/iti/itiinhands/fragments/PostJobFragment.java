@@ -62,6 +62,8 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
         companyName = (TextView) view.findViewById(R.id.comp_name);
         companyImage = (ImageView) view.findViewById(R.id.comp_logo);
 
+        getActivity().setTitle("Post job");
+
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         final int companyId = data.getInt(Constants.USER_TYPE, 0);
         UserData userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));

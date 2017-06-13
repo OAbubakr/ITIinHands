@@ -53,6 +53,9 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
         companiesLv.setLayoutManager(mLayoutManager);
         companiesLv.setItemAnimator(new DefaultItemAnimator());
 
+        getActivity().setTitle("Companies profiles");
+
+
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 

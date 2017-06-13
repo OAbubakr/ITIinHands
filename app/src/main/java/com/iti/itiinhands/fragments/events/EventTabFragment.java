@@ -55,6 +55,8 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
+        getActivity().setTitle("Events");
+
         setHasOptionsMenu(true);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.event_tab_layout);

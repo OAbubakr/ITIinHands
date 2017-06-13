@@ -49,6 +49,10 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_student_course_list);
         View view = inflater.inflate(R.layout.activity_student_course_list, container, false);
+
+        getActivity().setTitle("Courses");
+
+
         networkManager = NetworkManager.getInstance(getActivity());
         myRef = this;
 
