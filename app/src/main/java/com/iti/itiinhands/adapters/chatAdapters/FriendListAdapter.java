@@ -189,7 +189,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
 
                     }else{
-                        Toast.makeText(context, "Check your connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Failed, please check you internet connection.", Toast.LENGTH_SHORT).show();
                     }
 
                 }else{

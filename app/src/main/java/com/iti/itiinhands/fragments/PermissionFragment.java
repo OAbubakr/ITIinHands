@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.os.Build;
+
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Permission;
@@ -33,6 +34,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.schedule.Supervisor;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -82,6 +84,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
 
     ProgressBar spinner;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +117,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
             networkManager.getSupervisor(this, userData.getPlatformIntakeId());
         } else {
 
-            Toast.makeText(getActivity(), "not connected to network", Toast.LENGTH_SHORT).show();
+            new NetworkUtilities().networkFailure(getActivity());
 
         }
 
@@ -158,7 +161,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
         int temp = monthCheck + 1;
 
-        permission.setPermissionDate(dayCheck  + "/" + temp  + "/" + yearCheck );
+        permission.setPermissionDate(dayCheck + "/" + temp + "/" + yearCheck);
         permission.setFromMin(startMinuteCheck);
         permission.setFromH(startHourCheck);
         permission.setToH(endHourCheck);
@@ -184,7 +187,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                         date.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
 
                         if (checkDate(selectedyear, selectedmonth - 1, selectedday)) {
-                            permission.setPermissionDate( selectedday  + "/" + selectedmonth + "/" + selectedyear );
+                            permission.setPermissionDate(selectedday + "/" + selectedmonth + "/" + selectedyear);
                             errorMessageDate.setText("");
                             errorMessageDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                             dateFlag = true;
@@ -354,13 +357,14 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
                     } else {
 
-                        if(send!=null)   send.setEnabled(false);
+                        if (send != null) send.setEnabled(false);
                         setButtonColorTint(Color.GRAY);
                         errorMessageComment.setText("");
                         errorMessageComment.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         permission.setComment(cause.getText().toString());
-
-                        networkManager.sendPermission(PermissionFragment.this, permission);
+                        if (networkManager.isOnline()) {
+                            networkManager.sendPermission(PermissionFragment.this, permission);
+                        } else onFailure();
 
 //                        FragmentTransaction trns = getFragmentManager().beginTransaction();
 //
@@ -397,46 +401,46 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-        if (response != null) {
 
 
-            if (response.getStatus().equals(Response.SUCCESS)) {
+
+            if (response != null && response.getStatus().equals(Response.SUCCESS)) {
 
                 if (response.getResponseData() != null) {
 
                     Supervisor supervisor = DataSerializer.convert(response.getResponseData(), Supervisor.class);
                     supervisorName.setText(supervisor.getName());
                     permission.setEmpID(supervisor.getId());
-                    if(send!=null)   send.setEnabled(true);
+                    if (send != null) send.setEnabled(true);
                     setButtonColorTint(Color.parseColor("#7F0000"));
 
 
 
                 } else {
 
-                  if(getActivity()!=null)  Toast.makeText(getActivity(), "Your Permission has been sent successfully", Toast.LENGTH_SHORT).show();
+                    if (getActivity() != null)
+                        Toast.makeText(getActivity(), "Your Permission has been sent successfully", Toast.LENGTH_SHORT).show();
 
                     cause.setText("");
 
-                    if(send!=null)    send.setEnabled(true);
+                    if (send != null) send.setEnabled(true);
                     setButtonColorTint(Color.parseColor("#7F0000"));
-
 
 
                 }
 
-            spinner.setVisibility(View.GONE);
-            }
-        }
 
+            }else onFailure();
+
+        spinner.setVisibility(View.GONE);
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
-        spinner.setVisibility(View.GONE);
+//        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+      if (spinner!=null)  spinner.setVisibility(View.GONE);
 
-onFail();
+        onFail();
 
 
     }
@@ -462,27 +466,26 @@ onFail();
     }
 
 
-    public void onFail(){
+    public void onFail() {
 
-        if(permission.getEmpID()==0){
+        if (permission.getEmpID() == 0) {
 
-            Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
-            if(send!=null)    send.setEnabled(false);
+            new NetworkUtilities().networkFailure(getActivity());
+            if (send != null) send.setEnabled(false);
             setButtonColorTint(Color.GRAY);
 
-        }else{
+        } else {
 
-            Toast.makeText(getActivity(), "Connection Failed. try again.", Toast.LENGTH_SHORT).show();
-            if(send!=null)   send.setEnabled(true);
+            new NetworkUtilities().networkFailure(getActivity());
+            if (send != null) send.setEnabled(true);
             setButtonColorTint(Color.parseColor("#7F0000"));
-//            send.setBackgroundColor(R.color.colorPrimary);
 
 
         }
 
     }
 
-    private void setButtonColorTint(int color){
+    private void setButtonColorTint(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             send.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         } else {

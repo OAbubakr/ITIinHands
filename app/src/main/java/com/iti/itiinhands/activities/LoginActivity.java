@@ -36,15 +36,13 @@ import com.iti.itiinhands.networkinterfaces.NetworkApi;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import retrofit2.Call;
-
-
-
 /**
  * Created by Mahmoud on 5/21/2017.
  */
@@ -338,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
             LoginResponse loginResponse = (LoginResponse) result;
             String status = loginResponse.getStatus();
             String error = loginResponse.getError();
-            UserLogin responseDataObj =  loginResponse.getData();
+            UserLogin responseDataObj = loginResponse.getData();
 
 
             switch (status) {
@@ -349,7 +347,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putString(Constants.TOKEN, responseDataObj.getToken());
                     editor.putString(Constants.REFRESH_TOKEN, responseDataObj.getRefreshToken());
-                    editor.putLong(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
+                    editor.putLong(Constants.EXPIRY_DATE, responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.apply();
 
@@ -392,12 +390,13 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
 
     @Override
     public void onFailure() {
-        if(!call.isCanceled()){
-        loginBtn.setEnabled(true);
-        setButtonColorTint(Color.parseColor("#7F0000"));
-        loginBtn.setBackgroundResource(R.drawable.rectangle_17);
-        spinner.setVisibility(View.INVISIBLE);
-        Toast.makeText(getApplicationContext(), "Login fail", Toast.LENGTH_LONG).show();}
+        if (!call.isCanceled()) {
+            loginBtn.setEnabled(true);
+            setButtonColorTint(Color.parseColor("#7F0000"));
+            loginBtn.setBackgroundResource(R.drawable.rectangle_17);
+            spinner.setVisibility(View.INVISIBLE);
+            new NetworkUtilities().networkFailure(getApplicationContext());
+        }
 
     }
 
