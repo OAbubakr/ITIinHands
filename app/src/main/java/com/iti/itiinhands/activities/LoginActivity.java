@@ -43,7 +43,7 @@ import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import retrofit2.Call;
 
-import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
+//import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
 
 
 /**
@@ -418,6 +418,9 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     @Override
     protected void onPause() {
         super.onPause();
-        call.cancel();
+        if (call != null){
+            call.cancel();
+        }
+
     }
 }
