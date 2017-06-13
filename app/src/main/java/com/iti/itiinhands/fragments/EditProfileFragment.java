@@ -242,7 +242,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                     @Override
                     public void onAuthError(LIAuthError error) {
                         Log.i("error", error.toString());
-                        Toast.makeText(getActivity().getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Failed, please check you internet connection.", Toast.LENGTH_LONG).show();
                     }
                 }, true);
     }
@@ -359,7 +359,7 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), "Failed, please check you internet connection.", Toast.LENGTH_LONG).show();
     }
 
     @Override

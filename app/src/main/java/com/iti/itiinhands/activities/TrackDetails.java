@@ -25,6 +25,7 @@ import com.iti.itiinhands.model.TrackInstructor;
 import com.iti.itiinhands.model.schedule.SessionModel;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
@@ -58,8 +59,6 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         networkManager = NetworkManager.getInstance(getApplicationContext());
 
 
-
-
         instructorsRecyclerView = (RecyclerView) findViewById(R.id.instructorsRV);
         coursesRecyclerView = (RecyclerView) findViewById(R.id.coursesRV);
 
@@ -79,7 +78,13 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
         //setting the adapter
 
-        prepareCourses();
+        if (networkManager.isOnline()) {
+            prepareCourses();
+        } else {
+            new NetworkUtilities().networkFailure(getApplicationContext());
+            spinner.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -89,32 +94,42 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            courses = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<Course>>(){}.getType());
+        if (response != null) {
+            if (response.getStatus().equals(Response.SUCCESS)) {
+                courses = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Course>>() {
+                }.getType());
 
 //            courses = (ArrayList<Course>) response.getResponseData();
-            coursesAdapter = new TrackCoursesAdapter(courses);
-            coursesRecyclerView.setAdapter(coursesAdapter);
-            ArrayList<TrackInstructor> trackInstructors = new ArrayList<>();
-            for (int i = 0; i < courses.size(); i++) {
-                Course course = courses.get(i);
-                if (course.getTrackInstructors().size() != 0) {
-                    for (int j = 0; j < course.getTrackInstructors().size(); j++) {
-                        trackInstructors.add(course.getTrackInstructors().get(j));
-                    }
+                coursesAdapter = new TrackCoursesAdapter(courses);
+                coursesRecyclerView.setAdapter(coursesAdapter);
+                ArrayList<TrackInstructor> trackInstructors = new ArrayList<>();
+                for (int i = 0; i < courses.size(); i++) {
+                    Course course = courses.get(i);
+                    if (course.getTrackInstructors().size() != 0) {
+                        for (int j = 0; j < course.getTrackInstructors().size(); j++) {
+                            trackInstructors.add(course.getTrackInstructors().get(j));
+                        }
 
+                    }
                 }
+                instructorsAdapter = new InstructorsAdapter(trackInstructors);
+                instructorsRecyclerView.setAdapter(instructorsAdapter);
+                spinner.setVisibility(View.GONE);
             }
-            instructorsAdapter = new InstructorsAdapter(trackInstructors);
-            instructorsRecyclerView.setAdapter(instructorsAdapter);
+        } else {
+            new NetworkUtilities().networkFailure(getApplicationContext());
             spinner.setVisibility(View.GONE);
         }
+
     }
 
     @Override
     public void onFailure() {
+        new NetworkUtilities().networkFailure(getApplicationContext());
+        spinner.setVisibility(View.GONE);
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

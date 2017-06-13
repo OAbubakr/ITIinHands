@@ -27,6 +27,7 @@ import com.iti.itiinhands.R;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 
 
 public class UploadImage extends AppCompatActivity implements View.OnClickListener, NetworkResponse {
@@ -69,7 +70,11 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
         } else if (v.getId() == R.id.upload) {
-           networkManager.uploadImage(myRef, picturePath,5700);
+            if (networkManager.isOnline()) {
+                networkManager.uploadImage(myRef, picturePath, 5700);
+            } else {
+                new NetworkUtilities().networkFailure(getApplicationContext());
+            }
 
         }
     }
@@ -79,8 +84,8 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             picturePath = cursor.getString(columnIndex);
@@ -93,12 +98,12 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onResponse(Response response) {
-        Toast.makeText(getApplicationContext(), "Response is success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Imagw Uploaded!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getApplicationContext(), "Response is failed", Toast.LENGTH_SHORT).show();
+        new NetworkUtilities().networkFailure(getApplicationContext());
     }
 
     @Override

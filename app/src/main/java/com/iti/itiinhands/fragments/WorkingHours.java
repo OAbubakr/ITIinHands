@@ -28,6 +28,7 @@ import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -160,7 +161,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
 
     @Override
     public void onFailure() {
-        Toast.makeText(getContext(), "No Network Connection", Toast.LENGTH_SHORT).show();
+        new NetworkUtilities().networkFailure(getActivity());
     }
 
     public void panelListener() {
