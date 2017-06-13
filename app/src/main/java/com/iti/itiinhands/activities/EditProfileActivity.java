@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iti.itiinhands.R;
@@ -102,6 +103,11 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
     private int height;
     private String responseType;
     private ProgressBar spinner;
+    private String email;
+    private TextView checkEmail;
+    private TextView checkMobile;
+    private boolean emailFlag;
+    private boolean mobileFlag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,6 +137,8 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         myActivity = this;
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        checkEmail = (TextView) findViewById(R.id.emailCheckEditProfileId);
+        checkMobile = (TextView) findViewById(R.id.mobileCheckEditProfileId);
 
         prepareView();
 
@@ -215,18 +223,44 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                         userData.setBehanceUrl("");
 
                     userData.setLinkedInUrl(linkedInUrl);
-                    userData.setStudentEmail(emailEt.getText().toString());
-                    userData.setStudentMobile(mobileEt.getText().toString());
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                    email = emailEt.getText().toString().trim();
+                    if(!email.isEmpty() && !email.matches(emailPattern)){
+                        checkEmail.setText("Not valid email");
+                        checkEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
+                        emailFlag = false;
+                    }else{
+                        userData.setStudentEmail(emailEt.getText().toString());
+                        emailFlag = true;
+                        checkEmail.setText("");
+                        checkEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+                    String mobile = mobileEt.getText().toString();
+                    if(mobile.length()==0 || mobile.length() ==11 && mobile.startsWith("0") ){
+                        userData.setStudentMobile(mobileEt.getText().toString());
+                        checkMobile.setText("");
+                        checkMobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        mobileFlag = true;
+                    }else{
+                        checkMobile.setText("Not valid mobile");
+                        checkMobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
+                        mobileFlag = false;
+                    }
+
 
                     ///put new image path in url
                     //userData.setImagePath();
-                    int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
-                    int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
-                    responseType = "save";
-                    networkManager.setUserProfileData(myRef, userType, userId, userData);
-                    submitBtn.setEnabled(false);
-//                    submitBtn.setImageResource(R.drawable.savegray);
-                    spinner.setVisibility(View.VISIBLE);
+                    if(mobileFlag && emailFlag) {
+                        int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
+                        int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
+                        responseType = "save";
+
+                        networkManager.setUserProfileData(myRef, userType, userId, userData);
+                        submitBtn.setEnabled(false);
+                        cancelBtn.setEnabled(false);
+                        submitBtn.setImageResource(R.drawable.savegray);
+                        spinner.setVisibility(View.VISIBLE);
+                    }
                 }else{
                     Toast.makeText(getApplicationContext(), "no network connection", Toast.LENGTH_LONG).show();
                 }
@@ -411,6 +445,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                 break;
             case "save":
                 submitBtn.setEnabled(true);
+                cancelBtn.setEnabled(true);
                 if(response !=null){
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(userData));

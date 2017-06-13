@@ -112,15 +112,24 @@
                         android:id="@+id/mobileText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
                         android:inputType="phone" />
 
+
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mobileCheckEditProfileId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="#B71C1C" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+
                     android:layout_marginLeft="10dp"
                     android:orientation="horizontal">
                     <ImageView
@@ -146,7 +155,15 @@
                         android:layout_marginRight="10dp"
                         android:inputType="textEmailAddress" />
 
+
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/emailCheckEditProfileId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="#B71C1C" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
