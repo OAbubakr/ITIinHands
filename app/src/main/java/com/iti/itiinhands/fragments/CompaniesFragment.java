@@ -26,6 +26,7 @@ import com.iti.itiinhands.model.Company;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
@@ -54,7 +55,11 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
+
+        if( NetworkManager.getInstance(getActivity().getApplicationContext()).isOnline())
         NetworkManager.getInstance(getActivity().getApplicationContext()).getAllCompaniesData(this);
+        else
+            onFailure();
 
 
         return view;
@@ -62,7 +67,7 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response != null ) {
+        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
             CompaniesProfiles data = DataSerializer.convert(response.getResponseData(),CompaniesProfiles.class) ;
             if(data != null){
                 companiesList = data.getCompanies();
@@ -71,10 +76,13 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
                 spinner.setVisibility(View.GONE);
             }
         }
+        else
+            onFailure();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network connection fail", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure( getActivity().getApplicationContext());
+        spinner.setVisibility(View.GONE);
     }
 }

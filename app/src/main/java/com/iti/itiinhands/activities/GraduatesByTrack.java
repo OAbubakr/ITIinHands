@@ -30,6 +30,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.Track;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.lang.reflect.Array;
@@ -40,7 +41,7 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
 
     Branch branch;
     TextView branchLocation;
-//    private ArrayList<GraduateBasicData> graduateBasicDatas = new ArrayList<>();
+    //    private ArrayList<GraduateBasicData> graduateBasicDatas = new ArrayList<>();
     private RecyclerView recyclerView;
     private GraduateAdapter graduateAdapter;
     Spinner intakeid;
@@ -56,7 +57,7 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graduates_by_track);
         intakeid = (Spinner) findViewById(R.id.intakeId);
-        trackId = getIntent().getIntExtra("trackId",0);
+        trackId = getIntent().getIntExtra("trackId", 0);
         trackName = getIntent().getStringExtra("tack name");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,9 +67,15 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         networkManager = NetworkManager.getInstance(this);
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
         myRef = this;
-        networkManager.getIntakes(myRef);
-        System.out.println("track id = "+ trackId);
+        if (networkManager.isOnline()) {
+            networkManager.getIntakes(myRef);
+        } else {
+            new NetworkUtilities().networkFailure(getApplicationContext());
+            spinner.setVisibility(View.GONE);
+        }
+        System.out.println("track id = " + trackId);
 
         recyclerView = (RecyclerView) findViewById(R.id.GraduateList);
 
@@ -83,8 +90,8 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
         intakeid.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(Integer.parseInt(intakeid.getSelectedItem().toString()) +"  "+trackId);
-                networkManager.getAllGraduatesByTracId(myRef,Integer.parseInt(intakeid.getSelectedItem().toString()),trackId);
+                System.out.println(Integer.parseInt(intakeid.getSelectedItem().toString()) + "  " + trackId);
+                networkManager.getAllGraduatesByTracId(myRef, Integer.parseInt(intakeid.getSelectedItem().toString()), trackId);
             }
 
             @Override
@@ -95,26 +102,29 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
 
     @Override
     public void onResponse(Response response) {
-
-        if (flag == 0) {
-            System.out.println("*H*H*H*H*H*H*H*H*");
-            if (response.getStatus().equals(Response.SUCCESS)) {
+        if (response != null) {
+            if (flag == 0) {
                 System.out.println("*H*H*H*H*H*H*H*H*");
-                List<ProgramIntake> list = DataSerializer.convert(response.getResponseData(), new TypeToken<List<ProgramIntake>>() {
-                }.getType());
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,getintakesId(list));
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                intakeid.setAdapter(dataAdapter);
-                System.out.println("MNMNMNNMNMNMNMNMNMNMNMNMNMNMNMN");
-                flag=1;
+                if (response.getStatus().equals(Response.SUCCESS)) {
+                    System.out.println("*H*H*H*H*H*H*H*H*");
+                    List<ProgramIntake> list = DataSerializer.convert(response.getResponseData(), new TypeToken<List<ProgramIntake>>() {
+                    }.getType());
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, getintakesId(list));
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    intakeid.setAdapter(dataAdapter);
+                    System.out.println("MNMNMNNMNMNMNMNMNMNMNMNMNMNMNMN");
+                    flag = 1;
+                }
+            } else if (flag == 1) {
+                if (response.getStatus().equals(Response.SUCCESS)) {
+                    List<GraduateBasicData> graduateBasicDatas = DataSerializer.convert(response.getResponseData(), new TypeToken<List<GraduateBasicData>>() {
+                    }.getType());
+                    graduateAdapter = new GraduateAdapter(getApplicationContext(), graduateBasicDatas);
+                    recyclerView.setAdapter(graduateAdapter);
+                }
             }
-        }else if(flag == 1){
-            if(response.getStatus().equals(Response.SUCCESS)){
-                List<GraduateBasicData> graduateBasicDatas = DataSerializer.convert(response.getResponseData(), new TypeToken<List<GraduateBasicData>>() {
-                }.getType());
-                graduateAdapter = new GraduateAdapter(getApplicationContext(), graduateBasicDatas);
-                recyclerView.setAdapter(graduateAdapter);
-            }
+        } else {
+            new NetworkUtilities().networkFailure(getApplicationContext());
         }
 
         spinner.setVisibility(View.GONE);
@@ -122,19 +132,18 @@ public class GraduatesByTrack extends AppCompatActivity implements NetworkRespon
 
     @Override
     public void onFailure() {
-        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
 
 
-    public String[] getintakesId (List<ProgramIntake> list){
+    public String[] getintakesId(List<ProgramIntake> list) {
         String[] arr = new String[list.size()];
-        for(int i =0 ; i < list.size() ; i++){
+        for (int i = 0; i < list.size(); i++) {
             arr[i] = String.valueOf(list.get(i).getIntakeId());
         }
         return arr;
     }
-
 
 
     @Override

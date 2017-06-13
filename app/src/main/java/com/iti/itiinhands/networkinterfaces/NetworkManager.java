@@ -52,7 +52,7 @@ import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_
 public class NetworkManager {
 
 
-//    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    //    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
     public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
 //    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
@@ -67,7 +67,7 @@ public class NetworkManager {
     public static final int RENEW_ALARM_MANAGER = 1;
     //ur activity must implements NetworkResponse
 
-    public Retrofit getRetrofit(){
+    public Retrofit getRetrofit() {
         return retrofit;
     }
 
@@ -107,47 +107,54 @@ public class NetworkManager {
         @Override
         public okhttp3.Response intercept(Chain chain) throws IOException {
 
-            final SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-            String token = sharedPreferences.getString(Constants.TOKEN, "");
-            Request request = chain.request();
-            request = request.newBuilder().addHeader("Authorization", token).build();
-            okhttp3.Response response = chain.proceed(request);
-            ResponseBody responseBody = response.body();
-            String responseAsString = responseBody.string();
 
-            Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
 
-            if (jsonResponse.getStatus().equals(Response.FAILURE)) {
+                final SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                String token = sharedPreferences.getString(Constants.TOKEN, "");
+                Request request = chain.request();
+                request = request.newBuilder().addHeader("Authorization", token).build();
+                okhttp3.Response response = chain.proceed(request);
+                ResponseBody responseBody = response.body();
+                String responseAsString = responseBody.string();
 
-                if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
-                    String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
-                    if (!refreshToken.isEmpty()) {
-                        NetworkManager.getInstance(context).renewAccessToken(refreshToken, RENEW_INTERCEPTOR);
+                try {
+                    Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
+
+                    if (jsonResponse.getStatus().equals(Response.FAILURE)) {
+
+                        if (jsonResponse.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
+                            String refreshToken = sharedPreferences.getString(Constants.REFRESH_TOKEN, "");
+                            if (!refreshToken.isEmpty()) {
+                                NetworkManager.getInstance(context).renewAccessToken(refreshToken, RENEW_INTERCEPTOR);
+                            }
+
+                        } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
+                            SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                            if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
+                                SharedPreferences.Editor editor = setting.edit();
+                                editor.remove(Constants.LOGGED_FLAG);
+                                editor.remove(Constants.TOKEN);
+                                editor.remove(Constants.USER_TYPE);
+                                editor.remove(Constants.USER_OBJECT);
+                                editor.apply();
+
+                                Intent intent = new Intent(context, LoginActivity.class);
+                                ComponentName cn = intent.getComponent();
+                                Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                                context.startActivity(mainIntent);
+
+                            }
+
+                        }
                     }
-
-                } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
-                    SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                    if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
-                        SharedPreferences.Editor editor = setting.edit();
-                        editor.remove(Constants.LOGGED_FLAG);
-                        editor.remove(Constants.TOKEN);
-                        editor.remove(Constants.USER_TYPE);
-                        editor.remove(Constants.USER_OBJECT);
-                        editor.apply();
-
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        ComponentName cn = intent.getComponent();
-                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
-                        context.startActivity(mainIntent);
-
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
 
                 }
-            }
+                return response.newBuilder()
+                        .body(ResponseBody.create(response.body().contentType(), responseAsString))
+                        .build();
 
-            return response.newBuilder()
-                    .body(ResponseBody.create(response.body().contentType(), responseAsString))
-                    .build();
 
         }
     }
@@ -264,7 +271,7 @@ public class NetworkManager {
     }
 
 
-    public void getLoginAuthData(NetworkResponse networkResponse,Call<LoginResponse> call) {
+    public void getLoginAuthData(NetworkResponse networkResponse, Call<LoginResponse> call) {
 
         final NetworkResponse network = networkResponse;
 
@@ -824,50 +831,50 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
-             @Override
-             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                 if (response != null) {
-                     if (response.body().getStatus().equals(Response.SUCCESS)) {
-                         if (flag == RENEW_INTERCEPTOR) {
+                         @Override
+                         public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                             if (response != null) {
+                                 if (response.body().getStatus().equals(Response.SUCCESS)) {
+                                     if (flag == RENEW_INTERCEPTOR) {
 
-                             Log.v("ITI_Test", "access token saved");
+                                         Log.v("ITI_Test", "access token saved");
 
-                             LinkedTreeMap<String, Object> linkedTreeMap =
-                                     (LinkedTreeMap<String, Object>) response.body().getResponseData();
-                             String access_token = (String) linkedTreeMap.get("access_token");
-                             double expiry_date = (double) linkedTreeMap.get("expiry_date");
+                                         LinkedTreeMap<String, Object> linkedTreeMap =
+                                                 (LinkedTreeMap<String, Object>) response.body().getResponseData();
+                                         String access_token = (String) linkedTreeMap.get("access_token");
+                                         double expiry_date = (double) linkedTreeMap.get("expiry_date");
 
-                             SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                             editor.putString(Constants.TOKEN, access_token);
-                             editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
-                             editor.apply();
+                                         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                                         editor.putString(Constants.TOKEN, access_token);
+                                         editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
+                                         editor.apply();
 
-                         } else if (flag == RENEW_ALARM_MANAGER) {
+                                     } else if (flag == RENEW_ALARM_MANAGER) {
 
-                             Response response1 = response.body();
-                             if (response1 != null) {
-                                 Intent intent = new Intent(context, UpdateAccessTokens.class);
-                                 intent.setAction(DOWNLOAD_FINISHED);
-                                 intent.putExtra("response", response1);
-                                 context.sendBroadcast(intent);
+                                         Response response1 = response.body();
+                                         if (response1 != null) {
+                                             Intent intent = new Intent(context, UpdateAccessTokens.class);
+                                             intent.setAction(DOWNLOAD_FINISHED);
+                                             intent.putExtra("response", response1);
+                                             context.sendBroadcast(intent);
+                                         }
+
+                                     }
+
+
+                                 }
+
                              }
 
                          }
 
-
+                         @Override
+                         public void onFailure(Call<Response> call, Throwable t) {
+                             t.printStackTrace();
+                             Log.e("network", t.toString());
+                         }
                      }
-
-                 }
-
-             }
-
-             @Override
-             public void onFailure(Call<Response> call, Throwable t) {
-                 t.printStackTrace();
-                 Log.e("network", t.toString());
-             }
-         }
 
         );
     }

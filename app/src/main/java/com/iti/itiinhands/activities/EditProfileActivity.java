@@ -33,6 +33,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.behance.BehanceData;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.services.LinkedInLogin;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -134,10 +135,10 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
         prepareView();
 
-        DisplayMetrics displayMetrics=new DisplayMetrics();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        width=displayMetrics.widthPixels;
-        height=displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+        height = displayMetrics.heightPixels;
         final String token = sharedPreferences.getString(Constants.TOKEN, "");
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
@@ -156,7 +157,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                 .downloader(new OkHttp3Downloader(client))
                 .build();
         picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
-                .resize(width,height/3)
+                .resize(width, height / 3)
                 .error(R.drawable.profile_pic).into(profilePicIv);
 
         ///change profile pic
@@ -177,7 +178,12 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
             @Override
             public void onClick(View view) {
                 responseType = "gitHub";
-                networkManager.getGitData(myRef, githubEt.getText().toString());
+                if (networkManager.isOnline()) {
+                    networkManager.getGitData(myRef, githubEt.getText().toString());
+                } else {
+                    new NetworkUtilities().networkFailure(getApplicationContext());
+                }
+
             }
         });
 
@@ -187,7 +193,11 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
             @Override
             public void onClick(View view) {
                 responseType = "behance";
-                networkManager.getBehanceData(myRef, behanceEt.getText().toString());
+                if (networkManager.isOnline()) {
+                    networkManager.getBehanceData(myRef, behanceEt.getText().toString());
+                } else {
+                    new NetworkUtilities().networkFailure(getApplicationContext());
+                }
 
             }
         });
@@ -204,7 +214,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(networkManager.isOnline()) {
+                if (networkManager.isOnline()) {
                     if (githubEt.getText().length() > 0)
                         userData.setGitUrl(gitUrl);
                     else
@@ -223,12 +233,17 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
                     int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                     responseType = "save";
-                    networkManager.setUserProfileData(myRef, userType, userId, userData);
+
+                    if (networkManager.isOnline()) {
+                        networkManager.setUserProfileData(myRef, userType, userId, userData);
+                    } else {
+                        new NetworkUtilities().networkFailure(getApplicationContext());
+                    }
                     submitBtn.setEnabled(false);
 //                    submitBtn.setImageResource(R.drawable.savegray);
                     spinner.setVisibility(View.VISIBLE);
-                }else{
-                    Toast.makeText(getApplicationContext(), "no network connection", Toast.LENGTH_LONG).show();
+                } else {
+                    new NetworkUtilities().networkFailure(getApplicationContext());
                 }
             }
         });
@@ -310,7 +325,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         if (userData.getStudentMobile() != null)
             mobileEt.setText(userData.getStudentMobile());
 
-        if (userData.getBehanceUrl()!=null && userData.getBehanceUrl().length()>0) {
+        if (userData.getBehanceUrl() != null && userData.getBehanceUrl().length() > 0) {
             behanceEt.setText(prepareUrl(userData.getBehanceUrl()));
             behanceUrl = userData.getBehanceUrl();
             behanceLogo.setImageResource(R.drawable.behance);
@@ -319,7 +334,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
             behanceLogo.setImageResource(R.drawable.group1207);
         }
 
-        if (userData.getGitUrl()!=null && userData.getGitUrl().length()>0) {
+        if (userData.getGitUrl() != null && userData.getGitUrl().length() > 0) {
             githubEt.setText(prepareUrl(userData.getGitUrl()));
             gitUrl = userData.getGitUrl();
             githubLogo.setImageResource(R.drawable.github);
@@ -328,7 +343,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
             githubLogo.setImageResource(R.drawable.githubgray);
         }
 
-        if (userData.getLinkedInUrl()!=null && userData.getLinkedInUrl().length()>0) {
+        if (userData.getLinkedInUrl() != null && userData.getLinkedInUrl().length() > 0) {
             linkedInUrl = userData.getLinkedInUrl();
             linkedinBtn.setImageResource(R.drawable.linked_in);
         } else {
@@ -363,7 +378,11 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     cursor.close();
                     profilePicIv.setImageURI(selectedImage);
                     int id = sharedPreferences.getInt(Constants.USER_ID, 0);
-                    networkManager.uploadImage(myRef, picturePath, id);
+                    if (networkManager.isOnline()) {
+                        networkManager.uploadImage(myRef, picturePath, id);
+                    } else {
+                        new NetworkUtilities().networkFailure(getApplicationContext());
+                    }
 
 
                     //edit image path
@@ -379,58 +398,62 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
     @Override
     public void onResponse(Response response) {
-        switch (responseType){
-            case "gitHub":
-                if (response instanceof GitData &&((GitData) response).getMessage()!="Not Found") {
-                    GitData data = (GitData) response;
-                    gitUrl = data.getHtml_url();
-                    userData.setGitImageUrl(data.getAvatar_url());
-                    Picasso.with(getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
-                    githubLogo.setImageResource(R.drawable.github);
-                } else{
-                    githubEt.setText("");
-                    githubImg.setImageResource(R.drawable.photo);
-                    githubLogo.setImageResource(R.drawable.githubgray);
-                    Toast.makeText(getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
-                }
+        if (response != null) {
+            switch (responseType) {
+                case "gitHub":
+                    if (response instanceof GitData && ((GitData) response).getMessage() != "Not Found") {
+                        GitData data = (GitData) response;
+                        gitUrl = data.getHtml_url();
+                        userData.setGitImageUrl(data.getAvatar_url());
+                        Picasso.with(getApplicationContext()).load(data.getAvatar_url()).into(githubImg);
+                        githubLogo.setImageResource(R.drawable.github);
+                    } else {
+                        githubEt.setText("");
+                        githubImg.setImageResource(R.drawable.photo);
+                        githubLogo.setImageResource(R.drawable.githubgray);
+                        Toast.makeText(getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+                    }
                     break;
-            case "behance":
-                if ( response instanceof BehanceData && ((BehanceData) response).getUser()!=null) {
-                    BehanceData data = (BehanceData) response;
-                    behanceUrl = data.getUser().getUrl();
-                    HashMap<Integer, String> images = data.getUser().getImages();
-                    userData.setBehanceImageUrl(images.get(50));
-                    Picasso.with(getApplicationContext()).load(images.get(50)).into(behanceImg);
-                    behanceLogo.setImageResource(R.drawable.behance);
-                }else{
-                    behanceEt.setText("");
-                    behanceImg.setImageResource(R.drawable.photo);
-                    behanceLogo.setImageResource(R.drawable.group1207);
-                    Toast.makeText(getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
-                }
-                break;
-            case "save":
-                submitBtn.setEnabled(true);
-                if(response !=null){
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(userData));
-                    editor.commit();
-                    submitBtn.setImageResource(R.drawable.save);
-                    spinner.setVisibility(View.GONE);
-                    finish();
-                }else{
-                    spinner.setVisibility(View.INVISIBLE);
-                    submitBtn.setImageResource(R.drawable.save);
-                    Toast.makeText(getApplicationContext(), "Connection Fail", Toast.LENGTH_LONG).show();
-                }
-                break;
+                case "behance":
+                    if (response instanceof BehanceData && ((BehanceData) response).getUser() != null) {
+                        BehanceData data = (BehanceData) response;
+                        behanceUrl = data.getUser().getUrl();
+                        HashMap<Integer, String> images = data.getUser().getImages();
+                        userData.setBehanceImageUrl(images.get(50));
+                        Picasso.with(getApplicationContext()).load(images.get(50)).into(behanceImg);
+                        behanceLogo.setImageResource(R.drawable.behance);
+                    } else {
+                        behanceEt.setText("");
+                        behanceImg.setImageResource(R.drawable.photo);
+                        behanceLogo.setImageResource(R.drawable.group1207);
+                        Toast.makeText(getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case "save":
+                    submitBtn.setEnabled(true);
+                    if (response != null) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(Constants.USER_OBJECT, UserDataSerializer.serialize(userData));
+                        editor.commit();
+                        submitBtn.setImageResource(R.drawable.save);
+                        spinner.setVisibility(View.GONE);
+                        finish();
+                    } else {
+                        spinner.setVisibility(View.INVISIBLE);
+                        submitBtn.setImageResource(R.drawable.save);
+                        new NetworkUtilities().networkFailure(getApplicationContext());
+                    }
+                    break;
+            }
+        } else {
+            new NetworkUtilities().networkFailure(getApplicationContext());
         }
 
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getApplicationContext(), "sync fail", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getApplicationContext());
     }
 
 

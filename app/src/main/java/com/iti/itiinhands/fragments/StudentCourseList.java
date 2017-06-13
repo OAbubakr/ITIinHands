@@ -25,6 +25,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.schedule.SessionModel;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.iti.itiinhands.utilities.UserDataSerializer;
@@ -55,35 +56,40 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
         token = sharedPreferences.getInt(Constants.USER_ID, 0);
-
-        networkManager.getStudentsGrades(myRef, token);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
+        if (networkManager.isOnline())
+            networkManager.getStudentsGrades(myRef, token);
+        else
+            onFailure();
         SCourses_RV = (RecyclerView) view.findViewById(R.id.rvStudentCourses);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         SCourses_RV.setLayoutManager(linearLayoutManager);
-        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
+
         return view;
     }
 
     @Override
     public void onResponse(Response response) {
-        if (response.getStatus().equals(Response.SUCCESS)) {
-            List<StudentGrade> list = DataSerializer.convert(response.getResponseData(),new TypeToken< List<StudentGrade>>(){}.getType());
+        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+            List<StudentGrade> list = DataSerializer.convert(response.getResponseData(), new TypeToken<List<StudentGrade>>() {
+            }.getType());
 
-            Log.i("courselist","courselist");
+            Log.i("courselist", "courselist");
 //            List<StudentGrade> list = (List<StudentGrade>) response.getResponseData();
             if (getActivity() != null) {
                 CourseAdapter courseAdapter = new CourseAdapter(getActivity(), list);
                 SCourses_RV.setAdapter(courseAdapter);
             }
             spinner.setVisibility(View.GONE);
-        }
+        } else onFailure();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getActivity());
+
         spinner.setVisibility(View.GONE);
     }
 }

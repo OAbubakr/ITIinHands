@@ -26,6 +26,7 @@ import com.iti.itiinhands.adapters.GridAdapterForHours;
 import com.iti.itiinhands.beans.EmpHour;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -139,7 +140,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
 
     @Override
     public void onFailure() {
-        Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
+        new NetworkUtilities().networkFailure(getActivity());
     }
 
     public void panelListener() {

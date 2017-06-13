@@ -24,6 +24,7 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
@@ -195,7 +196,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
                         networkManager.postJob(PostJobFragment.this, jobOpportunity);
                         postButton.setEnabled(false);
                     }else{
-                        Toast.makeText(getActivity().getApplicationContext(), "Please check your internet connection", Toast.LENGTH_LONG).show();
+                        new NetworkUtilities().networkFailure(getActivity());
                     }
                 }
             }
@@ -222,7 +223,7 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
     @Override
     public void onResponse(Response response) {
         postButton.setEnabled(true);
-        if(response.getStatus().equals("SUCCESS")){
+        if(response!=null && response.getStatus().equals(Response.SUCCESS)){
             //-------------------------Move to About ITI Fragment---------------------------
             Toast.makeText(getActivity().getApplicationContext(), "Post Job Done", Toast.LENGTH_LONG).show();
             Fragment fragment = new AboutIti();
@@ -232,14 +233,14 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }else{
-            Toast.makeText(getActivity().getApplicationContext(), "NETWORK ERROR", Toast.LENGTH_LONG).show();
+            new NetworkUtilities().networkFailure(getActivity());
         }
     }
 
     @Override
     public void onFailure() {
         postButton.setEnabled(true);
-        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getActivity());
     }
 
     @Override

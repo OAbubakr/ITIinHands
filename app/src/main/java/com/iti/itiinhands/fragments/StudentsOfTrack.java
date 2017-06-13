@@ -22,6 +22,7 @@ import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.model.StudentDataByTrackId;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.networkinterfaces.NetworkResponse;
+import com.iti.itiinhands.networkinterfaces.NetworkUtilities;
 import com.iti.itiinhands.utilities.DataSerializer;
 
 import java.util.ArrayList;
@@ -71,7 +72,10 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
 
+        if (networkManager.isOnline())
         networkManager.getAllStudentsByTrackId(this, id);
+        else
+            onFailure();
 
     }
 
@@ -79,7 +83,7 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onResponse(Response response) {
 
-        if (response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null && response.getStatus().equals(Response.SUCCESS)) {
             students = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<StudentDataByTrackId>>(){}.getType());
 
             adapter = new AllStudentByTrackIdAdapter(students, getApplicationContext());
@@ -87,12 +91,14 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
             recyclerView.setAdapter(adapter);
             spinner.setVisibility(View.GONE);
         }
+        else
+            onFailure();
 
     }
     @Override
     public void onFailure() {
 
-        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+        new NetworkUtilities().networkFailure(getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
     @Override
