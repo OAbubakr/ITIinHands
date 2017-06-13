@@ -72,11 +72,11 @@ public class CompaniesListAdapter extends RecyclerView.Adapter<CompaniesListAdap
         public MyViewHolder(View itemView, final List<Company> companiesList) {
             super(itemView);
             this.companiesList = companiesList;
-            companyName = (TextView)itemView.findViewById(R.id.item_detail);
+            companyName = (TextView)itemView.findViewById(R.id.cName);
 
-            cvTo = (TextView)itemView.findViewById(R.id.cvto);
+            cvTo = (TextView)itemView.findViewById(R.id.cEmail);
 
-            companyImage = (ImageView) itemView.findViewById(R.id.img);
+            companyImage = (ImageView) itemView.findViewById(R.id.cimg);
         }
 
         public void bind(final Company company){
@@ -95,11 +95,15 @@ public class CompaniesListAdapter extends RecyclerView.Adapter<CompaniesListAdap
                 cvTo.setText(company.getCompanyEmail());
             }
 
-            Picasso.with(context)
-                    .load(company.getCompanyLogoPath())
-                    .placeholder(R.drawable.c_pic)
-                    .error(R.drawable.c_pic)
-                    .into(companyImage);
+
+            if (company.getCompanyLogoPath() != null && !company.getCompanyLogoPath().equals("")){
+                Picasso.with(context)
+                        .load(company.getCompanyLogoPath())
+                        .placeholder(R.drawable.c_pic)
+                        .error(R.drawable.c_pic)
+                        .into(companyImage);
+            }
+
 
 
 

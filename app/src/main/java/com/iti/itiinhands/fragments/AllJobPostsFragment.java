@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +87,15 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
         if (response.getStatus().equals(Response.SUCCESS)) {
             jobVacancies = DataSerializer.convert(response.getResponseData(),new TypeToken<ArrayList<JobVacancy>>(){}.getType());
 
-//            jobVacancies = (ArrayList<JobVacancy>) response.getResponseData();
-            adapter = new JobsAdapter(jobVacancies, getActivity().getApplicationContext());
+            ArrayList<JobVacancy> jobs = new ArrayList<>();
+
+            for (int i =jobVacancies.size()-1 ; i>=0;i--){
+
+                jobs.add(jobVacancies.get(i));
+
+            }
+
+            adapter = new JobsAdapter(jobs, getActivity().getApplicationContext());
             recyclerView.setAdapter(adapter);
             spinner.setVisibility(View.GONE);
         }

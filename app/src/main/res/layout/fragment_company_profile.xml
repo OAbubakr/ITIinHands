@@ -217,7 +217,7 @@
                             android:layout_height="wrap_content"
                             android:paddingLeft="30dp"
                             android:textColor="#B2B4B6"
-                            android:text="hiiiiiiiiiiiiiiiii" />
+                             />
                     </LinearLayout>
 
 
@@ -253,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:paddingLeft="30dp"
                             android:textColor="#B2B4B6"
-                            android:text="hiiiiiiiiiiiiiiiii" />
+                             />
                     </LinearLayout>
 
                     <LinearLayout
