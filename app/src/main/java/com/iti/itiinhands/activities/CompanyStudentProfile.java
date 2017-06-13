@@ -33,7 +33,6 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
         super.onCreate(savedInstanceState);
 
 
-
         networkManager = NetworkManager.getInstance(getApplicationContext());
         networkManager.getUserProfileDataOther(this, 1, getIntent().getIntExtra("stuId", 0));
 
@@ -58,7 +57,7 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
 
 //        Response result = (Response) response;
 //        LinkedTreeMap map = ((LinkedTreeMap) result.getResponseData());
-            UserData data = DataSerializer.convert(response.getResponseData(),UserData.class);
+            UserData data = DataSerializer.convert(response.getResponseData(), UserData.class);
 
 //            UserData data = (UserData) response.getResponseData();
 //                UserDataSerializer.deSerialize(new Gson().toJson(result.getResponseData()));
@@ -73,6 +72,7 @@ public class CompanyStudentProfile extends AppCompatActivity implements NetworkR
     public void onFailure() {
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

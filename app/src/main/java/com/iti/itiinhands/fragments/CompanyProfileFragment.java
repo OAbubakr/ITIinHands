@@ -64,6 +64,8 @@ public class CompanyProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_company_profile, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+        getActivity().setTitle("Profile");
+
         name = (TextView) view.findViewById(R.id.name);
         email = (TextView) view.findViewById(R.id.email);
         address = (TextView) view.findViewById(R.id.address);

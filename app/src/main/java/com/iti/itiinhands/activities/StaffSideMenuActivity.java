@@ -31,11 +31,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.CustomExpandableListAdapter;
-import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AboutIti;
 import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
+import com.iti.itiinhands.fragments.WorkingHours;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.InstructorEvaluationFragment;
 import com.iti.itiinhands.fragments.StaffSchedule;
@@ -43,6 +43,7 @@ import com.iti.itiinhands.fragments.chat.ChatMainFragment;
 import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
 import com.iti.itiinhands.services.ScheduleChanged;
+import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 import com.squareup.picasso.Picasso;
@@ -53,8 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
-import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.createAlarm;
 import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
 
 public class StaffSideMenuActivity extends AppCompatActivity {
@@ -100,6 +99,8 @@ public class StaffSideMenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+
+        startService(new Intent(this, UpdateAccessToken.class));
 
         //subscribe to my topic to receive notifications
         FirebaseMessaging.getInstance().subscribeToTopic(myChatId);
@@ -359,7 +360,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle working hours fragment
-                                fragment = new EmployeeHours();
+                                fragment = new WorkingHours();
                                 break;
                             case 3://only if supervisor
                                 Intent intent = new Intent(StaffSideMenuActivity.this, ScheduleChanged.class);

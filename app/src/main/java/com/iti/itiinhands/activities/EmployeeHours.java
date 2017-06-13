@@ -54,10 +54,10 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         View view = inflater.inflate(R.layout.activity_employee_hours, container, false);
+
+        getActivity().setTitle("Working hours");
+
         networkManager = NetworkManager.getInstance(getActivity());
         myRef = this;
         startDate = (EditText) view.findViewById(R.id.startDateTv);
@@ -68,6 +68,9 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
         getHours_Button.setOnClickListener(this);
         startDate.setOnClickListener(this);
         endDate.setOnClickListener(this);
+
+
+
         return view;
     }
 
@@ -77,15 +80,15 @@ public class EmployeeHours extends Fragment implements NetworkResponse, View.OnC
             empHour = DataSerializer.convert(response.getResponseData(),EmpHour.class);
 
 //            empHour = (EmpHour) response.getResponseData();
-            data = new String[]{
-                    empHour.getWorkingDays().toString(),
-                    empHour.getAbsenceDays().toString(),
-                    empHour.getAttendHours().toString(),
-                    empHour.getLateDays().toString(),
-                    empHour.getMissionHours().toString(),
-                    empHour.getPermissionHours().toString(),
-                    empHour.getVacationHours().toString()
-            };
+//            data = new String[]{
+//                    empHour.getWorkingDays().toString(),
+//                    empHour.getAbsenceDays().toString(),
+//                    empHour.getAttendHours().toString(),
+//                    empHour.getLateDays().toString(),
+//                    empHour.getMissionHours().toString(),
+//                    empHour.getPermissionHours().toString(),
+//                    empHour.getVacationHours().toString()
+//            };
 
 
             pieChart.addPieSlice(new PieModel("Absence Hour", empHour.getWorkingDays(), Color.parseColor("#56B7F1")));

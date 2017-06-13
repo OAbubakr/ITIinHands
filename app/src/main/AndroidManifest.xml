@@ -70,20 +70,26 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".broadcast_receiver.UpdateAccessTokens"
-            android:enabled="true"
-            android:exported="false">
+        <activity android:name=".activities.CompanyGraduateProfile" />
 
-            <intent-filter>
-                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_FINISHED" />
-                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.UPDATE_ACCESS_TOKEN_ALARM" />
-            </intent-filter>
+        <service
+            android:name=".services.UpdateAccessToken"
+            android:exported="false"/>
 
-        </receiver>
 
 
         <activity android:name=".activities.CompanyGraduateProfile"></activity>
+        <!-- <activity android:name=".activities.Schedule" /> -->
+        <activity android:name=".activities.GraduatesByTrack" />
+        <activity android:name=".fragments.WorkingHours">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity android:name=".activities.EditProfileActivity"></activity>
     </application>
 
 </manifest>

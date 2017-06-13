@@ -53,7 +53,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
 
     private int dummy = 0;
 
-    private String receiver_type;
+    private String receiver_type = "staff";
     private String myName;
     private String myType;
     private String myId;
@@ -79,13 +79,13 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
     public ChatMainFragment() {
         // Required empty public constructor
     }
-
+/*
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
         this.receiver_type = args.getString("receiver_type");
     }
-
+*/
     @Override
     public void onStart() {
         super.onStart();
