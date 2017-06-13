@@ -47,11 +47,11 @@ import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_
 public class NetworkManager {
 
 
-//    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
+    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
+//    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
 //    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
 
 //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
@@ -318,15 +318,15 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-//                Response result = response.body();
-//                network.onResponse(result);
+                Response result = response.body();
+                network.onResponse(result);
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-//                t.printStackTrace();
-//                Log.e("network", t.toString());
-//                network.onFailure();
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
             }
         });
 
