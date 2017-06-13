@@ -332,7 +332,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
-        aboutIti.add("Tracks");
+        aboutIti.add("Branches and Tracks");
         aboutIti.add("Events");
         aboutIti.add("Maps");
         aboutIti.add("Bus Services");

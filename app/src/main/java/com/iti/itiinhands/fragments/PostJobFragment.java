@@ -77,8 +77,10 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
             companyName.setText(compName);
             Picasso.with(getActivity().getApplicationContext())
                     .load(compImage)
-                    .placeholder(R.drawable.comp_logo)
+                    .placeholder(R.drawable.c_pic)
+                    .error(R.drawable.c_pic)
                     .into(companyImage);
+
         }
 
         //Edit Text For Input Date

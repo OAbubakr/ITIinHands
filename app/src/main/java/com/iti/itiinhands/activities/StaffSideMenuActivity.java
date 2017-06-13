@@ -285,7 +285,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //access graduates profile
-                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
+                                BranchesFragment temp2 =new BranchesFragment();
+                                temp2.setFlag(3);
+                                fragment = temp2;
                                 break;
                             default:
                                 break;
