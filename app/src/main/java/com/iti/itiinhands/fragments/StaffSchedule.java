@@ -28,9 +28,9 @@ public class StaffSchedule extends Fragment {
                              Bundle savedInstanceState) {
 
 
-
-
         View view = inflater.inflate(R.layout.fragment_staff_schedule, container, false);
+
+        getActivity().setTitle("Schedule");
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("My Schedules"));
@@ -59,11 +59,7 @@ public class StaffSchedule extends Fragment {
             }
         });
 
-
-
-
         return view;
     }
-
 
 }

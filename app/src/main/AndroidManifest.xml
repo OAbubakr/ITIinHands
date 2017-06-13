@@ -63,24 +63,19 @@
         <activity android:name=".activities.CompanyProfileActivity"></activity>
         <activity android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">
-            <!--<intent-filter>-->
-                <!--<action android:name="launch" />-->
+            <intent-filter>
+                <action android:name="launch" />
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".broadcast_receiver.UpdateAccessTokens"
-            android:enabled="true"
-            android:exported="false">
+        <activity android:name=".activities.CompanyGraduateProfile" />
 
-            <intent-filter>
-                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.DOWNLOAD_FINISHED" />
-                <action android:name="com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.UPDATE_ACCESS_TOKEN_ALARM" />
-            </intent-filter>
+        <service
+            android:name=".services.UpdateAccessToken"
+            android:exported="false"/>
 
-        </receiver>
 
 
         <activity android:name=".activities.CompanyGraduateProfile"></activity>

@@ -168,6 +168,7 @@ public class StudentProfileFragment extends Fragment {
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
 
+        getActivity().setTitle("Profile");
 
         Bundle b = getArguments(); // company
         if (b != null) flag = b.getInt("flag", 0);
