@@ -355,7 +355,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 0:
                                 //handle staff evaluation fragment
                                 fragment = new InstructorEvaluationFragment();
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
                                 //handle scheduale fragment

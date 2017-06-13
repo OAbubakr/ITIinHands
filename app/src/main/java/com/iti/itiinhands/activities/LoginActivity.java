@@ -43,7 +43,6 @@ import com.iti.itiinhands.utilities.UserDataSerializer;
 
 import retrofit2.Call;
 
-import static com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens.REFRESH_FREQUENCY_LONG;
 
 
 /**
