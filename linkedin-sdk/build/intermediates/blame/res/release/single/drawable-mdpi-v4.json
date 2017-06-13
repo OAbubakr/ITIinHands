@@ -1,6 +1,18 @@
 [
     {
-        "merged": "E:\\ITI\\Graduation Project\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\ic_launcher.png",
-        "source": "E:\\ITI\\Graduation Project\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+        "merged": "E:\\ITI course materials\\GP\\new\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\ic_launcher.png",
+        "source": "E:\\ITI course materials\\GP\\new\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\ic_launcher.png",
+        "source": "C:\\Users\\omari\\Desktop\\project\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\HP\\AndroidStudioProjects\\ITI\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\ic_launcher.png",
+        "source": "C:\\Users\\HP\\AndroidStudioProjects\\ITI\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\GraduationProject\\ITIinHands\\linkedin-sdk\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\ic_launcher.png",
+        "source": "E:\\GraduationProject\\ITIinHands\\linkedin-sdk\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
     }
 ]

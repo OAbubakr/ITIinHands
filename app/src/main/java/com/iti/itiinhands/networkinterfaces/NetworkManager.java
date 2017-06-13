@@ -335,7 +335,7 @@ public class NetworkManager {
 
     ////////////////////////////////////////////
     //-------------------------------------POST JOB-------------------------------------------------
-    public void postJob(NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
+    public void postJob(final NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
@@ -344,13 +344,12 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-
+                networkResponse.onResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-                t.printStackTrace();
-                Log.e("network", t.toString());
+
                 network.onFailure();
             }
         });
