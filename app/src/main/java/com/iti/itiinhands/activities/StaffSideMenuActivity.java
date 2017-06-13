@@ -340,7 +340,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle graduate community
-                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
+                                //access graduates profile
+                                BranchesFragment temp2 =new BranchesFragment();
+                                temp2.setFlag(3);
+                                fragment = temp2;
                                 break;
                             default:
                                 break;

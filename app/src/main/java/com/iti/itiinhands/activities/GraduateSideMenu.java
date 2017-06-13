@@ -364,13 +364,13 @@ public class GraduateSideMenu extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(LinkedInFlag){
-            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if(LinkedInFlag){
+//            LISessionManager.getInstance(getApplicationContext()).onActivityResult(this,requestCode, resultCode, data);
+//        }
+//    }
 
     public void setLinkedInFlag(boolean linkedInFlag){
         this.LinkedInFlag=linkedInFlag;
