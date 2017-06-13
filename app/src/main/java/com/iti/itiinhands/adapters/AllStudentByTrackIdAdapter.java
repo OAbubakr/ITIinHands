@@ -85,6 +85,7 @@ public class AllStudentByTrackIdAdapter  extends RecyclerView.Adapter<AllStudent
                     Intent tracksView = new Intent(context, CompanyStudentProfile.class);
                     Bundle  b= new Bundle();
                     b.putInt("flag",1);
+
                     tracksView.putExtra("bundle",b);
                     tracksView.putExtra("stuId",studnet.getStudentId());
                     tracksView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

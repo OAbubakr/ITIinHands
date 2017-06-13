@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.iti.itiinhands.activities.Tracks;
 import com.iti.itiinhands.fragments.CompanyProfileFragment;
 import com.iti.itiinhands.model.Branch;
 import com.iti.itiinhands.model.Company;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class CompaniesListAdapter extends RecyclerView.Adapter<CompaniesListAdap
     @Override
     public CompaniesListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.branches_list_item, parent, false);
+                .inflate(R.layout.company_cell, parent, false);
         return new CompaniesListAdapter.MyViewHolder(itemView, companiesList);
     }
 
@@ -63,15 +65,46 @@ public class CompaniesListAdapter extends RecyclerView.Adapter<CompaniesListAdap
     ///////////////////////////////////////////////////////////
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private List<Company> companiesList;
+        public TextView cvTo;
         public TextView companyName;
+        public ImageView companyImage;
+
         public MyViewHolder(View itemView, final List<Company> companiesList) {
             super(itemView);
             this.companiesList = companiesList;
-            companyName = (TextView) itemView.findViewById(R.id.branch_list_item);
+            companyName = (TextView)itemView.findViewById(R.id.item_detail);
+
+            cvTo = (TextView)itemView.findViewById(R.id.cvto);
+
+            companyImage = (ImageView) itemView.findViewById(R.id.img);
         }
 
         public void bind(final Company company){
             companyName.setText(company.getCompanyName());
+
+            if (company.getCompanyName() == null){
+                companyName.setText("NULL");
+            }
+            else {
+                companyName.setText(company.getCompanyName());
+            }
+            if (company.getCompanyEmail() == null){
+                cvTo.setText("NULL");
+            }
+            else {
+                cvTo.setText(company.getCompanyEmail());
+            }
+
+            Picasso.with(context)
+                    .load(company.getCompanyLogoPath())
+                    .placeholder(R.drawable.c_pic)
+                    .error(R.drawable.c_pic)
+                    .into(companyImage);
+
+
+
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
