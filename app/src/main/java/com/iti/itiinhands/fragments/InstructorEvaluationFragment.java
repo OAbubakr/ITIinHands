@@ -55,6 +55,8 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         View view = inflater.inflate(R.layout.fragment_instructor_evaluation, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+        getActivity().setTitle("Evaluation");
+
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
 

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.content.IntentCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -111,6 +112,7 @@ public class NetworkManager {
             ResponseBody responseBody = response.body();
             String responseAsString = responseBody.string();
 
+
             Response jsonResponse = new Gson().fromJson(responseAsString, Response.class);
 
             if (jsonResponse.getStatus().equals(Response.FAILURE)) {
@@ -133,7 +135,6 @@ public class NetworkManager {
                         editor.apply();
 
                         //un subscribe from topics
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
 
                         int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                         UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
@@ -148,11 +149,17 @@ public class NetworkManager {
                                 break;
                         }
                         String myChatId = myType + "_" + myId;
+
+                        //unsubscribe from topics
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(myChatId);
 
                         //stop the service
                         boolean stopped = context.stopService(new Intent(context, UpdateAccessToken.class));
 
+
+                        Toast.makeText(context, "Expired session", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(context, LoginActivity.class);
                         ComponentName cn = intent.getComponent();

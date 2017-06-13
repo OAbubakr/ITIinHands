@@ -26,7 +26,7 @@ public class BranchesList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.branches_list, container, false);
-
+        getActivity().setTitle("Maps");
         List<Branch> branchList = new ArrayList<>();
         branchList.add(
                 new Branch

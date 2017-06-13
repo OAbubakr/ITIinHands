@@ -10,7 +10,7 @@ import com.iti.itiinhands.utilities.Constants;
 
 public class UpdateAccessToken extends IntentService {
 
-    private static final long SLEEP_FOR = 1000 * 60 * 2;
+    private static final long SLEEP_FOR = 1000 * 60 * 30;
     private static final long FREQUENCY = 1000 * 60 * 20;
 
     public UpdateAccessToken() {

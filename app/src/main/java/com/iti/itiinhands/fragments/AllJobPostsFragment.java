@@ -57,6 +57,8 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
         recyclerView =
                 (RecyclerView) view.findViewById(R.id.recycler_view);
 
+        getActivity().setTitle("Job posts");
+
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
