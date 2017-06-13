@@ -100,7 +100,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
     private Picasso picasso;
     private int width;
     private int height;
-    private String responseType;
+    private String responseType="";
     private ProgressBar spinner;
 
     @Override
@@ -362,8 +362,22 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     picturePath = cursor.getString(columnIndex);
                     cursor.close();
                     profilePicIv.setImageURI(selectedImage);
+                    int type = sharedPreferences.getInt(Constants.USER_TYPE,0);
                     int id = sharedPreferences.getInt(Constants.USER_ID, 0);
-                    networkManager.uploadImage(myRef, picturePath, id);
+                    userData.setImagePath(prepareUrl(picturePath));
+//
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString(Constants.TOKEN, responseDataObj.getToken());
+//                    editor.putString(Constants.REFRESH_TOKEN, responseDataObj.getRefreshToken());
+//                    editor.putLong(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
+//                    editor.putInt(Constants.USER_TYPE, userType);
+//                    editor.apply();
+                    if(type == 1){
+                        networkManager.uploadImage(myRef, picturePath, id);
+                    }else if(type == 4){
+                        networkManager.uploadImageGraduates(myRef, picturePath, id);
+                    }
+
 
 
                     //edit image path

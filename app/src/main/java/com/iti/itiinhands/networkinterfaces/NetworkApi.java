@@ -110,6 +110,10 @@ public interface NetworkApi {
     @POST("{id}/fileupload")
     Call<Response> uploadImage(@Part MultipartBody.Part file , @Path("id") int id);
 
+@Multipart
+    @POST("{id}/fileuploadgrad")
+    Call<Response> uploadImageGraduates(@Part MultipartBody.Part file , @Path("id") int id);
+
 
     @GET("getSupervisorByTrackId")
     public Call<Response>getSupervisor(@Query("id") int id);

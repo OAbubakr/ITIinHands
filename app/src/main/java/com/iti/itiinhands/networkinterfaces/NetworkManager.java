@@ -53,7 +53,7 @@ public class NetworkManager {
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 
     //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
+    public static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/"; // Omar ITI
 //    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
 
     //    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
@@ -220,6 +220,38 @@ public class NetworkManager {
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 //                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
                 System.out.println("********************* " + response.body());
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                System.out.println("********************* failed");
+                System.out.println(t.toString());
+
+            }
+        });
+
+    }
+
+
+//    -------------------------------------Upload image for graduates-------------------------------------------------
+
+    public void uploadImageGraduates(NetworkResponse networkResponse, String imagePath, int id) {
+        final NetworkResponse network = networkResponse;
+        System.out.println("##########################################");
+        File file = new File(imagePath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.uploadImageGraduates(fileToUpload, id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
+                System.out.println("********************* " + response.body());
+                network.onResponse(response.body());
+
             }
 
             @Override

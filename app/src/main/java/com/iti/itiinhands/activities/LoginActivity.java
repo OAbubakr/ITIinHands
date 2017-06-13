@@ -414,6 +414,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
     @Override
     protected void onPause() {
         super.onPause();
-        call.cancel();
+        if(call !=null) {
+            call.cancel();
+        }
     }
 }
