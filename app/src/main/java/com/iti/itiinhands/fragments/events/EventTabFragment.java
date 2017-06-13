@@ -105,6 +105,7 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
         if (networkManager.isOnline()) {
             networkManager.getEvents(this);
         }
+        else onFailure();
     }
 
     @Override

@@ -102,7 +102,7 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null) {
+        if (response!=null&&getActivity()!=null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
                 branchesList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Branch>>() {
                 }.getType());
