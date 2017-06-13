@@ -2,11 +2,13 @@ package com.iti.itiinhands.networkinterfaces;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -121,6 +123,7 @@ public class NetworkManager {
                             SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                             if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
                                 //un subscribe from topics
+
 
                                 int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                                 UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
