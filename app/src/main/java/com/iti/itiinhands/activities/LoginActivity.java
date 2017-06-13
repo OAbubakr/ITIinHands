@@ -349,7 +349,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkResponse 
                     SharedPreferences.Editor editor = data.edit();
                     editor.putString(Constants.TOKEN, responseDataObj.getToken());
                     editor.putString(Constants.REFRESH_TOKEN, responseDataObj.getRefreshToken());
-                    editor.putLong(Constants.EXPIRY_DATE,responseDataObj.getExpiryDate());
+                    editor.putLong(Constants.EXPIRY_DATE, responseDataObj.getExpiryDate());
                     editor.putInt(Constants.USER_TYPE, userType);
                     editor.apply();
 

@@ -222,6 +222,38 @@ public class NetworkManager {
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 //                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
                 System.out.println("********************* " + response.body());
+                network.onResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                System.out.println("********************* failed");
+                System.out.println(t.toString());
+
+            }
+        });
+
+    }
+
+
+//    -------------------------------------Upload image for graduates-------------------------------------------------
+
+    public void uploadImageGraduates(NetworkResponse networkResponse, String imagePath, int id) {
+        final NetworkResponse network = networkResponse;
+        System.out.println("##########################################");
+        File file = new File(imagePath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.uploadImageGraduates(fileToUpload, id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                 Toast.makeText(this, response.body().toString() ,Toast.LENGTH_SHORT).show();
+                System.out.println("********************* " + response.body());
+                network.onResponse(response.body());
+
             }
 
             @Override
@@ -402,7 +434,7 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                networkResponse.onResponse(response.body());
+                network.onResponse(response.body());
             }
 
             @Override
