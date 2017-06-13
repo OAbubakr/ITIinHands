@@ -360,7 +360,7 @@ public class NetworkManager {
 
     ////////////////////////////////////////////
     //-------------------------------------POST JOB-------------------------------------------------
-    public void postJob(NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
+    public void postJob(final NetworkResponse networkResponse, JobOpportunity jobOpportunity) {
 
         final NetworkResponse network = networkResponse;
         NetworkApi web = retrofit.create(NetworkApi.class);
