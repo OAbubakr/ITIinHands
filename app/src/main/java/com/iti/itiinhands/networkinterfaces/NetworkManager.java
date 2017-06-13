@@ -909,7 +909,7 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
                          @Override
                          public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                             if (response != null) {
+                             if (response != null && context!=null) {
                                  IS_UPDATING_ACCESS_TOKEN = false;
                                  if (response.body().getStatus().equals(Response.SUCCESS)) {
                                      LinkedTreeMap<String, Object> linkedTreeMap =

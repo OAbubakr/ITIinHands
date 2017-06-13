@@ -404,7 +404,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
 
 
-            if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+            if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
 
                 if (response.getResponseData() != null) {
 
