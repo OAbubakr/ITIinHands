@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.iti.itiinhands.R;
 import com.iti.itiinhands.adapters.chatAdapters.FriendListAdapter;
@@ -38,7 +39,8 @@ public class ChatFragment extends Fragment {
     //    private int userType;
 //    private int token;
 //    private UserData userData;
-    private MaterialProgressBar progressBar, h_progressBar;
+    private MaterialProgressBar  h_progressBar;
+    private ProgressBar progressBar;
   //  private BranchesTagsAdapter branchesTagsAdapter;
 //    private RecyclerView branchesTagsRecyclerView;
 //    private List<BranchTag> branches = new ArrayList<>();
@@ -107,7 +109,7 @@ public class ChatFragment extends Fragment {
 
         chatRoomsRecyclerView = (RecyclerView) view.findViewById(R.id.chatRooms);
 
-        progressBar = (MaterialProgressBar) view.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         h_progressBar = (MaterialProgressBar) view.findViewById(R.id.h_progressBar);
         friendListAdapter.setProgressBar(progressBar, h_progressBar);
         chatRoomsRecyclerView.setAdapter(friendListAdapter);

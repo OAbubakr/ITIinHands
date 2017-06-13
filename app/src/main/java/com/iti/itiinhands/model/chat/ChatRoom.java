@@ -18,11 +18,11 @@ public class ChatRoom implements Serializable{
     private String receiverType;
 
     private String roomKey;
-    private boolean hasPendingMessages;
     private int pendingMessagesCount;
 
     private String branchName;
     private String arabicBranchName;
+
 
     public String getArabicBranchName() {
         return arabicBranchName;
@@ -50,13 +50,7 @@ public class ChatRoom implements Serializable{
 
 
     public ChatRoom() {
-    }
-
-    public ChatRoom(String senderId,  String receiverName, String receiverId, String roomKey) {
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.roomKey = roomKey;
-        this.receiverName = receiverName;
+        pendingMessagesCount = 0;
     }
 
     public String getReceiverImagePath() {
@@ -108,13 +102,6 @@ public class ChatRoom implements Serializable{
         this.receiverName = receiverName;
     }
 
-    public boolean isHasPendingMessages() {
-        return hasPendingMessages;
-    }
-
-    public void setHasPendingMessages(boolean hasPendingMessages) {
-        this.hasPendingMessages = hasPendingMessages;
-    }
 
     public String getReceiverType() {
         return receiverType;
