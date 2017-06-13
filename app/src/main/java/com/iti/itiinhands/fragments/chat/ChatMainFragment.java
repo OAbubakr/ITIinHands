@@ -13,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.LoginActivity;
 import com.iti.itiinhands.adapters.chatAdapters.ChatPagerAdapter;
 import com.iti.itiinhands.adapters.chatAdapters.FriendListAdapter;
 import com.iti.itiinhands.adapters.chatAdapters.RecentChatsListAdapter;
@@ -49,6 +51,7 @@ import static com.iti.itiinhands.fragments.chat.ChatFragment.SP_NAME;
  */
 public class ChatMainFragment extends Fragment implements NetworkResponse {
 
+    private int dummy = 0;
 
     private String receiver_type;
     private String myName;
@@ -250,63 +253,61 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
 
         if (response != null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
+                Log.v("ITI_Test", "data downloaded");
+                dummy++;
 
-                //    LinkedTreeMap linkedTreeMap = (LinkedTreeMap) response.getResponseData();
+                switch (receiver_type) {
 
-                    switch (receiver_type) {
-                        case "staff":
-                            List<Instructor> instructors = DataSerializer.convert(response.getResponseData(),
-                                    new TypeToken<List<Instructor>>() {
-                                    }.getType());
-                            chatRooms.clear();
-                            SharedPreferences local = getActivity().getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE);
-                            for (Instructor instructor : instructors) {
-                                ChatRoom chatRoom = new ChatRoom();
-
-
-                                chatRoom.setReceiverName(instructor.getInstructorName());
-
-                                chatRoom.setReceiverType(receiver_type);
-
-                                String receiverId = receiver_type + "_" + String.valueOf(instructor.getInstuctorId());
-                                chatRoom.setReceiverId(receiverId);
-
-                                String roomKey = local.getString(receiverId, null);
-                                chatRoom.setRoomKey(roomKey);
+                    case "staff":
+                        List<Instructor> instructors = DataSerializer.convert(response.getResponseData(),
+                                new TypeToken<List<Instructor>>() {
+                                }.getType());
+                        chatRooms.clear();
+                        SharedPreferences local = getActivity().getSharedPreferences(ChatFragment.SP_NAME, MODE_PRIVATE);
+                        for (Instructor instructor : instructors) {
+                            ChatRoom chatRoom = new ChatRoom();
 
 
-                                chatRoom.setSenderId(myChatId);
-                                chatRoom.setSenderName(myName);
+                            chatRoom.setReceiverName(instructor.getInstructorName());
 
-                                chatRoom.setBranchName(instructor.getBranchName());
+                            chatRoom.setReceiverType(receiver_type);
 
-                                allChatRooms.add(chatRoom);
-                                chatRooms.add(chatRoom);
+                            String receiverId = receiver_type + "_" + String.valueOf(instructor.getInstuctorId());
+                            chatRoom.setReceiverId(receiverId);
 
-                                if (chatRoom.getRoomKey() != null)
-                                    recentChatRooms.add(chatRoom);
+                            String roomKey = local.getString(receiverId, null);
+                            chatRoom.setRoomKey(roomKey);
 
 
-//                            if (recentUsers.contains(receiverId)) {
-//                                recentChatRooms.add(chatRoom);
-//                            }
+                            chatRoom.setSenderId(myChatId);
+                            chatRoom.setSenderName(myName);
 
-                            }
+                            chatRoom.setBranchName(instructor.getBranchName());
 
-                            //   topProgressBar.setVisibility(View.GONE);
-                            //      branchesTagsAdapter.notifyDataSetChanged();
+                            allChatRooms.add(chatRoom);
+                            chatRooms.add(chatRoom);
 
-                            friendListAdapter.updateData(chatRooms);
-                            recentChatsAdapter.updateData(recentChatRooms);
-                            break;
+                            if (chatRoom.getRoomKey() != null)
+                                recentChatRooms.add(chatRoom);
+
+                        }
+
+                        friendListAdapter.updateData(chatRooms);
+                        recentChatsAdapter.updateData(recentChatRooms);
+                        break;
 
                 }
             } else if (response.getStatus().equals(Response.FAILURE)) {
 
                 if (response.getError().equals(Response.EXPIRED_ACCESS_TOKEN)) {
-                    downloadList(-1, Integer.parseInt(myId));
-                } else if (response.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
 
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    friendListAdapter.updateData(chatRooms);
+                    recentChatsAdapter.updateData(recentChatRooms);
+
+                } else if (response.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
                 } else if (response.getError().equals(Response.INVALID_ACCESS_TOKEN)) {
 
                 } else if (response.getError().equals(Response.INVALID_REFRESH_TOKEN)) {

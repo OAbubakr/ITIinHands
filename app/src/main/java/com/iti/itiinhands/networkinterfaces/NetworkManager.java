@@ -1,15 +1,20 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.iti.itiinhands.activities.LoginActivity;
 import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.broadcast_receiver.UpdateAccessTokens;
 import com.iti.itiinhands.dto.UserData;
@@ -50,12 +55,6 @@ public class NetworkManager {
     public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 
-//    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-//    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
-//    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/";
-
-//    private static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
-//    public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/";
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -118,12 +117,31 @@ public class NetworkManager {
                     if (!refreshToken.isEmpty()) {
                         NetworkManager.getInstance(context).renewAccessToken(refreshToken, RENEW_INTERCEPTOR);
                     }
+
+                } else if (jsonResponse.getError().equals(Response.EXPIRED_REFRESH_TOKEN)) {
+                    SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+                    if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
+                        SharedPreferences.Editor editor = setting.edit();
+                        editor.remove(Constants.LOGGED_FLAG);
+                        editor.remove(Constants.TOKEN);
+                        editor.remove(Constants.USER_TYPE);
+                        editor.remove(Constants.USER_OBJECT);
+                        editor.apply();
+
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        ComponentName cn = intent.getComponent();
+                        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                        context.startActivity(mainIntent);
+
+                    }
+
                 }
             }
 
             return response.newBuilder()
                     .body(ResponseBody.create(response.body().contentType(), responseAsString))
                     .build();
+
         }
     }
 
@@ -344,13 +362,12 @@ public class NetworkManager {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-
+                networkResponse.onResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-                t.printStackTrace();
-                Log.e("network", t.toString());
+
                 network.onFailure();
             }
         });
@@ -799,13 +816,15 @@ public class NetworkManager {
     public void renewAccessToken(String refreshToken, final int flag) {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
-
         call.enqueue(new Callback<Response>() {
              @Override
              public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                  if (response != null) {
                      if (response.body().getStatus().equals(Response.SUCCESS)) {
                          if (flag == RENEW_INTERCEPTOR) {
+
+                             Log.v("ITI_Test", "access token saved");
+
                              LinkedTreeMap<String, Object> linkedTreeMap =
                                      (LinkedTreeMap<String, Object>) response.body().getResponseData();
                              String access_token = (String) linkedTreeMap.get("access_token");
@@ -815,8 +834,10 @@ public class NetworkManager {
                              SharedPreferences.Editor editor = sharedPreferences.edit();
                              editor.putString(Constants.TOKEN, access_token);
                              editor.putLong(Constants.EXPIRY_DATE, (long) expiry_date);
-                             editor.commit();
+                             editor.apply();
+
                          } else if (flag == RENEW_ALARM_MANAGER) {
+
                              Response response1 = response.body();
                              if (response1 != null) {
                                  Intent intent = new Intent(context, UpdateAccessTokens.class);

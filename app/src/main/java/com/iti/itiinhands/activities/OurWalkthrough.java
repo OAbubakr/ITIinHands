@@ -34,17 +34,11 @@ public class OurWalkthrough extends WalkthroughActivity {
 
 
 
-        WalkthroughItem page1 =new WalkthroughItem(R.drawable.androidmobile_2,"ITI","Explore");
-        WalkthroughItem page2 =new WalkthroughItem(R.drawable.androidmobile_3,"ITI","Connect");
-        WalkthroughItem page3 =new WalkthroughItem(R.drawable.androidmobile_4,"ITI","Organize");
+        WalkthroughItem page1 =new WalkthroughItem(R.drawable.androidmobile_2);
+        WalkthroughItem page2 =new WalkthroughItem(R.drawable.androidmobile_3);
+        WalkthroughItem page3 =new WalkthroughItem(R.drawable.androidmobile_4);
         setProgressType(DOTS_TYPE);
       //  setProgressBarColor(R.color.colorPrimary);
-        page1.setTitleColorID(R.color.colorPrimary);
-        page1.setSubTitleColorID(R.color.colorPrimary);
-        page2.setTitleColorID(R.color.colorPrimary);
-        page2.setSubTitleColorID(R.color.colorPrimary);
-        page3.setTitleColorID(R.color.colorPrimary);
-        page3.setSubTitleColorID(R.color.colorPrimary);
 
 
         addPage(page1);

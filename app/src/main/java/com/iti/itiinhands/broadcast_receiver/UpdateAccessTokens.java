@@ -6,6 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.iti.itiinhands.model.Response;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
@@ -14,11 +17,13 @@ import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
 
+import static android.content.Context.ALARM_SERVICE;
+
 public class UpdateAccessTokens extends BroadcastReceiver {
 
-    private static final long DELTA = 1000 * 60 * 30;    //30 mins
-    public static final long REFRESH_FREQUENCY_SHORT = 1000 * 60 * 10;    //10 mins
-    public static final long REFRESH_FREQUENCY_LONG = 1000 * 60 * 40;    //40 mins
+    private static final long DELTA = 1000  *  30;    //30 mins
+    public static final long REFRESH_FREQUENCY_SHORT = 1000  *  5;    //10 mins
+    public static final long REFRESH_FREQUENCY_LONG  = 1000  *  40;    //40 mins
 
     public static final String DOWNLOAD_FINISHED = "DOWNLOAD_FINISHED";
     public static final String UPDATE_ACCESS_TOKEN_ALARM = "UPDATE_ACCESS_TOKEN_ALARM";
@@ -79,6 +84,15 @@ public class UpdateAccessTokens extends BroadcastReceiver {
         manager.set(AlarmManager.RTC, date, pendingIntent);
     }
 
+    public static void cancelAlarm(Context context, int id){
+
+        Intent intent = new Intent(context, UpdateAccessTokens.class);
+        intent.setAction(UPDATE_ACCESS_TOKEN_ALARM);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+
+    }
 
 
 }
