@@ -92,8 +92,8 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response != null) {
-            if (response.getStatus().equals(Response.SUCCESS)) {
+
+            if (response != null&&response.getStatus().equals(Response.SUCCESS)) {
                 jobVacancies = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<JobVacancy>>() {
                 }.getType());
 
