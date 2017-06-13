@@ -311,7 +311,7 @@ public class GraduateSideMenu extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Profile");
         listDataHeader.add("ITI");
-        listDataHeader.add("Job Posts");
+        listDataHeader.add("Companies");
         listDataHeader.add("Logout");
 
 

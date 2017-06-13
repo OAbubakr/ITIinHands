@@ -166,9 +166,9 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         picasso = new Picasso.Builder(getApplicationContext())
                 .downloader(new OkHttp3Downloader(client))
                 .build();
-        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
+        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.photo)
                 .resize(width, height / 3)
-                .error(R.drawable.profile_pic).into(profilePicIv);
+                .error(R.drawable.photo).into(profilePicIv);
 
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
