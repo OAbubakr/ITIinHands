@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iti.itiinhands.R;
+import com.iti.itiinhands.activities.EditProfileActivity;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
@@ -69,39 +70,87 @@ public class StudentProfileFragment extends Fragment {
     private ImageView profilePicIv;
     private ImageView profile_pic;
     private int flag;
-
+    private Picasso picasso;
+    private int width;
+    private int height;
+    private SharedPreferences sharedPreferences;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
+        sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
         if(userData != null){
-            if(userData.getLinkedInUrl()==null) {
-                linkedInBtn.setEnabled(false);
-                linkedInBtn.setImageResource(R.drawable.group1205);
-            }else{
+            if(userData.getLinkedInUrl()!=null && userData.getLinkedInUrl().length()>0) {
                 linkedInBtn.setEnabled(true);
                 linkedInBtn.setImageResource(R.drawable.linked_in);
-            }
-            if(userData.getBehanceUrl()==null){
-                behanceBtn.setEnabled(false);
-                behanceBtn.setImageResource(R.drawable.group1207);
             }else{
+                linkedInBtn.setEnabled(false);
+                linkedInBtn.setImageResource(R.drawable.group1205);
+            }
+            if(userData.getBehanceUrl()!=null && userData.getBehanceUrl().length()>0){
                 behanceBtn.setEnabled(true);
                 behanceBtn.setImageResource(R.drawable.behance);
-            }
-            if(userData.getGitUrl()==null){
-                gitBtn.setEnabled(false);
-                gitBtn.setImageResource(R.drawable.githubgray);
             }else{
+                behanceBtn.setEnabled(false);
+                behanceBtn.setImageResource(R.drawable.group1207);
+            }
+            if(userData.getGitUrl()!=null && userData.getGitUrl().length()>0){
                 gitBtn.setEnabled(true);
                 gitBtn.setImageResource(R.drawable.github);
+            }else{
+                gitBtn.setEnabled(false);
+                gitBtn.setImageResource(R.drawable.githubgray);
             }
+            //SET USER EMAIL
+            if (userData.getStudentEmail() != null)
+                fourthTv.setText(userData.getStudentEmail());
+
+            //SET USER PHONE
+            if (userData.getStudentMobile() != null)
+                fifthTv.setText(userData.getStudentMobile());
+
+            firstTv.setText(userData.getName());
+            secondTv.setText("Intake" + new Integer(userData.getIntakeId()).toString() + " - "+ userData.getBranchName());
+            thirdTv.setText(userData.getTrackName());
+
+            DisplayMetrics displayMetrics=new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+            width=displayMetrics.widthPixels;
+            height=displayMetrics.heightPixels;
+
+
+
+            //************************************/
+
+
+            SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
+            final String token = data.getString(Constants.TOKEN, "");
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain chain) throws IOException {
+
+                            Request newRequest = chain.request().newBuilder()
+                                    .addHeader("Authorization", token)
+                                    .build();
+                            return chain.proceed(newRequest);
+                        }
+                    })
+                    .build();
+
+            picasso = new Picasso.Builder(getActivity().getApplicationContext())
+                    .downloader(new OkHttp3Downloader(client))
+                    .build();
+            picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
+                    .resize(width,height/3)
+                    .error(R.drawable.profile_pic).into(profile_pic);
         }
     }
 
@@ -114,7 +163,7 @@ public class StudentProfileFragment extends Fragment {
         fourthTv = (TextView) view.findViewById(R.id.fourthTvProfileViewId);
         fifthTv = (TextView) view.findViewById(R.id.fifthTvProfileViewId);
         gitBtn = (ImageView) view.findViewById(R.id.gitBtnProfileId);
-        ImageView profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
+        profile_pic = (ImageView) view.findViewById(R.id.profile_pic);
         linkedInBtn = (ImageView) view.findViewById(R.id.linkedInBtnProfileId);
         behanceBtn = (ImageView) view.findViewById(R.id.behanceBtnProfileId);
         editBtn = (FloatingActionButton) view.findViewById(R.id.editBtnProfileViewId);
@@ -126,89 +175,23 @@ public class StudentProfileFragment extends Fragment {
             editBtn.setVisibility(View.GONE);
             userData = (UserData) b.getSerializable("student");
         }
-//        if(userData != null){
-//            if(userData.getLinkedInUrl()==null) {
-//                linkedInBtn.setEnabled(false);
-//                linkedInBtn.setImageResource(R.drawable.group1205);
-//            }else{
-//                linkedInBtn.setEnabled(true);
-//                linkedInBtn.setImageResource(R.drawable.linked_in);
-//            }
-//            if(userData.getBehanceUrl()==null){
-//                behanceBtn.setEnabled(false);
-//                behanceBtn.setImageResource(R.drawable.group1207);
-//            }else{
-//                behanceBtn.setEnabled(true);
-//                behanceBtn.setImageResource(R.drawable.behance);
-//            }
-//            if(userData.getGitUrl()==null){
-//                gitBtn.setEnabled(false);
-//                gitBtn.setImageResource(R.drawable.githubgray);
-//            }else{
-//                gitBtn.setEnabled(true);
-//                gitBtn.setImageResource(R.drawable.github);
-//            }
-//        }
 
-
-        firstTv.setText(userData.getName());
-        secondTv.setText("Intake" + new Integer(userData.getIntakeId()).toString() + " - "+ userData.getBranchName());
-        thirdTv.setText(userData.getTrackName());
-//        System.out.println("*********"+userData.getImagePath().toString());
-
-        //********** get width and height of screeen/
-
-         DisplayMetrics displayMetrics=new DisplayMetrics();
-         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-         int width=displayMetrics.widthPixels;
-         int height=displayMetrics.heightPixels;
-
-
-
-        //************************************/
-
-
-        SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-        final String token = data.getString(Constants.TOKEN, "");
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-
-                        Request newRequest = chain.request().newBuilder()
-                                .addHeader("Authorization", token)
-                                .build();
-                        return chain.proceed(newRequest);
-                    }
-                })
-                .build();
-
-        Picasso picasso = new Picasso.Builder(getActivity().getApplicationContext())
-                .downloader(new OkHttp3Downloader(client))
-                .build();
-        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
-                .resize(width,height/3)
-                .error(R.drawable.profile_pic).into(profile_pic);
 
         /**********/
 
         //  Picasso.with(getActivity().getApplicationContext()).load("http://172.16.2.40:8085/restfulSpring/download/"+userData.getImagePath()).placeholder(R.drawable.ic_account_circle_white_48dp).into(profile_pic);
-        //SET USER EMAIL
-        if (userData.getStudentEmail() != null)
-            fourthTv.setText(userData.getStudentEmail());
 
-        //SET USER PHONE
-        if (userData.getStudentMobile() != null)
-            fifthTv.setText(userData.getStudentMobile());
+
 
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new EditProfileFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                Intent editIntent = new Intent(getActivity().getApplicationContext(), EditProfileActivity.class);
+                startActivity(editIntent);
+//                Fragment fragment = new EditProfileFragment();
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             }
         });
 

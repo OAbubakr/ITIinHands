@@ -51,13 +51,13 @@ public class GraduateAdapter extends RecyclerView.Adapter<GraduateAdapter.Gradua
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mycontext,graduateBasicData.getEnglishname(), Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(mycontext,graduateBasicData.getGraduateId(), Toast.LENGTH_SHORT).show();
+                System.out.println(graduateBasicData.getGraduateId());
                 Intent intent = new Intent(mycontext, CompanyGraduateProfile.class);
                 Bundle b= new Bundle();
                 b.putInt("flag",1);
                 intent.putExtra("bundle",b);
-                intent.putExtra("graduate",graduateBasicData);
+                intent.putExtra("graduateId",graduateBasicData.getGraduateId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mycontext.startActivity(intent);
             }

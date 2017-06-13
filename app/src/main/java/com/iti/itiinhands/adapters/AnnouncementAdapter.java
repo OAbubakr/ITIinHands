@@ -19,6 +19,7 @@ import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
+import com.iti.itiinhands.fragments.events.EventTabFragment;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
@@ -156,7 +157,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
                     switch (announcementBean.getType()) {
 
                         case 1://events
-                            fragmentManager.beginTransaction().replace(R.id.content_frame, new EventListFragment()).commit();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new EventTabFragment()).commit();
                             break;
                         case 2://scheduleChange
                             fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduleFragment()).commit();

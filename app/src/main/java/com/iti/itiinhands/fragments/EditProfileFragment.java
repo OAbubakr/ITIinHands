@@ -364,11 +364,8 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         super.onActivityResult(requestCode, resultCode, data);
         if (activityResultFlag.equals("uploadPic")){
-
                 System.out.println("at the beginning ***************************");
             if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
                 selectedImage = data.getData();
@@ -381,8 +378,6 @@ public class EditProfileFragment extends Fragment implements NetworkResponse {
                 profilePicIv.setImageURI(selectedImage);
                 int id = sharedPreferences.getInt(Constants.USER_ID,0);
                 networkManager.uploadImage(myRef, picturePath, id);
-
-
                 //edit image path
             }
 
