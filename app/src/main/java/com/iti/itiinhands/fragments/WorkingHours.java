@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -65,6 +66,8 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
     TextView numberText, wordtext;
     UserData userData;
     int id;
+    Button startBtn;
+    int gridFlag  = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +86,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
         networkManager = NetworkManager.getInstance(getContext());
         hoursGrid = (GridView) view.findViewById(R.id.HoursGridView);
         mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+        startBtn = (Button) view.findViewById(R.id.startBtn);
         numberText = (TextView) view.findViewById(R.id.resultText);
         wordtext = (TextView) view.findViewById(R.id.result2Text);
         t1 = (TextView) view.findViewById(R.id.t1);
@@ -101,7 +105,7 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (secondFlag == 1) {
+                if (gridFlag == 1) {
                     switch (position) {
                         case 0:
                             numberText.setText(empHour.getWorkingDays().toString());
@@ -152,6 +156,25 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
         });
 
         panelListener();
+
+
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (networkManager.isOnline()){
+                    if (!(endDate.getText().toString().isEmpty() || startDate.getText().toString().isEmpty())){
+                        networkManager.getEmployeeHours(myRef, id, startDate.getText().toString(),
+                                endDate.getText().toString());
+                        startBtn.setBackgroundResource(R.drawable.path_895);
+                        startBtn.setClickable(false);
+                    }else{
+                        Toast.makeText(getActivity(), "select date first", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    onFailure();
+                }
+            }
+        });
         return view;
     }
 
@@ -159,6 +182,9 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
     public void onResponse(Response response) {
         if (response.getStatus().equals(Response.SUCCESS)) {
             empHour = DataSerializer.convert(response.getResponseData(), EmpHour.class);
+            startBtn.setClickable(true);
+            startBtn.setBackgroundResource(R.drawable.path_1);
+            gridFlag = 1;
         }
     }
 
@@ -230,24 +256,15 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
                                 t1.setVisibility(View.VISIBLE);
                                 startDate.setText("");
                                 flag = 0;
-                            } else if (networkManager.isOnline()) {
+                            } else {
                                 startDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                                 flag = 1;
-                                networkManager.getEmployeeHours(myRef, id, startDate.getText().toString(),
-                                        endDate.getText().toString());
-                                secondFlag = 1;
-                                System.out.println("Flag is :" + flag);
                                 t1.setVisibility(View.INVISIBLE);
-
-
-                            } else {
-                                onFailure();
                             }
 
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
-            System.out.println("*********** Start Date");
         } else if (v.getId() == R.id.endDateTv) {
             if (flag != 1) {
 //                Toast.makeText(getContext(), "Choose Start Date First", Toast.LENGTH_SHORT).show();
@@ -275,14 +292,10 @@ public class WorkingHours extends Fragment implements com.iti.itiinhands.network
                                     t2.setVisibility(View.VISIBLE);
                                     t2.setText("This date is not available");
                                     secondFlag = 0;
-                                }  else if (networkManager.isOnline()){
+                                }  else{
                                     endDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
-                                    networkManager.getEmployeeHours(myRef, id, startDate.getText().toString(),
-                                            endDate.getText().toString());
                                     secondFlag = 1;
                                     t2.setVisibility(View.INVISIBLE);
-                                }else{
-                                    onFailure();
                                 }
                             }
                         }, mYear, mMonth, mDay);
