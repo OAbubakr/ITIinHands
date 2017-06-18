@@ -288,7 +288,9 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //access graduates profile
-                                Toast.makeText(getApplicationContext(), "graduates list", Toast.LENGTH_LONG).show();
+                                BranchesFragment temp2 =new BranchesFragment();
+                                temp2.setFlag(3);
+                                fragment = temp2;
                                 break;
                             default:
                                 break;
@@ -343,7 +345,10 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 //handle graduate community
-                                Toast.makeText(getApplicationContext(), "1,2", Toast.LENGTH_LONG).show();
+                                //access graduates profile
+                                BranchesFragment temp2 =new BranchesFragment();
+                                temp2.setFlag(3);
+                                fragment = temp2;
                                 break;
                             default:
                                 break;
@@ -355,7 +360,7 @@ public class StaffSideMenuActivity extends AppCompatActivity {
                             case 0:
                                 //handle staff evaluation fragment
                                 fragment = new InstructorEvaluationFragment();
-                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), "2,2", Toast.LENGTH_LONG).show();
                                 break;
                             case 1:
                                 //handle scheduale fragment

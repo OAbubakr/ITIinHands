@@ -187,6 +187,7 @@ public class SideMenuActivity extends AppCompatActivity {
                         //unsubscribe from topics
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("jobPosts");
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("track_"+userData.getPlatformIntakeId());
                         Intent logIn = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(logIn);
 
@@ -334,7 +335,7 @@ public class SideMenuActivity extends AppCompatActivity {
 
         List<String> aboutIti = new ArrayList<>();
         aboutIti.add("About ITI");
-        aboutIti.add("Tracks");
+        aboutIti.add("Branches and Tracks");
         aboutIti.add("Events");
         aboutIti.add("Maps");
         aboutIti.add("Bus Services");

@@ -315,23 +315,22 @@
                         android:layout_marginTop="20dp"
                         android:src="@drawable/linkedin" />
 
-                    <ImageView
-                        android:id="@+id/cancelLinkedinBtn"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="20dp"
-                        app:srcCompat="@drawable/ic_expand_close" />
-
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:textSize="16sp"
                         android:layout_marginTop="30dp"
                         android:text="Click To Connect With LinkedIn"/>
 
+                    <ImageView
+                        android:id="@+id/cancelLinkedinBtn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp"
+                        app:srcCompat="@drawable/ic_expand_close" />
 
 
                 </LinearLayout>

@@ -93,7 +93,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
             title.setText(announcementBean.getTitle());
             body.setText(announcementBean.getBody());
-            SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
             String time = localDateFormat.format(new Date(announcementBean.getDate()).getTime());
             date.setText(DateFormat.format("MM/dd/yyyy", new Date(announcementBean.getDate())).toString()+"-"+time);
             if (announcementBean.getType() == 1) {
