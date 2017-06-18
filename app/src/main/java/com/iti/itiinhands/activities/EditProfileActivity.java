@@ -110,6 +110,8 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
     private boolean emailFlag;
     private boolean mobileFlag;
     private ImageView cancelLinkedIn;
+    private ProgressBar photoSpinner;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,6 +140,10 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         githubLogo = (ImageView) findViewById(R.id.githubLogo);
         myActivity = this;
         spinner = (ProgressBar) findViewById(R.id.progressBar);
+        photoSpinner = (ProgressBar) findViewById(R.id.photoprogressBar);
+
+        photoSpinner.setVisibility(View.GONE);
+
         spinner.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
         checkEmail = (TextView) findViewById(R.id.emailCheckEditProfileId);
         checkMobile = (TextView) findViewById(R.id.mobileCheckEditProfileId);
@@ -411,6 +417,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
             case "uploadPic":
                 System.out.println("at the beginning ***************************");
                 if (requestCode == RESULT_LOAD_IMAGE && resultCode == -1 && null != data) {
+                    photoSpinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
                     selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -431,6 +438,8 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                         new NetworkUtilities().networkFailure(getApplicationContext());
                     }
                     userData.setImagePath(prepareUrl(picturePath));
+                    photoSpinner.setVisibility(View.GONE);
+
 //
 //                    SharedPreferences.Editor editor = sharedPreferences.edit();
 //                    editor.putString(Constants.TOKEN, responseDataObj.getToken());
@@ -443,6 +452,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
 
                     //edit image path
+
                 }
                 break;
             case "linkedIn":
