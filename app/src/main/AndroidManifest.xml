@@ -10,8 +10,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
-
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -28,15 +26,15 @@
         <activity android:name=".activities.Tracks" />
         <activity android:name=".activities.OurWalkthrough">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SideMenuActivity" />
         <activity android:name=".fragments.StudentsOfTrack" />
-<activity android:name=".activities.TrackDetails"/>
+        <activity android:name=".activities.TrackDetails" />
         <activity android:name=".activities.StaffSideMenuActivity" />
         <activity android:name=".activities.CompanySideMenu" />
         <activity android:name=".activities.GuestSideMenu" />
@@ -50,20 +48,21 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".activities.MapsDetailsActivity" />
 
+        <activity android:name=".activities.MapsDetailsActivity" />
         <activity android:name=".activities.Schedule" />
-        <activity android:name=".activities.UploadImage">
-        </activity>
+        <activity android:name=".activities.UploadImage" />
         <activity android:name=".activities.CompanyStudentProfile" />
         <activity android:name=".activities.CompanyJobPost" />
 
         <service
             android:name=".services.ScheduleChanged"
-            android:exported="false"></service>
-        <activity android:name=".activities.GraduatesByTrack"></activity>
-        <activity android:name=".activities.CompanyProfileActivity"></activity>
-        <activity android:name=".activities.ChatRoomActivity"
+            android:exported="false" />
+
+        <activity android:name=".activities.GraduatesByTrack" />
+        <activity android:name=".activities.CompanyProfileActivity" />
+        <activity
+            android:name=".activities.ChatRoomActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="launch" />
@@ -71,27 +70,27 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.CompanyGraduateProfile" />
 
         <service
             android:name=".services.UpdateAccessToken"
-            android:exported="false"/>
+            android:exported="false" />
 
-
-
-        <activity android:name=".activities.CompanyGraduateProfile"></activity>
+        <activity android:name=".activities.CompanyGraduateProfile" />
         <!-- <activity android:name=".activities.Schedule" /> -->
         <activity android:name=".activities.GraduatesByTrack" />
         <activity android:name=".fragments.WorkingHours">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
-        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.CoursesForInstructors" />
+        <activity android:name=".activities.InstructorsForCourse"></activity>
     </application>
 
 </manifest>

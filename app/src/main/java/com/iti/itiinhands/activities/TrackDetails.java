@@ -100,7 +100,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
                 }.getType());
 
 //            courses = (ArrayList<Course>) response.getResponseData();
-                coursesAdapter = new TrackCoursesAdapter(courses);
+                coursesAdapter = new TrackCoursesAdapter(courses,this);
                 coursesRecyclerView.setAdapter(coursesAdapter);
                 ArrayList<TrackInstructor> trackInstructors = new ArrayList<>();
                 for (int i = 0; i < courses.size(); i++) {
@@ -112,7 +112,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
 
                     }
                 }
-                instructorsAdapter = new InstructorsAdapter(trackInstructors);
+                instructorsAdapter = new InstructorsAdapter(trackInstructors,getApplicationContext());
                 instructorsRecyclerView.setAdapter(instructorsAdapter);
                 spinner.setVisibility(View.GONE);
             }

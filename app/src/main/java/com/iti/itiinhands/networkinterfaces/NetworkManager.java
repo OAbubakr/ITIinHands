@@ -50,7 +50,7 @@ public class NetworkManager {
 
 
 
-    public static final String BASEURL = "http://172.16.2.218:8084/restfulSpring/"; // Omar ITI
+    public static final String BASEURL = "http://192.168.43.107:8084/restfulSpring/"; // Omar ITI
 
 
     private static NetworkManager newInstance;
@@ -976,6 +976,40 @@ public class NetworkManager {
          }
 
         );
+    }
+
+//    ---------------------------- Instructor courses ------------------------------------
+    public void getInstructorCourses(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getInstructorCourses(id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                network.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                network.onFailure();
+            }
+        });
+
+    }//    ---------------------------- Course Instructors ------------------------------------
+    public void getCourseInstructors(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getCourseInstructors(id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                network.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                network.onFailure();
+            }
+        });
+
     }
 
 }
