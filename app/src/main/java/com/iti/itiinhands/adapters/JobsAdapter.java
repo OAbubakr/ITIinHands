@@ -110,11 +110,14 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.ViewHolder> {
             viewHolder.cvTo.setText(jobVacancies.get(i).getJobCVTo());
         }
 
-        Picasso.with(context)
-                .load(jobVacancies.get(i).getCompanyLogoPath())
-                .placeholder(R.drawable.c_pic)
-                .error(R.drawable.c_pic)
-                .into(viewHolder.companyImage);
+        if(jobVacancies.get(i).getCompanyLogoPath() != null && !jobVacancies.get(i).getCompanyLogoPath().equals("")){
+            Picasso.with(context)
+                    .load(jobVacancies.get(i).getCompanyLogoPath())
+                    .placeholder(R.drawable.c_pic)
+                    .error(R.drawable.c_pic)
+                    .into(viewHolder.companyImage);
+        }
+
 
 
 

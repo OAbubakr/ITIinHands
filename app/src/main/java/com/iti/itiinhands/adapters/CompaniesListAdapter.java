@@ -95,8 +95,7 @@ public class CompaniesListAdapter extends RecyclerView.Adapter<CompaniesListAdap
                 cvTo.setText(company.getCompanyEmail());
             }
 
-
-            if (company.getCompanyLogoPath() != null && !company.getCompanyLogoPath().equals("")){
+            if(company.getCompanyLogoPath() != null && !company.getCompanyLogoPath().equals("")){
                 Picasso.with(context)
                         .load(company.getCompanyLogoPath())
                         .placeholder(R.drawable.c_pic)

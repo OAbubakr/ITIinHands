@@ -171,11 +171,13 @@ public class CompanySideMenu extends AppCompatActivity {
                         bundle.putInt("flag",2);
                         fragment.setArguments(bundle);
                         mDrawerLayout.closeDrawer(expListView);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
 
                     case 3:
                         fragment = new PostJobFragment();
                         mDrawerLayout.closeDrawer(expListView);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
                         break;
                     case 4:
                         // handle logout action
@@ -207,7 +209,7 @@ public class CompanySideMenu extends AppCompatActivity {
                         break;
 
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+
 
 
                 return false;

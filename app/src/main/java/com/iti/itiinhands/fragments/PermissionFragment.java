@@ -461,6 +461,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     setButtonColorTint(Color.parseColor("#7F0000"));
 
 
+
                 } else {
 
                     if (getActivity() != null)

@@ -74,7 +74,7 @@ public class CalenderFragmentAdapter extends RecyclerView.Adapter<CalenderFragme
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, event.getDescription(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, event.getDescription(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

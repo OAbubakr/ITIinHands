@@ -60,9 +60,17 @@
                 android:textColor="#7F0000"
                 android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"/>
+
             </LinearLayout>
 
 
+            <TextView
+                android:text="No instructors registered for this track yet."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/noInstructorsTV"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary" />
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

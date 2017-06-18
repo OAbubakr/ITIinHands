@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
@@ -40,6 +41,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
     RecyclerView.LayoutManager coursesLayoutManager;
     NetworkManager networkManager;
     Track track;
+    TextView noInstructorsTV;
 
     private ProgressBar spinner;
     ArrayList<Course> courses = new ArrayList<>();
@@ -61,6 +63,8 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
 
         instructorsRecyclerView = (RecyclerView) findViewById(R.id.instructorsRV);
         coursesRecyclerView = (RecyclerView) findViewById(R.id.coursesRV);
+        noInstructorsTV = (TextView) findViewById(R.id.noInstructorsTV);
+        noInstructorsTV.setVisibility(View.GONE);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -113,6 +117,13 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
                     }
                 }
                 instructorsAdapter = new InstructorsAdapter(trackInstructors,getApplicationContext());
+
+                if(trackInstructors.size() == 0){
+                    noInstructorsTV.setVisibility(View.VISIBLE);
+                } else{
+                    noInstructorsTV.setVisibility(View.GONE);
+                }
+//                instructorsAdapter = new InstructorsAdapter(trackInstructors);
                 instructorsRecyclerView.setAdapter(instructorsAdapter);
                 spinner.setVisibility(View.GONE);
             }
