@@ -20,6 +20,7 @@ import com.iti.itiinhands.activities.ChatRoomActivity;
 import com.iti.itiinhands.dto.UserData;
 import com.iti.itiinhands.fragments.chat.ChatFragment;
 import com.iti.itiinhands.model.chat.ChatRoom;
+import com.iti.itiinhands.networkinterfaces.NetworkManager;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
@@ -191,15 +192,18 @@ public class RecentChatsListAdapter extends RecyclerView.Adapter<RecentChatsList
                     notifyDataSetChanged();
                 }
                 */
-                if(roomKey != null){
-                    chatRoom.setPendingMessagesCount(0);
-                    chatRoom.setRoomKey(roomKey);
-                    launchChatRoom(chatRoom);
-                    notifyDataSetChanged();
-                }else{
-                    Toast.makeText(context, "Invalid room key", Toast.LENGTH_SHORT).show();
+                if (NetworkManager.getInstance(context).isOnline()) {
+                    if (roomKey != null) {
+                        chatRoom.setPendingMessagesCount(0);
+                        chatRoom.setRoomKey(roomKey);
+                        launchChatRoom(chatRoom);
+                        notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(context, "Invalid room key", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(context, "Failed, please check you internet connection.", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
         });

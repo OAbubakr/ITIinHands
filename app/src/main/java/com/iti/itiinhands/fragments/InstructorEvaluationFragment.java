@@ -89,7 +89,7 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null &&response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null&&getActivity()!=null &&response.getStatus().equals(Response.SUCCESS)) {
             instEvalList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<InstructorEvaluation>>() {
             }.getType());
 

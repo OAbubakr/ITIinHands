@@ -94,7 +94,7 @@ public class TrackDetails extends AppCompatActivity implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response != null) {
+        if (response!=null&&getApplicationContext()!=null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
                 courses = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Course>>() {
                 }.getType());

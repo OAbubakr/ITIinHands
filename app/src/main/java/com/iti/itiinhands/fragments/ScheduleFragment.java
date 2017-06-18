@@ -124,7 +124,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
 
             ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<SessionModel>>() {
             }.getType());

@@ -1,5 +1,6 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -51,7 +54,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
 
 
-    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/";
+
+    public static final String BASEURL = "http://192.168.43.4:8090/restfulSpring/"; // Omar ITI
+//    public static final String BASEURL = "http://10.0.2.2:8090/restfulSpring/"; // Omar ITI
+
+
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
     private static final String API_KEY_BEHANCE = "SXf62agQ8r0xCNCSf1q30HJMmozKmAFA";
@@ -123,6 +130,28 @@ public class NetworkManager {
                             SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                             if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
                                 //un subscribe from topics
+
+                                Handler handler = new Handler(Looper.getMainLooper());
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Run your task here
+                                        Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        builder.setTitle("Session timeout").setMessage("Please login again to continue")
+                                                .setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+
+//                                        builder.show();
+                                    }
+                                });
+
 
 
                                 int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
@@ -945,16 +974,15 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
-
-             @Override
-             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                 if (response != null) {
-                     IS_UPDATING_ACCESS_TOKEN = false;
-                     if (response.body().getStatus().equals(Response.SUCCESS)) {
-                         LinkedTreeMap<String, Object> linkedTreeMap =
-                                 (LinkedTreeMap<String, Object>) response.body().getResponseData();
-                         String access_token = (String) linkedTreeMap.get("access_token");
-                         double expiry_date = (double) linkedTreeMap.get("expiry_date");
+                         @Override
+                         public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                             if (response != null && context!=null) {
+                                 IS_UPDATING_ACCESS_TOKEN = false;
+                                 if (response.body().getStatus().equals(Response.SUCCESS)) {
+                                     LinkedTreeMap<String, Object> linkedTreeMap =
+                                             (LinkedTreeMap<String, Object>) response.body().getResponseData();
+                                     String access_token = (String) linkedTreeMap.get("access_token");
+                                     double expiry_date = (double) linkedTreeMap.get("expiry_date");
 
                                      SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                                      SharedPreferences.Editor editor = sharedPreferences.edit();
