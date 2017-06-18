@@ -30,15 +30,15 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.events.EventTabFragment;
-import com.iti.itiinhands.fragments.PermissionFragment;
+import com.iti.itiinhands.fragments.permission.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
 import com.iti.itiinhands.fragments.StudentProfileFragment;
 import com.iti.itiinhands.fragments.maps.BranchesList;
+import com.iti.itiinhands.fragments.permission.StudentPermissionTabs;
 import com.iti.itiinhands.services.UpdateAccessToken;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
-import com.linkedin.platform.LISessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -217,7 +217,7 @@ public class SideMenuActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 //handle grades fragment
-                                fragment = new PermissionFragment();
+                                fragment = new StudentPermissionTabs();
 
                                 break;
                             case 2:

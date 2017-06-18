@@ -20,6 +20,7 @@ import com.iti.itiinhands.fragments.AllJobPostsFragment;
 import com.iti.itiinhands.fragments.events.EventListFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.events.EventTabFragment;
+import com.iti.itiinhands.fragments.permission.supervisor.SupervisorPermissionTabs;
 import com.iti.itiinhands.utilities.Constants;
 import com.iti.itiinhands.utilities.UserDataSerializer;
 
@@ -164,6 +165,8 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
                             break;
                         case 3:
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, new SupervisorPermissionTabs()).commit();
+
 
                             break;
                         case 4://jonPost

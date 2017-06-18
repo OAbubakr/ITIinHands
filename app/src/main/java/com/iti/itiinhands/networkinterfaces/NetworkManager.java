@@ -16,6 +16,8 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.iti.itiinhands.activities.LoginActivity;
 import com.iti.itiinhands.beans.JobOpportunity;
 import com.iti.itiinhands.dto.UserData;
+import com.iti.itiinhands.fragments.permission.StudentPermissionList;
+import com.iti.itiinhands.fragments.permission.supervisor.SupervisorPermissionList;
 import com.iti.itiinhands.model.GitData;
 import com.iti.itiinhands.model.LoginResponse;
 import com.iti.itiinhands.model.Permission;
@@ -53,7 +55,7 @@ public class NetworkManager {
     public static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
 //    private static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
 //    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
-//    public static final String BASEURL = "http://192.168.1.3:8085/restfulSpring/";
+//    public static final String BASEURL = "http://192.168.1.4:8085/restfulSpring/";
 
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
@@ -864,6 +866,70 @@ public class NetworkManager {
             }
         });
 
+
+    }
+
+    public void getStudentPermissions(NetworkResponse networkResponse, int id) {
+
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getStudentPermissions(id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
+
+    public void getSupervisorPermissions(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getSupervisorPermissions(id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response result = response.body();
+                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("network", t.toString());
+                network.onFailure();
+            }
+        });
+    }
+
+    public void sendPermissionResponse(final SupervisorPermissionList s ,int permissionId, boolean b) {
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.setPermissionResponse(permissionId,b);
+
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                s.responseSent(true);
+//                Response result = response.body();
+//                network.onResponse(result);
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                s.responseSent(false);
+//                t.printStackTrace();
+//                Log.e("network", t.toString());
+//                network.onFailure();
+            }
+        });
 
     }
 
