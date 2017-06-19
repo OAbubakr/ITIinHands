@@ -22,25 +22,39 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo1"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.Branches" />
-        <activity android:name=".activities.Tracks" />
-        <activity android:name=".activities.OurWalkthrough">
+        android:theme="@style/AppTheme"
+        android:screenOrientation="portrait">
+        <activity android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Branches"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Tracks"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OurWalkthrough"
+            android:screenOrientation="portrait">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN"
+                android:screenOrientation="portrait"/>
 
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.SideMenuActivity" />
-        <activity android:name=".fragments.StudentsOfTrack" />
-<activity android:name=".activities.TrackDetails"/>
-        <activity android:name=".activities.StaffSideMenuActivity" />
-        <activity android:name=".activities.CompanySideMenu" />
-        <activity android:name=".activities.GuestSideMenu" />
-        <activity android:name=".activities.GraduateSideMenu" />
+        <activity android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SideMenuActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".fragments.StudentsOfTrack"
+            android:screenOrientation="portrait"/>
+<activity android:name=".activities.TrackDetails"
+    android:screenOrientation="portrait"/>
+        <activity android:name=".activities.StaffSideMenuActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CompanySideMenu"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.GuestSideMenu"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.GraduateSideMenu"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".services.FirebaseMessageReceiverService"
@@ -50,21 +64,31 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".activities.MapsDetailsActivity" />
+        <activity android:name=".activities.MapsDetailsActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".activities.Schedule" />
-        <activity android:name=".activities.UploadImage">
+        <activity android:name=".activities.Schedule"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.UploadImage"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.CompanyStudentProfile" />
-        <activity android:name=".activities.CompanyJobPost" />
+        <activity android:name=".activities.CompanyStudentProfile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CompanyJobPost"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".services.ScheduleChanged"
             android:exported="false"></service>
-        <activity android:name=".activities.GraduatesByTrack"></activity>
-        <activity android:name=".activities.CompanyProfileActivity"></activity>
+        <activity android:name=".activities.GraduatesByTrack"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.InstructorsForCourse"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.CompanyProfileActivity"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".activities.ChatRoomActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="launch" />
 
@@ -72,7 +96,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.CompanyGraduateProfile" />
+        <activity android:name=".activities.CompanyGraduateProfile"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".services.UpdateAccessToken"
@@ -80,18 +105,10 @@
 
 
 
-        <activity android:name=".activities.CompanyGraduateProfile"></activity>
-        <!-- <activity android:name=".activities.Schedule" /> -->
-        <activity android:name=".activities.GraduatesByTrack" />
-        <activity android:name=".fragments.WorkingHours">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.EditProfileActivity"
+        android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.CoursesForInstructors"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

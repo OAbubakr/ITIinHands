@@ -105,13 +105,14 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
         if (networkManager.isOnline()) {
             networkManager.getEvents(this);
         }
+        else onFailure();
     }
 
     @Override
     public void onResponse(Response response) {
 
 
-        if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
 
             ArrayList<Event> result = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Event>>() {
             }.getType());

@@ -1,5 +1,7 @@
 package com.iti.itiinhands.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.iti.itiinhands.R;
 
+import com.iti.itiinhands.activities.InstructorsForCourse;
 import com.iti.itiinhands.beans.Instructor;
 import com.iti.itiinhands.model.Course;
 
@@ -20,11 +23,12 @@ import java.util.ArrayList;
 
 public class TrackCoursesAdapter extends RecyclerView.Adapter<TrackCoursesAdapter.ViewHolder> {
     private ArrayList<Course> courses;
+    private Context context;
 
 
-
-    public TrackCoursesAdapter(ArrayList<Course> courses) {
+    public TrackCoursesAdapter(ArrayList<Course> courses,Context context) {
         this.courses = courses;
+        this.context = context;
     }
 
 
@@ -40,11 +44,21 @@ public class TrackCoursesAdapter extends RecyclerView.Adapter<TrackCoursesAdapte
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(TrackCoursesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(TrackCoursesAdapter.ViewHolder holder, final int position) {
 
         // - get element from  dataset at this position
         // - replace the contents of the view with that element
         holder.courseNameTV.setText(courses.get(position).getCourseName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i= new Intent(context , InstructorsForCourse.class);
+                i.putExtra("courseId",courses.get(position).getCourseId());
+                i.putExtra("course name",courses.get(position).getCourseName());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

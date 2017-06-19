@@ -27,12 +27,12 @@ import retrofit2.http.Url;
 
 public interface NetworkApi {
 
-//    @POST("login/onLoginAuth")
+    //    @POST("login/onLoginAuth")
     @POST("getToken")
     public Call<LoginResponse> onLoginAuth(@Body LoginRequest request);
 
     @GET("getEmpHours")
-    public Call<Response> getEmpHours(@Query("id") int id , @Query("start") String start , @Query("end") String end);
+    public Call<Response> getEmpHours(@Query("id") int id, @Query("start") String start, @Query("end") String end);
 
     @GET("getStudentGrades")
     public Call<Response> getGrades(@Query("id") int id);
@@ -43,58 +43,58 @@ public interface NetworkApi {
     public Call<Response> getBranches();
 
     @GET("getCourses")
-    public Call<Response> getCoursesByTrack(@Query("trackId")int id);
+    public Call<Response> getCoursesByTrack(@Query("trackId") int id);
 
 
     @POST("getStudentSchedule")
-    public Call<Response> getStudentSchedule (@Body LoginRequest request);
-
+    public Call<Response> getStudentSchedule(@Body LoginRequest request);
 
 
     @GET("getEvents")
     public Call<Response> getEvents();
 
     @GET("getCompanyProfile")
-    public Call<Response> getCompanyProfile(@Query("companyID")int id);
+    public Call<Response> getCompanyProfile(@Query("companyID") int id);
 
     @GET("getAllVacancies")
     public Call<Response> getJobs();
 
     @GET("profile/onGetUserData")
-    public Call<Response> getUserData(@Query("token") int token,@Query("userType") int userType);
+    public Call<Response> getUserData(@Query("token") int token, @Query("userType") int userType);
 
     @GET("profile/onGetUserDataOther")
-    public Call<Response> getUserDataOther(@Query("userId") int userID,@Query("userType") int userType);
+    public Call<Response> getUserDataOther(@Query("userId") int userID, @Query("userType") int userType);
+
     @GET("sendScheduleChange")
     public Call<Response> sendScheduleChange(@Query("platformIntakeId") int platformIntakeId);
 
 
     @POST("profile/onSetUserData")
-    public Call<Response> setUserData(@Query("userType") int userType,@Query("userId") int userId,@Body UserData userData);
+    public Call<Response> setUserData(@Query("userType") int userType, @Query("userId") int userId, @Body UserData userData);
 
     @POST("postJob")
     public Call<Response> postJob(@Body JobOpportunity jobOpportunity);
 
     @GET("getInstructorSchedule")
-    public  Call<Response> getInstructorSchedule(@Query("instructorId")int instructorId );
+    public Call<Response> getInstructorSchedule(@Query("instructorId") int instructorId);
 
     @GET("getStudentSchedule")
-    public  Call<Response> getStudentSchedule(@Query("studentId") int studentId);
+    public Call<Response> getStudentSchedule(@Query("studentId") int studentId);
 
 
     @GET("getTrackSchedule")
-    Call<Response> getTrackSchedule(@Query("trackId")int trackId);
+    Call<Response> getTrackSchedule(@Query("trackId") int trackId);
 
 
-//////////
+    //////////
     @GET("getStudentsByTrackId")
-    public Call<Response>getAllStudentsByTracId(@Query("id")int id);
+    public Call<Response> getAllStudentsByTracId(@Query("id") int id);
 
     @GET("gradByIntakeAndTrack")
-    public Call<Response>getAllGraduatesByTracId(@Query("id")int id,@Query("platformId")int platformId);
+    public Call<Response> getAllGraduatesByTracId(@Query("id") int id, @Query("platformId") int platformId);
 
     @GET
-    public Call<BehanceData> getBehanceData(@Url String url,@Query("api_key") String apiKey);
+    public Call<BehanceData> getBehanceData(@Url String url, @Query("api_key") String apiKey);
 
     @GET
     public Call<GitData> getGitData(@Url String url);
@@ -108,15 +108,15 @@ public interface NetworkApi {
 
     @Multipart
     @POST("{id}/fileupload")
-    Call<Response> uploadImage(@Part MultipartBody.Part file , @Path("id") int id);
+    Call<Response> uploadImage(@Part MultipartBody.Part file, @Path("id") int id);
 
-@Multipart
+    @Multipart
     @POST("{id}/fileuploadgrad")
-    Call<Response> uploadImageGraduates(@Part MultipartBody.Part file , @Path("id") int id);
+    Call<Response> uploadImageGraduates(@Part MultipartBody.Part file, @Path("id") int id);
 
 
     @GET("getSupervisorByTrackId")
-    public Call<Response>getSupervisor(@Query("id") int id);
+    public Call<Response> getSupervisor(@Query("id") int id);
 
 
     @POST("addPermission")
@@ -131,6 +131,12 @@ public interface NetworkApi {
 
     @GET("getAllCompanies")
     public Call<Response> getAllCompanies();
+
+    @GET("getInstructorCourses")
+    public Call<Response> getInstructorCourses(@Query("instructorId") int instId);
+
+    @GET("getCourseInstructors")
+    public Call<Response> getCourseInstructors(@Query("CourseID") int instId);
 
     @POST("renewAccessToken")
     public Call<Response> renewAccessToken(@Body String refreshToken);

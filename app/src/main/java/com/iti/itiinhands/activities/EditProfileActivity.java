@@ -172,9 +172,9 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         picasso = new Picasso.Builder(getApplicationContext())
                 .downloader(new OkHttp3Downloader(client))
                 .build();
-        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.profile_pic)
+        picasso.load(NetworkManager.BASEURL + "download/" + userData.getImagePath()).placeholder(R.drawable.change_pic)
                 .resize(width, height / 3)
-                .error(R.drawable.profile_pic).into(profilePicIv);
+                .error(R.drawable.change_pic).into(profilePicIv);
 
         ///change profile pic
         profilePicIv.setOnClickListener(new View.OnClickListener() {
@@ -465,7 +465,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
     @Override
     public void onResponse(Response response) {
-        if (response != null) {
+        if (response!=null&&getApplicationContext()!=null) {
             switch (responseType) {
                 case "gitHub":
                     if (response instanceof GitData && ((GitData) response).getMessage() != "Not Found") {

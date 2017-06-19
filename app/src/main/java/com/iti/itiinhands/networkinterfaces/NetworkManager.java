@@ -51,9 +51,9 @@ public class NetworkManager {
 
 //    public static final String BASEURL = "http://172.16.4.239:8084/restfulSpring/";
 //    private static final String BASEURL = "http://172.16.2.40:8085/restfulSpring/"; // Ragab ip and url
-    public static final String BASEURL = "http://172.16.3.46:9090/restfulSpring/"; // Omar ITI
-//    private static final String BASEURL = "http://192.168.1.17:8085/restfulSpring/"; // Omar ITI
-   // public static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/";
+
+    public static final String BASEURL = "http://172.16.4.78:8084/restfulSpring/"; // Omar ITI
+
 
     private static NetworkManager newInstance;
     private static Retrofit retrofit;
@@ -947,16 +947,15 @@ public class NetworkManager {
         NetworkApi web = retrofit.create(NetworkApi.class);
         Call<Response> call = web.renewAccessToken(refreshToken);
         call.enqueue(new Callback<Response>() {
-
-             @Override
-             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                 if (response != null) {
-                     IS_UPDATING_ACCESS_TOKEN = false;
-                     if (response.body().getStatus().equals(Response.SUCCESS)) {
-                         LinkedTreeMap<String, Object> linkedTreeMap =
-                                 (LinkedTreeMap<String, Object>) response.body().getResponseData();
-                         String access_token = (String) linkedTreeMap.get("access_token");
-                         double expiry_date = (double) linkedTreeMap.get("expiry_date");
+                         @Override
+                         public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                             if (response != null && context!=null) {
+                                 IS_UPDATING_ACCESS_TOKEN = false;
+                                 if (response.body().getStatus().equals(Response.SUCCESS)) {
+                                     LinkedTreeMap<String, Object> linkedTreeMap =
+                                             (LinkedTreeMap<String, Object>) response.body().getResponseData();
+                                     String access_token = (String) linkedTreeMap.get("access_token");
+                                     double expiry_date = (double) linkedTreeMap.get("expiry_date");
 
                                      SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                                      SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -979,6 +978,40 @@ public class NetworkManager {
          }
 
         );
+    }
+
+//    ---------------------------- Instructor courses ------------------------------------
+    public void getInstructorCourses(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getInstructorCourses(id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                network.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                network.onFailure();
+            }
+        });
+
+    }//    ---------------------------- Course Instructors ------------------------------------
+    public void getCourseInstructors(NetworkResponse networkResponse, int id) {
+        final NetworkResponse network = networkResponse;
+        NetworkApi web = retrofit.create(NetworkApi.class);
+        Call<Response> call = web.getCourseInstructors(id);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                network.onResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                network.onFailure();
+            }
+        });
+
     }
 
 }

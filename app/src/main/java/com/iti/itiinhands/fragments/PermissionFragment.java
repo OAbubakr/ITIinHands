@@ -450,7 +450,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
 
 
-            if (response != null && response.getStatus().equals(Response.SUCCESS)) {
+            if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
 
                 if (response.getResponseData() != null) {
 
@@ -459,6 +459,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
                     permission.setEmpID(supervisor.getId());
                     if (send != null) send.setEnabled(true);
                     setButtonColorTint(Color.parseColor("#7F0000"));
+
 
 
                 } else {
