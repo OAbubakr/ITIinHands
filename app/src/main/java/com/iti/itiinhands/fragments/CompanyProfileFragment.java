@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class CompanyProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_company_profile, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
+
         getActivity().setTitle("Profile");
 
         name = (TextView) view.findViewById(R.id.name);
@@ -75,9 +77,6 @@ public class CompanyProfileFragment extends Fragment {
         knowledge = (TextView) view.findViewById(R.id.knowledge);
         companyLogo=(ImageView)view.findViewById(R.id.company_logo);
         numberOfEmployees =(TextView)view.findViewById(R.id.number);
-
-
-
 
 
         Bundle bundle = this.getArguments();

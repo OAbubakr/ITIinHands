@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,6 +51,8 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     int userType;
     int token;
     ProgressBar spinner;
+    private SwipeRefreshLayout swipeContainer;
+    private boolean isDownloading;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -72,6 +75,31 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         token = sharedPreferences.getInt(Constants.USER_ID, 0);
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        isDownloading = true;
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(!isDownloading){
+                    isDownloading = true;
+                    download();
+                }
+                else
+                    swipeContainer.setRefreshing(false);
+            }
+        });
+  //      swipeContainer.setEnabled(false);
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
         recyclerView = (RecyclerView) view.findViewById(R.id.day);
 
         getActivity().setTitle("Schedule");
@@ -82,6 +110,29 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        download();
+
+        ////////////////////////////////////////////////////
+
+
+//        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+//            int previousItem = -1;
+//
+//            @Override
+//            public void onGroupExpand(int groupPosition) {
+//                if (groupPosition != previousItem)
+//                    expandableListView.collapseGroup(previousItem);
+//                previousItem = groupPosition;
+//            }
+//        });
+
+        return view;
+
+    }
+
+
+    private void download(){
 
         if (networkManager.isOnline()) {
             Bundle b = getArguments();
@@ -102,29 +153,19 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
             onFailure();
         }
 
-
-        ////////////////////////////////////////////////////
-
-
-//        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-//            int previousItem = -1;
-//
-//            @Override
-//            public void onGroupExpand(int groupPosition) {
-//                if (groupPosition != previousItem)
-//                    expandableListView.collapseGroup(previousItem);
-//                previousItem = groupPosition;
-//            }
-//        });
-
-        return view;
-
     }
 
     @Override
     public void onResponse(Response response) {
 
-        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
+        isDownloading = false;
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+        if (response != null && getActivity() != null && response.getStatus().equals(Response.SUCCESS)) {
 
             ArrayList<SessionModel> sessions = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<SessionModel>>() {
             }.getType());
@@ -135,8 +176,7 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
                 ScheduleCardAdapter scheduleCardAdapter = new ScheduleCardAdapter(getContext(), groups, details);
                 recyclerView.setAdapter(scheduleCardAdapter);
             }
-        }
-        else onFailure();
+        } else onFailure();
 
         spinner.setVisibility(View.GONE);
 
@@ -145,8 +185,19 @@ public class ScheduleFragment extends Fragment implements NetworkResponse {
     @Override
     public void onFailure() {
 
+        isDownloading = false;
         new NetworkUtilities().networkFailure(getActivity());
         spinner.setVisibility(View.GONE);
+
+
+        if(swipeContainer != null) {
+//            if(!swipeContainer.isEnabled())
+//                swipeContainer.setEnabled(true);
+
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
 
     }
 }

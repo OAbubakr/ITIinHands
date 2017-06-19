@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,17 +33,13 @@ import com.iti.itiinhands.utilities.DataSerializer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mahmoud on 6/6/2017.
- */
-
 public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     private RecyclerView companiesLv;
     private List<Company> companiesList = new ArrayList<>();
     private ProgressBar spinner;
-
-
+    private SwipeRefreshLayout swipeContainer;
+    private boolean isDownloading;
 
     @Nullable
     @Override
@@ -54,6 +51,28 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
         companiesLv.setItemAnimator(new DefaultItemAnimator());
 
         getActivity().setTitle("Companies profiles");
+
+        isDownloading = true;
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                if( NetworkManager.getInstance(getActivity().getApplicationContext()).isOnline() & !isDownloading) {
+                    isDownloading = true;
+                    NetworkManager.getInstance(getActivity().getApplicationContext()).getAllCompaniesData(CompaniesFragment.this);
+                }else
+                    onFailure();
+
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
 
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -70,6 +89,15 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
+        isDownloading = false;
+
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+
         if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
             CompaniesProfiles data = DataSerializer.convert(response.getResponseData(),CompaniesProfiles.class) ;
             if(data != null){
@@ -85,7 +113,15 @@ public class CompaniesFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
+        isDownloading = false;
         new NetworkUtilities().networkFailure( getActivity().getApplicationContext());
         spinner.setVisibility(View.GONE);
+
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
     }
 }

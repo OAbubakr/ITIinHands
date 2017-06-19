@@ -65,8 +65,9 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
         getActivity().setTitle("Post job");
 
         SharedPreferences data = getActivity().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
-        final int companyId = data.getInt(Constants.USER_TYPE, 0);
+
         UserData userData = UserDataSerializer.deSerialize(data.getString(Constants.USER_OBJECT,""));
+        final int companyId = userData.getId();
 
         if(userData != null){
             compName = userData.getCompanyName();
@@ -76,8 +77,10 @@ public class PostJobFragment extends Fragment implements NetworkResponse, View.O
             companyName.setText(compName);
             Picasso.with(getActivity().getApplicationContext())
                     .load(compImage)
-                    .placeholder(R.drawable.comp_logo)
+                    .placeholder(R.drawable.c_pic)
+                    .error(R.drawable.c_pic)
                     .into(companyImage);
+
         }
 
         //Edit Text For Input Date
