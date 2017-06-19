@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.iti.itiinhands.fragments.BranchesFragment;
 //import com.iti.itiinhands.fragments.permission.PermissionFragment;
+import com.iti.itiinhands.fragments.permission.PermissionFragment;
 import com.iti.itiinhands.fragments.permission.StudentPermissionList;
 
 public class PermissionTabAdapter extends FragmentStatePagerAdapter {
@@ -26,12 +27,12 @@ public class PermissionTabAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-            //    PermissionFragment tab1 = new PermissionFragment();
+                PermissionFragment tab1 = new PermissionFragment();
 //                Bundle b = new Bundle();
 //                b.putInt("flag",1);
 //                tab1.setArguments(b);
 
-           //     return tab1;
+                return tab1;
             case 1:
                 StudentPermissionList tab2 = new StudentPermissionList();
 //                tab2.setFlag(2);
