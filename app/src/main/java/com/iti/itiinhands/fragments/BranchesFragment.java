@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,8 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     private NetworkManager networkManager;
     private int flag = 0;
     private ProgressBar spinner;
+    private SwipeRefreshLayout swipeContainer;
+    private boolean isDownloading;
 
     public void setFlag(int flag) {
         this.flag = flag;
@@ -59,7 +62,28 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.fragment_branches, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
 
-        if(flag != 2)
+        isDownloading = true;
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (networkManager.isOnline() & !isDownloading) {
+                    isDownloading = true;
+                    prepareBranchData();
+                } else
+                    onFailure();
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+        if (flag != 2)
             getActivity().setTitle("Branches");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.branch_recycler_view);
@@ -81,29 +105,21 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
     }
 
     private void prepareBranchData() {
+    //    spinner.setVisibility(View.VISIBLE);
         networkManager.getBranches(this);
-    }
-
-
-    public void onButtonPressed(Uri uri) {
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
     }
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null&&getActivity()!=null) {
+        isDownloading = false;
+        if (swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+
+        if (response != null && getActivity() != null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
                 branchesList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Branch>>() {
                 }.getType());
@@ -112,17 +128,25 @@ public class BranchesFragment extends Fragment implements NetworkResponse {
                 branchesAdapter = new BranchesAdapter(branchesList, getActivity().getApplicationContext(), flag);
                 recyclerView.setAdapter(branchesAdapter);
                 spinner.setVisibility(View.GONE);
-            }
-            else onFailure();
+            } else onFailure();
+        } else {
+            onFailure();
         }
-        else{onFailure();}
     }
 
     @Override
     public void onFailure() {
+        isDownloading = false;
 
         new NetworkUtilities().networkFailure(getContext());
         spinner.setVisibility(View.GONE);
+
+        if (swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
     }
 
 }

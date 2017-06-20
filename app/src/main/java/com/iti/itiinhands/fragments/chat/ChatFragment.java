@@ -25,11 +25,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class ChatFragment extends Fragment {
 
     public static final String SP_NAME = "chatRoomsKeys";
-//    private String receiver_type;
-//    private String myName;
-//    private String myType;
-//    private String myId;
-//    private String myChatId;
+
     private SharedPreferences sharedPreferences;
     private RecyclerView chatRoomsRecyclerView;
     private FriendListAdapter friendListAdapter;

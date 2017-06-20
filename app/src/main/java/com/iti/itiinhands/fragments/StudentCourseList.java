@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,6 +43,8 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
     UserData userData;
     int token;
     ProgressBar spinner;
+    private SwipeRefreshLayout swipeContainer;
+    private boolean isDownloading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +54,25 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         View view = inflater.inflate(R.layout.activity_student_course_list, container, false);
 
         getActivity().setTitle("Courses");
+
+        isDownloading = true;
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (networkManager.isOnline() & !isDownloading) {
+                    isDownloading = true;
+                    networkManager.getStudentsGrades(myRef, token);
+                } else
+                    onFailure();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
 
         networkManager = NetworkManager.getInstance(getActivity());
@@ -62,10 +84,12 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
         token = sharedPreferences.getInt(Constants.USER_ID, 0);
         spinner = (ProgressBar) view.findViewById(R.id.progressBar);
         spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
+
         if (networkManager.isOnline())
             networkManager.getStudentsGrades(myRef, token);
         else
             onFailure();
+
         SCourses_RV = (RecyclerView) view.findViewById(R.id.rvStudentCourses);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -76,7 +100,15 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
+
+        isDownloading = false;
+        if (swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+        if (response != null && getActivity() != null && response.getStatus().equals(Response.SUCCESS)) {
             List<StudentGrade> list = DataSerializer.convert(response.getResponseData(), new TypeToken<List<StudentGrade>>() {
             }.getType());
 
@@ -92,8 +124,16 @@ public class StudentCourseList extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
+        isDownloading = false;
         new NetworkUtilities().networkFailure(getActivity());
 
         spinner.setVisibility(View.GONE);
+
+        if (swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
     }
 }

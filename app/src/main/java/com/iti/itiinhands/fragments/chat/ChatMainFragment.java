@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,14 +80,11 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
 
     public ChatMainFragment() {
         // Required empty public constructor
+
+
     }
-/*
-    @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
-        this.receiver_type = args.getString("receiver_type");
-    }
-*/
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -122,6 +120,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_chat_main, container, false);
+
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("CONTACTS"));
@@ -260,7 +259,7 @@ public class ChatMainFragment extends Fragment implements NetworkResponse {
     @Override
     public void onResponse(Response response) {
 
-        if (response != null && getActivity()!=null) {
+        if (response != null && getActivity() != null) {
             if (response.getStatus().equals(Response.SUCCESS)) {
                 Log.v("ITI_Test", "data downloaded");
                 dummy++;

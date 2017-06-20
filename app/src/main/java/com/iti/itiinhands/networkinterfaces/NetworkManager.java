@@ -1,12 +1,17 @@
 package com.iti.itiinhands.networkinterfaces;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -128,6 +133,29 @@ public class NetworkManager {
                             SharedPreferences setting = context.getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
                             if (setting.getBoolean(Constants.LOGGED_FLAG, false)) {
                                 //un subscribe from topics
+
+                                Handler handler = new Handler(Looper.getMainLooper());
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Run your task here
+                                        Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        builder.setTitle("Session timeout").setMessage("Please login again to continue")
+                                                .setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+
+//                                        builder.show();
+                                    }
+                                });
+
+
 
                                 int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                                 UserData userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));

@@ -30,7 +30,7 @@ import com.iti.itiinhands.fragments.AnnouncementFragment;
 import com.iti.itiinhands.fragments.BranchesFragment;
 import com.iti.itiinhands.fragments.CompaniesFragment;
 import com.iti.itiinhands.fragments.events.EventTabFragment;
-import com.iti.itiinhands.fragments.permission.PermissionFragment;
+//import com.iti.itiinhands.fragments.permission.PermissionFragment;
 import com.iti.itiinhands.fragments.ScheduleFragment;
 import com.iti.itiinhands.fragments.StudentCourseList;
 import com.iti.itiinhands.fragments.StudentProfileFragment;

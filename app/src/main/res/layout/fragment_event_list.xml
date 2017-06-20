@@ -1,147 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
 
-
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/event_recycler_view"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/event_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
         android:visibility="visible"
-        android:indeterminate="true"/>
+        android:layout_centerInParent="true"/>
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:gravity="center">-->
-            <!--<ProgressBar-->
-                <!--style="?android:attr/progressBarStyle"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:id="@+id/progressBar" />-->
-        <!--</RelativeLayout>-->
-        <!---->
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical">-->
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:orientation="vertical"-->
-                <!--android:background="@drawable/eventsupper">-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingTop="15dp"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="20dp"-->
-                    <!--android:id="@+id/day_title"/>-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:textSize="28dp"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:id="@+id/date_title"/>-->
-
-                    <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginLeft="5dp"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:src="@drawable/eventarrow"/>-->
-
-
-                <!--</LinearLayout>-->
-
-            <!--</LinearLayout>-->
-
-            <!--<FrameLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:layout_weight="3">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:weightSum="3">-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="0dp"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:background="@drawable/eventsupper"/>-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="0dp"-->
-                        <!--android:layout_weight="2" />-->
-
-                <!--</LinearLayout>-->
-
-                <!--&lt;!&ndash;<CalendarView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_marginLeft="20dp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_marginRight="20dp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_vertical|center_horizontal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:background="@drawable/eventcal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/calenderView">&ndash;&gt;-->
-                <!--&lt;!&ndash;</CalendarView>&ndash;&gt;-->
-
-                <!--<com.github.sundeepk.compactcalendarview.CompactCalendarView-->
-                    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--app:compactCalendarTargetHeight="250dp"-->
-                    <!--app:compactCalendarTextSize="16sp"-->
-                    <!--app:compactCalendarTextColor="#484848"-->
-                    <!--app:compactCalendarCurrentDayBackgroundColor="#B71C1C"-->
-                    <!--app:compactCalendarCurrentDayTextColor="@android:color/white"-->
-                    <!--android:layout_gravity="center_vertical|center_horizontal"-->
-                    <!--android:background="@drawable/eventcal"-->
-                    <!--android:id="@+id/calenderView"/>-->
-
-            <!--</FrameLayout>-->
-            <!---->
-
-        <!--</LinearLayout>-->
-
-
-    <!--</RelativeLayout>-->
-
-
-</LinearLayout>
+</RelativeLayout>

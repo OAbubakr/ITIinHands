@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,15 +34,11 @@ import java.util.ArrayList;
  * Created by admin on 6/10/2017.
  */
 
-public class EventTabFragment extends Fragment implements NetworkResponse {
+public class EventTabFragment extends Fragment{
 
     private ViewPager viewPager;
-    private ArrayList<Event> eventsList = new ArrayList<>();
-    private EventAdapter eventsAdapter;
-    private NetworkManager networkManager;
     private EventListFragment eventListFragment;
     private EventCalendarFragment eventCalendarFragment;
-    private ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -53,8 +50,6 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
         getActivity().setTitle("Events");
 
         setHasOptionsMenu(true);
@@ -64,9 +59,7 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
 
         eventListFragment = new EventListFragment();
-        eventsAdapter = new EventAdapter(eventsList, getActivity().getApplicationContext());
-        eventListFragment.setEventsAdapter(eventsAdapter);
-
+        eventListFragment.setParent(this);
 
         eventCalendarFragment = new EventCalendarFragment();
 
@@ -95,46 +88,11 @@ public class EventTabFragment extends Fragment implements NetworkResponse {
             }
         });
 
-        networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
-        prepareEventData();
 
     }
 
-    private void prepareEventData() {
-
-        if (networkManager.isOnline()) {
-            networkManager.getEvents(this);
-        }
-        else onFailure();
+    public void setCalenderData(ArrayList<Event> events){
+        eventCalendarFragment.setAllEvents(events);
     }
-
-    @Override
-    public void onResponse(Response response) {
-
-
-        if (response!=null&&getActivity()!=null && response.getStatus().equals(Response.SUCCESS)) {
-
-            ArrayList<Event> result = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<Event>>() {
-            }.getType());
-            eventsList.addAll(result);
-
-            progressBar.setVisibility(View.GONE);
-
-            eventsAdapter.notifyDataSetChanged();
-            eventCalendarFragment.setAllEvents(eventsList);
-
-        }
-        else
-            onFailure();
-
-
-    }
-
-
-    @Override
-    public void onFailure() {
-        new NetworkUtilities().networkFailure(getActivity());
-    }
-
 
 }

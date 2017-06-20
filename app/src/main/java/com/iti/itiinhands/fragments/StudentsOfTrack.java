@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,11 +43,36 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     int id;
     String trackName;
     ProgressBar spinner;
+    private boolean isDownloading;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.students_of_track_fragment);
+
+        isDownloading = true;
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (networkManager.isOnline() & !isDownloading) {
+                    isDownloading = true;
+                    networkManager.getAllStudentsByTrackId(StudentsOfTrack.this, id);
+                } else {
+                    onFailure();
+                }
+            }
+        });
+
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 
         Intent intent = getIntent();
         id = intent.getIntExtra("trackId", 0);
@@ -82,6 +108,15 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
     @Override
     public void onResponse(Response response) {
 
+        isDownloading = false;
+
+        if (swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+
         if (response != null && getApplicationContext() != null && response.getStatus().equals(Response.SUCCESS)) {
             students = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<StudentDataByTrackId>>() {
             }.getType());
@@ -97,6 +132,14 @@ public class StudentsOfTrack extends AppCompatActivity implements NetworkRespons
 
     @Override
     public void onFailure() {
+
+        isDownloading = false;
+
+        if (swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
 
         new NetworkUtilities().networkFailure(getApplicationContext());
         spinner.setVisibility(View.GONE);

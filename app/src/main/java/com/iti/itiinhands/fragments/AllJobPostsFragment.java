@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,7 +38,8 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
     ArrayList<JobVacancy> jobVacancies = new ArrayList<>();
-
+    private SwipeRefreshLayout swipeContainer;
+    private boolean isDownloading;
     ProgressBar spinner;
 
     public AllJobPostsFragment() {
@@ -56,6 +58,28 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_job_posts, container, false);
+
+        isDownloading = true;
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (networkManager.isOnline() & !isDownloading) {
+                    isDownloading = true;
+                    networkManager.getAllJobs(AllJobPostsFragment.this);
+                } else {
+                    onFailure();
+                }
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         recyclerView =
                 (RecyclerView) view.findViewById(R.id.recycler_view);
 
@@ -69,8 +93,7 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
         if (networkManager.isOnline()) {
             networkManager.getAllJobs(this);
         } else {
-            new NetworkUtilities().networkFailure(getContext());
-            spinner.setVisibility(View.GONE);
+            onFailure();
         }
 
         return view;
@@ -78,20 +101,15 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
 
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-
-
-    @Override
     public void onResponse(Response response) {
+        isDownloading = false;
+
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
         if (response!=null&&getActivity()!=null&&response.getStatus().equals(Response.SUCCESS)) {
 
                 jobVacancies = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<JobVacancy>>() {
@@ -115,6 +133,13 @@ public class AllJobPostsFragment extends Fragment implements NetworkResponse {
 
     @Override
     public void onFailure() {
+        isDownloading = false;
+
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
 
         new NetworkUtilities().networkFailure(getContext());
         spinner.setVisibility(View.GONE);

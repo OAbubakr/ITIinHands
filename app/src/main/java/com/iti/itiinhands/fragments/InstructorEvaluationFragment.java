@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,8 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
     private TextView instName, noEval;
     private UserData userData;
     ProgressBar spinner;
+    private boolean isDownloading;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,27 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_instructor_evaluation, container, false);
         networkManager = NetworkManager.getInstance(getActivity().getApplicationContext());
+
+        isDownloading = true;
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (!isDownloading) {
+                    isDownloading = true;
+                    prepareInstEvalData();
+                } else {
+                    onFailure();
+                }
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         getActivity().setTitle("Evaluation");
 
@@ -89,6 +113,16 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 
     @Override
     public void onResponse(Response response) {
+
+        isDownloading = false;
+
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+
         if (response!=null&&getActivity()!=null &&response.getStatus().equals(Response.SUCCESS)) {
             instEvalList = DataSerializer.convert(response.getResponseData(), new TypeToken<ArrayList<InstructorEvaluation>>() {
             }.getType());
@@ -107,7 +141,17 @@ public class InstructorEvaluationFragment extends Fragment implements NetworkRes
 
     @Override
     public void onFailure() {
-       new NetworkUtilities().networkFailure(getActivity().getApplicationContext());
+
+        isDownloading = false;
+
+        if(swipeContainer != null) {
+            if (swipeContainer.isRefreshing()) {
+                swipeContainer.setRefreshing(false);
+            }
+        }
+
+
+        new NetworkUtilities().networkFailure(getActivity().getApplicationContext());
         spinner.setVisibility(View.GONE);
     }
 }

@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.iti.itiinhands.fragments.permission.PermissionFragment;
+//import com.iti.itiinhands.fragments.permission.PermissionFragment;
 import com.iti.itiinhands.fragments.permission.StudentPermissionList;
 import com.iti.itiinhands.fragments.permission.supervisor.SupervisorPermissionList;
 

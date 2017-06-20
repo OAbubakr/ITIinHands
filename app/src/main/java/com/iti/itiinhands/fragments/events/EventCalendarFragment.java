@@ -24,10 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by admin on 6/10/2017.
- */
-
 public class EventCalendarFragment extends Fragment {
 
     private TextView month;
@@ -99,6 +95,7 @@ public class EventCalendarFragment extends Fragment {
 
         if(allEvents != null & allEvents.size() > 0){
             this.allEvents = allEvents;
+            calendarView.removeAllEvents();
             sundeebkEvents = new ArrayList<>();
 
             for (Event event : allEvents) {
@@ -116,7 +113,7 @@ public class EventCalendarFragment extends Fragment {
             displayYear = calendar.get(Calendar.YEAR);
 
             month.setText(displayMonth);
-            year.setText(String.valueOf(displayYear));
+             year.setText(String.valueOf(displayYear));
 
             container.setVisibility(View.VISIBLE);
         }
