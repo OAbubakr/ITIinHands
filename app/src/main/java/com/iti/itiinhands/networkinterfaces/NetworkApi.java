@@ -140,5 +140,10 @@ public interface NetworkApi {
 
     @POST("renewAccessToken")
     public Call<Response> renewAccessToken(@Body String refreshToken);
-
+    @GET("getStudentPermissions")
+    Call<Response> getStudentPermissions(@Query("studentId") int id);
+    @GET("getSupervisorPermissions")
+    Call<Response> getSupervisorPermissions(@Query("supervisorId") int id);
+    @GET("setPermissionResponse")
+    Call<Response> setPermissionResponse(@Query("permissionId") int id, @Query("status") boolean status);
 }

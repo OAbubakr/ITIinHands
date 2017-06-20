@@ -1,4 +1,4 @@
-package com.iti.itiinhands.fragments;
+package com.iti.itiinhands.fragments.permission;
 
 import android.app.DatePickerDialog;
 
@@ -10,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -115,7 +114,7 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_SHARED_PREFERENCES, 0);
         userData = UserDataSerializer.deSerialize(sharedPreferences.getString(Constants.USER_OBJECT, ""));
 
-        getActivity().setTitle("Permissions");
+        getActivity().setTitle("Permissions     ");
 
         datePart = (LinearLayout) view.findViewById(R.id.datePart);
         startTimePart = (LinearLayout) view.findViewById(R.id.startTimePart);
@@ -154,14 +153,18 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         permission.setCreatorID(userData.getId());
         permission.setStudentName(userData.getName());
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         String currentDate = formatter.format(c.getTime());
+        permission.setCreationDate(currentDate);
+
         SimpleDateFormat formatter2 = new SimpleDateFormat("hh:mm a");
         date.setText(currentDate);
         String currentTime = formatter2.format(c.getTime());
         timeCheckEnd.add(Calendar.HOUR, 1);
         String currentTimePlusHour = formatter2.format(timeCheckEnd.getTime());
+        permission.setCreationTime(currentTime);
+
         startTime.setText(currentTime);
         endTime.setText(currentTimePlusHour);
 
@@ -172,14 +175,21 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         startMinuteCheck = c.get(Calendar.MINUTE);
         endMinuteCheck = timeCheckEnd.get(Calendar.MINUTE);
         endHourCheck = timeCheckEnd.get(Calendar.HOUR);
+       int temp1 = monthCheck + 1;
+        String temp  = "" + yearCheck+ "-";
+        if ( temp1%10<1)temp=temp+"0";
+        temp = temp + temp1+"-";
+        if (dayCheck%10<1)temp=temp+"0";
+        temp = temp + dayCheck;
 
-        int temp = monthCheck + 1;
 
-        permission.setPermissionDate(dayCheck + "/" + temp + "/" + yearCheck);
+
+        permission.setPermissionDate(temp);
         permission.setFromMin(startMinuteCheck);
         permission.setFromH(startHourCheck);
         permission.setToH(endHourCheck);
         permission.setToMin(endMinuteCheck);
+        permission.setPermissionStatus("Pending");
 
         send.setEnabled(false);
         setButtonColorTint(Color.GRAY);
@@ -203,12 +213,25 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
 
                         selectedmonth = selectedmonth + 1;
-                        date.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
+                        String temp  = "" + selectedyear+ "-";
+                        if (selectedmonth%10<1)temp=temp+"0";
+                        temp = temp + selectedmonth+"-";
+                        if (selectedday%10<1)temp=temp+"0";
+                        temp = temp + selectedday;
+
+                        date.setText(temp);
 
 
 
                         if (checkDate(selectedyear, selectedmonth - 1, selectedday)) {
-                            permission.setPermissionDate(selectedday + "/" + selectedmonth + "/" + selectedyear);
+                            temp  = "" + selectedyear+ "-";
+                            if (selectedmonth%10<1)temp=temp+"0";
+                            temp = temp + selectedmonth+"-";
+                            if (selectedday%10<1)temp=temp+"0";
+                            temp = temp + selectedday;
+
+
+                            permission.setPermissionDate(temp);
                             errorMessageDate.setText("");
                             errorMessageDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                             dateFlag = true;
@@ -434,8 +457,8 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
         });
 
 
-        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
-        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
+//        spinner = (ProgressBar) view.findViewById(R.id.progressBar);
+//        spinner.getIndeterminateDrawable().setColorFilter(Color.parseColor("#7F0000"), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
@@ -478,13 +501,13 @@ public class PermissionFragment extends Fragment implements NetworkResponse {
 
             }else onFailure();
 
-        spinner.setVisibility(View.GONE);
+//        spinner.setVisibility(View.GONE);
     }
 
     @Override
     public void onFailure() {
 //        Toast.makeText(getActivity().getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
-      if (spinner!=null)  spinner.setVisibility(View.GONE);
+//      if (spinner!=null)  spinner.setVisibility(View.GONE);
 
         onFail();
 

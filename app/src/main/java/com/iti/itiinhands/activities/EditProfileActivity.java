@@ -102,7 +102,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
     private Picasso picasso;
     private int width;
     private int height;
-    private String responseType="";
+    private String responseType = "";
     private ProgressBar spinner;
     private String email;
     private TextView checkEmail;
@@ -229,7 +229,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
         cancelLinkedIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                linkedInUrl="";
+                linkedInUrl = "";
                 linkedinBtn.setImageResource(R.drawable.group1205);
             }
         });
@@ -251,23 +251,23 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     userData.setLinkedInUrl(linkedInUrl);
                     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                     email = emailEt.getText().toString().trim();
-                    if(!email.isEmpty() && !email.matches(emailPattern)){
+                    if (!email.isEmpty() && !email.matches(emailPattern)) {
                         checkEmail.setText("Not valid email");
                         checkEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                         emailFlag = false;
-                    }else{
+                    } else {
                         userData.setStudentEmail(emailEt.getText().toString());
                         emailFlag = true;
                         checkEmail.setText("");
                         checkEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
                     String mobile = mobileEt.getText().toString();
-                    if(mobile.length()==0 || mobile.length() ==11 && mobile.startsWith("0") ){
+                    if (mobile.length() == 0 || mobile.length() == 11 && mobile.startsWith("0")) {
                         userData.setStudentMobile(mobileEt.getText().toString());
                         checkMobile.setText("");
                         checkMobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         mobileFlag = true;
-                    }else{
+                    } else {
                         checkMobile.setText("Not valid mobile");
                         checkMobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.warning_sign, 0);
                         mobileFlag = false;
@@ -276,7 +276,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
                     ///put new image path in url
                     //userData.setImagePath();
-                    if(mobileFlag && emailFlag) {
+                    if (mobileFlag && emailFlag) {
                         int userId = sharedPreferences.getInt(Constants.USER_ID, 0);
                         int userType = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                         responseType = "save";
@@ -286,11 +286,11 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                             cancelBtn.setEnabled(false);
                             submitBtn.setImageResource(R.drawable.savegray);
                             spinner.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             new NetworkUtilities().networkFailure(getApplicationContext());
                         }
                     }
-                }else{
+                } else {
                     new NetworkUtilities().networkFailure(getApplicationContext());
                 }
             }
@@ -327,7 +327,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     @Override
                     public void onAuthError(LIAuthError error) {
                         Log.i("error", error.toString());
-                        Toast.makeText(getApplicationContext(), "Failed, please check you internet connection.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Wrong account", Toast.LENGTH_LONG).show();
                     }
                 }, true);
     }
@@ -426,12 +426,12 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     picturePath = cursor.getString(columnIndex);
                     cursor.close();
                     profilePicIv.setImageURI(selectedImage);
-                    int type = sharedPreferences.getInt(Constants.USER_TYPE,0);
+                    int type = sharedPreferences.getInt(Constants.USER_TYPE, 0);
                     int id = sharedPreferences.getInt(Constants.USER_ID, 0);
                     if (networkManager.isOnline()) {
-                        if(type == 1){
+                        if (type == 1) {
                             networkManager.uploadImage(myRef, picturePath, id);
-                        }else if(type == 4){
+                        } else if (type == 4) {
                             networkManager.uploadImageGraduates(myRef, picturePath, id);
                         }
                     } else {
@@ -449,8 +449,6 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 //                    editor.apply();
 
 
-
-
                     //edit image path
 
                 }
@@ -465,7 +463,7 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
 
     @Override
     public void onResponse(Response response) {
-        if (response!=null&&getApplicationContext()!=null) {
+        if (response != null && getApplicationContext() != null) {
             switch (responseType) {
                 case "gitHub":
                     if (response instanceof GitData && ((GitData) response).getMessage() != "Not Found") {
@@ -513,11 +511,19 @@ public class EditProfileActivity extends AppCompatActivity implements NetworkRes
                     break;
             }
         } else {
-            if(responseType.equals("save")){
+            if (responseType.equals("save")) {
                 spinner.setVisibility(View.INVISIBLE);
                 submitBtn.setImageResource(R.drawable.save);
+                new NetworkUtilities().networkFailure(getApplicationContext());
             }
-            new NetworkUtilities().networkFailure(getApplicationContext());
+            if (responseType.equals("gitHub") || responseType.equals("behance")) {
+
+                try {
+                    Toast.makeText(getApplicationContext(), "wrong account", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                }
+            }
+
         }
 
     }
